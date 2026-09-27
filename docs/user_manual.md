@@ -42,6 +42,25 @@ python data/questionnaires/build_ipaq_catalog.py
 
 The commands read only PDFs already present under `data/questionnaires/forms/`; they do not download or overwrite source documents. They validate versions and write five family JSONs under `data/questionnaires/json/`. Review the [instrument data and rights notes](../data/questionnaires/README.md) before adding or sharing any other instrument.
 
+## Import New PDFs
+
+Drop a PDF into `data/questionnaires/inbox/`, then process once or run the local watcher:
+
+```powershell
+python -m src.ingestion.document_pipeline
+python -m src.ingestion.document_pipeline --watch
+```
+
+The default flow extracts text/metadata locally, attempts OCR for scans if installed, classifies a domain, and creates a private Pydantic review draft. It does not send PDF text to the cloud. For optional OpenAI Structured Outputs, configure `OPENAI_API_KEY` in the ignored local `.env`, verify the privacy/rights conditions, and opt in explicitly with `--allow-remote-processing`. Do not use that flag on confidential or non-transmittable material.
+
+New/uncertain documents are moved to the Git-ignored `data/questionnaires/review/` tree. To auto-promote a complete candidate into shared `forms/` and family JSON, an authorized reviewer must check the exact items and create a hash-matched `<filename>.pdf.source.json` sidecar using [the example template](../data/questionnaires/source_approval.example.json). After correcting the review draft and placing the sidecar beside its PDF, promote locally without a second model call:
+
+```powershell
+python -m src.ingestion.document_pipeline --approve-draft data/questionnaires/review/drafts/<sha256>.json
+```
+
+The importer refuses unknown rights, hash mismatches, low confidence, incomplete forms, scanned pages without usable OCR, or version conflicts. See the [full intake guide](pdf_intake.md) for stages, limits, manual review, and file-placement rules.
+
 ## Search a shared folder
 
 Point the search engine at the directory containing validated questionnaire JSON files:

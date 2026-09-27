@@ -1,0 +1,13 @@
+{
+  "source_url": "https://publisher.example.org/questionnaire.pdf",
+  "file_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "license_name": "Name of the exact license or permission grant",
+  "license_url": "https://publisher.example.org/terms",
+  "permission_basis": "Describe the exact text or written permission that allows redistribution of this exact questionnaire file.",
+  "reviewed_by": "Researcher name or institutional role",
+  "reviewed_on": "2026-09-27",
+  "redistribution_permitted": false,
+  "questionnaire_content_reviewed": false,
+  "study_metadata_reviewed": false,
+  "document_type": "questionnaire_form"
+}

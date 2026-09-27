@@ -29,7 +29,7 @@ For version lineage, references to versions inside the same instrument family ar
 
 - `schemas/`: domain data contracts and validation; no GUI, SQL, network, or REDCap concerns.
 - `src/core/`: business services such as file-backed search and NLP, independent of view widgets.
-- `src/ingestion/`: source adapters for Zotero, PDF parsing, and structured LLM extraction.
+- `src/ingestion/`: local PDF intake/OCR, structured extraction adapters, and future Zotero integration.
 - `src/exporters/`: translations from domain objects to external formats and remote systems.
 - `src/gui/viewmodels/`: UI-facing state and commands, including the assembled-item collection.
 - `src/gui/views/`: Flet presentation components; no direct SQL or secret management.
@@ -46,6 +46,8 @@ Use an access-controlled synchronized folder for private team data. Only synthet
 
 ## Implementation status and asynchronous boundaries
 
-The current implementation includes Phase 1 (schema and synthetic fixture generator) and Phase 2 (file-backed search). Flet state/rendering, embedding computation, REDCap export, and LLM/PDF ingestion remain planned until implemented and tested.
+The current implementation includes Phase 1 (schema and synthetic fixture generator), Phase 2 (file-backed search), and a guarded PDF-intake vertical slice. The importer extracts text/metadata locally, can attempt OCR, and routes Pydantic-structured LLM drafts only after explicit cloud-processing opt-in. It promotes a form only after human item review, a rights sidecar bound to the exact PDF SHA-256, one concrete version per source PDF, complete non-truncated extraction, high confidence, and schema validation. A separate validation-study reference path requires reviewed citation metadata and explicit PDF redistribution rights. Unknown rights, manuals/mixed documents, incomplete forms, and low-confidence/scanned documents stay in the ignored review area. This is a guarded document-ingestion foundation, not a guarantee that arbitrary new PDFs can be interpreted perfectly without review.
 
-When GUI and integration capabilities are added, network requests and expensive CPU work must not block Flet's event loop. Use async APIs where available and offload synchronous file or model work to an appropriate worker boundary. Cancellation, timeouts, and failure reporting must be designed at the owning service boundary. Do not make Pydantic models depend on those runtime frameworks.
+The Flet workflow, embedding computation, Zotero sync, and REDCap/R export remain planned.
+
+The PDF CLI offloads blocking file/PyMuPDF operations to a worker thread and uses an async client for optional LLM calls. When GUI capabilities are added, blocking file or model work must not run on Flet's event loop. Do not make Pydantic models depend on these runtime frameworks.

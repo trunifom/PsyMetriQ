@@ -92,6 +92,8 @@ A source-document record should identify document type, source URL, local path o
 
 If item text may not be redistributed, PsyMetriQ can still store permitted bibliographic and licensing metadata and provide an official link. Do not create a second-hand copy by transcribing, scanning, OCR, translating, or embedding restricted questions into JSON.
 
+For technical details on extracting local PDFs, drafting JSON, human rights review, and promotion, see the [PDF intake guide](pdf_intake.md). The importer does not override the licensing rules in this catalogue.
+
 ## Scoring, ages, and evidence
 
 Use primary validation studies and official manuals to distinguish the intended screening population from the population actually studied. Store evidence citations and age bounds on the specific version. Keep norms, thresholds, diagnostic sensitivity/specificity, and missing-data guidance traceable to the exact language/form/population; never transfer those values automatically to a translated or shortened form.

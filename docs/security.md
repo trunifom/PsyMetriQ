@@ -20,9 +20,11 @@ Do not run commands that print actual secret values into shared logs or chat.
 
 ## Research and questionnaire data
 
-Questionnaire text may be copyrighted or licensed, and extracted research material may contain sensitive information. Keep raw PDFs, real extracted JSON, participant-level responses, and production exports out of the public repository unless their distribution has been reviewed and explicitly approved. The Git ignore rules exclude raw PDFs, non-demo extracted JSON, and export artifacts by default. The repository contains only the two synthetic fixtures and the separately documented PHQ-9/GAD-7 corpus whose official source explicitly permits redistribution.
+Questionnaire text may be copyrighted or licensed, and extracted research material may contain sensitive information. Keep raw PDFs, real extracted JSON, participant-level responses, and production exports out of the public repository unless their distribution has been reviewed and explicitly approved. The Git ignore rules exclude incoming/review PDFs, non-demo extracted JSON, and export artifacts by default. The checked-in corpus is limited to the two synthetic fixtures and the separately documented PHQ-9/GAD-7, DASS/DASS-Y, and IPAQ forms whose source terms permit redistribution with their stated restrictions.
 
 The `QuestionnaireMetadata.notes` fields are searchable and travel with shared JSON. Use them only for source-based notes that the intended audience is allowed to see. Do not put participant responses, confidential reviewer identities, credentials, or private clinical observations into notes, keywords, aliases, or characteristics.
+
+The PDF intake pipeline keeps new uploads and extraction drafts under Git-ignored `data/questionnaires/inbox/` and `data/questionnaires/review/`. Ignore rules prevent accidental commits, but are not access control or encryption. The OpenAI extractor is disabled by default and requires a separate opt-in flag because PDF text may be private, copyrighted, or restricted from third-party processing. Form promotion and validation-study reference promotion use separate human review flags tied to the exact PDF checksum; an LLM's license statement is never trusted. Only explicitly approved validation-study PDFs can reach `data/questionnaires/references/`.
 
 Synthetic fixture text must remain fabricated and must not be described as validated clinical content. Never use participant data in examples, test snapshots, or bug reports.
 

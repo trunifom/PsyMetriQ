@@ -10,13 +10,14 @@ The architecture document `psymetriq_readme.md` is the original product and modu
 
 Phase 1 provides the Pydantic source-of-truth models in `schemas/questionnaire_schema.py`, model-level validation, a synthetic fixture generator in `data/generate_mock_data.py`, and unit tests in `tests/unit/test_schema.py`. Phase 2 provides file-backed search in `src/core/search_engine.py`. Rights-reviewed real PHQ-9, GAD-7, DASS-21, DASS-Y, and IPAQ forms and JSON families are maintained under `data/questionnaires/`, separate from the synthetic demo fixtures.
 
-The Flet workflow, NLP similarity checks, REDCap exporter, and LLM/PDF ingestion are roadmap capabilities. Their source directories are present, but this overview does not claim that they are complete or production-ready.
+The file-backed search service and guarded PDF intake/review pipeline are implemented. Flet workflow, NLP similarity checks, Zotero sync, and REDCap/R exporters remain roadmap capabilities and are not claimed to be production-ready.
 
 ## Main capabilities and responsibilities
 
 - **Questionnaire schema:** represents instrument families and concrete versions, including form, language, locale, audience, contributor roles, source citations, lineage, items, response options, and scoring algorithms. It validates local identifiers and references before data can be passed to other layers.
 - **Synthetic data generator:** creates development fixtures using fabricated text. These are not validated clinical instruments and must never be used to assess people.
 - **Real instrument test corpus:** provides permission-reviewed PHQ-9, GAD-7, DASS-21, DASS-Y, and IPAQ variants, in clearly separated forms and locales, with precise license, translation-evidence, source-link, and checksum metadata. Forms flagged as translation-quality-uncertain are test fixtures, not automatically interchangeable validated editions.
+- **PDF intake/review:** routes new PDFs into private drafts, optionally extracts a Pydantic candidate with OpenAI Structured Outputs, and requires human, checksum-bound item/license review before cataloguing a questionnaire form. Licensed validation papers use a separate citation-reviewed reference catalog.
 - **File-backed search engine:** validate portable JSON files against the Pydantic models, keep an in-memory view, and search item text, dimensions, response labels, version metadata, constructs, and instrument metadata. It creates no database and can read a synchronized team folder.
 - **Assembly GUI (planned):** provide search, a questionnaire canvas, and an inspector through Flet, with view state isolated from file loading and search rules.
 - **Redundancy analysis (planned):** calculate semantic similarity between candidate items and items already selected, and surface review warnings rather than making clinical decisions.
@@ -40,6 +41,8 @@ The Flet workflow, NLP similarity checks, REDCap exporter, and LLM/PDF ingestion
 - `data/questionnaires/build_catalog.py`: rebuilds the permission-cleared PHQ-9/GAD-7 family JSON from the committed PDFs and records their SHA-256 hashes.
 - `data/questionnaires/build_dass_catalog.py`: rebuilds separate adult DASS-21 and youth DASS-Y families, preserving their different age ranges, multipliers, and translation caveats.
 - `data/questionnaires/build_ipaq_catalog.py`: rebuilds English/German adult IPAQ and English IPAQ-E records with numeric duration units rather than fabricated categorical scales.
+- `src/ingestion/document_pipeline.py`: processes local PDFs, extracts text and metadata, optionally requests a structured draft after cloud opt-in, and routes unapproved or incomplete input to review.
+- `src/ingestion/llm_extractor.py`: defines the typed, provisional extraction draft and OpenAI Structured Outputs adapter; it does not make rights or validity decisions.
 - `build_demo_questionnaire`: constructs a validated model from synthetic specifications.
 - `generate_mock_data`: writes the two JSON fixtures and returns their paths. An optional output directory supports isolated tests. Filesystem errors are logged and re-raised.
 

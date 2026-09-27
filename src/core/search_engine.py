@@ -28,7 +28,7 @@ class QuestionnaireSearchResult(BaseModel):
     match_type: Literal["instrument", "version", "dimension", "item"]
     instrument_id: str
     instrument_name: str
-    is_commercial: bool
+    is_commercial: bool | None = None
     construct_ontology: list[str] = Field(default_factory=list)
     instrument_contributors: list[QuestionnaireContributor] = Field(default_factory=list)
     instrument_metadata: QuestionnaireMetadata = Field(default_factory=QuestionnaireMetadata)

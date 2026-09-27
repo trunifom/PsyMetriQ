@@ -387,8 +387,12 @@ class QuestionnaireParent(BaseModel):
 		default_factory=list,
 		description="Ontology identifiers associated with the measured construct.",
 	)
-	is_commercial: bool = Field(
-		description="Whether use of this instrument is commercially restricted."
+	is_commercial: bool | None = Field(
+		default=None,
+		description=(
+			"Whether use of this instrument is commercially restricted; None means "
+			"the source status has not been established."
+		),
 	)
 	contributors: list[QuestionnaireContributor] = Field(
 		default_factory=list,

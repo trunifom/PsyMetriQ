@@ -20,12 +20,21 @@ data/questionnaires/
 |   |-- gad7.json
 |   |-- ipaq.json
 |   `-- phq9.json
+|-- references/
+|   |-- json/  # Reviewed metadata records for licensed validation-study PDFs
+|   `-- pdfs/  # Only studies explicitly cleared for redistribution
+|-- inbox/     # Local PDF drop target; contents ignored by Git
+|-- review/    # Local drafts and unapproved source PDFs; contents ignored
 |-- build_catalog.py
 |-- build_dass_catalog.py
 `-- build_ipaq_catalog.py
 ```
 
 Each PDF folder holds source forms for one instrument and domain. Each JSON represents one instrument family; each language, locale, population, and form is a separate `QuestionnaireVersion`. Its `source_documents` record holds the official URL, redistribution basis, retrieval date, local path, and SHA-256 digest.
+
+Validation papers use a distinct `references/json/` metadata record and `references/pdfs/` asset path; they are never stored as questionnaire item JSON or mixed into an instrument form. Each reference record keeps title, instrument association, domain, language, authors, publication year, DOI/citations, PDF hash, license basis, and reviewer/date. The separate catalogue is populated only after human review confirms that bibliographic metadata and redistribution rights match the exact PDF.
+
+For new uploads, use the Git-ignored [PDF inbox](inbox/README.md) and follow the [PDF intake guide](../../docs/pdf_intake.md). Unapproved files and drafts are never part of the shared catalogue.
 
 ## Bundled Forms
 

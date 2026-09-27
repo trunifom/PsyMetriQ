@@ -16,6 +16,8 @@ The schema suite verifies valid model construction, invalid REDCap variable name
 
 The real-instrument catalog suite validates PHQ-9/GAD-7/DASS/DASS-Y/IPAQ item counts, exact transcribed wording, locale and age coverage, non-comparable youth scoring, DASS multipliers, numeric IPAQ units, official redistribution records, local PDF paths, SHA-256 digests, and search over generated language variants.
 
+The PDF intake suite uses generated local PDFs and fake extraction responses. It tests searchable text/metadata/checksum extraction, OCR-required routing, private review behavior, hash-bound human approval, safe questionnaire and study-reference promotion, sidecar mismatch rejection, symlink/out-of-inbox protection, LLM-license-claim stripping, batch continuation after failures, and that the closed Structured Outputs DTO maps into canonical domain models without making a network request.
+
 Run from the repository root:
 
 ```powershell
@@ -23,6 +25,8 @@ pytest tests/unit/test_schema.py -q
 pytest tests/unit/test_search_engine.py -q
 pytest tests/unit/test_instrument_catalog.py -q
 ruff check schemas/questionnaire_schema.py data/generate_mock_data.py src/core/search_engine.py data/questionnaires/ tests/unit/
+pytest tests/unit/test_document_pipeline.py -q
+ruff check src/ingestion/ tests/unit/test_document_pipeline.py
 ```
 
 ## Expectations for future features

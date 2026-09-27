@@ -21,3 +21,10 @@ data/02_extracted_jsons/*
 !data/02_extracted_jsons/asrs_demo.json
 data/03_export_artifacts/*
 !data/03_export_artifacts/.gitkeep
+
+# Local PDF intake and rights-review material is private until explicitly approved.
+data/questionnaires/inbox/*
+!data/questionnaires/inbox/.gitkeep
+!data/questionnaires/inbox/README.md
+data/questionnaires/review/*
+!data/questionnaires/review/.gitkeep

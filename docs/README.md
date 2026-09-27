@@ -9,6 +9,7 @@ This directory is the maintained home for project documentation. Start here, the
 - [Domain data model](domain_data_model.md): instrument families, language/form/population variants, contributor roles, and provenance links.
 - [User manual](user_manual.md): setup and currently supported commands, including generation of synthetic questionnaire fixtures.
 - [Instrument library](instrument_library.md): curated known instruments, validation/population notes, authoritative sources, and redistribution status.
+- [PDF intake and extraction](pdf_intake.md): local inbox, OCR/LLM options, review drafts, and rights-gated promotion.
 - [Coding guidelines](coding_guidelines.md): typing, documentation, validation, asynchronous work, logging, testing, and commit conventions.
 - [Security](security.md): credential handling, protected data, Git safeguards, and incident response.
 - [Testing](testing.md): test scope, local commands, and expectations for adding coverage.
