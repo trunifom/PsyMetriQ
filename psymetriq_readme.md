@@ -19,7 +19,7 @@ Die Entwicklung psychometrischer Fragebögen und deren Überführung in EDC-Syst
 - **Core:** Python 3.11+
 - **GUI:** `flet` (v0.22+ - asynchrones UI-Framework basierend auf Flutter)
 - **Data Validation:** `pydantic` (v2.0+ - Source of Truth für alle Datenstrukturen)
-- **Database:** `duckdb` (In-Memory analytische DB mit exzellentem JSON-Support)
+- **Search storage:** Portable questionnaire JSON files; the application validates and searches them in memory without requiring a database.
 - **NLP / ML:** `sentence-transformers` (lokal via ONNX oder PyTorch)
 - **LLM Integration:** `openai` (GPT-4o via *Structured Outputs* API)
 - **PDF-Parsing:** `pymupdf` (fitz)
@@ -29,7 +29,7 @@ Die Entwicklung psychometrischer Fragebögen und deren Überführung in EDC-Syst
 
 ## 💾 3. Core Data Model (Die Pydantic Source of Truth)
 
-*KI-Agent Instruktion: Dieses Pydantic-Modell ist das Herzstück. Alle Module (DuckDB, Flet, REDCap) müssen gegen dieses Modell operieren.*
+*KI-Agent Instruktion: Dieses Pydantic-Modell ist das Herzstück. Alle Module (file-backed search, Flet, REDCap) müssen gegen dieses Modell operieren.*
 
 ```python
 from pydantic import BaseModel, Field, HttpUrl
@@ -83,26 +83,17 @@ class QuestionnaireParent(BaseModel):
     *   Übergabe der Pydantic-Klasse `QuestionnaireParent` an den Parameter `response_format`. Das zwingt das LLM deterministisch, exakt das obige Schema zu befüllen.
 *   **Post-Processing:** Das Skript ändert den Zotero-Tag auf `questionnaire_extracted` und speichert die JSON-Datei in `/data/02_extracted_jsons/`.
 
-### Modul 2: Search Engine (`/src/core/db.py`)
-**Aufgabe:** Blitzschnelles Durchsuchen aller JSON-Dateien im lokalen System.
-*   **Datenbank:** DuckDB. Beim Start der Applikation liest DuckDB alle JSONs im Ordner via `read_json_auto()` in den Arbeitsspeicher.
-*   **Abfrage-Logik (SQL):** DuckDB kann JSON nativ "unnesten" (entpacken).
-    ```sql
-    -- Beispiel-Query um Items in DuckDB zu durchsuchen:
-    SELECT 
-        parent.name_full, 
-        version.language, 
-        item.prompt_text 
-    FROM read_json_auto('/data/02_extracted_jsons/*.json') as parent,
-    UNNEST(parent.versions) as version,
-    UNNEST(version.items) as item
-    WHERE item.prompt_text ILIKE '%Traurigkeit%';
-    ```
+### Modul 2: File-backed Search Engine (`/src/core/search_engine.py`)
+**Aufgabe:** Fragebogen-JSON-Dateien ohne Datenbank lokal oder aus einem synchronisierten Teamordner durchsuchen.
+*   **Quelle:** Pydantic-validierte JSON-Dateien unter `/data/02_extracted_jsons/`. Die Quelldateien bleiben portable und werden vom Suchdienst nicht verändert.
+*   **Laufzeit:** `QuestionnaireSearchEngine` lädt die validierten Modelle in den Arbeitsspeicher. `reload()` aktualisiert den Suchbestand nach Dateiänderungen; bei ungültigen oder doppelten Instrumenten bleibt der vorherige gültige Bestand erhalten.
+*   **Treffer:** Instrumente, Versionen, Dimensionen, Itemtexte, REDCap-Feldnamen und Antwortoptionen werden case-insensitiv durchsucht. Ergebnisse sind typisierte Pydantic-Modelle.
+*   **Team-Sharing:** Für private/lizenzierte Daten einen zugriffskontrollierten gemeinsamen Ordner verwenden. Nur für öffentliche Verteilung freigegebene oder synthetische Dateien gehören in ein öffentliches Repository.
 
 ### Modul 3: NLP Live-Warnsystem (`/src/core/nlp_engine.py`)
 **Aufgabe:** Verhindert semantische Duplikate beim Zusammenstellen (Assemblieren).
 *   **Modell:** `all-MiniLM-L6-v2` geladen via `sentence-transformers`.
-*   **Caching:** Um Ladezeiten beim Starten der GUI zu vermeiden, werden die Vektoren (Embeddings) aller Items beim Einlesen in die DuckDB vorkalkuliert und lokal zwischengespeichert.
+*   **Caching:** Um Ladezeiten beim Starten der GUI zu vermeiden, können die Vektoren (Embeddings) aller Items beim Einlesen der JSON-Dateien vorkalkuliert und lokal zwischengespeichert werden.
 *   **Laufzeit-Check:** Zieht der User "Item A" auf das Canvas, vergleicht das System den Vektor von A per *Cosine Similarity* mit den Vektoren aller bereits im Canvas befindlichen Items.
 *   **Thresholds:**
     *   Similarity > 0.85 🔴 (Kritische Überlappung, Warn-Modal im UI)
@@ -136,11 +127,11 @@ class QuestionnaireParent(BaseModel):
 **Prompt 1: Data Foundation**
 > "Lies das `README.md`. Erstelle die Datei `/schemas/questionnaire_schema.py` und implementiere das Pydantic-Modell exakt wie dokumentiert. Ergänze sinnvolle Validatoren (z.B. `@field_validator`, um sicherzustellen, dass `variable_name` keine Leerzeichen enthält, da REDCap das nicht erlaubt)."
 
-**Prompt 2: Mock Data & DuckDB Engine**
-> "Erstelle ein Skript `/data/generate_mocks.py`, das zwei valide JSON-Dateien basierend auf unserem Pydantic-Schema generiert (z.B. einen Mock-BDI und einen Mock-ASRS). Erstelle danach `/src/core/db.py`, initialisiere DuckDB in Memory und schreibe eine Klasse `DatabaseManager`, die die Methode `search_items(keyword: str)` enthält, welche die JSON-Dateien liest und Suchergebnisse zurückgibt."
+**Prompt 2: Mock Data & File-backed Search**
+> "Erstelle ein Skript `/data/generate_mock_data.py`, das zwei valide, synthetische JSON-Dateien basierend auf unserem Pydantic-Schema generiert. Implementiere danach `/src/core/search_engine.py` ohne Datenbankabhängigkeit. Die Klasse `QuestionnaireSearchEngine` soll JSON-Dateien aus einem konfigurierbaren lokalen oder synchronisierten Ordner validieren, in-memory durchsuchbar machen und typisierte Suchtreffer für Instrumente, Dimensionen und Items zurückgeben."
 
 **Prompt 3: Flet GUI Skeleton & State**
-> "Erstelle in `/src/gui` die Flet-App. Baue das 3-Spalten-Layout (Search, Canvas, Inspector). Implementiere eine `AppState`-Klasse. Verbinde die linke Spalte mit der DuckDB-Suchfunktion aus Prompt 2. Sorge dafür, dass ich Elemente in der linken Spalte suchen und anklicken kann, und sich der State aktualisiert."
+> "Erstelle in `/src/gui` die Flet-App. Baue das 3-Spalten-Layout (Search, Canvas, Inspector). Implementiere eine `AppState`-Klasse. Verbinde die linke Spalte mit der file-backed `QuestionnaireSearchEngine` aus Prompt 2. Sorge dafür, dass ich Elemente in der linken Spalte suchen und anklicken kann, und sich der State aktualisiert."
 
 **Prompt 4: The Drag-and-Drop Canvas**
 > "Erweitere das Flet-GUI. Mache die Suchergebnisse links zu `ft.Draggable` und die mittlere Spalte (Canvas) zu einem `ft.DragTarget`. Wenn ein Item gedroppt wird, muss es im `AppState` des Canvas gespeichert werden und visuell in der mittleren Liste als Karte auftauchen."

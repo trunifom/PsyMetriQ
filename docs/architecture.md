@@ -8,7 +8,7 @@ The data flow is intended to be:
 
 1. Ingestion adapters extract source content and construct validated questionnaire models.
 2. Domain validation rejects malformed objects and unresolved references.
-3. Persistence and search index validated content for local discovery.
+3. The file-backed search service reads validated JSON into memory for local discovery.
 4. View models maintain the selected-item assembly state.
 5. Domain services calculate similarity or prepare exports without reaching into UI controls.
 6. Export adapters translate validated data to external formats and report remote errors.
@@ -24,7 +24,7 @@ Pydantic models cross module boundaries. Dictionaries may appear as an explicit 
 ## Repository boundaries
 
 - `schemas/`: domain data contracts and validation; no GUI, SQL, network, or REDCap concerns.
-- `src/core/`: business services such as persistence/search and NLP, independent of view widgets.
+- `src/core/`: business services such as file-backed search and NLP, independent of view widgets.
 - `src/ingestion/`: source adapters for Zotero, PDF parsing, and structured LLM extraction.
 - `src/exporters/`: translations from domain objects to external formats and remote systems.
 - `src/gui/viewmodels/`: UI-facing state and commands, including the assembled-item collection.
@@ -34,8 +34,14 @@ Pydantic models cross module boundaries. Dictionaries may appear as an explicit 
 - `data/`: local working data. Only the explicitly named synthetic demo JSON fixtures are Git-allowlisted; real PDFs, extracted content, and exports are excluded by default.
 - `docs/`: user, architecture, security, coding, and testing documentation.
 
+## File-backed search and team sharing
+
+Questionnaire JSON files are the portable source of shared content. `QuestionnaireSearchEngine` reads the files directly, validates each with the Pydantic models, and keeps the validated objects in memory for local search. It creates no database and does not modify source files. Call `reload()` after the shared folder changes; a failed reload preserves the last valid in-memory view.
+
+Use an access-controlled synchronized folder for private team data. Only synthetic fixtures or content explicitly approved for public distribution belong in this repository. The search service does not provide file locking or conflict resolution; teams should coordinate simultaneous edits through their file-sharing system.
+
 ## Implementation status and asynchronous boundaries
 
-The current implementation is Phase 1: the schema, synthetic fixture generator, and focused tests. DuckDB search, Flet state/rendering, embedding computation, REDCap export, and LLM/PDF ingestion remain planned until implemented and tested.
+The current implementation includes Phase 1 (schema and synthetic fixture generator) and Phase 2 (file-backed search). Flet state/rendering, embedding computation, REDCap export, and LLM/PDF ingestion remain planned until implemented and tested.
 
-When these capabilities are added, network requests and expensive CPU work must not block Flet's event loop. Use async APIs where available and offload synchronous file, database, or model work to an appropriate worker boundary. Cancellation, timeouts, and failure reporting must be designed at the owning service boundary. Do not make Pydantic models depend on those runtime frameworks.
+When GUI and integration capabilities are added, network requests and expensive CPU work must not block Flet's event loop. Use async APIs where available and offload synchronous file or model work to an appropriate worker boundary. Cancellation, timeouts, and failure reporting must be designed at the owning service boundary. Do not make Pydantic models depend on those runtime frameworks.

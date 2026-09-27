@@ -2,7 +2,6 @@
 flet>=0.22.0
 pydantic>=2.7.0
 pymupdf>=1.24.0
-duckdb>=0.10.0
 sentence-transformers>=2.7.0
 openai>=1.40.0
 pyzotero>=1.5.0

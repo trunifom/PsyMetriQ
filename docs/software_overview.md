@@ -8,16 +8,16 @@ The architecture document `psymetriq_readme.md` is the original product and modu
 
 ## Current implementation status
 
-Phase 1 provides the Pydantic source-of-truth models in `schemas/questionnaire_schema.py`, model-level validation, a synthetic fixture generator in `data/generate_mock_data.py`, and unit tests in `tests/unit/test_schema.py`. The generator writes two synthetic examples to `data/02_extracted_jsons/`.
+Phase 1 provides the Pydantic source-of-truth models in `schemas/questionnaire_schema.py`, model-level validation, a synthetic fixture generator in `data/generate_mock_data.py`, and unit tests in `tests/unit/test_schema.py`. Phase 2 provides file-backed search in `src/core/search_engine.py`. The generator writes two synthetic examples to `data/02_extracted_jsons/`.
 
-The database/search engine, Flet workflow, NLP similarity checks, REDCap exporter, and LLM/PDF ingestion are roadmap capabilities. Their source directories are present, but this overview does not claim that they are complete or production-ready.
+The Flet workflow, NLP similarity checks, REDCap exporter, and LLM/PDF ingestion are roadmap capabilities. Their source directories are present, but this overview does not claim that they are complete or production-ready.
 
 ## Main capabilities and responsibilities
 
 - **Questionnaire schema:** represents instruments, versions, items, response options, and scoring algorithms. It validates local identifiers and references before data can be passed to other layers.
 - **Synthetic data generator:** creates development fixtures using fabricated text. These are not validated clinical instruments and must never be used to assess people.
-- **Search engine (planned):** load validated questionnaire content into DuckDB and search item text, dimensions, and instrument metadata.
-- **Assembly GUI (planned):** provide search, a questionnaire canvas, and an inspector through Flet, with view state isolated from persistence and SQL.
+- **File-backed search engine:** validate portable JSON files against the Pydantic models, keep an in-memory view, and search item text, dimensions, response labels, version metadata, constructs, and instrument metadata. It creates no database and can read a synchronized team folder.
+- **Assembly GUI (planned):** provide search, a questionnaire canvas, and an inspector through Flet, with view state isolated from file loading and search rules.
 - **Redundancy analysis (planned):** calculate semantic similarity between candidate items and items already selected, and surface review warnings rather than making clinical decisions.
 - **Export and ingestion (planned):** map validated models to REDCap metadata or R syntax, and extract source material through configured APIs and PDF parsing.
 
@@ -32,3 +32,10 @@ The database/search engine, Flet workflow, NLP similarity checks, REDCap exporte
 - `generate_mock_data`: writes the two JSON fixtures and returns their paths. An optional output directory supports isolated tests. Filesystem errors are logged and re-raised.
 
 See the [user manual](user_manual.md) for commands and the [architecture](architecture.md) for how these responsibilities fit together.
+
+## Phase-2 search API
+
+- `QuestionnaireSearchEngine(data_directory)`: validates `*.json` files from a local or synchronized directory into an in-memory search view.
+- `reload()`: replaces the in-memory view only after every file validates; returns the number of loaded instruments and leaves the previous state unchanged on failure.
+- `search_items(keyword)`: returns typed `QuestionnaireSearchResult` models for instrument, version, dimension, item, and response-label matches. A blank query returns no results.
+- `QuestionnaireDataError`: signals unreadable, invalid, or duplicate instrument files. Failures are logged; source JSON is never edited by the search service.
