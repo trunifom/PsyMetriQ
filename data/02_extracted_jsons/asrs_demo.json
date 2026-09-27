@@ -1,0 +1,85 @@
+{
+  "instrument_id": "asrs_demo",
+  "name_full": "ASRS-Inspired Synthetic Demonstration",
+  "construct_ontology": [],
+  "is_commercial": false,
+  "versions": [
+    {
+      "version_id": "demo_v1",
+      "language": "en",
+      "cosmin_metrics": {
+        "demo_data": true
+      },
+      "response_sets": {
+        "frequency_5": [
+          {
+            "code": 0,
+            "label": "Never",
+            "score": 0.0
+          },
+          {
+            "code": 1,
+            "label": "Rarely",
+            "score": 1.0
+          },
+          {
+            "code": 2,
+            "label": "Sometimes",
+            "score": 2.0
+          },
+          {
+            "code": 3,
+            "label": "Often",
+            "score": 3.0
+          },
+          {
+            "code": 4,
+            "label": "Very often",
+            "score": 4.0
+          }
+        ]
+      },
+      "items": [
+        {
+          "item_id": "asrs_demo_01",
+          "variable_name": "asrs_demo_01",
+          "dimension": "attention",
+          "prompt_text": "How often do you lose track of a task while working through its steps?",
+          "response_set_ref": "frequency_5",
+          "is_reverse_scored": false,
+          "redcap_field_type": "radio"
+        },
+        {
+          "item_id": "asrs_demo_02",
+          "variable_name": "asrs_demo_02",
+          "dimension": "organization",
+          "prompt_text": "How often do you find it difficult to organize several routine tasks?",
+          "response_set_ref": "frequency_5",
+          "is_reverse_scored": false,
+          "redcap_field_type": "radio"
+        },
+        {
+          "item_id": "asrs_demo_03",
+          "variable_name": "asrs_demo_03",
+          "dimension": "restlessness",
+          "prompt_text": "How often do you feel restless when you need to remain seated?",
+          "response_set_ref": "frequency_5",
+          "is_reverse_scored": false,
+          "redcap_field_type": "radio"
+        }
+      ],
+      "scoring_algorithms": [
+        {
+          "output_variable": "asrs_demo_total",
+          "method": "sum",
+          "target_items": [
+            "asrs_demo_01",
+            "asrs_demo_02",
+            "asrs_demo_03"
+          ],
+          "missing_data_rules": "Demo only: calculate when all demo items are answered."
+        }
+      ]
+    }
+  ]
+}

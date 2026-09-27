@@ -1,0 +1,80 @@
+{
+  "instrument_id": "bdi_ii_demo",
+  "name_full": "BDI-II Inspired Synthetic Demonstration",
+  "construct_ontology": [],
+  "is_commercial": false,
+  "versions": [
+    {
+      "version_id": "demo_v1",
+      "language": "en",
+      "cosmin_metrics": {
+        "demo_data": true
+      },
+      "response_sets": {
+        "impact_4": [
+          {
+            "code": 0,
+            "label": "Not at all",
+            "score": 0.0
+          },
+          {
+            "code": 1,
+            "label": "A little",
+            "score": 1.0
+          },
+          {
+            "code": 2,
+            "label": "Moderately",
+            "score": 2.0
+          },
+          {
+            "code": 3,
+            "label": "A lot",
+            "score": 3.0
+          }
+        ]
+      },
+      "items": [
+        {
+          "item_id": "bdi_demo_01",
+          "variable_name": "bdi_demo_01",
+          "dimension": "mood",
+          "prompt_text": "During the past two weeks, how often have you felt low in mood?",
+          "response_set_ref": "impact_4",
+          "is_reverse_scored": false,
+          "redcap_field_type": "radio"
+        },
+        {
+          "item_id": "bdi_demo_02",
+          "variable_name": "bdi_demo_02",
+          "dimension": "energy",
+          "prompt_text": "During the past two weeks, how often has your usual activity felt tiring?",
+          "response_set_ref": "impact_4",
+          "is_reverse_scored": false,
+          "redcap_field_type": "radio"
+        },
+        {
+          "item_id": "bdi_demo_03",
+          "variable_name": "bdi_demo_03",
+          "dimension": "interest",
+          "prompt_text": "During the past two weeks, how often have you had less interest in hobbies?",
+          "response_set_ref": "impact_4",
+          "is_reverse_scored": false,
+          "redcap_field_type": "radio"
+        }
+      ],
+      "scoring_algorithms": [
+        {
+          "output_variable": "bdi_ii_demo_total",
+          "method": "sum",
+          "target_items": [
+            "bdi_demo_01",
+            "bdi_demo_02",
+            "bdi_demo_03"
+          ],
+          "missing_data_rules": "Demo only: calculate when all demo items are answered."
+        }
+      ]
+    }
+  ]
+}

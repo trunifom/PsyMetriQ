@@ -5,6 +5,8 @@ __pycache__/
 .venv/
 venv/
 .env
+.env.*
+!.env.example
 
 # Pytest & Ruff
 .pytest_cache/
@@ -13,5 +15,9 @@ venv/
 # Projekt Daten (Pdfs & Exports)
 data/01_raw_pdfs/*
 !data/01_raw_pdfs/.gitkeep
+data/02_extracted_jsons/*
+!data/02_extracted_jsons/.gitkeep
+!data/02_extracted_jsons/bdi_ii_demo.json
+!data/02_extracted_jsons/asrs_demo.json
 data/03_export_artifacts/*
 !data/03_export_artifacts/.gitkeep
