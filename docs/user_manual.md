@@ -47,6 +47,31 @@ for match in matches:
 
 The service validates the files at startup and keeps them in memory; it does not create a database or modify JSON. Search includes instrument and version names, language, locale, form type, variant types, population labels, contributors, provenance, item dimensions/text, and response labels. Call `search_engine.reload()` after the shared directory changes. If any file is unreadable, invalid, or duplicates an instrument ID, the operation logs the error and raises `QuestionnaireDataError`. A failed reload leaves the last valid search state intact.
 
+Keywords, aliases, MeSH descriptors/IDs, characteristics, and notes are searchable in metadata attached to the instrument, a version, or an item. Family metadata is appropriate for concepts common to all variants; place version- or item-specific tags at their own level.
+
+Combine free text with structured filters, or omit text to list items that match the selected facets:
+
+```python
+from pathlib import Path
+
+from src.core.search_engine import QuestionnaireSearchEngine, QuestionnaireSearchFilters
+
+search_engine = QuestionnaireSearchEngine(Path("data/02_extracted_jsons"))
+filters = QuestionnaireSearchFilters(
+	languages=["de"],
+	locales=["de-DE", "de-CH"],
+	form_types=["short"],
+	target_populations=["adolescents"],
+	keywords=["attention", "executive function"],
+	mesh_terms=["D001"],
+	characteristics=["self-report"],
+	is_commercial=False,
+)
+matches = search_engine.search_items("focus", filters)
+```
+
+Within one filter field, selected values are alternatives; separate fields are combined. For example, a match must be German, in one of the selected locales, a short form, for adolescents, and satisfy each selected metadata category. `keywords`, MeSH terms, and characteristics match stored values exactly and case-insensitively; free text also searches aliases and notes.
+
 For team use, point the service at an access-controlled synchronized folder or share reviewed JSON files through a private repository. The repository's `data/02_extracted_jsons/` folder is configured to include only the two synthetic demos; real extracted material is ignored by default.
 
 ## Validate the schema changes

@@ -42,8 +42,10 @@ Every version has its own stable `version_id`, language, response sets, items, a
 - `contributors`: people or groups credited for this specific version, with roles such as author, translator, adapter, editor, reviewer, or validator.
 - `publication_year`, `source_citation`, and `source_doi`: provenance for the version-specific publication or documentation.
 - `based_on`: one or more `(instrument_id, version_id)` references identifying source forms.
+- `metadata`: version-specific keywords, search aliases, MeSH terms, characteristics, and review notes.
 
 The `items` list is the actual content of the concrete form. A short form must contain its own item list and scoring rules rather than inheriting a parent's item list implicitly. This makes a search result or future export unambiguous.
+Each item can also have its own `QuestionnaireMetadata` for item-specific tags and discovery notes.
 
 ## Authorship and provenance
 
@@ -129,3 +131,45 @@ The empty lists and maps in this excerpt illustrate omitted content only; `Quest
 New version metadata fields have defaults so existing Phase-1 JSON files remain readable. When adding a field, decide whether it is required for every historical record; prefer an optional structured field when older sources may not report it. Add tests for old JSON, new JSON round-trips, invalid relationships, and any migration needed before making a field mandatory.
 
 Do not put GUI state, database details, API credentials, participant responses, or REDCap-specific configuration into these domain models. Keep them portable so the same JSON can be reviewed, shared, searched, and validated independently of the GUI or storage implementation.
+
+## Search and Filter Metadata
+
+`QuestionnaireMetadata` is available on the instrument family, each version, and each item. Use the narrowest scope that accurately describes a value:
+
+- **Family metadata:** broad construct terms, common alternate names, and descriptors that apply to every form in the family.
+- **Version metadata:** tags that apply only to a language, locale, form, audience, or adaptation.
+- **Item metadata:** item-specific content tags, MeSH descriptors, or reviewer notes.
+
+Its fields are:
+
+- `keywords`: curated terms. They participate in free-text search and can be selected as exact-match filters.
+- `search_aliases`: alternate instrument names, abbreviations, synonyms, and spelling variants. They participate in free-text search but are not controlled-vocabulary filters.
+- `mesh_terms`: structured MeSH descriptor names and optional Unique IDs, with optional qualifiers. Verify descriptor IDs against the official MeSH source before treating them as authoritative.
+- `characteristics`: searchable and filterable labels, such as `self-report`, `interviewer-administered`, or `reverse-scored-items`. Use stable, lowercase kebab-case labels within a team.
+- `notes`: full-text review context. Keep notes source-based and safe to share; never store credentials, participant responses, or confidential observations in them.
+
+Prefer existing structured fields when a concept has its own meaning: put respondent groups and ages in `target_populations`, locale in `locale`, and ontology codes in `construct_ontology` instead of duplicating those values only as keywords.
+
+`QuestionnaireSearchFilters` combines languages, locales, form types, variant types, target populations, construct ontology codes, keywords, MeSH descriptors/IDs, characteristics, and commercial status. Values within one category are alternatives (OR); distinct categories must all match (AND). Text search can be combined with filters. Filters without text return matching items; a blank text query without active filters returns no results.
+
+Within metadata categories, a matching family, version, or item value is sufficient. Form, language, locale, population, and commercial filters retain their proper family/version scope. Search hits preserve `QuestionnaireMetadata` as typed objects so a GUI can display provenance and tags without parsing flattened strings. Missing metadata in older JSON defaults to empty lists or `None` and does not block loading.
+
+Example metadata payload (all values below are synthetic):
+
+```json
+{
+  "keywords": ["mood", "daily functioning"],
+  "search_aliases": ["synthetic wellbeing scale"],
+  "mesh_terms": [
+    {
+      "descriptor": "Synthetic concept label",
+      "descriptor_id": null,
+      "qualifiers": []
+    }
+  ],
+  "characteristics": ["self-report", "short-completion"],
+  "notes": "Synthetic documentation note; replace with source-verified context."
+}
+```
+
+Place this object in a model's `metadata` field. Family-level values are inherited by search/filter matching for its versions and items; version and item metadata add progressively narrower terms without changing the portable JSON hierarchy.

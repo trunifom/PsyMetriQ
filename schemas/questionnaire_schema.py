@@ -1,7 +1,17 @@
 import re
-from typing import Any, Literal
+from typing import Any, Literal, TypeAlias
 
 from pydantic import BaseModel, Field, field_validator, model_validator
+
+QuestionnaireFormType: TypeAlias = Literal["full", "short", "long", "screening", "custom"]
+QuestionnaireVariantType: TypeAlias = Literal[
+	"revision",
+	"translation",
+	"cultural_adaptation",
+	"population_adaptation",
+	"extension",
+	"validation",
+]
 
 
 class ResponseOption(BaseModel):
@@ -10,6 +20,44 @@ class ResponseOption(BaseModel):
 	code: str | int = Field(description="Stable response code stored with collected answers.")
 	label: str = Field(min_length=1, description="Human-readable response shown to a respondent.")
 	score: float = Field(description="Numeric value used by scoring algorithms.")
+
+
+class MeSHTerm(BaseModel):
+	"""Represent a Medical Subject Headings term and its stable descriptor ID."""
+
+	descriptor: str = Field(min_length=1, description="Human-readable MeSH descriptor.")
+	descriptor_id: str | None = Field(
+		default=None, description="MeSH Unique ID, when known and verified."
+	)
+	qualifiers: list[str] = Field(
+		default_factory=list,
+		description="Optional MeSH qualifiers that narrow the descriptor's meaning.",
+	)
+
+
+class QuestionnaireMetadata(BaseModel):
+	"""Store search, filter, and human-review metadata at a domain level."""
+
+	keywords: list[str] = Field(
+		default_factory=list,
+		description="Curated keywords used for search and exact-match filters.",
+	)
+	search_aliases: list[str] = Field(
+		default_factory=list,
+		description="Synonyms, alternate names, or spelling variants for full-text search.",
+	)
+	mesh_terms: list[MeSHTerm] = Field(
+		default_factory=list,
+		description="MeSH descriptors and identifiers for controlled-vocabulary filtering.",
+	)
+	characteristics: list[str] = Field(
+		default_factory=list,
+		description="Searchable characteristics such as self-report or interviewer-administered.",
+	)
+	notes: str | None = Field(
+		default=None,
+		description="Editorial notes for review; never place secrets or participant data here.",
+	)
 
 
 class ItemSchema(BaseModel):
@@ -37,6 +85,10 @@ class ItemSchema(BaseModel):
 	)
 	redcap_field_type: Literal["radio", "checkbox", "slider", "text"] = Field(
 		default="radio", description="REDCap field type used when exporting this item."
+	)
+	metadata: QuestionnaireMetadata = Field(
+		default_factory=QuestionnaireMetadata,
+		description="Item-specific tags or notes for discovery and review.",
 	)
 
 	@field_validator("variable_name")
@@ -132,20 +184,11 @@ class QuestionnaireVersion(BaseModel):
 		default=None,
 		description="Regional locale or adaptation context, such as 'de-DE' or 'de-CH'.",
 	)
-	form_type: Literal["full", "short", "long", "screening", "custom"] = Field(
+	form_type: QuestionnaireFormType = Field(
 		default="full",
 		description="Questionnaire form length or intended administration form.",
 	)
-	variant_types: list[
-		Literal[
-			"revision",
-			"translation",
-			"cultural_adaptation",
-			"population_adaptation",
-			"extension",
-			"validation",
-		]
-	] = Field(
+	variant_types: list[QuestionnaireVariantType] = Field(
 		default_factory=list,
 		description="All applicable ways this form differs from or extends another version.",
 	)
@@ -169,6 +212,10 @@ class QuestionnaireVersion(BaseModel):
 	)
 	source_doi: str | None = Field(
 		default=None, description="DOI for the primary version source, if available."
+	)
+	metadata: QuestionnaireMetadata = Field(
+		default_factory=QuestionnaireMetadata,
+		description="Version-specific search tags, controlled terms, characteristics, and notes.",
 	)
 	cosmin_metrics: dict[str, Any] = Field(
 		default_factory=dict,
@@ -242,6 +289,10 @@ class QuestionnaireParent(BaseModel):
 	contributors: list[QuestionnaireContributor] = Field(
 		default_factory=list,
 		description="Original instrument-level authors or groups, when known.",
+	)
+	metadata: QuestionnaireMetadata = Field(
+		default_factory=QuestionnaireMetadata,
+		description="Instrument-family search tags, controlled terms, and review notes.",
 	)
 	versions: list[QuestionnaireVersion] = Field(
 		min_length=1,

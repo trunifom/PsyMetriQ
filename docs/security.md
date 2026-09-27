@@ -22,6 +22,8 @@ Do not run commands that print actual secret values into shared logs or chat.
 
 Questionnaire text may be copyrighted or licensed, and extracted research material may contain sensitive information. Keep raw PDFs, real extracted JSON, participant-level responses, and production exports out of the public repository unless their distribution has been reviewed and explicitly approved. The Git ignore rules exclude raw PDFs, non-demo extracted JSON, and export artifacts by default. Only the two named synthetic demo JSON files are allowlisted.
 
+The `QuestionnaireMetadata.notes` fields are searchable and travel with shared JSON. Use them only for source-based notes that the intended audience is allowed to see. Do not put participant responses, confidential reviewer identities, credentials, or private clinical observations into notes, keywords, aliases, or characteristics.
+
 Synthetic fixture text must remain fabricated and must not be described as validated clinical content. Never use participant data in examples, test snapshots, or bug reports.
 
 ## API and logging controls

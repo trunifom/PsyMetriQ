@@ -32,6 +32,8 @@ The Flet workflow, NLP similarity checks, REDCap exporter, and LLM/PDF ingestion
 - `TargetPopulation`: records a source-reported population label and optional age bounds.
 - `QuestionnaireVersionReference`: connects a derived version to a source instrument/version.
 - `QuestionnaireVersion`: differentiates `language` from `locale`, classifies full/short/long/screening forms, and supports multiple simultaneous variant types.
+- `MeSHTerm` and `QuestionnaireMetadata`: preserve curated keywords, aliases, controlled MeSH descriptors, characteristics, and review notes at instrument, version, or item scope.
+- `QuestionnaireSearchFilters`: combines exact-match catalogue facets; alternative values within a facet use OR, while different facets use AND. Free-text search can be combined with these filters.
 - `build_demo_questionnaire`: constructs a validated model from synthetic specifications.
 - `generate_mock_data`: writes the two JSON fixtures and returns their paths. An optional output directory supports isolated tests. Filesystem errors are logged and re-raised.
 
