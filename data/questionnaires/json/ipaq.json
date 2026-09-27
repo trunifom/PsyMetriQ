@@ -1,0 +1,1145 @@
+{
+  "instrument_id": "ipaq",
+  "name_full": "International Physical Activity Questionnaire",
+  "construct_ontology": [],
+  "is_commercial": false,
+  "contributors": [],
+  "metadata": {
+    "keywords": [
+      "physical activity",
+      "movement",
+      "health behavior"
+    ],
+    "search_aliases": [
+      "IPAQ",
+      "International Physical Activity Questionnaire"
+    ],
+    "mesh_terms": [],
+    "characteristics": [],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "ipaq_short_en_v1",
+      "language": "en",
+      "display_name": "IPAQ Short Last 7 Days Self-Administered (English)",
+      "locale": "en-US",
+      "form_type": "short",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "young and middle-aged adults",
+          "minimum_age_years": 15.0,
+          "maximum_age_years": 69.0,
+          "notes": "Age range printed on the official English short-form PDF."
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2003,
+      "source_citation": "Craig CL et al. International physical activity questionnaire: 12-country reliability and validity. Med Sci Sports Exerc. 2003;35(8):1381-1395. doi:10.1249/01.MSS.0000078924.61453.FB.",
+      "source_doi": "10.1249/01.MSS.0000078924.61453.FB",
+      "source_documents": [
+        {
+          "title": "IPAQ Short Last 7 Days Self-Administered English form",
+          "document_type": "questionnaire_form",
+          "language": "en",
+          "source_url": "https://drive.google.com/file/d/1LMCwPR0ddtdkb3uIuKPccip7ooD8wmrf/view",
+          "local_path": "data/questionnaires/forms/physical_activity/ipaq/ipaq_short_en.pdf",
+          "license_name": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "redistribution_permitted": true,
+          "permission_basis": "The official IPAQ FAQ states that IPAQ is available under CC BY 4.0, allowing redistribution and adaptation with attribution, a license link, and notice of changes. The bundled PDF is unchanged; its JSON record represents each days/hours/minutes blank as a separate numeric response field.",
+          "accessed_on": "2026-09-27",
+          "sha256": "7af350a6e1efbff149956511484ae6b62f7713c70604aedf1f9c89d1a2585848"
+        }
+      ],
+      "metadata": {
+        "keywords": [
+          "physical activity",
+          "exercise",
+          "movement",
+          "public health"
+        ],
+        "search_aliases": [
+          "IPAQ",
+          "IPAQ short",
+          "International Physical Activity Questionnaire"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "self-report",
+          "7-day-recall",
+          "self-administered",
+          "adult-form"
+        ],
+        "notes": "Official form recommends no changes to question order or wording."
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "items": [
+        {
+          "item_id": "ipaq_en_vigorous_days",
+          "variable_name": "ipaq_en_vigorous_days",
+          "dimension": "vigorous",
+          "prompt_text": "During the last 7 days, on how many days did you do vigorous physical activities like heavy lifting, digging, aerobics, or fast bicycling?",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "days/week",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 7.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "vigorous"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-1"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_en_vigorous_hours",
+          "variable_name": "ipaq_en_vigorou_hr",
+          "dimension": "vigorous",
+          "prompt_text": "How much time did you usually spend doing vigorous physical activities on one of those days?",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "hours/active-day",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 24.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "vigorous"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-2"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_en_vigorous_minutes",
+          "variable_name": "ipaq_en_vigoro_min",
+          "dimension": "vigorous",
+          "prompt_text": "How much time did you usually spend doing vigorous physical activities on one of those days?",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "minutes/active-day",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 59.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "vigorous"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-2"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_en_moderate_days",
+          "variable_name": "ipaq_en_moderate_days",
+          "dimension": "moderate",
+          "prompt_text": "During the last 7 days, on how many days did you do moderate physical activities like carrying light loads, bicycling at a regular pace, or doubles tennis? Do not include walking.",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "days/week",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 7.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "moderate"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-3"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_en_moderate_hours",
+          "variable_name": "ipaq_en_moderat_hr",
+          "dimension": "moderate",
+          "prompt_text": "How much time did you usually spend doing moderate physical activities on one of those days?",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "hours/active-day",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 24.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "moderate"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-4"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_en_moderate_minutes",
+          "variable_name": "ipaq_en_modera_min",
+          "dimension": "moderate",
+          "prompt_text": "How much time did you usually spend doing moderate physical activities on one of those days?",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "minutes/active-day",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 59.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "moderate"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-4"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_en_walking_days",
+          "variable_name": "ipaq_en_walking_days",
+          "dimension": "walking",
+          "prompt_text": "During the last 7 days, on how many days did you walk for at least 10 minutes at a time?",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "days/week",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 7.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "walking"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-5"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_en_walking_hours",
+          "variable_name": "ipaq_en_walking_hr",
+          "dimension": "walking",
+          "prompt_text": "How much time did you usually spend walking on one of those days?",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "hours/active-day",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 24.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "walking"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-6"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_en_walking_minutes",
+          "variable_name": "ipaq_en_walkin_min",
+          "dimension": "walking",
+          "prompt_text": "How much time did you usually spend walking on one of those days?",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "minutes/active-day",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 59.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "walking"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-6"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_en_sitting_weekday_hours",
+          "variable_name": "ipaq_en_sitting_hr",
+          "dimension": "sitting_weekday",
+          "prompt_text": "During the last 7 days, how much time did you spend sitting on a week day?",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "hours/weekday",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 24.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "sitting weekday"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-7"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_en_sitting_weekday_minutes",
+          "variable_name": "ipaq_en_sittin_min",
+          "dimension": "sitting_weekday",
+          "prompt_text": "During the last 7 days, how much time did you spend sitting on a week day?",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "minutes/weekday",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 59.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "sitting weekday"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-7"
+            ],
+            "notes": null
+          }
+        }
+      ],
+      "scoring_algorithms": []
+    },
+    {
+      "version_id": "ipaq_short_de_de_v1",
+      "language": "de",
+      "display_name": "IPAQ Kurzform letzte 7 Tage, selbstadministriert (Deutsch)",
+      "locale": "de-DE",
+      "form_type": "short",
+      "variant_types": [
+        "translation"
+      ],
+      "target_populations": [
+        {
+          "group_name": "young and middle-aged adults",
+          "minimum_age_years": 15.0,
+          "maximum_age_years": 69.0,
+          "notes": "Original form age range; translation accuracy is not endorsed by IPAQ. "
+        }
+      ],
+      "contributors": [],
+      "based_on": [
+        {
+          "instrument_id": "ipaq",
+          "version_id": "ipaq_short_en_v1"
+        }
+      ],
+      "publication_year": null,
+      "source_citation": null,
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "IPAQ short self-administered German form (revised June 2016)",
+          "document_type": "questionnaire_form",
+          "language": "de",
+          "source_url": "https://drive.google.com/file/d/1jQe2uVCnYggvF93OPU_i0dDU6jyLFXA7/view",
+          "local_path": "data/questionnaires/forms/physical_activity/ipaq/ipaq_short_de_de.pdf",
+          "license_name": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "redistribution_permitted": true,
+          "permission_basis": "The official IPAQ FAQ states that IPAQ is available under CC BY 4.0, allowing redistribution and adaptation with attribution, a license link, and notice of changes. The bundled PDF is unchanged; its JSON record represents each days/hours/minutes blank as a separate numeric response field.",
+          "accessed_on": "2026-09-27",
+          "sha256": "ae52ebff9ca4c70f6915496aae03cfce1e27379c96883319301f1bcb70b2b756"
+        }
+      ],
+      "metadata": {
+        "keywords": [
+          "körperliche Aktivität",
+          "Bewegung",
+          "Gesundheitsförderung",
+          "Public Health"
+        ],
+        "search_aliases": [
+          "IPAQ Kurzform",
+          "International Physical Activity Questionnaire Deutsch"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "self-report",
+          "7-day-recall",
+          "self-administered",
+          "adult-form"
+        ],
+        "notes": "The official IPAQ download page says researcher-submitted translations are provided as-is and their accuracy has not been checked."
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "items": [
+        {
+          "item_id": "ipaq_de_de_vigorous_days",
+          "variable_name": "ipaq_de_de_vigorous_days",
+          "dimension": "vigorous",
+          "prompt_text": "Denken sie nur an die körperlichen Aktivitäten die Sie für mindestens 10 Minuten ohne Unterbrechung verrichtet haben. An wie vielen der vergangenen 7 Tage haben Sie anstrengende körperliche Aktivitäten wie Aerobic, Laufen, schnelles Fahrradfahren oder schnelles Schwimmen verrichtet?",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "days/week",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 7.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "vigorous"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-1"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_de_de_vigorous_hours",
+          "variable_name": "ipaq_de_de_vigorou_hr",
+          "dimension": "vigorous",
+          "prompt_text": "Wie viel Zeit haben Sie für gewöhnlich an einem dieser Tage mit anstrengender körperlicher Aktivität verbracht?",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "hours/active-day",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 24.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "vigorous"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-2"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_de_de_vigorous_minutes",
+          "variable_name": "ipaq_de_de_vigoro_min",
+          "dimension": "vigorous",
+          "prompt_text": "Wie viel Zeit haben Sie für gewöhnlich an einem dieser Tage mit anstrengender körperlicher Aktivität verbracht?",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "minutes/active-day",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 59.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "vigorous"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-2"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_de_de_moderate_days",
+          "variable_name": "ipaq_de_de_moderate_days",
+          "dimension": "moderate",
+          "prompt_text": "Denken Sie erneut nur an die körperlichen Aktivitäten die Sie für mindestens 10 Minuten ohne Unterbrechung verrichtet haben. An wie vielen der vergangenen 7 Tage haben sie moderate körperliche Aktivitäten, wie das Tragen leichter Lasten, Fahrradfahren bei gewöhnlicher Geschwindigkeit oder Schwimmen bei gewöhnlicher Geschwindigkeit verrichtet? Hierzu zählt nicht zu Fuß gehen.",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "days/week",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 7.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "moderate"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-3"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_de_de_moderate_hours",
+          "variable_name": "ipaq_de_de_moderat_hr",
+          "dimension": "moderate",
+          "prompt_text": "Wie viel Zeit haben Sie für gewöhnlich an einem dieser Tage mit moderater körperlicher Aktivität verbracht?",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "hours/active-day",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 24.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "moderate"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-4"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_de_de_moderate_minutes",
+          "variable_name": "ipaq_de_de_modera_min",
+          "dimension": "moderate",
+          "prompt_text": "Wie viel Zeit haben Sie für gewöhnlich an einem dieser Tage mit moderater körperlicher Aktivität verbracht?",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "minutes/active-day",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 59.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "moderate"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-4"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_de_de_walking_days",
+          "variable_name": "ipaq_de_de_walking_days",
+          "dimension": "walking",
+          "prompt_text": "An wie vielen der vergangenen 7 Tage sind Sie mindestens 10 Minuten ohne Unterbrechung zu Fuß gegangen? Dieses beinhaltet Gehstrecken daheim oder in der Arbeit, gehen um von einem Ort zu einem anderen zu gelangen, sowie alles andere Gehen zur Erholung, Bewegung oder Freizeit.",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "days/week",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 7.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "walking"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-5"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_de_de_walking_hours",
+          "variable_name": "ipaq_de_de_walking_hr",
+          "dimension": "walking",
+          "prompt_text": "Wie viel Zeit haben Sie für gewöhnlich an einem dieser Tage mit Gehen verbracht?",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "hours/active-day",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 24.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "walking"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-6"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_de_de_walking_minutes",
+          "variable_name": "ipaq_de_de_walkin_min",
+          "dimension": "walking",
+          "prompt_text": "Wie viel Zeit haben Sie für gewöhnlich an einem dieser Tage mit Gehen verbracht?",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "minutes/active-day",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 59.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "walking"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-6"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_de_de_sitting_weekday_hours",
+          "variable_name": "ipaq_de_de_sitting_hr",
+          "dimension": "sitting_weekday",
+          "prompt_text": "Wie viel Zeit haben Sie in den vergangenen 7 Tagen an einem Wochentag mit Sitzen verbracht? Dies kann Zeit beinhalten wie Sitzen am Schreibtisch, Besuchen von Freunden, vor dem Fernseher sitzen oder liegen und auch sitzen in einem öffentlichen Verkehrsmittel.",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "hours/weekday",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 24.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "sitting weekday"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-7"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_de_de_sitting_weekday_minutes",
+          "variable_name": "ipaq_de_de_sittin_min",
+          "dimension": "sitting_weekday",
+          "prompt_text": "Wie viel Zeit haben Sie in den vergangenen 7 Tagen an einem Wochentag mit Sitzen verbracht? Dies kann Zeit beinhalten wie Sitzen am Schreibtisch, Besuchen von Freunden, vor dem Fernseher sitzen oder liegen und auch sitzen in einem öffentlichen Verkehrsmittel.",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "minutes/weekday",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 59.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "sitting weekday"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-7"
+            ],
+            "notes": null
+          }
+        }
+      ],
+      "scoring_algorithms": []
+    },
+    {
+      "version_id": "ipaq_elderly_en_v1",
+      "language": "en",
+      "display_name": "IPAQ-E English",
+      "locale": "en-US",
+      "form_type": "custom",
+      "variant_types": [
+        "population_adaptation"
+      ],
+      "target_populations": [
+        {
+          "group_name": "older adults",
+          "minimum_age_years": null,
+          "maximum_age_years": null,
+          "notes": "Official file is titled IPAQ-E (Elderly); no numerical cutoff is assigned here without matching validation-study evidence."
+        }
+      ],
+      "contributors": [],
+      "based_on": [
+        {
+          "instrument_id": "ipaq",
+          "version_id": "ipaq_short_en_v1"
+        }
+      ],
+      "publication_year": null,
+      "source_citation": null,
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "IPAQ-E English form",
+          "document_type": "questionnaire_form",
+          "language": "en",
+          "source_url": "https://drive.google.com/file/d/1JT2W8v0-PHaMs8mT9JT2WEyW0DAAkc_i/view",
+          "local_path": "data/questionnaires/forms/physical_activity/ipaq/ipaq_elderly_short_en.pdf",
+          "license_name": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "redistribution_permitted": true,
+          "permission_basis": "The official IPAQ FAQ states that IPAQ is available under CC BY 4.0, allowing redistribution and adaptation with attribution, a license link, and notice of changes. The bundled PDF is unchanged; its JSON record represents each days/hours/minutes blank as a separate numeric response field.",
+          "accessed_on": "2026-09-27",
+          "sha256": "41997005280fc8db6b020a95476fda82379194d0a6a3ca4cf8ab247d0eaa404a"
+        }
+      ],
+      "metadata": {
+        "keywords": [
+          "physical activity",
+          "older adults",
+          "aging",
+          "movement"
+        ],
+        "search_aliases": [
+          "IPAQ-E",
+          "IPAQ Elderly"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "self-report",
+          "7-day-recall",
+          "self-administered",
+          "older-adult-form"
+        ],
+        "notes": "IPAQ-E is maintained as a distinct form and must not be treated as the standard adult short form."
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "items": [
+        {
+          "item_id": "ipaq_e_en_sitting_weekday_hours",
+          "variable_name": "ipaq_e_en_sitting_hr",
+          "dimension": "sitting_weekday",
+          "prompt_text": "During the last 7 days, how much time did you spend sitting during a day?",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "hours/day",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 24.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "sitting weekday"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-1"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_e_en_sitting_weekday_minutes",
+          "variable_name": "ipaq_e_en_sittin_min",
+          "dimension": "sitting_weekday",
+          "prompt_text": "During the last 7 days, how much time did you spend sitting during a day?",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "minutes/day",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 59.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "sitting weekday"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-1"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_e_en_walking_days",
+          "variable_name": "ipaq_e_en_walking_days",
+          "dimension": "walking",
+          "prompt_text": "During the last 7 days, on how many days did you walk for at least 10 minutes at a time? How much time did you usually spend walking on one of those days?",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "days/week",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 7.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "walking"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-2"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_e_en_walking_hours",
+          "variable_name": "ipaq_e_en_walking_hr",
+          "dimension": "walking",
+          "prompt_text": "During the last 7 days, on how many days did you walk for at least 10 minutes at a time? How much time did you usually spend walking on one of those days?",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "hours/active-day",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 24.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "walking"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-2"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_e_en_walking_minutes",
+          "variable_name": "ipaq_e_en_walkin_min",
+          "dimension": "walking",
+          "prompt_text": "During the last 7 days, on how many days did you walk for at least 10 minutes at a time? How much time did you usually spend walking on one of those days?",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "minutes/active-day",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 59.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "walking"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-2"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_e_en_moderate_days",
+          "variable_name": "ipaq_e_en_moderate_days",
+          "dimension": "moderate",
+          "prompt_text": "During the last 7 days, on how many days did you do moderate physical activities like gardening, cleaning, bicycling at a regular pace, swimming or other fitness activities? Think only about activities done for at least 10 minutes at a time. Do not include walking.",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "days/week",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 7.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "moderate"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-3"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_e_en_moderate_hours",
+          "variable_name": "ipaq_e_en_moderat_hr",
+          "dimension": "moderate",
+          "prompt_text": "During the last 7 days, on how many days did you do moderate physical activities like gardening, cleaning, bicycling at a regular pace, swimming or other fitness activities? Think only about activities done for at least 10 minutes at a time. Do not include walking.",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "hours/active-day",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 24.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "moderate"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-3"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_e_en_moderate_minutes",
+          "variable_name": "ipaq_e_en_modera_min",
+          "dimension": "moderate",
+          "prompt_text": "During the last 7 days, on how many days did you do moderate physical activities like gardening, cleaning, bicycling at a regular pace, swimming or other fitness activities? Think only about activities done for at least 10 minutes at a time. Do not include walking.",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "minutes/active-day",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 59.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "moderate"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-3"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_e_en_vigorous_days",
+          "variable_name": "ipaq_e_en_vigorous_days",
+          "dimension": "vigorous",
+          "prompt_text": "During the last 7 days, on how many days did you do vigorous physical activities like heavy lifting, heavier garden or construction work, chopping woods, aerobics, jogging/running or fast bicycling? Think only about activities done for at least 10 minutes at a time.",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "days/week",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 7.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "vigorous"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-4"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_e_en_vigorous_hours",
+          "variable_name": "ipaq_e_en_vigorou_hr",
+          "dimension": "vigorous",
+          "prompt_text": "During the last 7 days, on how many days did you do vigorous physical activities like heavy lifting, heavier garden or construction work, chopping woods, aerobics, jogging/running or fast bicycling? Think only about activities done for at least 10 minutes at a time.",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "hours/active-day",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 24.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "vigorous"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-4"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "ipaq_e_en_vigorous_minutes",
+          "variable_name": "ipaq_e_en_vigoro_min",
+          "dimension": "vigorous",
+          "prompt_text": "During the last 7 days, on how many days did you do vigorous physical activities like heavy lifting, heavier garden or construction work, chopping woods, aerobics, jogging/running or fast bicycling? Think only about activities done for at least 10 minutes at a time.",
+          "response_mode": "numeric",
+          "response_set_ref": null,
+          "measurement_unit": "minutes/active-day",
+          "numeric_minimum": 0.0,
+          "numeric_maximum": 59.0,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "text",
+          "metadata": {
+            "keywords": [
+              "physical activity",
+              "vigorous"
+            ],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "numeric-entry",
+              "source-question-4"
+            ],
+            "notes": null
+          }
+        }
+      ],
+      "scoring_algorithms": []
+    }
+  ]
+}

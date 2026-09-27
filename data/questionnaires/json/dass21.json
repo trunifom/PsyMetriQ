@@ -1,0 +1,1444 @@
+{
+  "instrument_id": "dass21",
+  "name_full": "Depression Anxiety Stress Scales-21",
+  "construct_ontology": [],
+  "is_commercial": false,
+  "contributors": [
+    {
+      "name": "S. H. Lovibond",
+      "role": "author",
+      "affiliation": null,
+      "orcid": null
+    },
+    {
+      "name": "P. F. Lovibond",
+      "role": "author",
+      "affiliation": null,
+      "orcid": null
+    }
+  ],
+  "metadata": {
+    "keywords": [
+      "depression",
+      "anxiety",
+      "stress",
+      "distress"
+    ],
+    "search_aliases": [
+      "DASS-21",
+      "DASS21",
+      "Depression Anxiety Stress Scales"
+    ],
+    "mesh_terms": [],
+    "characteristics": [],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "dass21_en_v1",
+      "language": "en",
+      "display_name": "DASS-21 English source form",
+      "locale": "en-AU",
+      "form_type": "short",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "people aged 14 and older",
+          "minimum_age_years": 14.0,
+          "maximum_age_years": null,
+          "notes": "Official FAQ lower age guidance assumes typical language skills."
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": null,
+      "source_citation": null,
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "DASS-21 English source form official questionnaire form",
+          "document_type": "questionnaire_form",
+          "language": "en",
+          "source_url": "https://www2.psy.unsw.edu.au/dass/Download%20files/Dass21.pdf",
+          "local_path": "data/questionnaires/forms/mental_health/dass21/dass21_en.pdf",
+          "license_name": "Public domain; may be copied, not modified or sold for profit",
+          "license_url": "https://www2.psy.unsw.edu.au/dass/DASSFAQ.htm",
+          "redistribution_permitted": true,
+          "permission_basis": "The official DASS Download page says forms may be downloaded and copied without restriction; scales may not be modified or sold for profit. Official FAQ states permission is not needed because the questionnaire is public domain.",
+          "accessed_on": "2026-09-27",
+          "sha256": "8644cc86534d397e371985d5b25422ba76c4cdae0a5aed8f1a4453c17a5cd393"
+        },
+        {
+          "title": "DASS-21 English source form official translation/version record",
+          "document_type": "other",
+          "language": "en",
+          "source_url": "https://www2.psy.unsw.edu.au/dass/down.htm",
+          "local_path": null,
+          "license_name": "Official source record; linked only",
+          "license_url": null,
+          "redistribution_permitted": false,
+          "permission_basis": "Official DASS source page identifies the form; linked, not copied.",
+          "accessed_on": "2026-09-27",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "keywords": [
+          "depression",
+          "anxiety",
+          "stress",
+          "psychological distress"
+        ],
+        "search_aliases": [
+          "DASS",
+          "DASS21",
+          "DASS-21"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "self-report",
+          "negative-emotional-states",
+          "seven-day-reference-period",
+          "adult-form"
+        ],
+        "notes": "Official source warns that the DASS is dimensional and is not a diagnosis."
+      },
+      "cosmin_metrics": {},
+      "response_sets": {
+        "frequency_4": [
+          {
+            "code": 0,
+            "label": "Did not apply to me at all",
+            "score": 0.0
+          },
+          {
+            "code": 1,
+            "label": "Applied to me to some degree, or some of the time",
+            "score": 1.0
+          },
+          {
+            "code": 2,
+            "label": "Applied to me to a considerable degree, or a good part of the time",
+            "score": 2.0
+          },
+          {
+            "code": 3,
+            "label": "Applied to me very much, or most of the time",
+            "score": 3.0
+          }
+        ]
+      },
+      "items": [
+        {
+          "item_id": "dass21_en_01",
+          "variable_name": "dass21_en_01",
+          "dimension": "stress",
+          "prompt_text": "I found it hard to wind down",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_en_02",
+          "variable_name": "dass21_en_02",
+          "dimension": "anxiety",
+          "prompt_text": "I was aware of dryness of my mouth",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_en_03",
+          "variable_name": "dass21_en_03",
+          "dimension": "depression",
+          "prompt_text": "I couldn't seem to experience any positive feeling at all",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_en_04",
+          "variable_name": "dass21_en_04",
+          "dimension": "anxiety",
+          "prompt_text": "I experienced breathing difficulty (eg, excessively rapid breathing, breathlessness in the absence of physical exertion)",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_en_05",
+          "variable_name": "dass21_en_05",
+          "dimension": "depression",
+          "prompt_text": "I found it difficult to work up the initiative to do things",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_en_06",
+          "variable_name": "dass21_en_06",
+          "dimension": "stress",
+          "prompt_text": "I tended to over-react to situations",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_en_07",
+          "variable_name": "dass21_en_07",
+          "dimension": "anxiety",
+          "prompt_text": "I experienced trembling (eg, in the hands)",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_en_08",
+          "variable_name": "dass21_en_08",
+          "dimension": "stress",
+          "prompt_text": "I felt that I was using a lot of nervous energy",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_en_09",
+          "variable_name": "dass21_en_09",
+          "dimension": "anxiety",
+          "prompt_text": "I was worried about situations in which I might panic and make a fool of myself",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_en_10",
+          "variable_name": "dass21_en_10",
+          "dimension": "depression",
+          "prompt_text": "I felt that I had nothing to look forward to",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_en_11",
+          "variable_name": "dass21_en_11",
+          "dimension": "stress",
+          "prompt_text": "I found myself getting agitated",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_en_12",
+          "variable_name": "dass21_en_12",
+          "dimension": "stress",
+          "prompt_text": "I found it difficult to relax",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_en_13",
+          "variable_name": "dass21_en_13",
+          "dimension": "depression",
+          "prompt_text": "I felt down-hearted and blue",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_en_14",
+          "variable_name": "dass21_en_14",
+          "dimension": "stress",
+          "prompt_text": "I was intolerant of anything that kept me from getting on with what I was doing",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_en_15",
+          "variable_name": "dass21_en_15",
+          "dimension": "anxiety",
+          "prompt_text": "I felt I was close to panic",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_en_16",
+          "variable_name": "dass21_en_16",
+          "dimension": "depression",
+          "prompt_text": "I was unable to become enthusiastic about anything",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_en_17",
+          "variable_name": "dass21_en_17",
+          "dimension": "depression",
+          "prompt_text": "I felt I wasn't worth much as a person",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_en_18",
+          "variable_name": "dass21_en_18",
+          "dimension": "stress",
+          "prompt_text": "I felt that I was rather touchy",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_en_19",
+          "variable_name": "dass21_en_19",
+          "dimension": "anxiety",
+          "prompt_text": "I was aware of the action of my heart in the absence of physical exertion (eg, sense of heart rate increase, heart missing a beat)",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_en_20",
+          "variable_name": "dass21_en_20",
+          "dimension": "anxiety",
+          "prompt_text": "I felt scared without any good reason",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_en_21",
+          "variable_name": "dass21_en_21",
+          "dimension": "depression",
+          "prompt_text": "I felt that life was meaningless",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        }
+      ],
+      "scoring_algorithms": [
+        {
+          "output_variable": "dass21_en_depression_raw",
+          "method": "sum",
+          "target_items": [
+            "dass21_en_03",
+            "dass21_en_05",
+            "dass21_en_10",
+            "dass21_en_13",
+            "dass21_en_16",
+            "dass21_en_17",
+            "dass21_en_21"
+          ],
+          "multiplier": 1.0,
+          "missing_data_rules": "Follow the official scoring guidance; do not infer a missing response."
+        },
+        {
+          "output_variable": "dass21_en_depression_comparable",
+          "method": "sum",
+          "target_items": [
+            "dass21_en_03",
+            "dass21_en_05",
+            "dass21_en_10",
+            "dass21_en_13",
+            "dass21_en_16",
+            "dass21_en_17",
+            "dass21_en_21"
+          ],
+          "multiplier": 2.0,
+          "missing_data_rules": "DASS-21 convention: multiply each seven-item subscale sum by two to compare with full DASS scale ranges."
+        },
+        {
+          "output_variable": "dass21_en_anxiety_raw",
+          "method": "sum",
+          "target_items": [
+            "dass21_en_02",
+            "dass21_en_04",
+            "dass21_en_07",
+            "dass21_en_09",
+            "dass21_en_15",
+            "dass21_en_19",
+            "dass21_en_20"
+          ],
+          "multiplier": 1.0,
+          "missing_data_rules": "Follow the official scoring guidance; do not infer a missing response."
+        },
+        {
+          "output_variable": "dass21_en_anxiety_comparable",
+          "method": "sum",
+          "target_items": [
+            "dass21_en_02",
+            "dass21_en_04",
+            "dass21_en_07",
+            "dass21_en_09",
+            "dass21_en_15",
+            "dass21_en_19",
+            "dass21_en_20"
+          ],
+          "multiplier": 2.0,
+          "missing_data_rules": "DASS-21 convention: multiply each seven-item subscale sum by two to compare with full DASS scale ranges."
+        },
+        {
+          "output_variable": "dass21_en_stress_raw",
+          "method": "sum",
+          "target_items": [
+            "dass21_en_01",
+            "dass21_en_06",
+            "dass21_en_08",
+            "dass21_en_11",
+            "dass21_en_12",
+            "dass21_en_14",
+            "dass21_en_18"
+          ],
+          "multiplier": 1.0,
+          "missing_data_rules": "Follow the official scoring guidance; do not infer a missing response."
+        },
+        {
+          "output_variable": "dass21_en_stress_comparable",
+          "method": "sum",
+          "target_items": [
+            "dass21_en_01",
+            "dass21_en_06",
+            "dass21_en_08",
+            "dass21_en_11",
+            "dass21_en_12",
+            "dass21_en_14",
+            "dass21_en_18"
+          ],
+          "multiplier": 2.0,
+          "missing_data_rules": "DASS-21 convention: multiply each seven-item subscale sum by two to compare with full DASS scale ranges."
+        }
+      ]
+    },
+    {
+      "version_id": "dass21_de_de_v1",
+      "language": "de",
+      "display_name": "DASS-21 Deutsch (Nilges & Essau)",
+      "locale": "de-DE",
+      "form_type": "short",
+      "variant_types": [
+        "translation"
+      ],
+      "target_populations": [
+        {
+          "group_name": "people aged 14 and older",
+          "minimum_age_years": 14.0,
+          "maximum_age_years": null,
+          "notes": "Official FAQ lower age guidance assumes typical language skills."
+        }
+      ],
+      "contributors": [
+        {
+          "name": "Paul Nilges",
+          "role": "translator",
+          "affiliation": null,
+          "orcid": null
+        },
+        {
+          "name": "Cecilia Essau",
+          "role": "translator",
+          "affiliation": null,
+          "orcid": null
+        }
+      ],
+      "based_on": [
+        {
+          "instrument_id": "dass21",
+          "version_id": "dass21_en_v1"
+        }
+      ],
+      "publication_year": 2015,
+      "source_citation": "Nilges P, Essau C. German translation and evaluation of the DASS-21. Schmerz. 2015.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "DASS-21 Deutsch (Nilges & Essau) official questionnaire form",
+          "document_type": "questionnaire_form",
+          "language": "de",
+          "source_url": "https://www2.psy.unsw.edu.au/dass/German/DASS21%20Nilges%20%26%20Essau/German%20DASS21.pdf",
+          "local_path": "data/questionnaires/forms/mental_health/dass21/dass21_de_de.pdf",
+          "license_name": "Public domain; may be copied, not modified or sold for profit",
+          "license_url": "https://www2.psy.unsw.edu.au/dass/DASSFAQ.htm",
+          "redistribution_permitted": true,
+          "permission_basis": "The official DASS Download page says forms may be downloaded and copied without restriction; scales may not be modified or sold for profit. Official FAQ states permission is not needed because the questionnaire is public domain.",
+          "accessed_on": "2026-09-27",
+          "sha256": "27a4f622ecfd2859f525560de384a871ff6425744889eab2e332bcdca748a522"
+        },
+        {
+          "title": "DASS-21 Deutsch (Nilges & Essau) official translation/version record",
+          "document_type": "other",
+          "language": "de",
+          "source_url": "https://www2.psy.unsw.edu.au/dass/German/DASS21%20Nilges%20%26%20Essau/German%20DASS21%20Nilges%20Essau.htm",
+          "local_path": null,
+          "license_name": "Official source record; linked only",
+          "license_url": null,
+          "redistribution_permitted": false,
+          "permission_basis": "Official DASS translation page lists the German form and identifies Paul Nilges and Cecilia Essau; the source does not certify translation validity.",
+          "accessed_on": "2026-09-27",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "keywords": [
+          "Depression",
+          "Angst",
+          "Stress",
+          "psychische Belastung"
+        ],
+        "search_aliases": [
+          "DASS",
+          "DASS21",
+          "DASS-21"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "self-report",
+          "negative-emotional-states",
+          "seven-day-reference-period",
+          "adult-form"
+        ],
+        "notes": "Official DASS translation page lists the German form and identifies Paul Nilges and Cecilia Essau; the source does not certify translation validity."
+      },
+      "cosmin_metrics": {},
+      "response_sets": {
+        "frequency_4": [
+          {
+            "code": 0,
+            "label": "Traf gar nicht auf mich zu",
+            "score": 0.0
+          },
+          {
+            "code": 1,
+            "label": "Traf bis zu einem gewissen Grad auf mich zu oder manchmal",
+            "score": 1.0
+          },
+          {
+            "code": 2,
+            "label": "Traf in beträchtlichem Maße auf mich zu oder ziemlich oft",
+            "score": 2.0
+          },
+          {
+            "code": 3,
+            "label": "Traf sehr stark auf mich zu oder die meiste Zeit",
+            "score": 3.0
+          }
+        ]
+      },
+      "items": [
+        {
+          "item_id": "dass21_de_de_01",
+          "variable_name": "dass21_de_de_01",
+          "dimension": "stress",
+          "prompt_text": "Ich fand es schwer, mich zu beruhigen.",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_de_de_02",
+          "variable_name": "dass21_de_de_02",
+          "dimension": "anxiety",
+          "prompt_text": "Ich spürte, dass mein Mund trocken war.",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_de_de_03",
+          "variable_name": "dass21_de_de_03",
+          "dimension": "depression",
+          "prompt_text": "Ich konnte überhaupt keine positiven Gefühle mehr erleben",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_de_de_04",
+          "variable_name": "dass21_de_de_04",
+          "dimension": "anxiety",
+          "prompt_text": "Ich hatte Atemprobleme (z.B. übermäßig schnelles Atmen, Atemlosigkeit ohne körperliche Anstrengung).",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_de_de_05",
+          "variable_name": "dass21_de_de_05",
+          "dimension": "depression",
+          "prompt_text": "Es fiel mir schwer, mich dazu aufzuraffen, Dinge zu erledigen.",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_de_de_06",
+          "variable_name": "dass21_de_de_06",
+          "dimension": "stress",
+          "prompt_text": "Ich tendierte dazu, auf Situationen überzureagieren.",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_de_de_07",
+          "variable_name": "dass21_de_de_07",
+          "dimension": "anxiety",
+          "prompt_text": "Ich zitterte (z.B. an den Händen).",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_de_de_08",
+          "variable_name": "dass21_de_de_08",
+          "dimension": "stress",
+          "prompt_text": "Ich fand alles anstrengend.",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_de_de_09",
+          "variable_name": "dass21_de_de_09",
+          "dimension": "anxiety",
+          "prompt_text": "Ich machte mir Sorgen über Situationen, in denen ich in Panik geraten und mich lächerlich machen könnte.",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_de_de_10",
+          "variable_name": "dass21_de_de_10",
+          "dimension": "depression",
+          "prompt_text": "Ich hatte das Gefühl, dass ich mich auf nichts mehr freuen konnte.",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_de_de_11",
+          "variable_name": "dass21_de_de_11",
+          "dimension": "stress",
+          "prompt_text": "Ich bemerkte, dass ich mich schnell aufregte.",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_de_de_12",
+          "variable_name": "dass21_de_de_12",
+          "dimension": "stress",
+          "prompt_text": "Ich fand es schwierig, mich zu entspannen.",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_de_de_13",
+          "variable_name": "dass21_de_de_13",
+          "dimension": "depression",
+          "prompt_text": "Ich fühlte mich niedergeschlagen und traurig.",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_de_de_14",
+          "variable_name": "dass21_de_de_14",
+          "dimension": "stress",
+          "prompt_text": "Ich reagierte ungehalten auf alles, was mich davon abhielt, meine momentane Tätigkeit fortzuführen.",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_de_de_15",
+          "variable_name": "dass21_de_de_15",
+          "dimension": "anxiety",
+          "prompt_text": "Ich fühlte mich einer Panik nahe.",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_de_de_16",
+          "variable_name": "dass21_de_de_16",
+          "dimension": "depression",
+          "prompt_text": "Ich war nicht in der Lage, mich für irgendetwas zu begeistern.",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_de_de_17",
+          "variable_name": "dass21_de_de_17",
+          "dimension": "depression",
+          "prompt_text": "Ich fühlte mich als Person nicht viel wert.",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_de_de_18",
+          "variable_name": "dass21_de_de_18",
+          "dimension": "stress",
+          "prompt_text": "Ich fand mich ziemlich empfindlich.",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_de_de_19",
+          "variable_name": "dass21_de_de_19",
+          "dimension": "anxiety",
+          "prompt_text": "Ich habe meinen Herzschlag gespürt, ohne dass ich mich körperlich angestrengt hatte (z.B. Gefühl von Herzrasen oder Herzstolpern).",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_de_de_20",
+          "variable_name": "dass21_de_de_20",
+          "dimension": "anxiety",
+          "prompt_text": "Ich fühlte mich grundlos ängstlich.",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass21_de_de_21",
+          "variable_name": "dass21_de_de_21",
+          "dimension": "depression",
+          "prompt_text": "Ich empfand das Leben als sinnlos.",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        }
+      ],
+      "scoring_algorithms": [
+        {
+          "output_variable": "dass21_de_de_depression_raw",
+          "method": "sum",
+          "target_items": [
+            "dass21_de_de_03",
+            "dass21_de_de_05",
+            "dass21_de_de_10",
+            "dass21_de_de_13",
+            "dass21_de_de_16",
+            "dass21_de_de_17",
+            "dass21_de_de_21"
+          ],
+          "multiplier": 1.0,
+          "missing_data_rules": "Follow the official scoring guidance; do not infer a missing response."
+        },
+        {
+          "output_variable": "dass21_de_de_depression_comparable",
+          "method": "sum",
+          "target_items": [
+            "dass21_de_de_03",
+            "dass21_de_de_05",
+            "dass21_de_de_10",
+            "dass21_de_de_13",
+            "dass21_de_de_16",
+            "dass21_de_de_17",
+            "dass21_de_de_21"
+          ],
+          "multiplier": 2.0,
+          "missing_data_rules": "DASS-21 convention: multiply each seven-item subscale sum by two to compare with full DASS scale ranges."
+        },
+        {
+          "output_variable": "dass21_de_de_anxiety_raw",
+          "method": "sum",
+          "target_items": [
+            "dass21_de_de_02",
+            "dass21_de_de_04",
+            "dass21_de_de_07",
+            "dass21_de_de_09",
+            "dass21_de_de_15",
+            "dass21_de_de_19",
+            "dass21_de_de_20"
+          ],
+          "multiplier": 1.0,
+          "missing_data_rules": "Follow the official scoring guidance; do not infer a missing response."
+        },
+        {
+          "output_variable": "dass21_de_de_anxiety_comparable",
+          "method": "sum",
+          "target_items": [
+            "dass21_de_de_02",
+            "dass21_de_de_04",
+            "dass21_de_de_07",
+            "dass21_de_de_09",
+            "dass21_de_de_15",
+            "dass21_de_de_19",
+            "dass21_de_de_20"
+          ],
+          "multiplier": 2.0,
+          "missing_data_rules": "DASS-21 convention: multiply each seven-item subscale sum by two to compare with full DASS scale ranges."
+        },
+        {
+          "output_variable": "dass21_de_de_stress_raw",
+          "method": "sum",
+          "target_items": [
+            "dass21_de_de_01",
+            "dass21_de_de_06",
+            "dass21_de_de_08",
+            "dass21_de_de_11",
+            "dass21_de_de_12",
+            "dass21_de_de_14",
+            "dass21_de_de_18"
+          ],
+          "multiplier": 1.0,
+          "missing_data_rules": "Follow the official scoring guidance; do not infer a missing response."
+        },
+        {
+          "output_variable": "dass21_de_de_stress_comparable",
+          "method": "sum",
+          "target_items": [
+            "dass21_de_de_01",
+            "dass21_de_de_06",
+            "dass21_de_de_08",
+            "dass21_de_de_11",
+            "dass21_de_de_12",
+            "dass21_de_de_14",
+            "dass21_de_de_18"
+          ],
+          "multiplier": 2.0,
+          "missing_data_rules": "DASS-21 convention: multiply each seven-item subscale sum by two to compare with full DASS scale ranges."
+        }
+      ]
+    }
+  ]
+}

@@ -32,13 +32,15 @@ The generator overwrites those two named demo files on each run. It does not del
 
 ## Build the real instrument test catalog
 
-The repository includes official PHQ-9 and GAD-7 source forms with an explicit redistribution notice. Rebuild their structured JSON and PDF checksums with:
+The repository includes PHQ-9/GAD-7, DASS/DASS-Y, and IPAQ source forms with explicit redistribution terms. Rebuild their structured JSON and PDF checksums with:
 
 ```powershell
 python data/questionnaires/build_catalog.py
+python data/questionnaires/build_dass_catalog.py
+python data/questionnaires/build_ipaq_catalog.py
 ```
 
-The command reads only PDFs already present in `data/questionnaires/pdfs/`; it does not download or overwrite the source documents. It validates the resulting versions and writes `phq9.json` and `gad7.json` under `data/questionnaires/json/`. Review the [instrument data and rights notes](../data/questionnaires/README.md) before adding or sharing any other instrument.
+The commands read only PDFs already present under `data/questionnaires/forms/`; they do not download or overwrite source documents. They validate versions and write five family JSONs under `data/questionnaires/json/`. Review the [instrument data and rights notes](../data/questionnaires/README.md) before adding or sharing any other instrument.
 
 ## Search a shared folder
 
@@ -91,7 +93,8 @@ Run the focused tests and lint check from the repository root:
 ```powershell
 pytest tests/unit/test_schema.py -q
 pytest tests/unit/test_search_engine.py -q
-ruff check schemas/questionnaire_schema.py data/generate_mock_data.py src/core/search_engine.py tests/unit/
+pytest tests/unit/test_instrument_catalog.py -q
+ruff check schemas/questionnaire_schema.py data/generate_mock_data.py src/core/search_engine.py data/questionnaires/ tests/unit/
 ```
 
 The tests cover REDCap variable-name boundaries, duplicate identifiers, missing references, JSON serialization round-trips, synthetic output validity, logged filesystem failures, search matches, reload behavior, and invalid shared files.

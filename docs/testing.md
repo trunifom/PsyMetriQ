@@ -14,14 +14,15 @@ Tests protect data integrity first, then module contracts and end-to-end user wo
 
 The schema suite verifies valid model construction, invalid REDCap variable names, duplicate item and version IDs, case-insensitive field-name collisions, missing response-set and scoring-item references, language/locale syntax, population age ranges, version ancestry and cycles, Pydantic JSON round-tripping, generated fixture validation, and safe reporting of filesystem failures. The search suite verifies matching across entity types and metadata scopes, aliases, MeSH terms, notes, exact filters, combined AND/OR semantics, blank and missing results, refreshes, malformed files, duplicate instruments, and preservation of the last valid view.
 
-The real-instrument catalog suite validates PHQ-9/GAD-7 item counts, locale coverage, score exclusions, official redistribution records, local PDF paths, SHA-256 digests, and search over the generated language variants.
+The real-instrument catalog suite validates PHQ-9/GAD-7/DASS/DASS-Y/IPAQ item counts, exact transcribed wording, locale and age coverage, non-comparable youth scoring, DASS multipliers, numeric IPAQ units, official redistribution records, local PDF paths, SHA-256 digests, and search over generated language variants.
 
 Run from the repository root:
 
 ```powershell
 pytest tests/unit/test_schema.py -q
 pytest tests/unit/test_search_engine.py -q
-ruff check schemas/questionnaire_schema.py data/generate_mock_data.py src/core/search_engine.py tests/unit/
+pytest tests/unit/test_instrument_catalog.py -q
+ruff check schemas/questionnaire_schema.py data/generate_mock_data.py src/core/search_engine.py data/questionnaires/ tests/unit/
 ```
 
 ## Expectations for future features

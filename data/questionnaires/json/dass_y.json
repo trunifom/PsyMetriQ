@@ -1,0 +1,1354 @@
+{
+  "instrument_id": "dass_y",
+  "name_full": "Depression Anxiety Stress Scales - Youth Version",
+  "construct_ontology": [],
+  "is_commercial": false,
+  "contributors": [
+    {
+      "name": "S. H. Lovibond",
+      "role": "author",
+      "affiliation": null,
+      "orcid": null
+    },
+    {
+      "name": "P. F. Lovibond",
+      "role": "author",
+      "affiliation": null,
+      "orcid": null
+    }
+  ],
+  "metadata": {
+    "keywords": [
+      "youth mental health",
+      "depression",
+      "anxiety",
+      "stress"
+    ],
+    "search_aliases": [
+      "DASS-Y",
+      "DASSY",
+      "DASS Youth"
+    ],
+    "mesh_terms": [],
+    "characteristics": [],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "dass_y_en_v1",
+      "language": "en",
+      "display_name": "DASS-Y English source form",
+      "locale": "en-AU",
+      "form_type": "short",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "children and adolescents",
+          "minimum_age_years": 8.0,
+          "maximum_age_years": 17.0,
+          "notes": "Official DASS-Y age range; its scores are not directly comparable with adult DASS/DASS21."
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": null,
+      "source_citation": null,
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "DASS-Y English source form official questionnaire form",
+          "document_type": "questionnaire_form",
+          "language": "en",
+          "source_url": "https://www2.psy.unsw.edu.au/dass/Download%20files/DASS-Y.pdf",
+          "local_path": "data/questionnaires/forms/mental_health/dass_y/dass_y_en.pdf",
+          "license_name": "Public domain; may be copied, not modified or sold for profit",
+          "license_url": "https://www2.psy.unsw.edu.au/dass/DASSFAQ.htm",
+          "redistribution_permitted": true,
+          "permission_basis": "The official DASS Download page says forms may be downloaded and copied without restriction; scales may not be modified or sold for profit. Official FAQ states permission is not needed because the questionnaire is public domain.",
+          "accessed_on": "2026-09-27",
+          "sha256": "437307a1dcc7eac78b3ff2aa4d307bc2ba4a002227320efb8620d9da31cd4799"
+        },
+        {
+          "title": "DASS-Y English source form official translation/version record",
+          "document_type": "other",
+          "language": "en",
+          "source_url": "https://www2.psy.unsw.edu.au/dass/DASSY.htm",
+          "local_path": null,
+          "license_name": "Official source record; linked only",
+          "license_url": null,
+          "redistribution_permitted": false,
+          "permission_basis": "Official DASS source page identifies the form; linked, not copied.",
+          "accessed_on": "2026-09-27",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "keywords": [
+          "depression",
+          "anxiety",
+          "stress",
+          "psychological distress"
+        ],
+        "search_aliases": [
+          "DASS",
+          "DASS21",
+          "DASS-Y"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "self-report",
+          "negative-emotional-states",
+          "seven-day-reference-period",
+          "youth-form"
+        ],
+        "notes": "Official source warns that the DASS is dimensional and is not a diagnosis."
+      },
+      "cosmin_metrics": {},
+      "response_sets": {
+        "frequency_4": [
+          {
+            "code": 0,
+            "label": "Not true",
+            "score": 0.0
+          },
+          {
+            "code": 1,
+            "label": "A little true",
+            "score": 1.0
+          },
+          {
+            "code": 2,
+            "label": "Fairly true",
+            "score": 2.0
+          },
+          {
+            "code": 3,
+            "label": "Very true",
+            "score": 3.0
+          }
+        ]
+      },
+      "items": [
+        {
+          "item_id": "dass_y_en_01",
+          "variable_name": "dass_y_en_01",
+          "dimension": "stress",
+          "prompt_text": "I got upset about little things",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_en_02",
+          "variable_name": "dass_y_en_02",
+          "dimension": "anxiety",
+          "prompt_text": "I felt dizzy, like I was about to faint",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_en_03",
+          "variable_name": "dass_y_en_03",
+          "dimension": "depression",
+          "prompt_text": "I did not enjoy anything",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_en_04",
+          "variable_name": "dass_y_en_04",
+          "dimension": "anxiety",
+          "prompt_text": "I had trouble breathing (e.g. fast breathing), even though I wasn't exercising and I was not sick.",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_en_05",
+          "variable_name": "dass_y_en_05",
+          "dimension": "depression",
+          "prompt_text": "I hated my life",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_en_06",
+          "variable_name": "dass_y_en_06",
+          "dimension": "stress",
+          "prompt_text": "I found myself over-reacting to situations",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_en_07",
+          "variable_name": "dass_y_en_07",
+          "dimension": "anxiety",
+          "prompt_text": "My hands felt shaky",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_en_08",
+          "variable_name": "dass_y_en_08",
+          "dimension": "stress",
+          "prompt_text": "I was stressing about lots of things",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_en_09",
+          "variable_name": "dass_y_en_09",
+          "dimension": "anxiety",
+          "prompt_text": "I felt terrified",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_en_10",
+          "variable_name": "dass_y_en_10",
+          "dimension": "depression",
+          "prompt_text": "There was nothing nice I could look forward to",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_en_11",
+          "variable_name": "dass_y_en_11",
+          "dimension": "stress",
+          "prompt_text": "I was easily irritated",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_en_12",
+          "variable_name": "dass_y_en_12",
+          "dimension": "stress",
+          "prompt_text": "I found it difficult to relax",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_en_13",
+          "variable_name": "dass_y_en_13",
+          "dimension": "depression",
+          "prompt_text": "I could not stop feeling sad",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_en_14",
+          "variable_name": "dass_y_en_14",
+          "dimension": "stress",
+          "prompt_text": "I got annoyed when people interrupted me",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_en_15",
+          "variable_name": "dass_y_en_15",
+          "dimension": "anxiety",
+          "prompt_text": "I felt like I was about to panic",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_en_16",
+          "variable_name": "dass_y_en_16",
+          "dimension": "depression",
+          "prompt_text": "I hated myself",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_en_17",
+          "variable_name": "dass_y_en_17",
+          "dimension": "depression",
+          "prompt_text": "I felt like I was no good",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_en_18",
+          "variable_name": "dass_y_en_18",
+          "dimension": "stress",
+          "prompt_text": "I was easily annoyed",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_en_19",
+          "variable_name": "dass_y_en_19",
+          "dimension": "anxiety",
+          "prompt_text": "I could feel my heart beating really fast, even though I hadn't done any hard exercise",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_en_20",
+          "variable_name": "dass_y_en_20",
+          "dimension": "anxiety",
+          "prompt_text": "I felt scared for no good reason",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_en_21",
+          "variable_name": "dass_y_en_21",
+          "dimension": "depression",
+          "prompt_text": "I felt that life was terrible",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        }
+      ],
+      "scoring_algorithms": [
+        {
+          "output_variable": "dass_y_en_depression_raw",
+          "method": "sum",
+          "target_items": [
+            "dass_y_en_03",
+            "dass_y_en_05",
+            "dass_y_en_10",
+            "dass_y_en_13",
+            "dass_y_en_16",
+            "dass_y_en_17",
+            "dass_y_en_21"
+          ],
+          "multiplier": 1.0,
+          "missing_data_rules": "Follow the official scoring guidance; do not infer a missing response."
+        },
+        {
+          "output_variable": "dass_y_en_anxiety_raw",
+          "method": "sum",
+          "target_items": [
+            "dass_y_en_02",
+            "dass_y_en_04",
+            "dass_y_en_07",
+            "dass_y_en_09",
+            "dass_y_en_15",
+            "dass_y_en_19",
+            "dass_y_en_20"
+          ],
+          "multiplier": 1.0,
+          "missing_data_rules": "Follow the official scoring guidance; do not infer a missing response."
+        },
+        {
+          "output_variable": "dass_y_en_stress_raw",
+          "method": "sum",
+          "target_items": [
+            "dass_y_en_01",
+            "dass_y_en_06",
+            "dass_y_en_08",
+            "dass_y_en_11",
+            "dass_y_en_12",
+            "dass_y_en_14",
+            "dass_y_en_18"
+          ],
+          "multiplier": 1.0,
+          "missing_data_rules": "Follow the official scoring guidance; do not infer a missing response."
+        }
+      ]
+    },
+    {
+      "version_id": "dass_y_de_de_v1",
+      "language": "de",
+      "display_name": "DASS-Y Deutsch (Neuhoff & Noorani-Yazdanabad)",
+      "locale": "de-DE",
+      "form_type": "short",
+      "variant_types": [
+        "translation"
+      ],
+      "target_populations": [
+        {
+          "group_name": "children and adolescents",
+          "minimum_age_years": 8.0,
+          "maximum_age_years": 17.0,
+          "notes": "Official DASS-Y age range; its scores are not directly comparable with adult DASS/DASS21."
+        }
+      ],
+      "contributors": [
+        {
+          "name": "Lina Neuhoff",
+          "role": "translator",
+          "affiliation": "Ruhr University Bochum",
+          "orcid": null
+        },
+        {
+          "name": "Maria Noorani-Yazdanabad",
+          "role": "translator",
+          "affiliation": "Ruhr University Bochum",
+          "orcid": null
+        }
+      ],
+      "based_on": [
+        {
+          "instrument_id": "dass_y",
+          "version_id": "dass_y_en_v1"
+        }
+      ],
+      "publication_year": null,
+      "source_citation": null,
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "DASS-Y Deutsch (Neuhoff & Noorani-Yazdanabad) official questionnaire form",
+          "document_type": "questionnaire_form",
+          "language": "de",
+          "source_url": "https://www2.psy.unsw.edu.au/dass/DASS-Y%20German/DE_DASS-Y.pdf",
+          "local_path": "data/questionnaires/forms/mental_health/dass_y/dass_y_de_de.pdf",
+          "license_name": "Public domain; may be copied, not modified or sold for profit",
+          "license_url": "https://www2.psy.unsw.edu.au/dass/DASSFAQ.htm",
+          "redistribution_permitted": true,
+          "permission_basis": "The official DASS Download page says forms may be downloaded and copied without restriction; scales may not be modified or sold for profit. Official FAQ states permission is not needed because the questionnaire is public domain.",
+          "accessed_on": "2026-09-27",
+          "sha256": "2e1c292c118e6f0f6b14f3d1052b5f4a695e1a07a3ef8041519c0cc2ab082166"
+        },
+        {
+          "title": "DASS-Y Deutsch (Neuhoff & Noorani-Yazdanabad) official translation/version record",
+          "document_type": "other",
+          "language": "de",
+          "source_url": "https://www2.psy.unsw.edu.au/dass/DASS-Y%20German/Neuhoff%20%26%20Noorani-Yazdanabad%20German%20translation%20of%20DASS-Y.htm",
+          "local_path": null,
+          "license_name": "Official source record; linked only",
+          "license_url": null,
+          "redistribution_permitted": false,
+          "permission_basis": "Official DASS-Y translation page identifies Lina Neuhoff and Maria Noorani-Yazdanabad; the source does not certify translation validity.",
+          "accessed_on": "2026-09-27",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "keywords": [
+          "Depression",
+          "Angst",
+          "Stress",
+          "psychische Belastung"
+        ],
+        "search_aliases": [
+          "DASS",
+          "DASS21",
+          "DASS-Y"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "self-report",
+          "negative-emotional-states",
+          "seven-day-reference-period",
+          "youth-form"
+        ],
+        "notes": "Official DASS-Y translation page identifies Lina Neuhoff and Maria Noorani-Yazdanabad; the source does not certify translation validity."
+      },
+      "cosmin_metrics": {},
+      "response_sets": {
+        "frequency_4": [
+          {
+            "code": 0,
+            "label": "Nicht zutraf",
+            "score": 0.0
+          },
+          {
+            "code": 1,
+            "label": "Ein wenig zutraf",
+            "score": 1.0
+          },
+          {
+            "code": 2,
+            "label": "Ziemlich zutraf",
+            "score": 2.0
+          },
+          {
+            "code": 3,
+            "label": "Sehr stark zutraf",
+            "score": 3.0
+          }
+        ]
+      },
+      "items": [
+        {
+          "item_id": "dass_y_de_de_01",
+          "variable_name": "dass_y_de_de_01",
+          "dimension": "stress",
+          "prompt_text": "Ich regte mich über Kleinigkeiten auf",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_de_de_02",
+          "variable_name": "dass_y_de_de_02",
+          "dimension": "anxiety",
+          "prompt_text": "Mir war schwindelig, wie wenn ich in Ohnmacht fallen würde",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_de_de_03",
+          "variable_name": "dass_y_de_de_03",
+          "dimension": "depression",
+          "prompt_text": "Ich habe nichts genossen",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_de_de_04",
+          "variable_name": "dass_y_de_de_04",
+          "dimension": "anxiety",
+          "prompt_text": "Ich hatte Schwierigkeiten zu atmen (z.B. schnelles Atmen), obwohl ich keinen Sport machte und ich nicht krank war",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_de_de_05",
+          "variable_name": "dass_y_de_de_05",
+          "dimension": "depression",
+          "prompt_text": "Ich hasste mein Leben",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_de_de_06",
+          "variable_name": "dass_y_de_de_06",
+          "dimension": "stress",
+          "prompt_text": "Ich reagierte in Situationen über",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_de_de_07",
+          "variable_name": "dass_y_de_de_07",
+          "dimension": "anxiety",
+          "prompt_text": "Meine Hände fühlten sich zittrig an",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_de_de_08",
+          "variable_name": "dass_y_de_de_08",
+          "dimension": "stress",
+          "prompt_text": "Ich war wegen vieler Dinge gestresst",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_de_de_09",
+          "variable_name": "dass_y_de_de_09",
+          "dimension": "anxiety",
+          "prompt_text": "Ich fühlte mich verschreckt",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_de_de_10",
+          "variable_name": "dass_y_de_de_10",
+          "dimension": "depression",
+          "prompt_text": "Es gab nichts Schönes, auf das ich mich freuen konnte",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_de_de_11",
+          "variable_name": "dass_y_de_de_11",
+          "dimension": "stress",
+          "prompt_text": "Ich war schnell gereizt",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_de_de_12",
+          "variable_name": "dass_y_de_de_12",
+          "dimension": "stress",
+          "prompt_text": "Ich fand es schwierig mich zu entspannen",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_de_de_13",
+          "variable_name": "dass_y_de_de_13",
+          "dimension": "depression",
+          "prompt_text": "Ich konnte nicht aufhören mich traurig zu fühlen",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_de_de_14",
+          "variable_name": "dass_y_de_de_14",
+          "dimension": "stress",
+          "prompt_text": "Ich war genervt, wenn Leute mich unterbrachen",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_de_de_15",
+          "variable_name": "dass_y_de_de_15",
+          "dimension": "anxiety",
+          "prompt_text": "Ich fühlte mich einer Panik nahe",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_de_de_16",
+          "variable_name": "dass_y_de_de_16",
+          "dimension": "depression",
+          "prompt_text": "Ich hasste mich selbst",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_de_de_17",
+          "variable_name": "dass_y_de_de_17",
+          "dimension": "depression",
+          "prompt_text": "Ich fühlte mich zu nichts zu gebrauchen",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_de_de_18",
+          "variable_name": "dass_y_de_de_18",
+          "dimension": "stress",
+          "prompt_text": "Ich war schnell genervt",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_de_de_19",
+          "variable_name": "dass_y_de_de_19",
+          "dimension": "anxiety",
+          "prompt_text": "Ich konnte mein Herz schnell schlagen fühlen, obwohl ich mich nicht stark körperlich betätigt hatte",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_de_de_20",
+          "variable_name": "dass_y_de_de_20",
+          "dimension": "anxiety",
+          "prompt_text": "Ich fühlte mich grundlos ängstlich",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "dass_y_de_de_21",
+          "variable_name": "dass_y_de_de_21",
+          "dimension": "depression",
+          "prompt_text": "Ich fand das Leben war furchtbar",
+          "response_mode": "categorical",
+          "response_set_ref": "frequency_4",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "negative-emotional-state"
+            ],
+            "notes": null
+          }
+        }
+      ],
+      "scoring_algorithms": [
+        {
+          "output_variable": "dass_y_de_de_depression_raw",
+          "method": "sum",
+          "target_items": [
+            "dass_y_de_de_03",
+            "dass_y_de_de_05",
+            "dass_y_de_de_10",
+            "dass_y_de_de_13",
+            "dass_y_de_de_16",
+            "dass_y_de_de_17",
+            "dass_y_de_de_21"
+          ],
+          "multiplier": 1.0,
+          "missing_data_rules": "Follow the official scoring guidance; do not infer a missing response."
+        },
+        {
+          "output_variable": "dass_y_de_de_anxiety_raw",
+          "method": "sum",
+          "target_items": [
+            "dass_y_de_de_02",
+            "dass_y_de_de_04",
+            "dass_y_de_de_07",
+            "dass_y_de_de_09",
+            "dass_y_de_de_15",
+            "dass_y_de_de_19",
+            "dass_y_de_de_20"
+          ],
+          "multiplier": 1.0,
+          "missing_data_rules": "Follow the official scoring guidance; do not infer a missing response."
+        },
+        {
+          "output_variable": "dass_y_de_de_stress_raw",
+          "method": "sum",
+          "target_items": [
+            "dass_y_de_de_01",
+            "dass_y_de_de_06",
+            "dass_y_de_de_08",
+            "dass_y_de_de_11",
+            "dass_y_de_de_12",
+            "dass_y_de_de_14",
+            "dass_y_de_de_18"
+          ],
+          "multiplier": 1.0,
+          "missing_data_rules": "Follow the official scoring guidance; do not infer a missing response."
+        }
+      ]
+    }
+  ]
+}

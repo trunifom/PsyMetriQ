@@ -123,6 +123,8 @@ The empty lists and maps in this excerpt illustrate omitted content only; `Quest
 - `instrument_id` identifies an instrument family; `version_id` identifies one form within that family.
 - Version IDs must be unique within a family. Item IDs must be unique within a version.
 - `ResponseOption.score` is nullable so supplementary, non-scored questions can retain their answer labels without inventing scoring values. Use `ItemSchema.is_scored=False` and keep such items out of scoring targets.
+- `ItemSchema.response_mode` distinguishes categorical, numeric, and text inputs. Categorical items must refer to a real non-empty response set; numeric items can specify a unit and bounds without fabricating Likert choices.
+- `ScoringAlgorithm.multiplier` records post-score factors such as multiplying DASS-21 seven-item sums by two. Keep the raw sum and normalized/comparable output as separate scoring definitions.
 - `QuestionnaireSourceDocument` stores a source URL, repository-relative local path when approved, exact license/permission basis, access date, redistribution decision, and optional SHA-256 checksum. Never treat an `HTTP 200` response as a license.
 - REDCap `variable_name` values must be unique case-insensitively within a version and must satisfy the 26-character naming rule.
 - Each item response-set reference and each scoring target must resolve within its version.

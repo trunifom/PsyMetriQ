@@ -1,58 +1,76 @@
 # Questionnaire Test Data
 
-This directory contains versioned questionnaire JSON files for application tests and a small set of original forms whose source explicitly permits redistribution. These records contain real questionnaire item wording; they are not synthetic mock data.
+This is a portable, database-free library of questionnaire-family JSON records and source forms with documented redistribution rights. It contains real item wording for PHQ-9, GAD-7, DASS-21, DASS-Y, and IPAQ variants. These are research and software test fixtures, not diagnostic software or clinical response procedures.
 
-## Contents
+## Directory Layout
 
-| File | Instrument/version | Language and locale | Permission status |
-| --- | --- | --- | --- |
-| `pdfs/phq9_en.pdf` | PHQ-9 English source form | English, `en-US` | Official PHQ Screeners site permits reproduction and distribution |
-| `pdfs/phq9_de_de.pdf` | PHQ-9 German for Germany | German, `de-DE` | Official PHQ Screeners site permits reproduction and distribution |
-| `pdfs/gad7_en.pdf` | GAD-7 English source form | English, `en-US` | Official PHQ Screeners site permits reproduction and distribution |
-| `pdfs/gad7_de_at.pdf` | GAD-7 German for Austria | German, `de-AT` | Official PHQ Screeners site permits reproduction and distribution |
-| `pdfs/gad7_de_ch.pdf` | GAD-7 German for Switzerland | German, `de-CH` | Official PHQ Screeners site permits reproduction and distribution |
-| `json/phq9.json` | PHQ-9 family with English and Germany-German forms | `en-US`, `de-DE` | Pydantic-validated; links each form to its permitted PDF and checksum |
-| `json/gad7.json` | GAD-7 family with English, Austrian-German, and Swiss-German forms | `en-US`, `de-AT`, `de-CH` | Pydantic-validated; links each form to its permitted PDF and checksum |
+```text
+data/questionnaires/
+|-- forms/
+|   |-- mental_health/
+|   |   |-- dass21/
+|   |   |-- dass_y/
+|   |   |-- gad7/
+|   |   `-- phq9/
+|   `-- physical_activity/
+|       `-- ipaq/
+|-- json/
+|   |-- dass21.json
+|   |-- dass_y.json
+|   |-- gad7.json
+|   |-- ipaq.json
+|   `-- phq9.json
+|-- build_catalog.py
+|-- build_dass_catalog.py
+`-- build_ipaq_catalog.py
+```
 
-The regional German forms are separate version records. Do not silently merge or normalize their language-specific wording and response labels.
+Each PDF folder holds source forms for one instrument and domain. Each JSON represents one instrument family; each language, locale, population, and form is a separate `QuestionnaireVersion`. Its `source_documents` record holds the official URL, redistribution basis, retrieval date, local path, and SHA-256 digest.
 
-## Official source and permission
+## Bundled Forms
 
-Source: [PHQ Screeners, Select a Screener](https://www.phqscreeners.com/select-screener). The official page states: “All PHQ, GAD-7 screeners and translations are downloadable from this website and no permission is required to reproduce, translate, display or distribute them.” The downloaded forms also contain a reproduction notice. Source URLs, access date, redistribution statement, and PDF SHA-256 digest are recorded in the corresponding JSON `source_documents` entries.
+| Instrument | Included forms | Rights and evidence |
+| --- | --- | --- |
+| PHQ-9 | English; German for Germany | PHQ Screeners explicitly permits reproduction, translation, display, and distribution. Nine scored symptoms plus an unscored functional-impact item. |
+| GAD-7 | English; German for Austria and Switzerland | Same official PHQ Screeners permission. Regional versions remain distinct. |
+| DASS-21 | English; German (Nilges & Essau) | Official source says public domain and copyable, but not modifiable or for sale. Translation validity is not assured by the Foundation. |
+| DASS-Y | English; German (Neuhoff & Noorani-Yazdanabad), ages 8-17 | Separate youth form. Scores are not interchangeable with adult DASS/DASS-21. Translation validity is not assured by the source. |
+| IPAQ standard short self-administered | English; German translation, ages 15-69 | CC BY 4.0. Source-provided German form is supplied as-is; translation accuracy is not endorsed by the website. Numeric days and durations remain separate fields. |
+| IPAQ-E | English, older-adult form | CC BY 4.0; kept separate from the standard short form. No numeric age range or MET score is invented. |
 
-The validation-study articles are linked by DOI only. Their PDFs are not bundled because redistribution permission for those articles was not established. Citations identify the evidence source; they do not imply that every translation has independent validation evidence.
+## Original Forms and Permissions
 
-## Regenerate the JSON catalogue
+- **PHQ-9/GAD-7:** [official PHQ Screeners page](https://www.phqscreeners.com/select-screener) explicitly says no permission is required to reproduce, translate, display, or distribute its screeners and translations.
+- **DASS/DASS-Y:** [official downloads](https://www2.psy.unsw.edu.au/dass/down.htm) say the forms are public domain/copyable, but may not be modified or sold. The [FAQ](https://www2.psy.unsw.edu.au/dass/DASSFAQ.htm) gives age guidance (adult DASS 14+; DASS-Y 8-17), says DASS-Y is not comparable to adult forms, and warns translations may not be validated by the Foundation.
+- **IPAQ:** [official FAQ](https://sites.google.com/view/ipaq/faq) states CC BY 4.0; [official download page](https://sites.google.com/view/ipaq/download) says researcher-submitted translations are provided as-is and their accuracy is not checked.
 
-The PDFs are committed source assets. The builder does not download or overwrite them:
+Validation-study papers are linked by citation/DOI unless their own publication license separately permits bundling. A questionnaire-form permission is not blanket permission to copy its journal articles.
+
+## Rebuild and Validate
+
+The builders never download PDFs. They validate the local forms, recalculate checksums, and regenerate all five family JSON files:
 
 ```powershell
 python data/questionnaires/build_catalog.py
-```
-
-It validates all item/response/scoring references, checks that each referenced PDF exists, recalculates its SHA-256 digest, and writes `json/phq9.json` and `json/gad7.json`. To run only these data-integrity tests:
-
-```powershell
+python data/questionnaires/build_dass_catalog.py
+python data/questionnaires/build_ipaq_catalog.py
 pytest tests/unit/test_instrument_catalog.py -q
 ```
 
-## Scoring and use limitations
+## Scoring, Populations, and Safety
 
-- PHQ-9 contains nine scored symptom items. Its functional-impact follow-up question is represented as an unscored item with its own response scale.
-- GAD-7 contains seven scored items.
-- The JSON contains score mappings and source descriptions, not a complete interpretation/manual or diagnostic workflow.
-- PHQ-9 item 9 concerns thoughts of death or self-harm and is tagged `suicide-related-thoughts` for downstream interface handling. This metadata is not a risk assessment or response protocol. Any real-world administration requires an independently reviewed clinical workflow and local support/escalation procedures.
-- The PHQ/GAD forms are screening instruments. They do not alone establish a diagnosis or replace professional assessment.
-- Original-language and translated forms can differ in typography, punctuation, or wording. Use the bundled PDF as the source of truth for the exact form; JSON is a structured representation for software testing.
-- Adult/general clinical applicability is not inferred for translated variants unless a version-specific source establishes it. The English source validation population is recorded as study context, not as an eligibility rule.
+- PHQ-9 contains nine scored symptom items; its functional-impact follow-up is explicitly unscored. Item 9 is tagged `suicide-related-thoughts` only for cautious interface presentation. That tag is not risk assessment or an escalation protocol.
+- DASS-21 includes raw subscale sums and separate `x2` comparison outputs. DASS-Y remains unmultiplied and separate.
+- IPAQ frequency and duration use numeric response fields and units; these test records do not calculate MET-minutes.
+- DASS/IPAQ source-hosted translations are preserved verbatim but are not presumed independently validated or measurement-invariant.
+- Screening scores alone do not establish a diagnosis. Real use requires the appropriate manuals, privacy/consent controls, trained interpretation, and locally reviewed response procedures.
 
-## Adding another instrument
+## Adding Instruments
 
-1. Identify the exact edition, language, locale, population, and source publication.
-2. Verify item-text and PDF redistribution permission for the intended public repository. Record a URL to the permission statement or a written permission reference.
-3. If rights are unclear, add a citation/official link to `docs/instrument_library.md`; do not copy the PDF or item text.
-4. Add the source PDF only when redistribution is explicitly permitted. Record the exact source URL, permission basis, retrieval date, and SHA-256 checksum.
-5. Create one `QuestionnaireVersion` per language/locale/form. Preserve source wording, response scales, unscored questions, scoring targets, population evidence, and version lineage.
-6. Add validation tests for item counts, response labels, scoring exclusions, locales, provenance, search, and filters.
+1. Identify the exact edition, language, locale, population, validation evidence, and official source.
+2. Verify that item text and the actual PDF may be redistributed in a public repository. If rights are unclear, add only an official link and rights note to [the instrument library](../../docs/instrument_library.md).
+3. Store every concrete form/translation as a separate version. Preserve source item wording, answer choices, numeric units, unscored follow-ups, scoring multipliers, and missing-data rules.
+4. Bundle a PDF only with explicit permission. Record source URL, license, permission basis, access date, and checksum.
+5. Add tests for item counts, exact source wording, scoring, age/locale variants, provenance, and search/filter behavior.
 
-Do not store participant-level responses, patient records, private research papers, licensed scales, authentication data, or API credentials in this directory.
+Never store participant responses, patient records, private publications, unauthorized forms, passwords, or API keys in this directory.

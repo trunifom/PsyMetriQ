@@ -311,6 +311,52 @@ def test_target_population_rejects_reversed_age_range() -> None:
         )
 
 
+def test_scoring_algorithm_supports_a_documented_scale_multiplier() -> None:
+    algorithm = ScoringAlgorithm(
+        output_variable="dass21_depression_comparable",
+        method="sum",
+        target_items=["dass_depression_01"],
+        multiplier=2.0,
+    )
+
+    assert algorithm.multiplier == 2.0
+
+
+def test_numeric_item_does_not_require_a_fake_categorical_response_set() -> None:
+    numeric_item = ItemSchema(
+        item_id="activity_days",
+        variable_name="activity_days",
+        dimension="physical_activity",
+        prompt_text="On how many days were you physically active?",
+        response_mode="numeric",
+        response_set_ref=None,
+        measurement_unit="days/week",
+        numeric_minimum=0,
+        numeric_maximum=7,
+        redcap_field_type="text",
+    )
+    numeric_only_version = QuestionnaireVersion(
+        version_id="activity_numeric_v1",
+        language="en",
+        items=[numeric_item],
+    )
+
+    assert numeric_only_version.response_sets == {}
+    assert numeric_only_version.items[0].measurement_unit == "days/week"
+
+
+def test_categorical_item_requires_a_response_set_reference() -> None:
+    with pytest.raises(ValidationError, match="must reference a response set"):
+        ItemSchema(
+            item_id="missing_choices",
+            variable_name="missing_choices",
+            dimension="test",
+            prompt_text="Pick a response.",
+            response_mode="categorical",
+            response_set_ref=None,
+        )
+
+
 def test_questionnaire_parent_rejects_unknown_local_version_reference() -> None:
     derived_version = make_version().model_copy(
         update={

@@ -10,7 +10,7 @@ Implemented:
 
 - Pydantic v2 models for questionnaire families, concrete versions, items, response scales, scoring, population, provenance, metadata, and source documents.
 - Portable JSON file catalog with case-insensitive search and composable filters; no database server or database file is required.
-- A permission-reviewed test corpus with the official PHQ-9 English and Germany-German forms and GAD-7 English, Austrian-German, and Swiss-German forms.
+- A rights-reviewed real-form corpus: PHQ-9 (English/Germany-German), GAD-7 (English/Austria-/Switzerland-German), DASS-21 (English/German), DASS-Y (English/German; ages 8-17), and IPAQ short forms (English/German; ages 15-69) plus IPAQ-E (older-adult English form).
 - PDF SHA-256 verification, source links, retrieval dates, and explicit redistribution basis in the JSON records.
 
 Planned: the Flet search/assembly GUI, NLP redundancy review, Zotero/PDF/LLM ingestion, and REDCap/R exporters. The backend search API is ready for GUI integration, but the GUI does not yet implement the search controls.
@@ -31,13 +31,15 @@ Generate the two synthetic development examples:
 python data/generate_mock_data.py
 ```
 
-Generate or refresh the real, permission-cleared PHQ-9/GAD-7 catalog from the PDFs already bundled in the repository:
+Generate or refresh the real catalog from PDFs already bundled in the repository:
 
 ```powershell
 python data/questionnaires/build_catalog.py
+python data/questionnaires/build_dass_catalog.py
+python data/questionnaires/build_ipaq_catalog.py
 ```
 
-The builder never downloads files. It validates the existing PDF files, calculates checksums, and writes Pydantic-validated JSON into `data/questionnaires/json/`.
+The builders never download files. They validate existing PDFs, calculate checksums, and write Pydantic-validated JSON into `data/questionnaires/json/`. The licensed original forms are organized under `data/questionnaires/forms/<domain>/<instrument>/`.
 
 Search the catalog from Python:
 
@@ -64,9 +66,9 @@ A repository-wide Ruff check may report pre-existing style issues in unfinished 
 
 ## Real Instrument Data and Rights
 
-Only the PHQ-9 and GAD-7 forms listed in [data/questionnaires/README.md](data/questionnaires/README.md) are currently bundled as real item text and PDFs. The official PHQ Screeners source explicitly permits reproduction, translation, display, and distribution of its PHQ/GAD-7 screeners and translations. Each PDF has a source URL, permission statement, retrieval date, and SHA-256 checksum in its JSON record.
+The PHQ-9/GAD-7 forms are redistributed under the official PHQ Screeners notice; DASS/DASS-Y forms are public domain but cannot be modified or sold; IPAQ forms are redistributed under CC BY 4.0. Each is attributed separately, linked to its exact official source, and recorded with the relevant permission conditions and PDF SHA-256 checksum. German DASS/IPAQ translation quality is not guaranteed by the source organizations; the JSON preserves the exact variant and states this limitation.
 
-Other well-known instruments are listed in the [instrument library and licensing guide](docs/instrument_library.md), but are not copied into this repository until the exact instrument/version/translation redistribution rights are verified. A public download link, university access, or a non-commercial user licence is not permission to redistribute a PDF or item text on GitHub. Never add participant responses, private study files, credentials, or unapproved licensed material.
+Other well-known instruments are listed in the [instrument library and licensing guide](docs/instrument_library.md), but remain link-only until exact version/translation rights are verified. A public download link, university access, or non-commercial use licence is not automatically permission to redistribute a PDF or item text on GitHub. Never add participant responses, private study files, credentials, or unapproved licensed material.
 
 ## Documentation
 

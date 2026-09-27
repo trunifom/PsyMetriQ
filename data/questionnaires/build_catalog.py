@@ -34,7 +34,7 @@ from schemas.questionnaire_schema import (  # noqa: E402, I001
 )
 
 LOGGER = logging.getLogger(__name__)
-DEFAULT_PDF_DIRECTORY = PROJECT_ROOT / "data" / "questionnaires" / "pdfs"
+DEFAULT_PDF_DIRECTORY = PROJECT_ROOT / "data" / "questionnaires" / "forms"
 DEFAULT_OUTPUT_DIRECTORY = PROJECT_ROOT / "data" / "questionnaires" / "json"
 OFFICIAL_PHQ_PAGE = "https://www.phqscreeners.com/select-screener"
 PHQ_LICENSE_NOTICE = (
@@ -368,7 +368,7 @@ def build_phq9_versions(pdf_directory: Path) -> QuestionnaireParent:
             _source_document(
                 title="PHQ-9 English form",
                 language="en",
-                pdf_filename="phq9_en.pdf",
+                pdf_filename="mental_health/phq9/phq9_en.pdf",
                 source_url=english_pdf_url,
                 permission_basis=PHQ_LICENSE_NOTICE,
                 pdf_directory=pdf_directory,
@@ -415,7 +415,7 @@ def build_phq9_versions(pdf_directory: Path) -> QuestionnaireParent:
             _source_document(
                 title="PHQ-9 German for Germany form",
                 language="de",
-                pdf_filename="phq9_de_de.pdf",
+                pdf_filename="mental_health/phq9/phq9_de_de.pdf",
                 source_url=german_pdf_url,
                 permission_basis=PHQ_LICENSE_NOTICE,
                 pdf_directory=pdf_directory,
@@ -486,7 +486,7 @@ def build_gad7_versions(pdf_directory: Path) -> QuestionnaireParent:
             prompts=tuple(GAD7_EN_ITEMS),
             response_labels=tuple(PHQ9_EN_RESPONSE_LABELS),
             response_set_ref="frequency_4_en",
-            pdf_filename="gad7_en.pdf",
+            pdf_filename="mental_health/gad7/gad7_en.pdf",
             source_url=(
                 "https://www.phqscreeners.com/images/sites/g/files/g10060481/f/201412/"
                 "GAD-7_English.pdf"
@@ -501,7 +501,7 @@ def build_gad7_versions(pdf_directory: Path) -> QuestionnaireParent:
             prompts=tuple(GAD7_DE_AT_ITEMS),
             response_labels=tuple(GAD7_DE_AT_RESPONSE_LABELS),
             response_set_ref="frequency_4_de_at",
-            pdf_filename="gad7_de_at.pdf",
+            pdf_filename="mental_health/gad7/gad7_de_at.pdf",
             source_url=(
                 "https://www.phqscreeners.com/images/sites/g/files/g10060481/f/201412/"
                 "GAD7_German%20for%20Austria.pdf"
@@ -516,7 +516,7 @@ def build_gad7_versions(pdf_directory: Path) -> QuestionnaireParent:
             prompts=tuple(GAD7_DE_CH_ITEMS),
             response_labels=tuple(GAD7_DE_CH_RESPONSE_LABELS),
             response_set_ref="frequency_4_de_ch",
-            pdf_filename="gad7_de_ch.pdf",
+            pdf_filename="mental_health/gad7/gad7_de_ch.pdf",
             source_url=(
                 "https://www.phqscreeners.com/images/sites/g/files/g10060481/f/201412/"
                 "GAD7_German%20for%20Switzerland.pdf"

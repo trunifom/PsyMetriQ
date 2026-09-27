@@ -78,10 +78,20 @@ class ItemSchema(BaseModel):
 		min_length=1, description="Subscale or construct dimension for this item."
 	)
 	prompt_text: str = Field(min_length=1, description="Text presented to the respondent.")
-	response_set_ref: str = Field(
-		min_length=1,
-		description="Key of the response set defined by the containing questionnaire version.",
+	response_mode: Literal["categorical", "numeric", "text"] = Field(
+		default="categorical",
+		description="Whether the response is selected from a scale or entered numerically/as text.",
 	)
+	response_set_ref: str | None = Field(
+		default=None,
+		description="Key of a version response set; required for categorical responses.",
+	)
+	measurement_unit: str | None = Field(
+		default=None,
+		description="Unit for numeric input, such as days/week, minutes/day, or hours/day.",
+	)
+	numeric_minimum: float | None = Field(default=None)
+	numeric_maximum: float | None = Field(default=None)
 	is_reverse_scored: bool = Field(
 		default=False,
 		description="Whether this item's score direction must be reversed during scoring.",
@@ -99,6 +109,19 @@ class ItemSchema(BaseModel):
 		default_factory=QuestionnaireMetadata,
 		description="Item-specific tags or notes for discovery and review.",
 	)
+
+	@model_validator(mode="after")
+	def validate_response_definition(self) -> "ItemSchema":
+		"""Require scale references for categorical items and consistent numeric bounds."""
+		if self.response_mode == "categorical" and self.response_set_ref is None:
+			raise ValueError("Categorical items must reference a response set")
+		if (
+			self.numeric_minimum is not None
+			and self.numeric_maximum is not None
+			and self.numeric_minimum > self.numeric_maximum
+		):
+			raise ValueError("numeric_minimum cannot exceed numeric_maximum")
+		return self
 
 	@field_validator("variable_name")
 	@classmethod
@@ -122,6 +145,10 @@ class ScoringAlgorithm(BaseModel):
 	target_items: list[str] = Field(
 		min_length=1,
 		description="Item identifiers from the containing version used to calculate the score.",
+	)
+	multiplier: float = Field(
+		default=1.0,
+		description="Factor applied after the configured method, such as 2 for DASS-21 scales.",
 	)
 	missing_data_rules: str | None = Field(
 		default=None,
@@ -280,8 +307,8 @@ class QuestionnaireVersion(BaseModel):
 		description="Psychometric quality metrics associated with this version.",
 	)
 	response_sets: dict[str, list[ResponseOption]] = Field(
-		min_length=1,
-		description="Named response scales referenced by this version's items."
+		default_factory=dict,
+		description="Named categorical response scales; numeric forms may define none.",
 	)
 	items: list[ItemSchema] = Field(
 		min_length=1,
@@ -315,9 +342,20 @@ class QuestionnaireVersion(BaseModel):
 			raise ValueError("variable_name values must be unique within a questionnaire version")
 
 		for item in self.items:
+			if item.response_set_ref is None:
+				if item.response_mode == "categorical":
+					raise ValueError(
+						f"Categorical item {item.item_id!r} must reference a response set"
+					)
+				continue
 			if item.response_set_ref not in self.response_sets:
 				raise ValueError(
 					f"Item {item.item_id!r} references unknown response set "
+					f"{item.response_set_ref!r}"
+				)
+			if not self.response_sets[item.response_set_ref]:
+				raise ValueError(
+					f"Item {item.item_id!r} references an empty response set "
 					f"{item.response_set_ref!r}"
 				)
 

@@ -12,8 +12,12 @@ A scientific citation or public download page is not itself a redistribution lic
 | --- | --- | --- | --- |
 | PHQ-9 | Depressive symptoms / depression screening | English (`en-US`), German for Germany (`de-DE`) | The official PHQ Screeners page explicitly permits reproduction, translation, display, and distribution of PHQ screeners and translations. PDFs and source notices are in the data directory. |
 | GAD-7 | Anxiety symptoms / generalized anxiety screening | English (`en-US`), German for Austria (`de-AT`), German for Switzerland (`de-CH`) | Same official reproduction statement; regional files are maintained separately to preserve their wording and response labels. |
+| DASS-21 | Depression, anxiety, stress (adult forms) | English (`en-AU`), German (`de-DE`; Nilges & Essau translation) | Official Psychology Foundation says forms are public domain and may be copied, but not modified or sold. Translation accuracy/validity is not assured by the Foundation. |
+| DASS-Y | Depression, anxiety, stress (youth) | English (`en-AU`), German (`de-DE`; Neuhoff & Noorani-Yazdanabad) | Official youth form is for ages 8-17, may be copied but not modified or sold. It is a separate instrument; scores are not comparable to adult DASS/DASS-21. |
+| IPAQ Short Last 7 Days Self-Administered | Physical activity | English, German (`de-DE`); standard form states ages 15-69 | Official source licenses CC BY 4.0. Its site says researcher-submitted translations are provided as-is and their accuracy is not verified. Numeric day and duration fields are represented separately. |
+| IPAQ-E | Physical activity (older-adult form) | English | CC BY 4.0 source form, kept as its own form. We do not infer an age cutoff or MET score that is not encoded with evidence. |
 
-The versions reference their source validation papers by DOI without bundling those journal PDFs. The form redistribution permission is not treated as blanket permission to redistribute those publications.
+The PDF source forms are organized in `data/questionnaires/forms/<domain>/<instrument>/`; each JSON family is in `data/questionnaires/json/`. The versions reference validation papers without bundling journal PDFs unless those publication rights are separately cleared.
 
 ## Broader catalogue for future versions
 
@@ -21,21 +25,52 @@ These instruments cover the domains requested for PsyMetriQ. They are discovery 
 
 | Domain | Instrument candidates | Current handling |
 | --- | --- | --- |
-| Wellbeing | WHO-5 Well-Being Index; Warwick-Edinburgh Mental Wellbeing Scales (WEMWBS/SWEMWBS) | Link and evaluate exact version terms. Warwick's current non-commercial licence explicitly does not permit public sharing or providing the scale to other parties under that licence; do not bundle without separate redistribution permission. |
-| Stress | Perceived Stress Scale (PSS-10/PSS-4) | Carnegie Mellon's official scale page directs users to request use permission through MAPI/ePROVIDE. No PSS items or PDFs are bundled until the project obtains and documents the applicable permission. |
-| Anxiety | GAD-7; short form GAD-2; PROMIS Anxiety | GAD-7 is bundled. Add other versions only after rights and language/population evidence are reviewed. |
-| Obsessive-compulsive symptoms | Obsessive-Compulsive Inventory-Revised (OCI-R) | Citation leads to the original paper; item-form redistribution status is not established here. Link only pending review. |
-| Depression | PHQ-9; BDI-II; CES-D; Geriatric Depression Scale (GDS-15) | PHQ-9 is bundled. BDI-II is commercially distributed; GDS/CES-D terms and translations need source-specific review. |
-| Loneliness | UCLA Loneliness Scale (version 3 and short forms) | Multiple versions and translations exist; exact source, population, validation, and distribution rights need review. |
-| Social support | Multidimensional Scale of Perceived Social Support (MSPSS) | Literature/source identification is available; public redistribution of the selected form has not been verified. |
-| Resilience/resources | Connor-Davidson Resilience Scale (CD-RISC-10/25); Brief Resilience Scale | Confirm exact scale rights and intended-use terms before storing real item text. |
-| Physical/general health | PROMIS Global Health; EQ-5D-5L | PROMIS includes adult measures, pediatric measures for ages 8-17, and parent-proxy measures for ages 1-17 according to HealthMeasures. Exact measure use/redistribution terms still need review. EuroQol instruments require attention to official registration/licensing. No forms are bundled. |
-| Younger populations | PHQ-A / adolescent depression forms; CES-DC; PROMIS Pediatric | Do not infer that adult PHQ-9/GAD-7 forms are validated for children. Locate age-specific editions, normative/validation evidence, translations, and redistribution terms first. |
-| Older populations | GDS forms; age-specific PROMIS forms | Store the age range and supporting validation source on the exact version; do not label a form “elderly” based only on a search keyword. |
+| Wellbeing | WHO-5 Well-Being Index; WEMWBS/SWEMWBS | WHO-5 has a substantial review literature, but check the exact publication license and embedded third-party credits. Warwick's non-commercial WEMWBS licence explicitly does not permit public sharing; link-only absent separate permission. |
+| Stress | Perceived Stress Scale (PSS-10/PSS-4) | Carnegie Mellon directs use-permission requests through MAPI/ePROVIDE. DASS is bundled but captures a narrower tension/stress construct. |
+| Anxiety | GAD-7; GAD-2; PROMIS Anxiety | GAD-7 and DASS anxiety are bundled. PROMIS has adult/pediatric forms and many languages; exact measure/translation terms apply. |
+| Obsessive-compulsive symptoms | OCI-R (adult) | Common adult measure; MAPI/ePROVIDE is an authoritative discovery source. Item redistribution not established. |
+| Depression | PHQ-9; DASS-21/DASS-Y; BDI-II; CES-D; GDS-15 | PHQ-9 and DASS variants are bundled under different terms. BDI-II is paid Pearson content; other editions need source-specific review. |
+| Loneliness | UCLA Loneliness Scale v3 and short forms | Three-item version is widely used in surveys; German-language use is reported, but translation validation and redistribution rights need review. |
+| Social support | MSPSS (12 items); ISEL-12 | MSPSS German psychometric work includes an older-adult sample. Exact form redistribution rights not established. |
+| Social relationships/peers | KIDSCREEN-27/52; SDQ Peer Problems; Friendship Quality Questionnaire | KIDSCREEN covers ages 8-18 with German/English versions; exact rehosting rights need checking. SDQ is copyrighted; developer terms distinguish non-commercial copies. FQQ is a child measure; German validation/reuse not established. |
+| Family relationships/structure | Family APGAR; ISQ/household roster measures | Family APGAR is a brief perceived family-function screen, not a family-structure measure. Capture household composition separately; confirm German evidence and form rights. |
+| School attendance/absenteeism | ISAP/ISAP-P; SRAS-R | ISAP is a German-developed youth/parent attendance-problems inventory, initially validated in clinical child/adolescent samples; parent version shows limitations. SRAS-R is an English functional school-refusal measure; older German adaptation evidence questions equivalence. Redistribution not established. |
+| School wellbeing | SSWQ; KIDSCREEN School Environment | SSWQ is a 16-item school measure initially validated in grades 6-8; German validation not established. KIDSCREEN is broader youth HRQoL. No forms bundled. |
+| Media/internet/gaming | CIUS; IGDS9-SF; GADIS-A | CIUS has German adolescent and German/English adult validation studies. GADIS-A is a German ICD-11 gaming symptom screen validated for ages 10-17. IGDS9-SF is commonly used; exact translation evidence and item rights vary. |
+| Socioeconomic status | Family Affluence Scale III; MacArthur Subjective Social Status ladder | FAS III is intended for school-age survey populations, not adult SES. MacArthur has separate adult and youth ladders. Check exact form/reproduction terms. |
+| Resilience/resources | CD-RISC-10/25; Brief Resilience Scale | Widely used candidates, but exact scale rights and language/population validation must be checked; no forms bundled. |
+| Physical/general health | PROMIS Global Health; WHODAS 2.0; EQ-5D-5L | PROMIS domains include adults (18+), pediatrics (8-17), and parent proxy (1-17); terms vary. WHODAS reproduction requires source-specific licensing. EuroQol registration/license terms apply. |
+| Movement/physical activity | IPAQ short; IPAQ-E | Standard IPAQ short and English IPAQ-E are bundled. IPAQ German is official-site hosted but unvalidated by the site; use as a language fixture without asserting cross-locale measurement equivalence. |
+| ADHD/attention | ASRS v1.1/ASRS-5 adult; ADHD-RS/Conners/Vanderbilt child forms | Reporter, age, and edition differ. Commercial/permission requirements apply to several child rating forms; no restricted items bundled. |
+| Cognition/working memory/dementia | PROMIS Cognitive Function; NIH Toolbox; WAIS/WISC; MoCA; Mini-Cog | PROMIS/NIH have administration terms; WAIS/WISC are commercial; MoCA terms prohibit redistribution outside license. Mini-Cog public access is not an explicit GitHub redistribution grant. No forms bundled. |
+| Substance use/addiction | AUDIT/ASSIST; CRAFFT 2.1; IGDS9-SF | WHO publications require exact-version/third-party review. CRAFFT is adolescent substance-risk screening and reproduction context approval is required. No forms bundled. |
+
+## Validation and Population Evidence
+
+The following references informed the shortlist. They identify original or key validation work, not blanket evidence for every translation, population, or cutoff:
+
+- **MSPSS social support:** Zimet et al., 1988, [DOI 10.1207/s15327752jpa5201_2](https://doi.org/10.1207/s15327752jpa5201_2); German older-adult psychometric study, Boggatz, [DOI 10.1111/opn.12540](https://doi.org/10.1111/opn.12540).
+- **UCLA loneliness short scale:** Hughes et al., 2004, [DOI 10.1177/0164027504268574](https://doi.org/10.1177/0164027504268574). German-language cohort use does not alone prove a validated translation.
+- **KIDSCREEN:** Ravens-Sieberer et al., 2008, 22,827 children/adolescents ages 8-18 across 13 European countries, [DOI 10.1111/j.1524-4733.2007.00291.x](https://doi.org/10.1111/j.1524-4733.2007.00291.x).
+- **Friendship Quality Questionnaire:** Parker & Asher, 1993, children in grades 3-5, [DOI 10.1037/0012-1649.29.4.611](https://doi.org/10.1037/0012-1649.29.4.611).
+- **ISAP school attendance:** Knollmann, Reissner & Hebebrand, 2019, clinical youth sample, [DOI 10.1007/s00787-018-1204-2](https://doi.org/10.1007/s00787-018-1204-2); ISAP-P parent form, [DOI 10.3389/frcha.2025.1543527](https://doi.org/10.3389/frcha.2025.1543527). The parent validation found limitations in associations with absence; pair attendance-problem scales with actual attendance records.
+- **School refusal:** Kearney's SRAS-R, 2002, [DOI 10.1023/A:1020774932043](https://doi.org/10.1023/A:1020774932043). A German adaptation study found concerns with the older adaptation's structure/content, so translation equivalence is not assumed.
+- **School wellbeing:** Renshaw et al. SSWQ, 2015, grades 6-8, [DOI 10.1037/spq0000088](https://doi.org/10.1037/spq0000088).
+- **Problematic internet use:** CIUS original, Meerkerk et al., 2009, [DOI 10.1089/cpb.2008.0181](https://doi.org/10.1089/cpb.2008.0181); German adolescent validation, [DOI 10.1089/cyber.2012.0689](https://doi.org/10.1089/cyber.2012.0689); German/English adult language invariance, [DOI 10.1089/cyber.2018.0731](https://doi.org/10.1089/cyber.2018.0731).
+- **Gaming:** GADIS-A German ICD-11-based validation in frequent gamers ages 10-17, [DOI 10.3390/jcm9040993](https://doi.org/10.3390/jcm9040993); IGDS9-SF development, [DOI 10.1016/j.chb.2014.12.006](https://doi.org/10.1016/j.chb.2014.12.006). DSM-5 and ICD-11 measures are not interchangeable.
+- **Family Affluence Scale III:** adolescent measure, Hartley et al., 2016, [DOI 10.1007/s12187-015-9325-3](https://doi.org/10.1007/s12187-015-9325-3); cross-national revision, [DOI 10.1007/s12187-015-9339-x](https://doi.org/10.1007/s12187-015-9339-x).
+- **Subjective social status:** MacArthur ladder youth study, Goodman et al., 2001, [DOI 10.1542/peds.108.2.e31](https://doi.org/10.1542/peds.108.2.e31); adult foundational study, Adler et al., 2000, [DOI 10.1037/0278-6133.19.6.586](https://doi.org/10.1037/0278-6133.19.6.586).
+- **IPAQ physical activity:** Craig et al. multicountry reliability/validity study, 2003, [DOI 10.1249/01.MSS.0000078924.61453.FB](https://doi.org/10.1249/01.MSS.0000078924.61453.FB). The source supports adult population surveillance; IPAQ-E remains a separate older-adult form.
+- **WHO-5 wellbeing:** Topp et al. systematic review, 2015, [DOI 10.1159/000376585](https://doi.org/10.1159/000376585); exact instrument publication and third-party license still need checking before bundling.
+
+No literature citation means a test is not validated; a citation does not establish item rights. For every adopted locale/form, preserve the exact study population and limitations in `QuestionnaireVersion` metadata.
 
 ## Authoritative discovery sources
 
 - **PHQ/GAD-7:** [Official PHQ Screeners selection and download page](https://www.phqscreeners.com/select-screener) and its [terms](https://www.phqscreeners.com/terms). The source page states no permission is required to reproduce, translate, display, or distribute the listed screeners and translations.
+- **DASS/DASS-Y:** [Official downloads](https://www2.psy.unsw.edu.au/dass/down.htm), [FAQ on age, scoring, use, and translations](https://www2.psy.unsw.edu.au/dass/DASSFAQ.htm), [adult translations](https://www2.psy.unsw.edu.au/dass/DASS%20Translations.htm), and [DASS-Y translations](https://www2.psy.unsw.edu.au/dass/DASS-Y%20Translations.htm). The source says public domain/copy allowed, not modified or sold; translations may not be validated by the Foundation.
+- **IPAQ:** [Official download page](https://sites.google.com/view/ipaq/download) and [FAQ/license](https://sites.google.com/view/ipaq/faq). CC BY 4.0; translation submissions are provided as-is.
+- **Rosenberg Self-Esteem Scale:** University of Maryland [public-domain and use notes](https://socy.umd.edu/quick-links/using-rosenberg-self-esteem-scale). The source notes original development on 5,024 New York high-school juniors/seniors; translation permission does not itself validate a translation.
 - **WEMWBS/SWEMWBS:** [University of Warwick licence and pricing information](https://warwick.ac.uk/services/innovations/wemwbs/licenses/) and [non-commercial registration/terms](https://warwick.ac.uk/services/innovations/wemwbs/licenses/non-commercial/). The non-commercial licence is not permission to publicly share the scales.
 - **WHO materials:** [WHO copyright and licensing policy](https://www.who.int/about/policies/publishing/copyright). Check the copyright notice on the specific publication and check for third-party material within it; a general WHO publication licence should not be assumed to apply to every embedded instrument.
 - **Measurement-instrument selection:** [COSMIN](https://www.cosmin.nl/) offers guidance and discovery resources for measurement properties and instrument selection. A COSMIN listing or article does not grant item-text redistribution rights.
@@ -44,6 +79,10 @@ These instruments cover the domains requested for PsyMetriQ. They are discovery 
 - **CD-RISC:** use the [CD-RISC official site](https://www.cd-risc.com/) to identify versions and permissions.
 - **PSS:** [Cohen's Perceived Stress Scale resource page](https://www.cmu.edu/dietrich/psychology/stress-immunity-disease-lab/scales/index.html) is a discovery lead; verify current use/redistribution conditions for the exact version.
 - **PSS permission workflow:** the same Carnegie Mellon page says use permission requests for the Perceived Stress Scale are submitted through [MAPI Research Trust ePROVIDE](https://eprovide.mapi-trust.org/). Apply for the exact form/language before building a bundled test record.
+- **School attendance discovery:** [INSA attendance resources](https://insa.network/resources/research-based/) lists ISAP and related measures; check its linked primary research and separate reproduction rights.
+- **Youth measures:** [KIDSCREEN versions](https://www.kidscreen.org/english/questionnaires/language-versions-view-and-download/) and [official SDQ forms](https://www.sdqinfo.org/py/sdqinfo/b0.py). Downloads do not necessarily grant permission to rehost PDFs; SDQ copyright/terms apply.
+- **Problematic media use:** primary measure papers for [CIUS](https://doi.org/10.1089/cpb.2008.0181), [GADIS-A](https://doi.org/10.3390/jcm9040993), and [IGDS9-SF](https://doi.org/10.1016/j.chb.2014.12.006); check supplemental-form rights before copying.
+- **Cognition/dementia:** [MoCA terms](https://mocacognition.com/terms-of-use/) prohibit redistribution outside the license; consult [HealthMeasures PROMIS](https://healthmeasures.net/promis-basics/) for exact cognitive forms and terms.
 
 ## Suggested evidence and metadata workflow
 
@@ -57,4 +96,4 @@ If item text may not be redistributed, PsyMetriQ can still store permitted bibli
 
 Use primary validation studies and official manuals to distinguish the intended screening population from the population actually studied. Store evidence citations and age bounds on the specific version. Keep norms, thresholds, diagnostic sensitivity/specificity, and missing-data guidance traceable to the exact language/form/population; never transfer those values automatically to a translated or shortened form.
 
-PsyMetriQ's bundled PHQ-9 and GAD-7 records are test data for software behavior. They are not a substitute for official manuals, independently evaluated German-region validation studies, or clinical interpretation.
+PsyMetriQ's bundled PHQ-9, GAD-7, DASS-21, DASS-Y, and IPAQ records are test data for software behavior. They do not substitute for official manuals, validation of a specific translation/population, or clinical interpretation. The IPAQ German translation is supplied by its source as-is; DASS translation quality is not assured by the Foundation.

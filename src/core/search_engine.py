@@ -47,6 +47,10 @@ class QuestionnaireSearchResult(BaseModel):
     item_id: str | None = None
     variable_name: str | None = None
     prompt_text: str | None = None
+    response_mode: str | None = None
+    measurement_unit: str | None = None
+    numeric_minimum: float | None = None
+    numeric_maximum: float | None = None
     item_metadata: QuestionnaireMetadata = Field(default_factory=QuestionnaireMetadata)
     matched_fields: list[str]
 
@@ -280,8 +284,13 @@ class QuestionnaireSearchEngine:
                 matched_dimensions: set[str] = set()
                 for item in eligible_items:
                     item_metadata_text = self._metadata_search_text(item.metadata)
-                    response_labels = " ".join(
-                        option.label for option in version.response_sets[item.response_set_ref]
+                    response_labels = (
+                        ""
+                        if item.response_set_ref is None
+                        else " ".join(
+                            option.label
+                            for option in version.response_sets[item.response_set_ref]
+                        )
                     )
                     item_fields = {
                         "item_id": item.item_id,
@@ -325,6 +334,10 @@ class QuestionnaireSearchEngine:
                                 item_id=item.item_id,
                                 variable_name=item.variable_name,
                                 prompt_text=item.prompt_text,
+                                response_mode=item.response_mode,
+                                measurement_unit=item.measurement_unit,
+                                numeric_minimum=item.numeric_minimum,
+                                numeric_maximum=item.numeric_maximum,
                                 item_metadata=item.metadata,
                                 matched_fields=item_matches or ["filters"],
                             )
