@@ -1,0 +1,17 @@
+# Python & OS
+__pycache__/
+*.py[cod]
+.DS_Store
+.venv/
+venv/
+.env
+
+# Pytest & Ruff
+.pytest_cache/
+.ruff_cache/
+
+# Projekt Daten (Pdfs & Exports)
+data/01_raw_pdfs/*
+!data/01_raw_pdfs/.gitkeep
+data/03_export_artifacts/*
+!data/03_export_artifacts/.gitkeep
