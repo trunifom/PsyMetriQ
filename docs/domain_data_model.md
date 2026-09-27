@@ -43,9 +43,11 @@ Every version has its own stable `version_id`, language, response sets, items, a
 - `publication_year`, `source_citation`, and `source_doi`: provenance for the version-specific publication or documentation.
 - `based_on`: one or more `(instrument_id, version_id)` references identifying source forms.
 - `metadata`: version-specific keywords, search aliases, MeSH terms, characteristics, and review notes.
+- `source_documents`: version-specific official forms, manuals, or validation-study references with licensing and integrity metadata.
 
 The `items` list is the actual content of the concrete form. A short form must contain its own item list and scoring rules rather than inheriting a parent's item list implicitly. This makes a search result or future export unambiguous.
 Each item can also have its own `QuestionnaireMetadata` for item-specific tags and discovery notes.
+Use `ItemSchema.is_scored=False` for supplementary questions that are present on a form but excluded from the instrument's total score. A response option may have `score=None` when it is intentionally not scored. A scoring algorithm is rejected if it targets an item marked unscored.
 
 ## Authorship and provenance
 
@@ -120,6 +122,8 @@ The empty lists and maps in this excerpt illustrate omitted content only; `Quest
 
 - `instrument_id` identifies an instrument family; `version_id` identifies one form within that family.
 - Version IDs must be unique within a family. Item IDs must be unique within a version.
+- `ResponseOption.score` is nullable so supplementary, non-scored questions can retain their answer labels without inventing scoring values. Use `ItemSchema.is_scored=False` and keep such items out of scoring targets.
+- `QuestionnaireSourceDocument` stores a source URL, repository-relative local path when approved, exact license/permission basis, access date, redistribution decision, and optional SHA-256 checksum. Never treat an `HTTP 200` response as a license.
 - REDCap `variable_name` values must be unique case-insensitively within a version and must satisfy the 26-character naming rule.
 - Each item response-set reference and each scoring target must resolve within its version.
 - Same-family `based_on` references must resolve and form an acyclic graph. External-family references are recorded but not yet resolved across files.

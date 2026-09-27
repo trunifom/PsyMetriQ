@@ -1,0 +1,806 @@
+{
+  "instrument_id": "gad7",
+  "name_full": "Generalized Anxiety Disorder-7",
+  "construct_ontology": [],
+  "is_commercial": false,
+  "contributors": [
+    {
+      "name": "Robert L. Spitzer",
+      "role": "author",
+      "affiliation": null,
+      "orcid": null
+    },
+    {
+      "name": "Kurt Kroenke",
+      "role": "author",
+      "affiliation": null,
+      "orcid": null
+    },
+    {
+      "name": "Janet B. W. Williams",
+      "role": "author",
+      "affiliation": null,
+      "orcid": null
+    },
+    {
+      "name": "Bernd Löwe",
+      "role": "author",
+      "affiliation": null,
+      "orcid": null
+    }
+  ],
+  "metadata": {
+    "keywords": [
+      "anxiety",
+      "generalized anxiety",
+      "mental health"
+    ],
+    "search_aliases": [
+      "GAD-7",
+      "GAD7",
+      "Generalized Anxiety Disorder-7"
+    ],
+    "mesh_terms": [],
+    "characteristics": [],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "gad7_en_v1",
+      "language": "en",
+      "display_name": "GAD-7 English (United States source form)",
+      "locale": "en-US",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2006,
+      "source_citation": "Spitzer RL, Kroenke K, Williams JBW, Löwe B. A brief measure for assessing generalized anxiety disorder: the GAD-7. Arch Intern Med. 2006;166:1092-1097.",
+      "source_doi": "10.1001/archinte.166.10.1092",
+      "source_documents": [
+        {
+          "title": "GAD-7 form: GAD-7 English (United States source form)",
+          "document_type": "questionnaire_form",
+          "language": "en",
+          "source_url": "https://www.phqscreeners.com/images/sites/g/files/g10060481/f/201412/GAD-7_English.pdf",
+          "local_path": "data/questionnaires/pdfs/gad7_en.pdf",
+          "license_name": "PHQ Screeners reproduction notice",
+          "license_url": "https://www.phqscreeners.com/select-screener",
+          "redistribution_permitted": true,
+          "permission_basis": "The official PHQ Screeners page states that PHQ/GAD-7 screeners and translations may be reproduced, translated, displayed, and distributed without permission. The downloaded form also carries this notice.",
+          "accessed_on": "2026-09-27",
+          "sha256": "180538a8e3f2f3cb012f9991d1b307d3d14720e82bf0593f8853f4885740ce48"
+        },
+        {
+          "title": "Spitzer RL, Kroenke K, Williams JBW, Löwe B. A brief measure for assessing generalized anxiety disorder: the GAD-7. 2006.",
+          "document_type": "validation_study",
+          "language": "en",
+          "source_url": "https://doi.org/10.1001/archinte.166.10.1092",
+          "local_path": null,
+          "license_name": "Copyright remains with the publisher/authors; link only",
+          "license_url": "https://www.phqscreeners.com/select-screener",
+          "redistribution_permitted": false,
+          "permission_basis": "Citation link only; the journal article PDF is not bundled.",
+          "accessed_on": "2026-09-27",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "keywords": [
+          "anxiety",
+          "generalized anxiety",
+          "primary care",
+          "Angst",
+          "Sorgen"
+        ],
+        "search_aliases": [
+          "GAD-7",
+          "GAD7",
+          "Generalized Anxiety Disorder-7"
+        ],
+        "mesh_terms": [
+          {
+            "descriptor": "Anxiety",
+            "descriptor_id": null,
+            "qualifiers": []
+          },
+          {
+            "descriptor": "Anxiety Disorders",
+            "descriptor_id": null,
+            "qualifiers": []
+          }
+        ],
+        "characteristics": [
+          "self-report",
+          "symptom-screening",
+          "14-day-reference-period"
+        ],
+        "notes": "Official source form for locale en-US; wording is kept variant-specific."
+      },
+      "cosmin_metrics": {},
+      "response_sets": {
+        "frequency_4_en": [
+          {
+            "code": 0,
+            "label": "Not at all",
+            "score": 0.0
+          },
+          {
+            "code": 1,
+            "label": "Several days",
+            "score": 1.0
+          },
+          {
+            "code": 2,
+            "label": "More than half the days",
+            "score": 2.0
+          },
+          {
+            "code": 3,
+            "label": "Nearly every day",
+            "score": 3.0
+          }
+        ]
+      },
+      "items": [
+        {
+          "item_id": "gad7_en_01",
+          "variable_name": "gad7_en_01",
+          "dimension": "nervousness",
+          "prompt_text": "Feeling nervous, anxious or on edge",
+          "response_set_ref": "frequency_4_en",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "gad7_en_02",
+          "variable_name": "gad7_en_02",
+          "dimension": "worry_control",
+          "prompt_text": "Not being able to stop or control worrying",
+          "response_set_ref": "frequency_4_en",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "gad7_en_03",
+          "variable_name": "gad7_en_03",
+          "dimension": "excessive_worry",
+          "prompt_text": "Worrying too much about different things",
+          "response_set_ref": "frequency_4_en",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "gad7_en_04",
+          "variable_name": "gad7_en_04",
+          "dimension": "relaxation",
+          "prompt_text": "Trouble relaxing",
+          "response_set_ref": "frequency_4_en",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "gad7_en_05",
+          "variable_name": "gad7_en_05",
+          "dimension": "restlessness",
+          "prompt_text": "Being so restless that it is hard to sit still",
+          "response_set_ref": "frequency_4_en",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "gad7_en_06",
+          "variable_name": "gad7_en_06",
+          "dimension": "irritability",
+          "prompt_text": "Becoming easily annoyed or irritable",
+          "response_set_ref": "frequency_4_en",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "gad7_en_07",
+          "variable_name": "gad7_en_07",
+          "dimension": "fear",
+          "prompt_text": "Feeling afraid as if something awful might happen",
+          "response_set_ref": "frequency_4_en",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        }
+      ],
+      "scoring_algorithms": [
+        {
+          "output_variable": "gad7_total",
+          "method": "sum",
+          "target_items": [
+            "gad7_en_01",
+            "gad7_en_02",
+            "gad7_en_03",
+            "gad7_en_04",
+            "gad7_en_05",
+            "gad7_en_06",
+            "gad7_en_07"
+          ],
+          "missing_data_rules": "Follow the official GAD-7 scoring guidance; do not impute by default."
+        }
+      ]
+    },
+    {
+      "version_id": "gad7_de_at_v1",
+      "language": "de",
+      "display_name": "GAD-7 Deutsch (Österreich)",
+      "locale": "de-AT",
+      "form_type": "full",
+      "variant_types": [
+        "translation"
+      ],
+      "target_populations": [],
+      "contributors": [],
+      "based_on": [
+        {
+          "instrument_id": "gad7",
+          "version_id": "gad7_en_v1"
+        }
+      ],
+      "publication_year": null,
+      "source_citation": null,
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "GAD-7 form: GAD-7 Deutsch (Österreich)",
+          "document_type": "questionnaire_form",
+          "language": "de",
+          "source_url": "https://www.phqscreeners.com/images/sites/g/files/g10060481/f/201412/GAD7_German%20for%20Austria.pdf",
+          "local_path": "data/questionnaires/pdfs/gad7_de_at.pdf",
+          "license_name": "PHQ Screeners reproduction notice",
+          "license_url": "https://www.phqscreeners.com/select-screener",
+          "redistribution_permitted": true,
+          "permission_basis": "The official PHQ Screeners page states that PHQ/GAD-7 screeners and translations may be reproduced, translated, displayed, and distributed without permission. The downloaded form also carries this notice.",
+          "accessed_on": "2026-09-27",
+          "sha256": "fc04bb9ccba1ae685f3c271d21fca00e655efc05ecb3943d56a20a763ca06d5f"
+        }
+      ],
+      "metadata": {
+        "keywords": [
+          "Angst",
+          "Ängstlichkeit",
+          "Sorgen",
+          "psychische Gesundheit"
+        ],
+        "search_aliases": [
+          "GAD-7",
+          "GAD7",
+          "Generalized Anxiety Disorder-7"
+        ],
+        "mesh_terms": [
+          {
+            "descriptor": "Anxiety",
+            "descriptor_id": null,
+            "qualifiers": []
+          },
+          {
+            "descriptor": "Anxiety Disorders",
+            "descriptor_id": null,
+            "qualifiers": []
+          }
+        ],
+        "characteristics": [
+          "self-report",
+          "symptom-screening",
+          "14-day-reference-period"
+        ],
+        "notes": "Official source form for locale de-AT; wording is kept variant-specific."
+      },
+      "cosmin_metrics": {},
+      "response_sets": {
+        "frequency_4_de_at": [
+          {
+            "code": 0,
+            "label": "Nie",
+            "score": 0.0
+          },
+          {
+            "code": 1,
+            "label": "An manchen Tagen",
+            "score": 1.0
+          },
+          {
+            "code": 2,
+            "label": "An mehr als der Hälfte der Tage",
+            "score": 2.0
+          },
+          {
+            "code": 3,
+            "label": "Beinahe jeden Tag",
+            "score": 3.0
+          }
+        ]
+      },
+      "items": [
+        {
+          "item_id": "gad7_de_at_01",
+          "variable_name": "gad7_de_at_01",
+          "dimension": "nervousness",
+          "prompt_text": "Gefühle der Nervosität, Ängstlichkeit oder Anspannung",
+          "response_set_ref": "frequency_4_de_at",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "gad7_de_at_02",
+          "variable_name": "gad7_de_at_02",
+          "dimension": "worry_control",
+          "prompt_text": "Unfähigkeit, Sorgen zu stoppen oder zu kontrollieren",
+          "response_set_ref": "frequency_4_de_at",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "gad7_de_at_03",
+          "variable_name": "gad7_de_at_03",
+          "dimension": "excessive_worry",
+          "prompt_text": "Übermäßige Sorgen bezüglich verschiedener Angelegenheiten",
+          "response_set_ref": "frequency_4_de_at",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "gad7_de_at_04",
+          "variable_name": "gad7_de_at_04",
+          "dimension": "relaxation",
+          "prompt_text": "Schwierigkeiten, sich zu entspannen",
+          "response_set_ref": "frequency_4_de_at",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "gad7_de_at_05",
+          "variable_name": "gad7_de_at_05",
+          "dimension": "restlessness",
+          "prompt_text": "So rastlos sein, dass das Stillsitzen schwer fällt",
+          "response_set_ref": "frequency_4_de_at",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "gad7_de_at_06",
+          "variable_name": "gad7_de_at_06",
+          "dimension": "irritability",
+          "prompt_text": "Schnelle Verärgerung oder Gereiztheit",
+          "response_set_ref": "frequency_4_de_at",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "gad7_de_at_07",
+          "variable_name": "gad7_de_at_07",
+          "dimension": "fear",
+          "prompt_text": "Angstgefühle, so als könnte etwas Schreckliches passieren",
+          "response_set_ref": "frequency_4_de_at",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        }
+      ],
+      "scoring_algorithms": [
+        {
+          "output_variable": "gad7_total",
+          "method": "sum",
+          "target_items": [
+            "gad7_de_at_01",
+            "gad7_de_at_02",
+            "gad7_de_at_03",
+            "gad7_de_at_04",
+            "gad7_de_at_05",
+            "gad7_de_at_06",
+            "gad7_de_at_07"
+          ],
+          "missing_data_rules": "Follow the official GAD-7 scoring guidance; do not impute by default."
+        }
+      ]
+    },
+    {
+      "version_id": "gad7_de_ch_v1",
+      "language": "de",
+      "display_name": "GAD-7 Deutsch (Schweiz)",
+      "locale": "de-CH",
+      "form_type": "full",
+      "variant_types": [
+        "translation"
+      ],
+      "target_populations": [],
+      "contributors": [],
+      "based_on": [
+        {
+          "instrument_id": "gad7",
+          "version_id": "gad7_en_v1"
+        }
+      ],
+      "publication_year": null,
+      "source_citation": null,
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "GAD-7 form: GAD-7 Deutsch (Schweiz)",
+          "document_type": "questionnaire_form",
+          "language": "de",
+          "source_url": "https://www.phqscreeners.com/images/sites/g/files/g10060481/f/201412/GAD7_German%20for%20Switzerland.pdf",
+          "local_path": "data/questionnaires/pdfs/gad7_de_ch.pdf",
+          "license_name": "PHQ Screeners reproduction notice",
+          "license_url": "https://www.phqscreeners.com/select-screener",
+          "redistribution_permitted": true,
+          "permission_basis": "The official PHQ Screeners page states that PHQ/GAD-7 screeners and translations may be reproduced, translated, displayed, and distributed without permission. The downloaded form also carries this notice.",
+          "accessed_on": "2026-09-27",
+          "sha256": "d7915b7ed2ab20010cba383155b08b169fa3fb93765f466c13d3e6eb32eece9f"
+        }
+      ],
+      "metadata": {
+        "keywords": [
+          "Angst",
+          "Ängstlichkeit",
+          "Sorgen",
+          "psychische Gesundheit"
+        ],
+        "search_aliases": [
+          "GAD-7",
+          "GAD7",
+          "Generalized Anxiety Disorder-7"
+        ],
+        "mesh_terms": [
+          {
+            "descriptor": "Anxiety",
+            "descriptor_id": null,
+            "qualifiers": []
+          },
+          {
+            "descriptor": "Anxiety Disorders",
+            "descriptor_id": null,
+            "qualifiers": []
+          }
+        ],
+        "characteristics": [
+          "self-report",
+          "symptom-screening",
+          "14-day-reference-period"
+        ],
+        "notes": "Official source form for locale de-CH; wording is kept variant-specific."
+      },
+      "cosmin_metrics": {},
+      "response_sets": {
+        "frequency_4_de_ch": [
+          {
+            "code": 0,
+            "label": "Überhaupt nicht",
+            "score": 0.0
+          },
+          {
+            "code": 1,
+            "label": "An einzelnen Tagen",
+            "score": 1.0
+          },
+          {
+            "code": 2,
+            "label": "An mehr als der Hälfte der Tage",
+            "score": 2.0
+          },
+          {
+            "code": 3,
+            "label": "Beinahe jeden Tag",
+            "score": 3.0
+          }
+        ]
+      },
+      "items": [
+        {
+          "item_id": "gad7_de_ch_01",
+          "variable_name": "gad7_de_ch_01",
+          "dimension": "nervousness",
+          "prompt_text": "Gefühle der Nervosität, Ängstlichkeit oder Anspannung",
+          "response_set_ref": "frequency_4_de_ch",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "gad7_de_ch_02",
+          "variable_name": "gad7_de_ch_02",
+          "dimension": "worry_control",
+          "prompt_text": "Nicht in der Lage sein, Sorgen zu stoppen oder zu kontrollieren",
+          "response_set_ref": "frequency_4_de_ch",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "gad7_de_ch_03",
+          "variable_name": "gad7_de_ch_03",
+          "dimension": "excessive_worry",
+          "prompt_text": "Übermässige Sorgen bezüglich verschiedener Angelegenheiten",
+          "response_set_ref": "frequency_4_de_ch",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "gad7_de_ch_04",
+          "variable_name": "gad7_de_ch_04",
+          "dimension": "relaxation",
+          "prompt_text": "Schwierigkeiten, sich zu entspannen",
+          "response_set_ref": "frequency_4_de_ch",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "gad7_de_ch_05",
+          "variable_name": "gad7_de_ch_05",
+          "dimension": "restlessness",
+          "prompt_text": "So rastlos sein, dass das Stillsitzen schwer fällt",
+          "response_set_ref": "frequency_4_de_ch",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "gad7_de_ch_06",
+          "variable_name": "gad7_de_ch_06",
+          "dimension": "irritability",
+          "prompt_text": "Schnelle Verärgerung oder Gereiztheit",
+          "response_set_ref": "frequency_4_de_ch",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "gad7_de_ch_07",
+          "variable_name": "gad7_de_ch_07",
+          "dimension": "fear",
+          "prompt_text": "Gefühl der Angst, so als würde etwas Schreckliches passieren",
+          "response_set_ref": "frequency_4_de_ch",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        }
+      ],
+      "scoring_algorithms": [
+        {
+          "output_variable": "gad7_total",
+          "method": "sum",
+          "target_items": [
+            "gad7_de_ch_01",
+            "gad7_de_ch_02",
+            "gad7_de_ch_03",
+            "gad7_de_ch_04",
+            "gad7_de_ch_05",
+            "gad7_de_ch_06",
+            "gad7_de_ch_07"
+          ],
+          "missing_data_rules": "Follow the official GAD-7 scoring guidance; do not impute by default."
+        }
+      ]
+    }
+  ]
+}

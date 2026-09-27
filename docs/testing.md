@@ -14,6 +14,8 @@ Tests protect data integrity first, then module contracts and end-to-end user wo
 
 The schema suite verifies valid model construction, invalid REDCap variable names, duplicate item and version IDs, case-insensitive field-name collisions, missing response-set and scoring-item references, language/locale syntax, population age ranges, version ancestry and cycles, Pydantic JSON round-tripping, generated fixture validation, and safe reporting of filesystem failures. The search suite verifies matching across entity types and metadata scopes, aliases, MeSH terms, notes, exact filters, combined AND/OR semantics, blank and missing results, refreshes, malformed files, duplicate instruments, and preservation of the last valid view.
 
+The real-instrument catalog suite validates PHQ-9/GAD-7 item counts, locale coverage, score exclusions, official redistribution records, local PDF paths, SHA-256 digests, and search over the generated language variants.
+
 Run from the repository root:
 
 ```powershell

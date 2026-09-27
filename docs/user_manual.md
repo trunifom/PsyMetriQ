@@ -30,6 +30,16 @@ The command writes `bdi_ii_demo.json` and `asrs_demo.json` into `data/02_extract
 
 The generator overwrites those two named demo files on each run. It does not delete other files. The output directory is configurable when calling `generate_mock_data(output_directory: Path)` from Python, which is useful for tests and tooling.
 
+## Build the real instrument test catalog
+
+The repository includes official PHQ-9 and GAD-7 source forms with an explicit redistribution notice. Rebuild their structured JSON and PDF checksums with:
+
+```powershell
+python data/questionnaires/build_catalog.py
+```
+
+The command reads only PDFs already present in `data/questionnaires/pdfs/`; it does not download or overwrite the source documents. It validates the resulting versions and writes `phq9.json` and `gad7.json` under `data/questionnaires/json/`. Review the [instrument data and rights notes](../data/questionnaires/README.md) before adding or sharing any other instrument.
+
 ## Search a shared folder
 
 Point the search engine at the directory containing validated questionnaire JSON files:

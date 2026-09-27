@@ -1,0 +1,724 @@
+{
+  "instrument_id": "phq9",
+  "name_full": "Patient Health Questionnaire-9",
+  "construct_ontology": [],
+  "is_commercial": false,
+  "contributors": [
+    {
+      "name": "Kurt Kroenke",
+      "role": "author",
+      "affiliation": null,
+      "orcid": null
+    },
+    {
+      "name": "Robert L. Spitzer",
+      "role": "author",
+      "affiliation": null,
+      "orcid": null
+    },
+    {
+      "name": "Janet B. W. Williams",
+      "role": "author",
+      "affiliation": null,
+      "orcid": null
+    }
+  ],
+  "metadata": {
+    "keywords": [
+      "depression",
+      "mental health",
+      "primary care"
+    ],
+    "search_aliases": [
+      "PHQ-9",
+      "PHQ9",
+      "Patient Health Questionnaire"
+    ],
+    "mesh_terms": [],
+    "characteristics": [],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "phq9_en_v1",
+      "language": "en",
+      "display_name": "PHQ-9 English (United States source form)",
+      "locale": "en-US",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "Primary-care patients in the original validation study",
+          "minimum_age_years": null,
+          "maximum_age_years": null,
+          "notes": "Describes the cited study sample, not an exclusive use restriction."
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2001,
+      "source_citation": "Kroenke K, Spitzer RL, Williams JBW. The PHQ-9: Validity of a Brief Depression Severity Measure. J Gen Intern Med. 2001;16:606-613.",
+      "source_doi": "10.1046/j.1525-1497.2001.016009606.x",
+      "source_documents": [
+        {
+          "title": "PHQ-9 English form",
+          "document_type": "questionnaire_form",
+          "language": "en",
+          "source_url": "https://www.phqscreeners.com/images/sites/g/files/g10060481/f/201412/PHQ-9_English.pdf",
+          "local_path": "data/questionnaires/pdfs/phq9_en.pdf",
+          "license_name": "PHQ Screeners reproduction notice",
+          "license_url": "https://www.phqscreeners.com/select-screener",
+          "redistribution_permitted": true,
+          "permission_basis": "The official PHQ Screeners page states that PHQ/GAD-7 screeners and translations may be reproduced, translated, displayed, and distributed without permission. The downloaded form also carries this notice.",
+          "accessed_on": "2026-09-27",
+          "sha256": "e3fb5b8853e3530c9025c822b99fd4f4bc17da49eefda5ed689c49238c132a46"
+        },
+        {
+          "title": "Kroenke K, Spitzer RL, Williams JBW. The PHQ-9: Validity of a Brief Depression Severity Measure. J Gen Intern Med. 2001;16:606-613.",
+          "document_type": "validation_study",
+          "language": "en",
+          "source_url": "https://doi.org/10.1046/j.1525-1497.2001.016009606.x",
+          "local_path": null,
+          "license_name": "Copyright remains with the publisher/authors; link only",
+          "license_url": "https://www.phqscreeners.com/select-screener",
+          "redistribution_permitted": false,
+          "permission_basis": "Citation link only; the journal article PDF is not bundled.",
+          "accessed_on": "2026-09-27",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "keywords": [
+          "depression",
+          "depressive symptoms",
+          "mental health",
+          "primary care"
+        ],
+        "search_aliases": [
+          "PHQ-9",
+          "Patient Health Questionnaire-9"
+        ],
+        "mesh_terms": [
+          {
+            "descriptor": "Depression",
+            "descriptor_id": null,
+            "qualifiers": []
+          },
+          {
+            "descriptor": "Depressive Disorder",
+            "descriptor_id": null,
+            "qualifiers": []
+          }
+        ],
+        "characteristics": [
+          "self-report",
+          "symptom-screening",
+          "14-day-reference-period"
+        ],
+        "notes": "This screening measure is not by itself a clinical diagnosis."
+      },
+      "cosmin_metrics": {},
+      "response_sets": {
+        "frequency_4_en": [
+          {
+            "code": 0,
+            "label": "Not at all",
+            "score": 0.0
+          },
+          {
+            "code": 1,
+            "label": "Several days",
+            "score": 1.0
+          },
+          {
+            "code": 2,
+            "label": "More than half the days",
+            "score": 2.0
+          },
+          {
+            "code": 3,
+            "label": "Nearly every day",
+            "score": 3.0
+          }
+        ],
+        "impact_4_en": [
+          {
+            "code": 0,
+            "label": "Not difficult at all",
+            "score": null
+          },
+          {
+            "code": 1,
+            "label": "Somewhat difficult",
+            "score": null
+          },
+          {
+            "code": 2,
+            "label": "Very difficult",
+            "score": null
+          },
+          {
+            "code": 3,
+            "label": "Extremely difficult",
+            "score": null
+          }
+        ]
+      },
+      "items": [
+        {
+          "item_id": "phq9_en_01",
+          "variable_name": "phq9_en_01",
+          "dimension": "interest",
+          "prompt_text": "Little interest or pleasure in doing things",
+          "response_set_ref": "frequency_4_en",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "phq9_en_02",
+          "variable_name": "phq9_en_02",
+          "dimension": "mood",
+          "prompt_text": "Feeling down, depressed, or hopeless",
+          "response_set_ref": "frequency_4_en",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "phq9_en_03",
+          "variable_name": "phq9_en_03",
+          "dimension": "sleep",
+          "prompt_text": "Trouble falling or staying asleep, or sleeping too much",
+          "response_set_ref": "frequency_4_en",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "phq9_en_04",
+          "variable_name": "phq9_en_04",
+          "dimension": "energy",
+          "prompt_text": "Feeling tired or having little energy",
+          "response_set_ref": "frequency_4_en",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "phq9_en_05",
+          "variable_name": "phq9_en_05",
+          "dimension": "appetite",
+          "prompt_text": "Poor appetite or overeating",
+          "response_set_ref": "frequency_4_en",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "phq9_en_06",
+          "variable_name": "phq9_en_06",
+          "dimension": "self_evaluation",
+          "prompt_text": "Feeling bad about yourself — or that you are a failure or have let yourself or your family down",
+          "response_set_ref": "frequency_4_en",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "phq9_en_07",
+          "variable_name": "phq9_en_07",
+          "dimension": "concentration",
+          "prompt_text": "Trouble concentrating on things, such as reading the newspaper or watching television",
+          "response_set_ref": "frequency_4_en",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "phq9_en_08",
+          "variable_name": "phq9_en_08",
+          "dimension": "psychomotor",
+          "prompt_text": "Moving or speaking so slowly that other people could have noticed? Or the opposite — being so fidgety or restless that you have been moving around a lot more than usual",
+          "response_set_ref": "frequency_4_en",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "phq9_en_09",
+          "variable_name": "phq9_en_09",
+          "dimension": "self_harm_thoughts",
+          "prompt_text": "Thoughts that you would be better off dead or of hurting yourself in some way",
+          "response_set_ref": "frequency_4_en",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item",
+              "suicide-related-thoughts"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "phq9_en_function_impact",
+          "variable_name": "phq9_en_impact",
+          "dimension": "functional_impact",
+          "prompt_text": "If you checked off any problems, how difficult have these problems made it to do your work, take care of things at home, or get along with other people?",
+          "response_set_ref": "impact_4_en",
+          "is_reverse_scored": false,
+          "is_scored": false,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "functional-impact"
+            ],
+            "notes": null
+          }
+        }
+      ],
+      "scoring_algorithms": [
+        {
+          "output_variable": "phq9_total",
+          "method": "sum",
+          "target_items": [
+            "phq9_en_01",
+            "phq9_en_02",
+            "phq9_en_03",
+            "phq9_en_04",
+            "phq9_en_05",
+            "phq9_en_06",
+            "phq9_en_07",
+            "phq9_en_08",
+            "phq9_en_09"
+          ],
+          "missing_data_rules": "Follow the official PHQ-9 scoring guidance; do not impute by default."
+        }
+      ]
+    },
+    {
+      "version_id": "phq9_de_de_v1",
+      "language": "de",
+      "display_name": "PHQ-9 Deutsch (Deutschland)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [
+        "translation"
+      ],
+      "target_populations": [],
+      "contributors": [],
+      "based_on": [
+        {
+          "instrument_id": "phq9",
+          "version_id": "phq9_en_v1"
+        }
+      ],
+      "publication_year": null,
+      "source_citation": "Kroenke K, Spitzer RL, Williams JBW. The PHQ-9: Validity of a Brief Depression Severity Measure. J Gen Intern Med. 2001;16:606-613.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "PHQ-9 German for Germany form",
+          "document_type": "questionnaire_form",
+          "language": "de",
+          "source_url": "https://www.phqscreeners.com/images/sites/g/files/g10060481/f/201412/PHQ9_German%20for%20Germany.pdf",
+          "local_path": "data/questionnaires/pdfs/phq9_de_de.pdf",
+          "license_name": "PHQ Screeners reproduction notice",
+          "license_url": "https://www.phqscreeners.com/select-screener",
+          "redistribution_permitted": true,
+          "permission_basis": "The official PHQ Screeners page states that PHQ/GAD-7 screeners and translations may be reproduced, translated, displayed, and distributed without permission. The downloaded form also carries this notice.",
+          "accessed_on": "2026-09-27",
+          "sha256": "55602781b1575683a82d50ac6484868b7b176abaf5ee19fca71e018fa1ed8840"
+        }
+      ],
+      "metadata": {
+        "keywords": [
+          "Depression",
+          "depressive Symptome",
+          "psychische Gesundheit",
+          "Hausarztpraxis"
+        ],
+        "search_aliases": [
+          "PHQ-9 Deutsch",
+          "Patient Health Questionnaire-9 Deutsch"
+        ],
+        "mesh_terms": [
+          {
+            "descriptor": "Depression",
+            "descriptor_id": null,
+            "qualifiers": []
+          },
+          {
+            "descriptor": "Depressive Disorder",
+            "descriptor_id": null,
+            "qualifiers": []
+          }
+        ],
+        "characteristics": [
+          "self-report",
+          "symptom-screening",
+          "14-day-reference-period"
+        ],
+        "notes": "Deutschland-Fassung; nicht mit Schweizer/österreichischen Varianten gleichsetzen."
+      },
+      "cosmin_metrics": {},
+      "response_sets": {
+        "frequency_4_de": [
+          {
+            "code": 0,
+            "label": "Überhaupt nicht",
+            "score": 0.0
+          },
+          {
+            "code": 1,
+            "label": "An einzelnen Tagen",
+            "score": 1.0
+          },
+          {
+            "code": 2,
+            "label": "An mehr als der Hälfte der Tage",
+            "score": 2.0
+          },
+          {
+            "code": 3,
+            "label": "Beinahe jeden Tag",
+            "score": 3.0
+          }
+        ],
+        "impact_4_de": [
+          {
+            "code": 0,
+            "label": "Überhaupt nicht erschwert",
+            "score": null
+          },
+          {
+            "code": 1,
+            "label": "Etwas erschwert",
+            "score": null
+          },
+          {
+            "code": 2,
+            "label": "Stark erschwert",
+            "score": null
+          },
+          {
+            "code": 3,
+            "label": "Extrem erschwert",
+            "score": null
+          }
+        ]
+      },
+      "items": [
+        {
+          "item_id": "phq9_de_01",
+          "variable_name": "phq9_de_01",
+          "dimension": "interest",
+          "prompt_text": "Wenig Interesse oder Freude an Ihren Tätigkeiten",
+          "response_set_ref": "frequency_4_de",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "phq9_de_02",
+          "variable_name": "phq9_de_02",
+          "dimension": "mood",
+          "prompt_text": "Niedergeschlagenheit, Schwermut oder Hoffnungslosigkeit",
+          "response_set_ref": "frequency_4_de",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "phq9_de_03",
+          "variable_name": "phq9_de_03",
+          "dimension": "sleep",
+          "prompt_text": "Schwierigkeiten, ein- oder durchzuschlafen, oder vermehrter Schlaf",
+          "response_set_ref": "frequency_4_de",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "phq9_de_04",
+          "variable_name": "phq9_de_04",
+          "dimension": "energy",
+          "prompt_text": "Müdigkeit oder Gefühl, keine Energie zu haben",
+          "response_set_ref": "frequency_4_de",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "phq9_de_05",
+          "variable_name": "phq9_de_05",
+          "dimension": "appetite",
+          "prompt_text": "Verminderter Appetit oder übermäßiges Bedürfnis zu essen",
+          "response_set_ref": "frequency_4_de",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "phq9_de_06",
+          "variable_name": "phq9_de_06",
+          "dimension": "self_evaluation",
+          "prompt_text": "Schlechte Meinung von sich selbst; Gefühl, ein Versager zu sein oder die Familie enttäuscht zu haben",
+          "response_set_ref": "frequency_4_de",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "phq9_de_07",
+          "variable_name": "phq9_de_07",
+          "dimension": "concentration",
+          "prompt_text": "Schwierigkeiten, sich auf etwas zu konzentrieren, z. B. beim Zeitungslesen oder Fernsehen",
+          "response_set_ref": "frequency_4_de",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "phq9_de_08",
+          "variable_name": "phq9_de_08",
+          "dimension": "psychomotor",
+          "prompt_text": "Waren Ihre Bewegungen oder Ihre Sprache so verlangsamt, dass es auch anderen auffallen würde? Oder waren Sie im Gegenteil zappelig oder ruhelos und hatten dadurch einen stärkeren Bewegungsdrang als sonst?",
+          "response_set_ref": "frequency_4_de",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "phq9_de_09",
+          "variable_name": "phq9_de_09",
+          "dimension": "self_harm_thoughts",
+          "prompt_text": "Gedanken, dass Sie lieber tot wären oder sich Leid zufügen möchten",
+          "response_set_ref": "frequency_4_de",
+          "is_reverse_scored": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "screening-item",
+              "suicide-related-thoughts"
+            ],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "phq9_de_function_impact",
+          "variable_name": "phq9_de_impact",
+          "dimension": "functional_impact",
+          "prompt_text": "Wenn eines oder mehrere der bisher in diesem Fragebogen beschriebenen Probleme bei Ihnen vorliegen, wie sehr haben diese Probleme es Ihnen erschwert, Ihre Arbeit zu tun, Ihren Haushalt zu regeln oder mit anderen Menschen zurecht zu kommen?",
+          "response_set_ref": "impact_4_de",
+          "is_reverse_scored": false,
+          "is_scored": false,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [
+              "self-report",
+              "functional-impact"
+            ],
+            "notes": null
+          }
+        }
+      ],
+      "scoring_algorithms": [
+        {
+          "output_variable": "phq9_total",
+          "method": "sum",
+          "target_items": [
+            "phq9_de_01",
+            "phq9_de_02",
+            "phq9_de_03",
+            "phq9_de_04",
+            "phq9_de_05",
+            "phq9_de_06",
+            "phq9_de_07",
+            "phq9_de_08",
+            "phq9_de_09"
+          ],
+          "missing_data_rules": "Follow the official PHQ-9 scoring guidance; do not impute by default."
+        }
+      ]
+    }
+  ]
+}

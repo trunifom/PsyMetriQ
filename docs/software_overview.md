@@ -8,7 +8,7 @@ The architecture document `psymetriq_readme.md` is the original product and modu
 
 ## Current implementation status
 
-Phase 1 provides the Pydantic source-of-truth models in `schemas/questionnaire_schema.py`, model-level validation, a synthetic fixture generator in `data/generate_mock_data.py`, and unit tests in `tests/unit/test_schema.py`. Phase 2 provides file-backed search in `src/core/search_engine.py`. The generator writes two synthetic examples to `data/02_extracted_jsons/`.
+Phase 1 provides the Pydantic source-of-truth models in `schemas/questionnaire_schema.py`, model-level validation, a synthetic fixture generator in `data/generate_mock_data.py`, and unit tests in `tests/unit/test_schema.py`. Phase 2 provides file-backed search in `src/core/search_engine.py`. Permission-reviewed real PHQ-9/GAD-7 form data and PDFs are maintained separately in `data/questionnaires/`; they are not mixed into the synthetic demo folder.
 
 The Flet workflow, NLP similarity checks, REDCap exporter, and LLM/PDF ingestion are roadmap capabilities. Their source directories are present, but this overview does not claim that they are complete or production-ready.
 
@@ -31,9 +31,12 @@ The Flet workflow, NLP similarity checks, REDCap exporter, and LLM/PDF ingestion
 - `QuestionnaireContributor`: records instrument authorship or version-specific author, translator, adapter, editor, reviewer, or validator credit.
 - `TargetPopulation`: records a source-reported population label and optional age bounds.
 - `QuestionnaireVersionReference`: connects a derived version to a source instrument/version.
+- `QuestionnaireSourceDocument`: records exact source URLs, local approved PDF paths, redistribution basis, retrieval dates, and checksums.
+- `ItemSchema.is_scored`: distinguishes score-bearing items from supplementary questions such as the PHQ-9 functional-impact follow-up.
 - `QuestionnaireVersion`: differentiates `language` from `locale`, classifies full/short/long/screening forms, and supports multiple simultaneous variant types.
 - `MeSHTerm` and `QuestionnaireMetadata`: preserve curated keywords, aliases, controlled MeSH descriptors, characteristics, and review notes at instrument, version, or item scope.
 - `QuestionnaireSearchFilters`: combines exact-match catalogue facets; alternative values within a facet use OR, while different facets use AND. Free-text search can be combined with these filters.
+- `data/questionnaires/build_catalog.py`: rebuilds the permission-cleared PHQ-9/GAD-7 family JSON from the committed PDFs and records their SHA-256 hashes.
 - `build_demo_questionnaire`: constructs a validated model from synthetic specifications.
 - `generate_mock_data`: writes the two JSON fixtures and returns their paths. An optional output directory supports isolated tests. Filesystem errors are logged and re-raised.
 

@@ -20,7 +20,7 @@ Do not run commands that print actual secret values into shared logs or chat.
 
 ## Research and questionnaire data
 
-Questionnaire text may be copyrighted or licensed, and extracted research material may contain sensitive information. Keep raw PDFs, real extracted JSON, participant-level responses, and production exports out of the public repository unless their distribution has been reviewed and explicitly approved. The Git ignore rules exclude raw PDFs, non-demo extracted JSON, and export artifacts by default. Only the two named synthetic demo JSON files are allowlisted.
+Questionnaire text may be copyrighted or licensed, and extracted research material may contain sensitive information. Keep raw PDFs, real extracted JSON, participant-level responses, and production exports out of the public repository unless their distribution has been reviewed and explicitly approved. The Git ignore rules exclude raw PDFs, non-demo extracted JSON, and export artifacts by default. The repository contains only the two synthetic fixtures and the separately documented PHQ-9/GAD-7 corpus whose official source explicitly permits redistribution.
 
 The `QuestionnaireMetadata.notes` fields are searchable and travel with shared JSON. Use them only for source-based notes that the intended audience is allowed to see. Do not put participant responses, confidential reviewer identities, credentials, or private clinical observations into notes, keywords, aliases, or characteristics.
 

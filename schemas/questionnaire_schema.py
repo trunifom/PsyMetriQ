@@ -1,7 +1,8 @@
 import re
+from datetime import date
 from typing import Any, Literal, TypeAlias
 
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import BaseModel, Field, HttpUrl, field_validator, model_validator
 
 QuestionnaireFormType: TypeAlias = Literal["full", "short", "long", "screening", "custom"]
 QuestionnaireVariantType: TypeAlias = Literal[
@@ -19,7 +20,9 @@ class ResponseOption(BaseModel):
 
 	code: str | int = Field(description="Stable response code stored with collected answers.")
 	label: str = Field(min_length=1, description="Human-readable response shown to a respondent.")
-	score: float = Field(description="Numeric value used by scoring algorithms.")
+	score: float | None = Field(
+		description="Numeric scoring value, or None when the choice is not scored."
+	)
 
 
 class MeSHTerm(BaseModel):
@@ -82,6 +85,12 @@ class ItemSchema(BaseModel):
 	is_reverse_scored: bool = Field(
 		default=False,
 		description="Whether this item's score direction must be reversed during scoring.",
+	)
+	is_scored: bool = Field(
+		default=True,
+		description=(
+			"Whether this item contributes to a derived score; auxiliary questions are false."
+		),
 	)
 	redcap_field_type: Literal["radio", "checkbox", "slider", "text"] = Field(
 		default="radio", description="REDCap field type used when exporting this item."
@@ -165,6 +174,49 @@ class QuestionnaireVersionReference(BaseModel):
 	version_id: str = Field(min_length=1)
 
 
+class QuestionnaireSourceDocument(BaseModel):
+	"""Record an authoritative source document and its local redistribution audit.
+
+	The permission statement is specific to the source and this exact document;
+	``redistribution_permitted`` must not be inferred from public accessibility.
+	A local path is repository-relative and cannot escape the project directory.
+	"""
+
+	title: str = Field(min_length=1)
+	document_type: Literal[
+		"questionnaire_form", "validation_study", "user_manual", "bibliography", "other"
+	]
+	language: str = Field(min_length=2, max_length=35)
+	source_url: HttpUrl | None = None
+	local_path: str | None = None
+	license_name: str = Field(min_length=1)
+	license_url: HttpUrl | None = None
+	redistribution_permitted: bool
+	permission_basis: str = Field(min_length=1)
+	accessed_on: date
+	sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+
+	@field_validator("local_path")
+	@classmethod
+	def validate_local_path(cls, value: str | None) -> str | None:
+		"""Reject absolute paths and traversal components in repository file links."""
+		if value is None:
+			return None
+		path_parts = value.replace("\\", "/").split("/")
+		if value.startswith(("/", "\\")) or re.match(r"^[A-Za-z]:", value):
+			raise ValueError("local_path must be repository-relative")
+		if ".." in path_parts:
+			raise ValueError("local_path cannot contain parent-directory traversal")
+		return value
+
+	@model_validator(mode="after")
+	def require_source_location(self) -> "QuestionnaireSourceDocument":
+		"""Require either a bundled file reference or the authoritative web URL."""
+		if self.local_path is None and self.source_url is None:
+			raise ValueError("A source document must include a source URL or local path")
+		return self
+
+
 class QuestionnaireVersion(BaseModel):
 	"""Represent one concrete form, language, audience, and item set."""
 
@@ -212,6 +264,12 @@ class QuestionnaireVersion(BaseModel):
 	)
 	source_doi: str | None = Field(
 		default=None, description="DOI for the primary version source, if available."
+	)
+	source_documents: list[QuestionnaireSourceDocument] = Field(
+		default_factory=list,
+		description=(
+			"Version forms, validation studies, and manuals with source/licence provenance."
+		),
 	)
 	metadata: QuestionnaireMetadata = Field(
 		default_factory=QuestionnaireMetadata,
@@ -269,6 +327,14 @@ class QuestionnaireVersion(BaseModel):
 				raise ValueError(
 					f"Scoring algorithm {algorithm.output_variable!r} references "
 					f"unknown items: {sorted(unknown_items)}"
+				)
+			unscored_targets = {
+				item.item_id for item in self.items if not item.is_scored
+			} & set(algorithm.target_items)
+			if unscored_targets:
+				raise ValueError(
+					f"Scoring algorithm {algorithm.output_variable!r} references "
+					f"unscored items: {sorted(unscored_targets)}"
 				)
 
 		return self

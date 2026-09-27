@@ -1,4 +1,5 @@
 import logging
+from datetime import date
 from pathlib import Path
 
 import pytest
@@ -9,6 +10,7 @@ from schemas.questionnaire_schema import (
     ItemSchema,
     QuestionnaireContributor,
     QuestionnaireParent,
+    QuestionnaireSourceDocument,
     QuestionnaireVersion,
     QuestionnaireVersionReference,
     ResponseOption,
@@ -135,6 +137,43 @@ def test_questionnaire_version_rejects_unknown_scoring_item() -> None:
                     target_items=["missing"],
                 )
             ],
+        )
+
+
+def test_questionnaire_version_rejects_unscored_item_as_score_target() -> None:
+    version = make_version()
+    supplementary_item = make_item(variable_name="supplementary", item_id="supplementary")
+    supplementary_item.is_scored = False
+
+    with pytest.raises(ValidationError, match="unscored items"):
+        QuestionnaireVersion(
+            version_id=version.version_id,
+            language=version.language,
+            response_sets=version.response_sets,
+            items=[*version.items, supplementary_item],
+            scoring_algorithms=[
+                ScoringAlgorithm(
+                    output_variable="invalid_total",
+                    method="sum",
+                    target_items=["supplementary"],
+                )
+            ],
+        )
+
+
+@pytest.mark.parametrize("unsafe_path", ["C:/private/form.pdf", "/private/form.pdf", "../form.pdf"])
+def test_source_document_rejects_non_repository_local_paths(unsafe_path: str) -> None:
+    with pytest.raises(ValidationError, match="repository-relative|traversal"):
+        QuestionnaireSourceDocument(
+            title="Test source form",
+            document_type="questionnaire_form",
+            language="en",
+            source_url="https://example.org/form.pdf",
+            local_path=unsafe_path,
+            license_name="Unknown",
+            redistribution_permitted=False,
+            permission_basis="Unit test only",
+            accessed_on=date(2026, 9, 27),
         )
 
 
