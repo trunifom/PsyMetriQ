@@ -27,6 +27,8 @@ pytest tests/unit/test_instrument_catalog.py -q
 ruff check schemas/questionnaire_schema.py data/generate_mock_data.py src/core/search_engine.py data/questionnaires/ tests/unit/
 pytest tests/unit/test_document_pipeline.py -q
 ruff check src/ingestion/ tests/unit/test_document_pipeline.py
+pytest tests/unit/test_external_sources.py -q
+ruff check src/core/external_sources.py src/core/external_search_cli.py tests/unit/test_external_sources.py
 ```
 
 ## Expectations for future features

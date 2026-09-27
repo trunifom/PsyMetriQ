@@ -13,6 +13,7 @@ Implemented:
 - A rights-reviewed real-form corpus: PHQ-9 (English/Germany-German), GAD-7 (English/Austria-/Switzerland-German), DASS-21 (English/German), DASS-Y (English/German; ages 8-17), and IPAQ short forms (English/German; ages 15-69) plus IPAQ-E (older-adult English form).
 - PDF SHA-256 verification, source links, retrieval dates, and explicit redistribution basis in the JSON records.
 - A local PDF inbox with text extraction/OCR, heuristic domain routing, optional opt-in OpenAI Structured Outputs, private review drafts, and checksum-bound rights-gated promotion for questionnaire forms and validation-study references.
+- Read-only Python search connectors for NIH CDE question/response previews, NLM LOINC display terms, and PubMed citation metadata. These are source-linked suggestions, not catalogue entries; the current GUI does not expose them.
 
 Planned: the Flet search/assembly GUI, NLP redundancy review, Zotero sync, and REDCap/R exporters. The PDF intake vertical slice is usable from the CLI but not yet exposed in the GUI.
 
