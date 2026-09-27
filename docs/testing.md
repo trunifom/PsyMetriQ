@@ -12,15 +12,14 @@ Tests protect data integrity first, then module contracts and end-to-end user wo
 
 ## Phase-1 checks
 
-The schema suite verifies valid model construction, invalid REDCap variable names, duplicate item and version IDs, case-insensitive field-name collisions, missing response-set and scoring-item references, Pydantic JSON round-tripping, generated fixture validation, and safe reporting of filesystem failures. The search suite verifies matching across entity types, case-insensitivity, blank and missing results, refreshes, malformed files, duplicate instruments, and preservation of the last valid view.
+The schema suite verifies valid model construction, invalid REDCap variable names, duplicate item and version IDs, case-insensitive field-name collisions, missing response-set and scoring-item references, language/locale syntax, population age ranges, version ancestry and cycles, Pydantic JSON round-tripping, generated fixture validation, and safe reporting of filesystem failures. The search suite verifies matching across entity types and variant metadata, case-insensitivity, blank and missing results, refreshes, malformed files, duplicate instruments, and preservation of the last valid view.
 
 Run from the repository root:
 
 ```powershell
 pytest tests/unit/test_schema.py -q
-ruff check schemas/questionnaire_schema.py data/generate_mock_data.py tests/unit/test_schema.py
 pytest tests/unit/test_search_engine.py -q
-ruff check src/core/search_engine.py tests/unit/test_search_engine.py
+ruff check schemas/questionnaire_schema.py data/generate_mock_data.py src/core/search_engine.py tests/unit/
 ```
 
 ## Expectations for future features

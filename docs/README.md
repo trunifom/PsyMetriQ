@@ -6,6 +6,7 @@ This directory is the maintained home for project documentation. Start here, the
 
 - [Software overview](software_overview.md): project goals, current capabilities, planned capabilities, and the responsibilities of the main modules.
 - [Architecture](architecture.md): layer boundaries, data flow, model relationships, and implementation status.
+- [Domain data model](domain_data_model.md): instrument families, language/form/population variants, contributor roles, and provenance links.
 - [User manual](user_manual.md): setup and currently supported commands, including generation of synthetic questionnaire fixtures.
 - [Coding guidelines](coding_guidelines.md): typing, documentation, validation, asynchronous work, logging, testing, and commit conventions.
 - [Security](security.md): credential handling, protected data, Git safeguards, and incident response.

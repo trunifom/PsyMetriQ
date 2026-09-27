@@ -68,29 +68,134 @@ class ScoringAlgorithm(BaseModel):
 	)
 
 
+class QuestionnaireContributor(BaseModel):
+	"""Credit a person or group for a specific role in instrument development."""
+
+	name: str = Field(min_length=1, description="Person or group name as cited by the source.")
+	role: Literal["author", "translator", "adapter", "editor", "reviewer", "validator", "other"]
+	affiliation: str | None = Field(
+		default=None, description="Affiliation reported by the source, if available."
+	)
+	orcid: str | None = Field(
+		default=None, description="ORCID identifier, if verified and available."
+	)
+
+
+class TargetPopulation(BaseModel):
+	"""Describe an intended respondent group without assuming clinical eligibility."""
+
+	group_name: str = Field(
+		min_length=1, description="Population label, such as adolescents or adults."
+	)
+	minimum_age_years: float | None = Field(default=None, ge=0)
+	maximum_age_years: float | None = Field(default=None, ge=0)
+	notes: str | None = Field(
+		default=None,
+		description="Source-reported population details that do not fit structured age fields.",
+	)
+
+	@model_validator(mode="after")
+	def validate_age_range(self) -> "TargetPopulation":
+		"""Reject an age range whose minimum is greater than its maximum."""
+		if (
+			self.minimum_age_years is not None
+			and self.maximum_age_years is not None
+			and self.minimum_age_years > self.maximum_age_years
+		):
+			raise ValueError("minimum_age_years cannot exceed maximum_age_years")
+		return self
+
+
+class QuestionnaireVersionReference(BaseModel):
+	"""Identify a source version that a translation or adaptation was based on."""
+
+	instrument_id: str = Field(min_length=1)
+	version_id: str = Field(min_length=1)
+
+
 class QuestionnaireVersion(BaseModel):
-	"""Represent one language/version and its internally consistent item set."""
+	"""Represent one concrete form, language, audience, and item set."""
 
 	version_id: str = Field(
 		min_length=1, description="Version identifier unique within its instrument."
 	)
 	language: str = Field(
 		min_length=2,
-		max_length=5,
-		description="Language tag for this version, for example 'de' or 'en-US'.",
+		max_length=35,
+		description="BCP 47 language tag, for example 'de', 'en-US', or 'zh-Hans-CN'.",
+	)
+	display_name: str | None = Field(
+		default=None,
+		description="Human-readable edition name, such as 'Adolescent Short Form'.",
+	)
+	locale: str | None = Field(
+		default=None,
+		description="Regional locale or adaptation context, such as 'de-DE' or 'de-CH'.",
+	)
+	form_type: Literal["full", "short", "long", "screening", "custom"] = Field(
+		default="full",
+		description="Questionnaire form length or intended administration form.",
+	)
+	variant_types: list[
+		Literal[
+			"revision",
+			"translation",
+			"cultural_adaptation",
+			"population_adaptation",
+			"extension",
+			"validation",
+		]
+	] = Field(
+		default_factory=list,
+		description="All applicable ways this form differs from or extends another version.",
+	)
+	target_populations: list[TargetPopulation] = Field(
+		default_factory=list,
+		description="Source-reported respondent groups for this form.",
+	)
+	contributors: list[QuestionnaireContributor] = Field(
+		default_factory=list,
+		description="Authors, translators, adaptors, and other version-specific contributors.",
+	)
+	based_on: list[QuestionnaireVersionReference] = Field(
+		default_factory=list,
+		description="Source versions this version was derived from.",
+	)
+	publication_year: int | None = Field(
+		default=None, ge=1000, le=2200, description="Publication year of this version, if known."
+	)
+	source_citation: str | None = Field(
+		default=None, description="Bibliographic citation for this version, if known."
+	)
+	source_doi: str | None = Field(
+		default=None, description="DOI for the primary version source, if available."
 	)
 	cosmin_metrics: dict[str, Any] = Field(
 		default_factory=dict,
 		description="Psychometric quality metrics associated with this version.",
 	)
 	response_sets: dict[str, list[ResponseOption]] = Field(
+		min_length=1,
 		description="Named response scales referenced by this version's items."
 	)
-	items: list[ItemSchema] = Field(description="Items included in this questionnaire version.")
+	items: list[ItemSchema] = Field(
+		min_length=1,
+		description="Items included in this questionnaire version.",
+	)
 	scoring_algorithms: list[ScoringAlgorithm] = Field(
 		default_factory=list,
 		description="Optional score definitions that reference items in this version.",
 	)
+
+	@field_validator("language", "locale")
+	@classmethod
+	def validate_language_tag(cls, value: str | None) -> str | None:
+		"""Validate a practical BCP 47 tag shape while preserving source spelling."""
+		if value is None:
+			return None
+		if re.fullmatch(r"[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*", value) is None:
+			raise ValueError("language and locale must use a valid BCP 47 tag shape")
+		return value
 
 	@model_validator(mode="after")
 	def validate_references(self) -> "QuestionnaireVersion":
@@ -134,6 +239,10 @@ class QuestionnaireParent(BaseModel):
 	is_commercial: bool = Field(
 		description="Whether use of this instrument is commercially restricted."
 	)
+	contributors: list[QuestionnaireContributor] = Field(
+		default_factory=list,
+		description="Original instrument-level authors or groups, when known.",
+	)
 	versions: list[QuestionnaireVersion] = Field(
 		min_length=1,
 		description="Available language or release versions of this instrument.",
@@ -141,8 +250,39 @@ class QuestionnaireParent(BaseModel):
 
 	@model_validator(mode="after")
 	def validate_version_ids(self) -> "QuestionnaireParent":
-		"""Require version identifiers to be unique within this instrument."""
+		"""Validate version IDs and local lineage references for this instrument."""
 		version_ids = [version.version_id for version in self.versions]
 		if len(version_ids) != len(set(version_ids)):
 			raise ValueError("version_id values must be unique within a questionnaire")
+
+		local_parents: dict[str, list[str]] = {version_id: [] for version_id in version_ids}
+		for version in self.versions:
+			for reference in version.based_on:
+				if reference.instrument_id != self.instrument_id:
+					continue
+				if reference.version_id not in local_parents:
+					raise ValueError(
+						f"Version {version.version_id!r} references unknown local version "
+						f"{reference.version_id!r}"
+					)
+				if reference.version_id == version.version_id:
+					raise ValueError("A questionnaire version cannot be based on itself")
+				local_parents[version.version_id].append(reference.version_id)
+
+		visited: set[str] = set()
+		visiting: set[str] = set()
+
+		def visit(version_id: str) -> None:
+			if version_id in visiting:
+				raise ValueError("Questionnaire version lineage cannot contain cycles")
+			if version_id in visited:
+				return
+			visiting.add(version_id)
+			for parent_version_id in local_parents[version_id]:
+				visit(parent_version_id)
+			visiting.remove(version_id)
+			visited.add(version_id)
+
+		for version_id in version_ids:
+			visit(version_id)
 		return self

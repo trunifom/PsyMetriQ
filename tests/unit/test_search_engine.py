@@ -7,6 +7,12 @@ from pathlib import Path
 import pytest
 
 from data.generate_mock_data import generate_mock_data
+from schemas.questionnaire_schema import (
+    QuestionnaireContributor,
+    QuestionnaireParent,
+    QuestionnaireVersionReference,
+    TargetPopulation,
+)
 from src.core.search_engine import QuestionnaireDataError, QuestionnaireSearchEngine
 
 
@@ -122,3 +128,53 @@ def test_missing_data_directory_is_a_supported_empty_state(tmp_path: Path) -> No
 
     assert search_engine.search_items("anything") == []
     assert search_engine.reload() == 0
+
+
+def test_search_matches_variant_metadata_and_returns_version_details(
+    generated_data_directory: Path,
+) -> None:
+    questionnaire_path = generated_data_directory / "bdi_ii_demo.json"
+    questionnaire = QuestionnaireParent.model_validate_json(
+        questionnaire_path.read_text(encoding="utf-8")
+    )
+    base_version = questionnaire.versions[0]
+    adapted_version = base_version.model_copy(
+        update={
+            "display_name": "German Adolescent Short Form",
+            "language": "de",
+            "locale": "de-DE",
+            "form_type": "short",
+            "variant_types": ["translation", "cultural_adaptation", "population_adaptation"],
+            "target_populations": [
+                TargetPopulation(
+                    group_name="adolescents", minimum_age_years=13, maximum_age_years=17
+                )
+            ],
+            "contributors": [
+                QuestionnaireContributor(
+                    name="Synthetic Translation Team", role="translator"
+                )
+            ],
+            "based_on": [
+                QuestionnaireVersionReference(
+                    instrument_id="source_instrument", version_id="source_v1"
+                )
+            ],
+        }
+    )
+    adapted_questionnaire = questionnaire.model_copy(
+        update={"versions": [adapted_version]}
+    )
+    questionnaire_path.write_text(adapted_questionnaire.model_dump_json(), encoding="utf-8")
+    search_engine = QuestionnaireSearchEngine(generated_data_directory)
+
+    locale_results = search_engine.search_items("de-DE")
+    form_results = search_engine.search_items("short")
+    audience_results = search_engine.search_items("adolescents")
+    contributor_results = search_engine.search_items("Translation Team")
+
+    assert locale_results[0].locale == "de-DE"
+    assert form_results[0].form_type == "short"
+    assert audience_results[0].target_populations[0].group_name == "adolescents"
+    assert contributor_results[0].version_contributors[0].name == "Synthetic Translation Team"
+    assert contributor_results[0].based_on[0].instrument_id == "source_instrument"

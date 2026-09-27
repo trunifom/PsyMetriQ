@@ -7,10 +7,13 @@ from pydantic import ValidationError
 from data.generate_mock_data import generate_mock_data
 from schemas.questionnaire_schema import (
     ItemSchema,
+    QuestionnaireContributor,
     QuestionnaireParent,
     QuestionnaireVersion,
+    QuestionnaireVersionReference,
     ResponseOption,
     ScoringAlgorithm,
+    TargetPopulation,
 )
 
 
@@ -72,6 +75,25 @@ def test_questionnaire_version_rejects_duplicate_item_ids() -> None:
             language=version.language,
             response_sets=version.response_sets,
             items=[make_item(), make_item(variable_name="second_item")],
+        )
+
+
+@pytest.mark.parametrize(
+    ("response_sets", "items"),
+    [
+        ({}, [make_item()]),
+        ({"frequency_5": [ResponseOption(code=0, label="Never", score=0)]}, []),
+    ],
+)
+def test_questionnaire_version_requires_items_and_response_sets(
+    response_sets: dict[str, list[ResponseOption]], items: list[ItemSchema]
+) -> None:
+    with pytest.raises(ValidationError):
+        QuestionnaireVersion(
+            version_id="incomplete_version",
+            language="en",
+            response_sets=response_sets,
+            items=items,
         )
 
 
@@ -148,6 +170,177 @@ def test_parent_json_round_trip_preserves_validated_schema() -> None:
 
     restored_parent = QuestionnaireParent.model_validate_json(parent.model_dump_json())
     assert restored_parent == parent
+
+
+def test_questionnaire_supports_authored_translated_short_population_variant() -> None:
+    original_version = make_version()
+    localized_short_form = QuestionnaireVersion(
+        version_id="demo_de_adolescent_short",
+        language="de",
+        display_name="German Adolescent Short Form",
+        locale="de-DE",
+        form_type="short",
+        variant_types=["translation", "cultural_adaptation", "population_adaptation"],
+        target_populations=[
+            TargetPopulation(
+                group_name="adolescents",
+                minimum_age_years=13,
+                maximum_age_years=17,
+            )
+        ],
+        contributors=[
+            QuestionnaireContributor(
+                name="Synthetic Translation Team",
+                role="translator",
+                affiliation="Demonstration Institute",
+            )
+        ],
+        based_on=[
+            QuestionnaireVersionReference(
+                instrument_id="demo_instrument",
+                version_id=original_version.version_id,
+            )
+        ],
+        publication_year=2024,
+        source_citation="Synthetic example citation for schema testing.",
+        response_sets=original_version.response_sets,
+        items=[
+            make_item(
+                variable_name="localized_item",
+                item_id="localized_01",
+            )
+        ],
+    )
+    parent = QuestionnaireParent(
+        instrument_id="demo_instrument",
+        name_full="Synthetic Demonstration Questionnaire",
+        is_commercial=False,
+        contributors=[QuestionnaireContributor(name="Synthetic Original Author", role="author")],
+        versions=[original_version, localized_short_form],
+    )
+
+    restored = QuestionnaireParent.model_validate_json(parent.model_dump_json())
+    restored_variant = restored.versions[1]
+    assert restored_variant.form_type == "short"
+    assert restored_variant.locale == "de-DE"
+    assert restored_variant.target_populations[0].maximum_age_years == 17
+    assert restored_variant.contributors[0].role == "translator"
+    assert restored_variant.based_on[0].version_id == "demo_v1"
+
+
+@pytest.mark.parametrize(
+    "language_tag",
+    ["de", "en-US", "zh-Hans-CN", "en-u-ca-gregory"],
+)
+def test_questionnaire_version_accepts_common_bcp47_language_tags(
+    language_tag: str,
+) -> None:
+    version = make_version()
+
+    localized_version = QuestionnaireVersion(
+        version_id="localized_version",
+        language=language_tag,
+        response_sets=version.response_sets,
+        items=version.items,
+    )
+
+    assert localized_version.language == language_tag
+
+
+@pytest.mark.parametrize("invalid_tag", ["de_DE", "123", "en--US", "e"])
+def test_questionnaire_version_rejects_malformed_language_and_locale_tags(
+    invalid_tag: str,
+) -> None:
+    version = make_version()
+
+    with pytest.raises(ValidationError, match="BCP 47"):
+        QuestionnaireVersion(
+            version_id="invalid_locale",
+            language=version.language,
+            locale=invalid_tag,
+            response_sets=version.response_sets,
+            items=version.items,
+        )
+
+
+def test_target_population_rejects_reversed_age_range() -> None:
+    with pytest.raises(ValidationError, match="minimum_age_years cannot exceed"):
+        TargetPopulation(
+            group_name="adolescents",
+            minimum_age_years=18,
+            maximum_age_years=12,
+        )
+
+
+def test_questionnaire_parent_rejects_unknown_local_version_reference() -> None:
+    derived_version = make_version().model_copy(
+        update={
+            "based_on": [
+                QuestionnaireVersionReference(
+                    instrument_id="demo_instrument", version_id="missing_version"
+                )
+            ]
+        }
+    )
+
+    with pytest.raises(ValidationError, match="unknown local version"):
+        QuestionnaireParent(
+            instrument_id="demo_instrument",
+            name_full="Synthetic Demonstration Questionnaire",
+            is_commercial=False,
+            versions=[derived_version],
+        )
+
+
+def test_questionnaire_parent_rejects_cyclic_version_lineage() -> None:
+    first_version = make_version().model_copy(
+        update={
+            "based_on": [
+                QuestionnaireVersionReference(
+                    instrument_id="demo_instrument", version_id="demo_v2"
+                )
+            ]
+        }
+    )
+    second_version = make_version().model_copy(
+        update={
+            "version_id": "demo_v2",
+            "based_on": [
+                QuestionnaireVersionReference(
+                    instrument_id="demo_instrument", version_id="demo_v1"
+                )
+            ],
+        }
+    )
+
+    with pytest.raises(ValidationError, match="lineage cannot contain cycles"):
+        QuestionnaireParent(
+            instrument_id="demo_instrument",
+            name_full="Synthetic Demonstration Questionnaire",
+            is_commercial=False,
+            versions=[first_version, second_version],
+        )
+
+
+def test_questionnaire_parent_allows_external_source_version_reference() -> None:
+    translated_version = make_version().model_copy(
+        update={
+            "based_on": [
+                QuestionnaireVersionReference(
+                    instrument_id="external_instrument", version_id="source_v1"
+                )
+            ]
+        }
+    )
+
+    parent = QuestionnaireParent(
+        instrument_id="demo_instrument",
+        name_full="Synthetic Demonstration Questionnaire",
+        is_commercial=False,
+        versions=[translated_version],
+    )
+
+    assert parent.versions[0].based_on[0].instrument_id == "external_instrument"
 
 
 def test_mock_generator_writes_two_validated_synthetic_files(tmp_path: Path) -> None:

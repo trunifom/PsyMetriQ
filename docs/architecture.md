@@ -17,9 +17,13 @@ Pydantic models cross module boundaries. Dictionaries may appear as an explicit 
 
 ## Current domain model
 
-`QuestionnaireParent` represents an instrument and owns one or more `QuestionnaireVersion` objects. A version owns its response sets, items, and scoring algorithms. Each `ItemSchema` references one response set by key; each scoring algorithm references item IDs from its containing version. Validators enforce these local relationships at construction time.
+`QuestionnaireParent` represents a conceptual instrument family and owns one or more concrete `QuestionnaireVersion` objects. A concrete version can represent a full or short form, revision, translation, cultural or population adaptation, or a combination of these. Version metadata keeps language separate from regional locale and can record target populations, credited contributors by role, source citations, and the version(s) it was based on. See the [domain data model](domain_data_model.md) for the complete meaning and examples.
+
+A version owns its response sets, items, and scoring algorithms. Each `ItemSchema` references one response set by key; each scoring algorithm references item IDs from its containing version. Validators enforce these local relationships at construction time. Instrument-level authorship is distinct from the translators, adaptors, and validators credited on a particular version.
 
 `variable_name` follows the current project convention: it starts with an ASCII letter, contains only ASCII letters, digits, or underscores, and is no longer than 26 characters. Names are compared case-insensitively for uniqueness within a version. Changing this convention requires updating validators, tests, and documentation together.
+
+For version lineage, references to versions inside the same instrument family are checked for existence and cycles. References to another `instrument_id` can be recorded, but their existence is not yet globally verified across separate files.
 
 ## Repository boundaries
 

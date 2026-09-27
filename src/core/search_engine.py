@@ -2,9 +2,14 @@ import logging
 from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, Field, ValidationError
 
-from schemas.questionnaire_schema import QuestionnaireParent
+from schemas.questionnaire_schema import (
+    QuestionnaireContributor,
+    QuestionnaireParent,
+    QuestionnaireVersionReference,
+    TargetPopulation,
+)
 
 LOGGER = logging.getLogger(__name__)
 
@@ -19,8 +24,17 @@ class QuestionnaireSearchResult(BaseModel):
     match_type: Literal["instrument", "version", "dimension", "item"]
     instrument_id: str
     instrument_name: str
+    instrument_contributors: list[QuestionnaireContributor] = Field(default_factory=list)
     version_id: str | None = None
+    version_name: str | None = None
     language: str | None = None
+    locale: str | None = None
+    form_type: str | None = None
+    variant_types: list[str] = Field(default_factory=list)
+    target_populations: list[TargetPopulation] = Field(default_factory=list)
+    version_contributors: list[QuestionnaireContributor] = Field(default_factory=list)
+    based_on: list[QuestionnaireVersionReference] = Field(default_factory=list)
+    publication_year: int | None = None
     dimension: str | None = None
     item_id: str | None = None
     variable_name: str | None = None
@@ -94,11 +108,12 @@ class QuestionnaireSearchEngine:
         return len(loaded_questionnaires)
 
     def search_items(self, keyword: str) -> list[QuestionnaireSearchResult]:
-        """Search instruments, versions, dimensions, items, and response labels.
+        """Search instrument and version metadata as well as item content.
 
         Matching is literal, case-insensitive substring search. Blank queries
         return no results. Results are validated models in deterministic source
-        file, version, and item order.
+        file, version, and item order. Structured population, contributor, and
+        lineage metadata remains typed in the results for downstream consumers.
         """
         search_term = keyword.strip().casefold()
         if not search_term:
@@ -106,10 +121,15 @@ class QuestionnaireSearchEngine:
 
         results: list[QuestionnaireSearchResult] = []
         for questionnaire in self._questionnaires:
+            instrument_contributors = questionnaire.contributors
             instrument_fields = {
                 "instrument_id": questionnaire.instrument_id,
                 "instrument_name": questionnaire.name_full,
                 "construct_ontology": " ".join(questionnaire.construct_ontology),
+                "instrument_contributors": " ".join(
+                    f"{contributor.name} {contributor.role} {contributor.affiliation or ''}"
+                    for contributor in instrument_contributors
+                ),
             }
             instrument_matches = self._matching_fields(search_term, instrument_fields)
             if instrument_matches:
@@ -118,21 +138,69 @@ class QuestionnaireSearchEngine:
                         match_type="instrument",
                         instrument_id=questionnaire.instrument_id,
                         instrument_name=questionnaire.name_full,
+                        instrument_contributors=instrument_contributors,
                         matched_fields=instrument_matches,
                     )
                 )
 
             for version in questionnaire.versions:
-                version_fields = {"version_id": version.version_id, "language": version.language}
+                target_populations = version.target_populations
+                version_contributors = version.contributors
+                based_on = version.based_on
+                population_search_text = " ".join(
+                    " ".join(
+                        str(value)
+                        for value in (
+                            population.group_name,
+                            population.minimum_age_years,
+                            population.maximum_age_years,
+                            population.notes,
+                        )
+                        if value is not None
+                    )
+                    for population in target_populations
+                )
+                version_fields = {
+                    "version_id": version.version_id,
+                    "version_name": version.display_name or "",
+                    "language": version.language,
+                    "locale": version.locale or "",
+                    "form_type": version.form_type,
+                    "variant_types": " ".join(version.variant_types),
+                    "target_populations": population_search_text,
+                    "version_contributors": " ".join(
+                        f"{contributor.name} {contributor.role} {contributor.affiliation or ''}"
+                        for contributor in version_contributors
+                    ),
+                    "based_on": " ".join(
+                        f"{reference.instrument_id} {reference.version_id}"
+                        for reference in based_on
+                    ),
+                    "source_citation": version.source_citation or "",
+                    "source_doi": version.source_doi or "",
+                    "publication_year": str(version.publication_year or ""),
+                }
                 version_matches = self._matching_fields(search_term, version_fields)
+                version_metadata = {
+                    "version_id": version.version_id,
+                    "version_name": version.display_name,
+                    "language": version.language,
+                    "locale": version.locale,
+                    "form_type": version.form_type,
+                    "variant_types": version.variant_types,
+                    "target_populations": target_populations,
+                    "version_contributors": version_contributors,
+                    "based_on": based_on,
+                    "publication_year": version.publication_year,
+                }
                 if version_matches:
                     results.append(
                         QuestionnaireSearchResult(
                             match_type="version",
                             instrument_id=questionnaire.instrument_id,
                             instrument_name=questionnaire.name_full,
-                            version_id=version.version_id,
-                            language=version.language,
+                            instrument_contributors=instrument_contributors,
+                            **version_metadata,
                             matched_fields=version_matches,
                         )
                     )
@@ -148,8 +216,8 @@ class QuestionnaireSearchEngine:
                                 match_type="dimension",
                                 instrument_id=questionnaire.instrument_id,
                                 instrument_name=questionnaire.name_full,
-                                version_id=version.version_id,
-                                language=version.language,
+                                instrument_contributors=instrument_contributors,
+                                **version_metadata,
                                 dimension=item.dimension,
                                 matched_fields=["dimension"],
                             )
@@ -173,8 +241,8 @@ class QuestionnaireSearchEngine:
                                 match_type="item",
                                 instrument_id=questionnaire.instrument_id,
                                 instrument_name=questionnaire.name_full,
-                                version_id=version.version_id,
-                                language=version.language,
+                                instrument_contributors=instrument_contributors,
+                                **version_metadata,
                                 dimension=item.dimension,
                                 item_id=item.item_id,
                                 variable_name=item.variable_name,

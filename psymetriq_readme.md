@@ -31,6 +31,8 @@ Die Entwicklung psychometrischer Fragebögen und deren Überführung in EDC-Syst
 
 *KI-Agent Instruktion: Dieses Pydantic-Modell ist das Herzstück. Alle Module (file-backed search, Flet, REDCap) müssen gegen dieses Modell operieren.*
 
+*Das folgende Modell ist der initiale Architekturentwurf. Die aktuelle, erweiterte Versionsstruktur (Kurz-/Langformen, Zielgruppen, Locale, Mitwirkende und Quellenbeziehungen) ist in [`docs/domain_data_model.md`](docs/domain_data_model.md) beschrieben; `schemas/questionnaire_schema.py` ist die ausführbare Source of Truth.*
+
 ```python
 from pydantic import BaseModel, Field, HttpUrl
 from typing import List, Dict, Optional, Literal

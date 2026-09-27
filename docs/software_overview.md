@@ -14,7 +14,7 @@ The Flet workflow, NLP similarity checks, REDCap exporter, and LLM/PDF ingestion
 
 ## Main capabilities and responsibilities
 
-- **Questionnaire schema:** represents instruments, versions, items, response options, and scoring algorithms. It validates local identifiers and references before data can be passed to other layers.
+- **Questionnaire schema:** represents instrument families and concrete versions, including form, language, locale, audience, contributor roles, source citations, lineage, items, response options, and scoring algorithms. It validates local identifiers and references before data can be passed to other layers.
 - **Synthetic data generator:** creates development fixtures using fabricated text. These are not validated clinical instruments and must never be used to assess people.
 - **File-backed search engine:** validate portable JSON files against the Pydantic models, keep an in-memory view, and search item text, dimensions, response labels, version metadata, constructs, and instrument metadata. It creates no database and can read a synchronized team folder.
 - **Assembly GUI (planned):** provide search, a questionnaire canvas, and an inspector through Flet, with view state isolated from file loading and search rules.
@@ -28,6 +28,10 @@ The Flet workflow, NLP similarity checks, REDCap exporter, and LLM/PDF ingestion
 - `ScoringAlgorithm`: scoring method, target item IDs, output name, and missing-data note.
 - `QuestionnaireVersion`: language, response sets, items, and scoring metadata. `validate_references` ensures item IDs and case-insensitive variable names are unique, every response-set reference exists, and every scoring target names an item in this version.
 - `QuestionnaireParent`: stable instrument metadata and one or more versions. `validate_version_ids` prevents duplicate version IDs within an instrument.
+- `QuestionnaireContributor`: records instrument authorship or version-specific author, translator, adapter, editor, reviewer, or validator credit.
+- `TargetPopulation`: records a source-reported population label and optional age bounds.
+- `QuestionnaireVersionReference`: connects a derived version to a source instrument/version.
+- `QuestionnaireVersion`: differentiates `language` from `locale`, classifies full/short/long/screening forms, and supports multiple simultaneous variant types.
 - `build_demo_questionnaire`: constructs a validated model from synthetic specifications.
 - `generate_mock_data`: writes the two JSON fixtures and returns their paths. An optional output directory supports isolated tests. Filesystem errors are logged and re-raised.
 

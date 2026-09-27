@@ -45,7 +45,7 @@ for match in matches:
 	print(match.match_type, match.instrument_name, match.item_id)
 ```
 
-The service validates the files at startup and keeps them in memory; it does not create a database or modify JSON. Call `search_engine.reload()` after the shared directory changes. If any file is unreadable, invalid, or duplicates an instrument ID, the operation logs the error and raises `QuestionnaireDataError`. A failed reload leaves the last valid search state intact.
+The service validates the files at startup and keeps them in memory; it does not create a database or modify JSON. Search includes instrument and version names, language, locale, form type, variant types, population labels, contributors, provenance, item dimensions/text, and response labels. Call `search_engine.reload()` after the shared directory changes. If any file is unreadable, invalid, or duplicates an instrument ID, the operation logs the error and raises `QuestionnaireDataError`. A failed reload leaves the last valid search state intact.
 
 For team use, point the service at an access-controlled synchronized folder or share reviewed JSON files through a private repository. The repository's `data/02_extracted_jsons/` folder is configured to include only the two synthetic demos; real extracted material is ignored by default.
 
@@ -55,7 +55,8 @@ Run the focused tests and lint check from the repository root:
 
 ```powershell
 pytest tests/unit/test_schema.py -q
-ruff check schemas/questionnaire_schema.py data/generate_mock_data.py tests/unit/test_schema.py
+pytest tests/unit/test_search_engine.py -q
+ruff check schemas/questionnaire_schema.py data/generate_mock_data.py src/core/search_engine.py tests/unit/
 ```
 
 The tests cover REDCap variable-name boundaries, duplicate identifiers, missing references, JSON serialization round-trips, synthetic output validity, logged filesystem failures, search matches, reload behavior, and invalid shared files.
