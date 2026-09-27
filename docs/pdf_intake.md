@@ -18,21 +18,27 @@ python -m src.ingestion.document_pipeline --watch
 
 3. The importer checks file size, page count, PDF readability/encryption, extracts text and PDF metadata using PyMuPDF, computes SHA-256, and attempts OCR on image-only pages if PyMuPDF's Tesseract OCR support is available.
 4. It classifies the content and suggests a domain using conservative text heuristics. The classification is a routing hint, not a clinical or licensing conclusion.
-5. Without LLM opt-in, it writes a metadata/detection draft. With opt-in, it may submit the extracted text to OpenAI for a provisional Pydantic extraction; all extracted prompts still require review.
+5. Without LLM opt-in, it writes a metadata/detection draft. With opt-in, it may submit the extracted text to the selected provider for a provisional Pydantic extraction; all extracted prompts still require review.
 6. Uncertain, incomplete, scanned-without-OCR, mixed, manual, or unlicensed files move to `data/questionnaires/review/forms/<domain>/`; a Pydantic draft is written under `data/questionnaires/review/drafts/`.
 7. A complete, high-confidence form moves to `forms/<domain>/<instrument>/` and merges into `json/<instrument_id>.json` only after item-content review and exact-file rights approval. One source PDF must map to exactly one concrete version; combined editions remain in review. A validation study with reviewed title, authors, publication year, DOI/citation metadata, and exact-file rights moves to `references/pdfs/<domain>/` with a separate metadata-only record under `references/json/`.
 
 The `inbox/` and `review/` directories are Git-ignored. Their contents may still be sensitive on the local disk; use appropriate filesystem access controls and do not place confidential participant records there.
 
-## Optional OpenAI extraction
+## Optional LLM provider
 
-The pipeline is local-only by default. To opt in to remote extraction, place `OPENAI_API_KEY` in the ignored root `.env` file or set it in the process environment, then pass the explicit flag:
+The pipeline is local-only by default. Remote extraction is only enabled with `--allow-remote-processing`. Provider selection is available in the CLI:
 
 ```powershell
-python -m src.ingestion.document_pipeline --watch --allow-remote-processing
+python -m src.ingestion.document_pipeline --watch --allow-remote-processing --provider openai
+python -m src.ingestion.document_pipeline --allow-remote-processing --provider anthropic --model claude-sonnet-4-6
+python -m src.ingestion.document_pipeline --allow-remote-processing --provider openai-compatible --base-url <BASE_URL_FROM_PROVIDER> --model <MODEL_ID> --api-key-env SWISSGPT_API_KEY
 ```
 
-The default model is `gpt-4o-mini`; override it with `OPENAI_MODEL` or `--model`. The SDK is asynchronous. The system instruction treats PDF text as untrusted data, asks for exact transcription, and forbids inference of license, clinical validity, age suitability, scoring, or citations. Refusals, incomplete structured responses, API errors, and extraction limitations do not produce a catalogue entry.
+OpenAI is the default provider and model (`gpt-4o-mini`); Anthropic defaults to `claude-sonnet-4-6`. Keys are read from `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, or `LLM_API_KEY`. For a custom compatible service, set `LLM_BASE_URL`, `LLM_MODEL`, and `LLM_API_KEY`, or pass `--base-url`, `--model`, and `--api-key-env` to select another environment variable such as `SWISSGPT_API_KEY`. Never pass the secret itself as a command-line argument.
+
+OpenAI and compatible services use the OpenAI SDK's structured-output endpoint. Anthropic uses its Messages API with the shared JSON Schema included in the prompt, then validates the complete response locally against the same Pydantic DTO. The Anthropic schema exceeds the service's current strict-output optional-field limit, so malformed or truncated JSON is rejected and remains a review draft. SwissGPT is usable only if Alpine AI supplies an OpenAI-compatible API endpoint, model identifier, and key; no public endpoint or protocol was verified for this project. Other OpenAI-compatible services can use the same generic endpoint adapter.
+
+All providers receive the same instructions: PDF text is untrusted data, wording must be transcribed exactly, and rights, clinical validity, age suitability, scoring, and citations must not be invented. Refusals, invalid JSON/schema, API errors, and extraction limitations do not produce a catalogue entry.
 
 Before enabling remote processing, verify institutional privacy/security rules, data-processing terms, source license restrictions, and whether the document may be transmitted to that provider. A public PDF URL alone is not permission to submit its full text to an external service.
 

@@ -4,8 +4,9 @@ The pipeline always records source identity and extraction status. Unknown PDFs
 are moved to a local review area and produce a draft JSON, not a public catalogue
 entry. Form promotion requires a complete Pydantic form, an exact-file rights and
 content-review sidecar, one version per PDF, adequate text, and high confidence.
-Validation studies use a separate citation-reviewed reference catalogue. OpenAI
-processing is disabled unless the operator opts in explicitly.
+Validation studies use a separate citation-reviewed reference catalogue. Remote
+LLM processing is disabled unless the operator opts in explicitly and selects
+an installed provider.
 """
 
 import argparse
@@ -30,10 +31,11 @@ from schemas.questionnaire_schema import (
     QuestionnaireSourceDocument,
 )
 from src.ingestion.llm_extractor import (
-    OpenAIQuestionnaireExtractor,
+    LLMProviderName,
     QuestionnaireExtractionDraft,
     QuestionnaireExtractionError,
     QuestionnaireExtractor,
+    create_questionnaire_extractor,
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -1189,15 +1191,20 @@ async def process_inbox(
     *,
     config: PipelineConfig | None = None,
     allow_remote_processing: bool = False,
-    model: str = "gpt-4o-mini",
+    provider: LLMProviderName = "openai",
+    model: str | None = None,
+    base_url: str | None = None,
+    api_key_env: str | None = None,
 ) -> list[QuestionnaireImportDraft]:
-    """Run one local inbox pass, optionally using OpenAI after explicit consent."""
+    """Run one local inbox pass, optionally using a selected provider after consent."""
     extractor: QuestionnaireExtractor | None = None
     if allow_remote_processing:
-        api_key = os.environ.get("OPENAI_API_KEY", "")
-        if not api_key:
-            raise ValueError("OPENAI_API_KEY is required when remote extraction is enabled")
-        extractor = OpenAIQuestionnaireExtractor(api_key=api_key, model=model)
+        extractor = _create_remote_extractor(
+            provider=provider,
+            model=model,
+            base_url=base_url,
+            api_key_env=api_key_env,
+        )
     pipeline = QuestionnaireDocumentPipeline(
         config=config,
         extractor=extractor,
@@ -1209,21 +1216,68 @@ async def process_inbox(
 async def _watch(
     config: PipelineConfig,
     allow_remote_processing: bool,
-    model: str,
+    provider: LLMProviderName,
+    model: str | None,
+    base_url: str | None,
+    api_key_env: str | None,
 ) -> None:
     """Keep polling for user-dropped PDFs until cancelled."""
     pipeline_extractor: QuestionnaireExtractor | None = None
     if allow_remote_processing:
-        api_key = os.environ.get("OPENAI_API_KEY", "")
-        if not api_key:
-            raise ValueError("OPENAI_API_KEY is required when remote extraction is enabled")
-        pipeline_extractor = OpenAIQuestionnaireExtractor(api_key=api_key, model=model)
+        pipeline_extractor = _create_remote_extractor(
+            provider=provider,
+            model=model,
+            base_url=base_url,
+            api_key_env=api_key_env,
+        )
     pipeline = QuestionnaireDocumentPipeline(
         config=config,
         extractor=pipeline_extractor,
         allow_remote_processing=allow_remote_processing,
     )
     await pipeline.watch_inbox()
+
+
+def _create_remote_extractor(
+    *,
+    provider: LLMProviderName,
+    model: str | None,
+    base_url: str | None,
+    api_key_env: str | None,
+) -> QuestionnaireExtractor:
+    """Resolve provider-specific settings from environment without exposing secrets."""
+    key_environment = api_key_env or {
+        "openai": "OPENAI_API_KEY",
+        "anthropic": "ANTHROPIC_API_KEY",
+        "openai-compatible": "LLM_API_KEY",
+    }[provider]
+    api_key = os.environ.get(key_environment, "")
+    if not api_key:
+        raise ValueError(f"{key_environment} is required for remote extraction")
+
+    default_models = {
+        "openai": os.environ.get("OPENAI_MODEL", "gpt-4o-mini"),
+        "anthropic": os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-4-6"),
+        "openai-compatible": os.environ.get("LLM_MODEL", ""),
+    }
+    selected_model = model or default_models[provider]
+    if not selected_model:
+        raise ValueError("Set --model or LLM_MODEL for the OpenAI-compatible provider")
+    selected_base_url = (
+        base_url or os.environ.get("LLM_BASE_URL")
+        if provider == "openai-compatible"
+        else None
+    )
+    if provider == "openai-compatible" and not selected_base_url:
+        raise ValueError(
+            "Set --base-url or LLM_BASE_URL for the OpenAI-compatible provider"
+        )
+    return create_questionnaire_extractor(
+        provider=provider,
+        api_key=api_key,
+        model=selected_model,
+        base_url=selected_base_url,
+    )
 
 
 def main() -> None:
@@ -1244,9 +1298,23 @@ def main() -> None:
     parser.add_argument(
         "--allow-remote-processing",
         action="store_true",
-        help="Explicitly allow PDF text to be sent to OpenAI for draft extraction.",
+        help="Explicitly allow PDF text to be sent to the selected provider.",
     )
-    parser.add_argument("--model", default=os.environ.get("OPENAI_MODEL", "gpt-4o-mini"))
+    parser.add_argument(
+        "--provider",
+        choices=("openai", "anthropic", "openai-compatible"),
+        default="openai",
+        help="Remote extraction provider (default: openai).",
+    )
+    parser.add_argument("--model", help="Provider model identifier.")
+    parser.add_argument(
+        "--base-url",
+        help="API base URL for an OpenAI-compatible provider, such as a SwissGPT endpoint.",
+    )
+    parser.add_argument(
+        "--api-key-env",
+        help="Environment variable containing the selected provider's API key.",
+    )
     parser.add_argument("--poll-seconds", type=float, default=3.0)
     arguments = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
@@ -1273,14 +1341,24 @@ def main() -> None:
             return
         if arguments.watch:
             asyncio.run(
-                _watch(config, arguments.allow_remote_processing, arguments.model)
+                _watch(
+                    config,
+                    arguments.allow_remote_processing,
+                    arguments.provider,
+                    arguments.model,
+                    arguments.base_url,
+                    arguments.api_key_env,
+                )
             )
         else:
             results = asyncio.run(
                 process_inbox(
                     config=config,
                     allow_remote_processing=arguments.allow_remote_processing,
+                    provider=arguments.provider,
                     model=arguments.model,
+                    base_url=arguments.base_url,
+                    api_key_env=arguments.api_key_env,
                 )
             )
             for result in results:

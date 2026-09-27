@@ -51,7 +51,7 @@ python -m src.ingestion.document_pipeline
 python -m src.ingestion.document_pipeline --watch
 ```
 
-The default flow extracts text/metadata locally, attempts OCR for scans if installed, classifies a domain, and creates a private Pydantic review draft. It does not send PDF text to the cloud. For optional OpenAI Structured Outputs, configure `OPENAI_API_KEY` in the ignored local `.env`, verify the privacy/rights conditions, and opt in explicitly with `--allow-remote-processing`. Do not use that flag on confidential or non-transmittable material.
+The default flow extracts text/metadata locally, attempts OCR for scans if installed, classifies a domain, and creates a private Pydantic review draft. It does not send PDF text to the cloud. For remote extraction, choose `openai`, `anthropic`, or `openai-compatible` with `--provider`, configure the corresponding key in the ignored local `.env`, verify privacy/rights conditions, and opt in explicitly with `--allow-remote-processing`. OpenAI-compatible services such as SwissGPT additionally need an endpoint and model supplied by the service owner. Never send confidential or non-transmittable material.
 
 New/uncertain documents are moved to the Git-ignored `data/questionnaires/review/` tree. To auto-promote a complete candidate into shared `forms/` and family JSON, an authorized reviewer must check the exact items and create a hash-matched `<filename>.pdf.source.json` sidecar using [the example template](../data/questionnaires/source_approval.example.json). After correcting the review draft and placing the sidecar beside its PDF, promote locally without a second model call:
 

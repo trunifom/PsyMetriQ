@@ -15,13 +15,15 @@ The first command processes current top-level PDFs once. Watch mode polls for ne
 
 ## Optional structured extraction
 
-Without extra options, the pipeline extracts local PDF text/metadata and creates a draft record. To ask OpenAI for a provisional Pydantic questionnaire candidate, configure `OPENAI_API_KEY` in the ignored local `.env`/environment and explicitly opt in:
+Without extra options, the pipeline extracts local PDF text/metadata and creates a draft record. To ask an LLM for a provisional Pydantic questionnaire candidate, configure the selected provider's key in the ignored local `.env`/environment and explicitly opt in. OpenAI is the default:
 
 ```powershell
-python -m src.ingestion.document_pipeline --watch --allow-remote-processing
+python -m src.ingestion.document_pipeline --watch --allow-remote-processing --provider openai
+python -m src.ingestion.document_pipeline --allow-remote-processing --provider anthropic --model claude-sonnet-4-6
+python -m src.ingestion.document_pipeline --allow-remote-processing --provider openai-compatible --base-url <BASE_URL_FROM_PROVIDER> --model <MODEL_ID> --api-key-env SWISSGPT_API_KEY
 ```
 
-PDF text is sent to the configured OpenAI model only with that flag. The model is instructed to preserve source wording, report uncertainty, and never decide licensing or validation status. Review all extracted items, answer choices, version/population metadata, and scoring before promotion. Raw extracted text is not written to logs or saved as a separate plaintext file.
+Provider keys use `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, or `LLM_API_KEY` by default; `--api-key-env` selects a different environment variable without exposing its value in command history. OpenAI-compatible endpoints additionally require a provider-supplied base URL and model ID. Alpine AI/SwissGPT can use this option only if Alpine provides an OpenAI-compatible endpoint; this project has not verified a public SwissGPT endpoint. PDF text is sent to the selected provider only with the explicit opt-in flag. The model is instructed to preserve source wording, report uncertainty, and never decide licensing or validation status. Review all extracted items, answer choices, version/population metadata, and scoring before promotion. Raw extracted text is not written to logs or saved as a separate plaintext file.
 
 ## Rights sidecar
 
