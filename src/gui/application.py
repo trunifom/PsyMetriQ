@@ -2011,44 +2011,48 @@ class PsyMetriQApplication:
                 bgcolor="#F7F9F8",
                 collapsed_bgcolor="#EEF3F1",
             )
+            action_row = ft.Row(
+                wrap=True,
+                alignment=ft.MainAxisAlignment.END,
+                controls=[
+                    self._action_button(
+                        "Nach oben",
+                        "ARROW_UPWARD",
+                        lambda _event, s=selection: self._move_selection(s, -1),
+                        "Verschiebt dieses Instrument in der Projektzusammenstellung nach oben.",
+                        disabled=selection_index == 0,
+                    ),
+                    self._action_button(
+                        "Nach unten",
+                        "ARROW_DOWNWARD",
+                        lambda _event, s=selection: self._move_selection(s, 1),
+                        "Verschiebt dieses Instrument in der Projektzusammenstellung nach unten.",
+                        disabled=selection_index == total_selections - 1,
+                    ),
+                    self._action_button(
+                        "Entfernen",
+                        "DELETE_OUTLINE",
+                        lambda _event, s=selection: self._remove_selection(s),
+                        "Entfernt diese Version aus dem aktuellen Projekt, ändert aber nicht den Katalog.",
+                    ),
+                ],
+            )
             selected_rows.append(
-                ft.Row(
-                    vertical_alignment=ft.CrossAxisAlignment.START,
-                    controls=[
-                        ft.Column(
-                            expand=True,
-                            spacing=4,
-                            controls=[
-                                item_tile,
-                                ft.Text(
-                                    f"Versions-ID: {selection.version_id}",
-                                    size=10,
-                                    color="#55716A",
-                                    selectable=True,
-                                ),
-                            ],
-                        ),
-                        self._action_button(
-                            "Nach oben",
-                            "ARROW_UPWARD",
-                            lambda _event, s=selection: self._move_selection(s, -1),
-                            "Verschiebt dieses Instrument in der Projektzusammenstellung nach oben.",
-                            disabled=selection_index == 0,
-                        ),
-                        self._action_button(
-                            "Nach unten",
-                            "ARROW_DOWNWARD",
-                            lambda _event, s=selection: self._move_selection(s, 1),
-                            "Verschiebt dieses Instrument in der Projektzusammenstellung nach unten.",
-                            disabled=selection_index == total_selections - 1,
-                        ),
-                        self._action_button(
-                            "Entfernen",
-                            "DELETE_OUTLINE",
-                            lambda _event, s=selection: self._remove_selection(s),
-                            "Entfernt diese Version aus dem aktuellen Projekt, ändert aber nicht den Katalog.",
-                        ),
-                    ],
+                ft.Container(
+                    expand=True,
+                    content=ft.Column(
+                        spacing=4,
+                        controls=[
+                            item_tile,
+                            ft.Text(
+                                f"Versions-ID: {selection.version_id}",
+                                size=10,
+                                color="#55716A",
+                                selectable=True,
+                            ),
+                            action_row,
+                        ],
+                    ),
                 )
             )
         if not selected_rows:

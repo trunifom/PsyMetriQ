@@ -157,15 +157,17 @@ def test_project_selections_can_be_reordered_and_show_items_in_expansion_tiles(
     assert app.project.workflow_steps[-1].action == "selection_reordered"
 
     app._navigate("project")
-    project_controls = app.content_host.controls
-    expansion_tiles = [
-        control
-        for control in project_controls
-        if isinstance(control, application.ft.Row)
-        for child in control.controls
-        if isinstance(child, application.ft.Container)
-    ]
-    assert expansion_tiles
+    def contains_expansion_tile(control: Any) -> bool:
+        if isinstance(control, application.ft.ExpansionTile):
+            return True
+        children = getattr(control, "controls", None)
+        if children is None:
+            children = [getattr(control, "content", None)]
+        return any(
+            child is not None and contains_expansion_tile(child) for child in children
+        )
+
+    assert any(contains_expansion_tile(control) for control in app.content_host.controls)
 
 
 def test_settings_form_exposes_intake_limits_and_ocr_preferences(
