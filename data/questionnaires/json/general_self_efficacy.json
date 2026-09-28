@@ -1,0 +1,79 @@
+{
+  "instrument_id": "general_self_efficacy",
+  "name_full": "General Self-Efficacy Scale",
+  "construct_ontology": [
+    "general self-efficacy"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "keywords": [
+      "GSE",
+      "general self-efficacy",
+      "coping",
+      "wellbeing"
+    ],
+    "search_aliases": [],
+    "mesh_terms": [],
+    "characteristics": [],
+    "notes": "Link-only record. The FU Berlin author site hosts the scale and translations, but an explicit licence permitting public redistribution of item wording was not verified in the reviewed pages."
+  },
+  "versions": [
+    {
+      "version_id": "gse_en_v1",
+      "language": "en",
+      "display_name": "General Self-Efficacy Scale (English; link-only)",
+      "locale": null,
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "General population including adults and adolescents",
+          "minimum_age_years": 12.0,
+          "maximum_age_years": null,
+          "notes": "Author-hosted source says persons below age 12 should not be tested."
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 1995,
+      "source_citation": "Schwarzer, R., & Jerusalem, M. (1995). Generalized Self-Efficacy scale. In Measures in health psychology: A user's portfolio (pp. 35-37).",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "General Self-Efficacy Scale English source page",
+          "document_type": "questionnaire_form",
+          "language": "en",
+          "source_url": "https://userpage.fu-berlin.de/health/engscal.htm",
+          "local_path": null,
+          "license_name": "Use terms not explicit on reviewed source; link only",
+          "license_url": "https://userpage.fu-berlin.de/health/selfscal.htm",
+          "redistribution_permitted": false,
+          "permission_basis": "The author-hosted page describes the English form and translations, but the reviewed page does not explicitly grant public redistribution of item text. This is a catalog rights-status flag, not a use ban.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "keywords": [
+          "GSE",
+          "10 items",
+          "four-point response"
+        ],
+        "search_aliases": [],
+        "mesh_terms": [],
+        "characteristics": [],
+        "notes": "The source reports 10 items, a four-point response scale, and a total range of 10-40. Population guidance: intended for adults/adolescents; do not administer below age 12 without source review."
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 10,
+      "source_reported_dimensions": [
+        "general self-efficacy"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

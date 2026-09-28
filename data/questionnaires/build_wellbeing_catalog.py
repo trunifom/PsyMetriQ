@@ -1,8 +1,9 @@
-"""Build public-domain and link-only wellbeing discovery records.
+"""Build public-domain and link-only wellbeing/stress discovery records.
 
 The Rosenberg items are bundled because the University of Maryland reports
-that the scale is in the public domain. WHO-5 and WEMWBS are metadata-only:
-the record points to the rights holder, but does not reproduce item wording.
+that the scale is in the public domain. WHO-5, WEMWBS, GSE, and PSS are
+metadata-only: records point to sources and note rights; they do not reproduce
+item wording where open redistribution has not been established.
 """
 
 import json
@@ -22,6 +23,7 @@ from schemas.questionnaire_schema import (  # noqa: E402
     QuestionnaireVersion,
     ResponseOption,
     ScoringAlgorithm,
+    TargetPopulation,
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -33,6 +35,11 @@ WHO_COPYRIGHT_URL = "https://www.who.int/about/policies/publishing/copyright"
 WEMWBS_LICENSE_URL = "https://warwick.ac.uk/services/innovations/wemwbs/licenses/"
 WEMWBS_NONCOMMERCIAL_URL = (
     "https://warwick.ac.uk/services/innovations/wemwbs/licenses/non-commercial/"
+)
+GSE_ENGLISH_URL = "https://userpage.fu-berlin.de/health/engscal.htm"
+GSE_LANGUAGE_URL = "https://userpage.fu-berlin.de/health/selfscal.htm"
+PSS_SOURCE_URL = (
+    "https://www.cmu.edu/dietrich/psychology/stress-immunity-disease-lab/scales/index.html"
 )
 
 
@@ -174,6 +181,8 @@ def build_who5_link_only() -> QuestionnaireParent:
                 display_name="WHO-5 English (official source; link-only)",
                 form_type="short",
                 item_text_included=False,
+                source_reported_item_count=5,
+                source_reported_dimensions=["positive wellbeing"],
                 source_documents=[
                     _source_document(
                         title="WHO-5 official site",
@@ -231,6 +240,8 @@ def build_wemwbs_link_only() -> QuestionnaireParent:
                 ),
                 source_doi="10.1186/1477-7525-5-63",
                 item_text_included=False,
+                source_reported_item_count=14,
+                source_reported_dimensions=["mental wellbeing"],
                 source_documents=[
                     _source_document(
                         title="WEMWBS licences and pricing",
@@ -251,18 +262,196 @@ def build_wemwbs_link_only() -> QuestionnaireParent:
                     notes="Request the appropriate licence and retrieve resources from Warwick.",
                 ),
                 items=[],
+            ),
+            QuestionnaireVersion(
+                version_id="swemwbs_en_v1",
+                language="en",
+                locale="en-GB",
+                display_name="SWEMWBS English short form (licensed; link-only)",
+                form_type="short",
+                source_citation=(
+                    "Short Warwick-Edinburgh Mental Well-being Scale; see the University "
+                    "of Warwick licence and resources."
+                ),
+                item_text_included=False,
+                source_reported_item_count=7,
+                source_reported_dimensions=["mental wellbeing"],
+                source_documents=[
+                    _source_document(
+                        title="WEMWBS licences and pricing",
+                        document_type="other",
+                        source_url=WEMWBS_LICENSE_URL,
+                        license_name="Registration/licence required; no public redistribution",
+                        license_url=WEMWBS_NONCOMMERCIAL_URL,
+                        redistribution_permitted=False,
+                        permission_basis=(
+                            "The University of Warwick licence applies to all WEMWBS forms, "
+                            "including SWEMWBS. Eligible non-commercial organisations must "
+                            "register; the licence does not permit public sharing or onward use."
+                        ),
+                    )
+                ],
+                metadata=QuestionnaireMetadata(
+                    keywords=["SWEMWBS", "short Warwick Edinburgh wellbeing"],
+                    notes=(
+                        "Seven-item short form; use/translation/administration requires the "
+                        "appropriate Warwick licence."
+                    ),
+                ),
+                items=[],
+            ),
+        ],
+    )
+
+
+def build_gse_link_only() -> QuestionnaireParent:
+    """Index the 10-item GSE and its language source without assuming rehosting rights."""
+    return QuestionnaireParent(
+        instrument_id="general_self_efficacy",
+        name_full="General Self-Efficacy Scale",
+        construct_ontology=["general self-efficacy"],
+        is_commercial=None,
+        metadata=QuestionnaireMetadata(
+            keywords=["GSE", "general self-efficacy", "coping", "wellbeing"],
+            notes=(
+                "Link-only record. The FU Berlin author site hosts the scale and translations, "
+                "but an explicit licence permitting public redistribution of item wording was "
+                "not verified in the reviewed pages."
+            ),
+        ),
+        versions=[
+            QuestionnaireVersion(
+                version_id="gse_en_v1",
+                language="en",
+                display_name="General Self-Efficacy Scale (English; link-only)",
+                publication_year=1995,
+                source_citation=(
+                    "Schwarzer, R., & Jerusalem, M. (1995). Generalized Self-Efficacy scale. "
+                    "In Measures in health psychology: A user's portfolio (pp. 35-37)."
+                ),
+                item_text_included=False,
+                source_reported_item_count=10,
+                source_reported_dimensions=["general self-efficacy"],
+                target_populations=[
+                    TargetPopulation(
+                        group_name="General population including adults and adolescents",
+                        minimum_age_years=12,
+                        notes=(
+                            "Author-hosted source says persons below age 12 should not be tested."
+                        ),
+                    )
+                ],
+                source_documents=[
+                    _source_document(
+                        title="General Self-Efficacy Scale English source page",
+                        document_type="questionnaire_form",
+                        source_url=GSE_ENGLISH_URL,
+                        license_name="Use terms not explicit on reviewed source; link only",
+                        license_url=GSE_LANGUAGE_URL,
+                        redistribution_permitted=False,
+                        permission_basis=(
+                            "The author-hosted page describes the English form and translations, "
+                            "but the reviewed page does not explicitly grant public redistribution "
+                            "of item text. This is a catalog rights-status flag, not a use ban."
+                        ),
+                    )
+                ],
+                metadata=QuestionnaireMetadata(
+                    keywords=["GSE", "10 items", "four-point response"],
+                    notes=(
+                        "The source reports 10 items, a four-point response scale, and a total "
+                        "range of 10-40. Population guidance: intended for adults/adolescents; "
+                        "do not administer below age 12 without source review."
+                    ),
+                ),
+                items=[],
             )
         ],
     )
 
 
+def build_pss_link_only() -> QuestionnaireParent:
+    """Index the PSS-10 and PSS-4 and record the source's permission workflow."""
+    permission_basis = (
+        "Carnegie Mellon directs use-permission requests for the Perceived Stress Scale "
+        "through MAPI Research Trust/ePROVIDE. The request is free to submit; approval/use "
+        "terms are determined by the rights holder. No item wording is included here."
+    )
+    license_name = "Permission request via ePROVIDE; public redistribution not established"
+    source_document = _source_document(
+        title="Perceived Stress Scale forms and permission instructions",
+        document_type="questionnaire_form",
+        source_url=PSS_SOURCE_URL,
+        license_name=license_name,
+        license_url="https://eprovide.mapi-trust.org/",
+        redistribution_permitted=False,
+        permission_basis=permission_basis,
+    )
+    versions = [
+        QuestionnaireVersion(
+            version_id="pss10_en_v1",
+            language="en",
+            display_name="Perceived Stress Scale PSS-10 English (link-only)",
+            publication_year=1983,
+            source_citation=(
+                "Cohen, S., Kamarck, T., & Mermelstein, R. (1983). A global measure of "
+                "perceived stress. Journal of Health and Social Behavior, 24(4), 385-396."
+            ),
+            item_text_included=False,
+            source_reported_item_count=10,
+            source_reported_dimensions=["perceived stress"],
+            source_documents=[source_document],
+            metadata=QuestionnaireMetadata(
+                keywords=["PSS-10", "perceived stress", "stress"],
+                notes=(
+                    "The source says the scale has no diagnostic cut-offs; compare within samples."
+                ),
+            ),
+            items=[],
+        ),
+        QuestionnaireVersion(
+            version_id="pss4_en_v1",
+            language="en",
+            display_name="Perceived Stress Scale PSS-4 English (link-only)",
+            form_type="short",
+            item_text_included=False,
+            source_reported_item_count=4,
+            source_reported_dimensions=["perceived stress"],
+            source_documents=[source_document],
+            metadata=QuestionnaireMetadata(
+                keywords=["PSS-4", "short perceived stress scale", "stress"],
+                notes=(
+                    "Short form indexed separately; exact permission and psychometrics still apply."
+                ),
+            ),
+            items=[],
+        ),
+    ]
+    return QuestionnaireParent(
+        instrument_id="perceived_stress_scale",
+        name_full="Perceived Stress Scale",
+        construct_ontology=["perceived stress"],
+        is_commercial=None,
+        metadata=QuestionnaireMetadata(
+            keywords=["PSS", "Cohen Perceived Stress Scale", "stress"],
+            notes=(
+                "Link-only. The creator's university page directs requests through ePROVIDE; "
+                "a free request is not itself permission to reuse or redistribute the form."
+            ),
+        ),
+        versions=versions,
+    )
+
+
 def write_wellbeing_catalog(output_directory: Path = OUTPUT_DIRECTORY) -> list[Path]:
-    """Write the validated RSES, WHO-5, and WEMWBS families as separate JSON files."""
+    """Write validated item-bearing and link-only wellbeing/stress families as JSON."""
     output_directory.mkdir(parents=True, exist_ok=True)
     families = [
         build_rosenberg_self_esteem(),
         build_who5_link_only(),
         build_wemwbs_link_only(),
+        build_gse_link_only(),
+        build_pss_link_only(),
     ]
     written: list[Path] = []
     for family in families:

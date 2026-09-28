@@ -60,6 +60,58 @@
       "cosmin_metrics": {},
       "response_sets": {},
       "item_text_included": false,
+      "source_reported_item_count": 14,
+      "source_reported_dimensions": [
+        "mental wellbeing"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    },
+    {
+      "version_id": "swemwbs_en_v1",
+      "language": "en",
+      "display_name": "SWEMWBS English short form (licensed; link-only)",
+      "locale": "en-GB",
+      "form_type": "short",
+      "variant_types": [],
+      "target_populations": [],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": null,
+      "source_citation": "Short Warwick-Edinburgh Mental Well-being Scale; see the University of Warwick licence and resources.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "WEMWBS licences and pricing",
+          "document_type": "other",
+          "language": "en",
+          "source_url": "https://warwick.ac.uk/services/innovations/wemwbs/licenses/",
+          "local_path": null,
+          "license_name": "Registration/licence required; no public redistribution",
+          "license_url": "https://warwick.ac.uk/services/innovations/wemwbs/licenses/non-commercial/",
+          "redistribution_permitted": false,
+          "permission_basis": "The University of Warwick licence applies to all WEMWBS forms, including SWEMWBS. Eligible non-commercial organisations must register; the licence does not permit public sharing or onward use.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "keywords": [
+          "SWEMWBS",
+          "short Warwick Edinburgh wellbeing"
+        ],
+        "search_aliases": [],
+        "mesh_terms": [],
+        "characteristics": [],
+        "notes": "Seven-item short form; use/translation/administration requires the appropriate Warwick licence."
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 7,
+      "source_reported_dimensions": [
+        "mental wellbeing"
+      ],
       "items": [],
       "scoring_algorithms": []
     }

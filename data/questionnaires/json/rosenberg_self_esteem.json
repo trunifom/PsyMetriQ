@@ -82,6 +82,8 @@
         ]
       },
       "item_text_included": true,
+      "source_reported_item_count": null,
+      "source_reported_dimensions": [],
       "items": [
         {
           "item_id": "rosenberg_01",

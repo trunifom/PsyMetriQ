@@ -94,11 +94,22 @@ Use the left navigation for the instrument library, project, import/export, PDF 
 
 The browser URL is `http://127.0.0.1:8550/`. If that port is occupied, choose a different `--port` and use the matching URL. Re-run the start command to restart after stopping.
 
+For diagnostics, add `--log-level DEBUG` to either start command. For example:
+
+```powershell
+python -m src.gui.main --web --host 127.0.0.1 --port 8550 --log-level DEBUG
+```
+
+DEBUG logs include Flet session connections, catalogue family/version counts, visible-version counts, safe instrument/version IDs, and render failures. They do not log item wording, document text, or API-key values. Keep the terminal output when reporting a blank/gray view. INFO is the normal default; `PSYMETRIQ_LOG_LEVEL=DEBUG` can also set the default level.
+
+The library uses a bounded version-list viewport with independent scrolling. If the cards disappear again, compare the `visible_versions` count in DEBUG output with the Flet screenshot: a positive count means catalogue/filtering succeeded and the remaining fault is in client layout/rendering; zero points to catalog contents or active filters.
+
 ## Changes documented in this manual
 
 - The Flet workspace supports faceted instrument search, detailed version/item/response/scoring inspection, item and whole-scale selection, saved projects, and study-specific wording adaptations separated from source records.
 - Exchange supports PsyMetriQ JSON, FHIR R4, XLSX review workbooks, item CSV, and REDCap Data Dictionary CSV. Unipark and live REDCap API upload remain unsupported.
-- The catalog contains item-bearing Rosenberg Self-Esteem Scale data and searchable, non-selectable WHO-5/WEMWBS link-only metadata profiles; the latter do not include item text.
+- The catalog contains item-bearing Rosenberg Self-Esteem Scale data and selectable reference profiles for WHO-5, WEMWBS/SWEMWBS, GSE, and PSS. Reference profiles record source-reported length/dimensions and license status but do not contain item wording. They are usable for discovery, meta-analysis planning, and project references; they do not grant item reproduction or administration permission.
+- Search accepts regional language tags such as `de-AT` even when the version language is stored as `de`; a `de` filter includes the documented regional German variants. Age facets consolidate source population labels into broad overlapping bands: 0-11, 12-17, 18-64, 65+, and unknown.
 - Remote extraction offers OpenAI, Anthropic, AlpineAI SwissGPT, and generic OpenAI-compatible providers. Provider model lists can be queried without transmitting a PDF; remote PDF extraction remains opt-in and separately confirmed.
 - AlpineAI follows its documented basic Chat Completions API; extraction JSON is validated locally because Structured Outputs compatibility is not documented.
 

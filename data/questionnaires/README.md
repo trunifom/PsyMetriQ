@@ -1,6 +1,6 @@
 # Questionnaire Test Data
 
-This is a portable, database-free library of questionnaire-family JSON records and source forms with documented redistribution rights. It contains real item wording for PHQ-9, GAD-7, DASS-21, DASS-Y, IPAQ, and the public-domain English Rosenberg Self-Esteem Scale. WHO-5 and WEMWBS are indexed as link-only metadata profiles because public redistribution of their item wording has not been established. These are research and software test fixtures, not diagnostic software or clinical response procedures.
+This is a portable, database-free library of questionnaire-family JSON records and source forms with source-checked rights metadata. It contains real item wording for PHQ-9, GAD-7, DASS-21, DASS-Y, IPAQ, and the public-domain English Rosenberg Self-Esteem Scale. WHO-5, WEMWBS/SWEMWBS, GSE, and PSS are indexed as selectable metadata-reference profiles when item-level redistribution is unresolved or requires permission. A rights status does not itself block research, analysis, teaching, or project-reference selection. These are research and software test fixtures, not diagnostic software or clinical response procedures.
 
 ## Directory Layout
 
@@ -19,9 +19,11 @@ data/questionnaires/
 |   |-- dass_y.json
 |   |-- gad7.json
 |   |-- ipaq.json
+|   |-- general_self_efficacy.json  # GSE reference; item text not stored
+|   |-- perceived_stress_scale.json # PSS-10/PSS-4 references
 |   |-- rosenberg_self_esteem.json
-|   |-- wemwbs.json      # Link-only; no item text
-|   |-- who5.json        # Link-only; no item text
+|   |-- wemwbs.json      # WEMWBS/SWEMWBS references; item text not stored
+|   |-- who5.json        # WHO-5 reference; item text not stored
 |   `-- phq9.json
 |-- references/
 |   |-- json/  # Reviewed metadata records for licensed validation-study PDFs
@@ -51,8 +53,11 @@ For new uploads, use the Git-ignored [PDF inbox](inbox/README.md) and follow the
 | IPAQ standard short self-administered | English; German translation, ages 15-69 | CC BY 4.0. Source-provided German form is supplied as-is; translation accuracy is not endorsed by the website. Numeric days and durations remain separate fields. |
 | IPAQ-E | English, older-adult form | CC BY 4.0; kept separate from the standard short form. No numeric age range or MET score is invented. |
 | Rosenberg Self-Esteem Scale | English (`en-US`), 10 items | University of Maryland states the scale is public domain and permits use, translation, and adaptation with scholarly attribution. Reverse-coded items are flagged; the GUI does not calculate participant scores. |
-| WHO-5 Well-Being Index | English metadata profile | Link-only. The exact source-publication notice and any third-party credits must be verified before item text is copied. |
-| Warwick-Edinburgh Mental Wellbeing Scale (WEMWBS) | English metadata profile | Link-only. Eligible non-commercial organizations may apply for a licence; Warwick says the licence does not allow public sharing or onward provision. |
+| WHO-5 Well-Being Index | English metadata reference; 5 items/positive-wellbeing dimension source-reported | Exact WHO publication terms/third-party credits not verified; item text is not stored. Selectable as a reference, not a permission to reproduce or administer the source form. |
+| Warwick-Edinburgh Mental Wellbeing Scale (WEMWBS) | English metadata reference; 14 items/mental-wellbeing dimension source-reported | Eligible non-commercial organisations apply for a free, time-limited Warwick licence; public sharing/onward provision is expressly not allowed. Selecting the profile does not grant item use. |
+| Short Warwick-Edinburgh Mental Wellbeing Scale (SWEMWBS) | English metadata reference; 7-item short form source-reported | Covered by Warwick's WEMWBS licence terms; item text is not copied. |
+| General Self-Efficacy Scale (GSE) | English metadata reference; 10 items/general self-efficacy dimension source-reported | FU Berlin source and translations linked. No explicit public redistribution grant found on reviewed source; profile remains available for discovery and analysis. |
+| Perceived Stress Scale (PSS-10/PSS-4) | English metadata references; 10/4 items/perceived-stress dimension source-reported | Carnegie Mellon directs use-permission requests through MAPI/ePROVIDE. Requests are free but not approvals; item text is not stored. |
 
 ## Original Forms and Permissions
 
@@ -60,13 +65,13 @@ For new uploads, use the Git-ignored [PDF inbox](inbox/README.md) and follow the
 - **DASS/DASS-Y:** [official downloads](https://www2.psy.unsw.edu.au/dass/down.htm) say the forms are public domain/copyable, but may not be modified or sold. The [FAQ](https://www2.psy.unsw.edu.au/dass/DASSFAQ.htm) gives age guidance (adult DASS 14+; DASS-Y 8-17), says DASS-Y is not comparable to adult forms, and warns translations may not be validated by the Foundation.
 - **IPAQ:** [official FAQ](https://sites.google.com/view/ipaq/faq) states CC BY 4.0; [official download page](https://sites.google.com/view/ipaq/download) says researcher-submitted translations are provided as-is and their accuracy is not checked.
 - **Rosenberg Self-Esteem Scale:** the [University of Maryland use page](https://socy.umd.edu/quick-links/using-rosenberg-self-esteem-scale) states that the scale is in the public domain and may be used without charge or notice, including translations/adaptations with scholarly attribution.
-- **WHO-5/WEMWBS:** link-only records preserve discoverability without redistributing item text; see the [instrument licensing guide](../../docs/instrument_library.md).
+- **WHO-5/WEMWBS/SWEMWBS/GSE/PSS:** metadata references preserve discoverability, source-reported lengths/dimensions, and license notes without redistributing item text. The GUI allows selecting these references for research projects and exports them as metadata-only records, not blank questionnaires.
 
 Validation-study papers are linked by citation/DOI unless their own publication license separately permits bundling. A questionnaire-form permission is not blanket permission to copy its journal articles.
 
 ## Rebuild and Validate
 
-The builders never download PDFs. Existing form builders validate local PDFs and write five form-bearing families. The wellbeing builder writes three additional JSON families, including two rights-safe link-only profiles:
+The builders never download PDFs. Existing form builders validate local PDFs and write five form-bearing families. The wellbeing builder adds the Rosenberg item-bearing family plus WHO-5, WEMWBS/SWEMWBS, GSE, and PSS metadata references:
 
 ```powershell
 python data/questionnaires/build_catalog.py

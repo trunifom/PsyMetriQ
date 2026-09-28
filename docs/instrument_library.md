@@ -2,7 +2,7 @@
 
 ## Purpose and date
 
-This page is a curated discovery list for PsyMetriQ test records. It separates item-bearing instruments from metadata-only link records and candidates that still need review. Status reflects sources checked on **2026-09-28** and is not legal advice; verify the exact version's current terms before downloading, storing, processing, or sharing it.
+This page is a curated discovery list for PsyMetriQ test records. It separates item-bearing instruments, selectable metadata-reference records, and candidates that still need source review. A restrictive or unverified license status is recorded and filterable; it does not remove an instrument from the research catalog or disable reference selection. Status reflects sources checked on **2026-09-28** and is not legal advice; verify exact terms before administering, adapting, distributing, or sharing item wording.
 
 A scientific citation or public download page is not itself a redistribution licence. Rights can vary by instrument, edition, language, publisher, and intended use. A licence held by one university, research team, or end user does not automatically permit copying an item form into an open GitHub repository.
 
@@ -20,14 +20,17 @@ A scientific citation or public download page is not itself a redistribution lic
 
 The PDF source forms are organized in `data/questionnaires/forms/<domain>/<instrument>/`; each JSON family is in `data/questionnaires/json/`. The versions reference validation papers without bundling journal PDFs unless those publication rights are separately cleared.
 
-## Link-Only Discovery Records
+## Selectable Reference Records
 
-These records are searchable and show version/provenance details, but the GUI disables project selection because their item wording is not included in the local catalogue:
+These records contain no local item wording, but can be searched, selected into projects, compared, and exported as metadata-only reference JSON. Each records source-reported length/dimensions where supported. Their presence does not grant permission to copy, adapt, administer, translate, or redistribute the source instrument.
 
-| Instrument | Current record | Reason item text is not bundled |
+| Instrument | Current record | Rights and current handling |
 | --- | --- | --- |
-| WHO-5 Well-Being Index | English metadata profile; official source link | The exact WHO-5 publication copyright notice and any third-party credits have not been checked. WHO's general policy requires reviewing the specific publication; item text remains link-only pending that review. |
-| Warwick-Edinburgh Mental Wellbeing Scale (WEMWBS) | English metadata profile; official licence link | Warwick offers a free application-based non-commercial licence to eligible organizations, but explicitly says it does not permit public sharing or onward provision of WEMWBS. |
+| WHO-5 Well-Being Index | English; 5 items, positive wellbeing | Exact WHO-5 publication copyright notice and third-party credits have not been checked. The [WHO copyright policy](https://www.who.int/about/policies/publishing/copyright) requires checking the specific publication. |
+| Warwick-Edinburgh Mental Wellbeing Scale (WEMWBS) | English; 14 items, mental wellbeing | Warwick's [non-commercial licence](https://warwick.ac.uk/services/innovations/wemwbs/licenses/non-commercial/) is free to eligible organisations after registration, valid for 12 months, and prohibits public sharing or onward provision under that licence. |
+| Short Warwick-Edinburgh Mental Wellbeing Scale (SWEMWBS) | English short form; 7 items, mental wellbeing | Covered by Warwick's WEMWBS licence terms; no public rehosting. |
+| General Self-Efficacy Scale (GSE) | English; 10 items, general self-efficacy | The [author-hosted source](https://userpage.fu-berlin.de/health/engscal.htm) describes form, response scale, population/scoring and language versions. No public redistribution grant was stated on reviewed pages. |
+| Perceived Stress Scale (PSS-10/PSS-4) | English; 10/4 items, perceived stress | Carnegie Mellon's [official scale page](https://www.cmu.edu/dietrich/psychology/stress-immunity-disease-lab/scales/index.html) directs permission requests through MAPI/ePROVIDE. Requests are free, not approvals. |
 
 ## Broader catalogue for future versions
 
@@ -35,8 +38,9 @@ These instruments cover the domains requested for PsyMetriQ. They are discovery 
 
 | Domain | Instrument candidates | Current handling |
 | --- | --- | --- |
-| Wellbeing | WHO-5 Well-Being Index; WEMWBS/SWEMWBS | WHO-5 and WEMWBS are indexed as link-only profiles; SWEMWBS has no record yet. The exact WHO publication terms and Warwick permission for public sharing remain unresolved. |
-| Stress | Perceived Stress Scale (PSS-10/PSS-4) | Carnegie Mellon directs use-permission requests through MAPI/ePROVIDE. DASS is bundled but captures a narrower tension/stress construct. |
+| Wellbeing | WHO-5 Well-Being Index; WEMWBS/SWEMWBS | WHO-5 and both Warwick forms are indexed as selectable metadata references. WHO-5's publication-specific rights need review; Warwick licence requires registration and disallows public sharing. |
+| Stress | Perceived Stress Scale (PSS-10/PSS-4) | PSS-10 and PSS-4 have selectable English metadata references; Carnegie Mellon directs use-permission requests through MAPI/ePROVIDE. DASS is bundled but captures a narrower tension/stress construct. |
+| Self-efficacy | General Self-Efficacy Scale (GSE) | English metadata reference with source-reported item count, response format, age guidance and score range; the author-hosted source's explicit redistribution terms remain unverified. |
 | Anxiety | GAD-7; GAD-2; PROMIS Anxiety | GAD-7 and DASS anxiety are bundled. PROMIS has adult/pediatric forms and many languages; exact measure/translation terms apply. |
 | Obsessive-compulsive symptoms | OCI-R (adult) | Common adult measure; MAPI/ePROVIDE is an authoritative discovery source. Item redistribution not established. |
 | Depression | PHQ-9; DASS-21/DASS-Y; BDI-II; CES-D; GDS-15 | PHQ-9 and DASS variants are bundled under different terms. BDI-II is paid Pearson content; other editions need source-specific review. |
@@ -81,6 +85,7 @@ No literature citation means a test is not validated; a citation does not establ
 - **DASS/DASS-Y:** [Official downloads](https://www2.psy.unsw.edu.au/dass/down.htm), [FAQ on age, scoring, use, and translations](https://www2.psy.unsw.edu.au/dass/DASSFAQ.htm), [adult translations](https://www2.psy.unsw.edu.au/dass/DASS%20Translations.htm), and [DASS-Y translations](https://www2.psy.unsw.edu.au/dass/DASS-Y%20Translations.htm). The source says public domain/copy allowed, not modified or sold; translations may not be validated by the Foundation.
 - **IPAQ:** [Official download page](https://sites.google.com/view/ipaq/download) and [FAQ/license](https://sites.google.com/view/ipaq/faq). CC BY 4.0; translation submissions are provided as-is.
 - **Rosenberg Self-Esteem Scale:** University of Maryland [public-domain and use notes](https://socy.umd.edu/quick-links/using-rosenberg-self-esteem-scale). The source notes original development on 5,024 New York high-school juniors/seniors; translation permission does not itself validate a translation.
+- **General Self-Efficacy Scale:** [FU Berlin author's English page](https://userpage.fu-berlin.de/health/engscal.htm) gives the 10-item format, 4 response categories, 10-40 score range, and age guidance; the [language index](https://userpage.fu-berlin.de/health/selfscal.htm) lists available translations. No explicit public-rehosting grant was found on those reviewed pages.
 - **WEMWBS/SWEMWBS:** [University of Warwick licence and pricing information](https://warwick.ac.uk/services/innovations/wemwbs/licenses/) and [non-commercial registration/terms](https://warwick.ac.uk/services/innovations/wemwbs/licenses/non-commercial/). The non-commercial licence is not permission to publicly share the scales.
 - **WHO materials:** [WHO copyright and licensing policy](https://www.who.int/about/policies/publishing/copyright). Check the copyright notice on the specific publication and check for third-party material within it; a general WHO publication licence should not be assumed to apply to every embedded instrument.
 - **Measurement-instrument selection:** [COSMIN](https://www.cosmin.nl/) offers guidance and discovery resources for measurement properties and instrument selection. A COSMIN listing or article does not grant item-text redistribution rights.

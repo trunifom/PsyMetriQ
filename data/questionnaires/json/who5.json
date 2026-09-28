@@ -60,6 +60,10 @@
       "cosmin_metrics": {},
       "response_sets": {},
       "item_text_included": false,
+      "source_reported_item_count": 5,
+      "source_reported_dimensions": [
+        "positive wellbeing"
+      ],
       "items": [],
       "scoring_algorithms": []
     }

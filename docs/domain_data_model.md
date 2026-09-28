@@ -44,7 +44,8 @@ Every version has its own stable `version_id`, language, response sets, items, a
 - `based_on`: one or more `(instrument_id, version_id)` references identifying source forms.
 - `metadata`: version-specific keywords, search aliases, MeSH terms, characteristics, and review notes.
 - `source_documents`: version-specific official forms, manuals, or validation-study references with licensing and integrity metadata.
-- `item_text_included`: whether the source wording is included in this version. Set it to `false` only for explicit link-only records with no items; the GUI then disables project selection/export for that record.
+- `item_text_included`: whether item wording is included in this version. Set it to `false` for a source/reference profile that has no local item text. Such versions may still be searched, selected, and exported as metadata references; no item wording is generated or implied. This is an inventory/content-availability field, not a use-rights gate.
+- `source_reported_item_count` and `source_reported_dimensions`: source-reported scale length and dimensions for references where item-level records cannot be stored. These are descriptive metadata, not reconstructed items or scoring definitions.
 
 The `items` list is the actual content of the concrete form. A short form must contain its own item list and scoring rules rather than inheriting a parent's item list implicitly. This makes a search result or future export unambiguous.
 Each item can also have its own `QuestionnaireMetadata` for item-specific tags and discovery notes.

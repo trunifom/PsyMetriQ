@@ -318,8 +318,18 @@ class QuestionnaireVersion(BaseModel):
 		default=True,
 		description=(
 			"Whether item wording is included in this catalogue record. False is for "
-			"link-only records where redistribution has not been established."
+			"reference records that retain discovery metadata but not source wording. "
+			"This flag must not be treated as a use-permission decision."
 		),
+	)
+	source_reported_item_count: int | None = Field(
+		default=None,
+		ge=1,
+		description="Source-reported form length for reference records whose items are not stored.",
+	)
+	source_reported_dimensions: list[str] = Field(
+		default_factory=list,
+		description="Source-reported dimensions/subscales when item-level mapping is unavailable.",
 	)
 	items: list[ItemSchema] = Field(
 		default_factory=list,

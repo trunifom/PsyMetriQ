@@ -72,6 +72,36 @@ def _safe_filename(value: str) -> str:
     return safe[:80] or "questionnaire"
 
 
+AGE_GROUP_RANGES: dict[str, tuple[int, int | None]] = {
+    "children": (0, 11),
+    "adolescents": (12, 17),
+    "adults": (18, 64),
+    "older_adults": (65, None),
+}
+AGE_GROUP_LABELS = {
+    "children": "Kinder (0-11)",
+    "adolescents": "Jugendliche (12-17)",
+    "adults": "Erwachsene (18-64)",
+    "older_adults": "Ältere Erwachsene (65+)",
+    "unknown": "Altersangabe unbekannt",
+}
+POPULATION_AGE_KEYWORDS = {
+    "children": ("child", "children", "pediatric", "paediatric", "kind", "kinder"),
+    "adolescents": ("adolescent", "youth", "teen", "jugend", "schüler", "schueler"),
+    "adults": ("adult", "erwachsen", "general population", "allgemeinbevölkerung"),
+    "older_adults": ("older adult", "elderly", "senior", "ältere", "aeltere"),
+}
+
+
+def _population_age_groups(group_name: str) -> set[str]:
+    normalized = group_name.casefold()
+    return {
+        group
+        for group, keywords in POPULATION_AGE_KEYWORDS.items()
+        if any(keyword in normalized for keyword in keywords)
+    }
+
+
 class PsyMetriQApplication:
     """Own UI state and connect Flet views to validated local services."""
 
@@ -98,6 +128,12 @@ class PsyMetriQApplication:
         self.catalog_error: str | None = None
         self.active_version_key: tuple[str, str] | None = None
         self._reload_catalog(silent=True)
+        LOGGER.info(
+            "GUI catalog initialized: families=%d versions=%d error=%s",
+            len(self.catalog_records),
+            sum(len(family.versions) for family, _path in self.catalog_records),
+            self.catalog_error is not None,
+        )
 
         self.project = WorkspaceProject(
             name="Neues Projekt",
@@ -111,6 +147,7 @@ class PsyMetriQApplication:
         self.form_type_filter = "all"
         self.population_filter = "all"
         self.commercial_filter = "all"
+        self.license_filter = "all"
         self.export_format = self.settings.default_export_format
         self.available_models: list[str] = []
         self.active_provider = self.settings.llm_provider
@@ -260,6 +297,12 @@ class PsyMetriQApplication:
         )
 
     def _render(self) -> None:
+        LOGGER.debug(
+            "Rendering GUI view=%s families=%d selections=%d",
+            self.active_view,
+            len(self.catalog_records),
+            len(self.project.selections),
+        )
         titles = {
             "catalog": "Instrumentenbibliothek",
             "project": "Projekt und Auswahl",
@@ -274,16 +317,25 @@ class PsyMetriQApplication:
         )
         for view, button in self.nav_buttons.items():
             button.bgcolor = "#28685D" if self.active_view == view else "#1B4941"
-        self.content_host.controls = {
-            "catalog": self._catalog_view,
-            "project": self._project_view,
-            "exchange": self._exchange_view,
-            "intake": self._intake_view,
-            "settings": self._settings_view,
-        }[self.active_view]()
+        try:
+            view_controls = {
+                "catalog": self._catalog_view,
+                "project": self._project_view,
+                "exchange": self._exchange_view,
+                "intake": self._intake_view,
+                "settings": self._settings_view,
+            }[self.active_view]()
+        except Exception:
+            LOGGER.exception("GUI view construction failed: view=%s", self.active_view)
+            raise
+        self.content_host.controls = view_controls
         self.status_text.value = self.status_message
         self.status_text.color = "#9B3E35" if self.status_is_error else "#36554E"
-        self.page.update()
+        try:
+            self.page.update()
+        except Exception:
+            LOGGER.exception("Flet page update failed for view=%s", self.active_view)
+            raise
 
     def _navigate(self, view: str) -> None:
         self.active_view = view
@@ -424,12 +476,23 @@ class PsyMetriQApplication:
             loaded = new_store.load()
         except CatalogStoreError as error:
             self.catalog_error = str(error)
+            LOGGER.exception(
+                "GUI catalog reload failed (silent=%s, records_retained=%d)",
+                silent,
+                len(self.catalog_records),
+            )
             if not silent:
                 self._set_status(self.catalog_error, error=True)
             return
         self.catalog_store = new_store
         self.catalog_records = loaded
         self.catalog_error = None
+        LOGGER.info(
+            "GUI catalog loaded: families=%d versions=%d directory=%s",
+            len(loaded),
+            sum(len(family.versions) for family, _path in loaded),
+            _relative_path(new_store.directory),
+        )
         if self.active_version_key and not self._find_version(*self.active_version_key):
             self.active_version_key = None
         if not silent:
@@ -454,14 +517,59 @@ class PsyMetriQApplication:
         version = next((value for value in family.versions if value.version_id == version_id), None)
         return (family, version) if version is not None else None
 
+    @staticmethod
+    def _matches_language_filter(version: QuestionnaireVersion, selected: str) -> bool:
+        """Match a language subtag broadly, but match a selected regional tag exactly."""
+        selected = selected.casefold()
+        language = version.language.casefold()
+        locale = (version.locale or "").casefold()
+        if "-" in selected:
+            return selected in {language, locale}
+        return any(
+            value == selected or value.startswith(f"{selected}-")
+            for value in (language, locale)
+            if value
+        )
+
+    @staticmethod
+    def _matches_population_filter(version: QuestionnaireVersion, selected: str) -> bool:
+        """Match source-reported age ranges against broad researcher-facing age bands."""
+        populations = version.target_populations
+        if selected == "unknown":
+            return not populations or all(
+                population.minimum_age_years is None
+                and population.maximum_age_years is None
+                and not _population_age_groups(population.group_name)
+                for population in populations
+            )
+
+        selected_bounds = AGE_GROUP_RANGES.get(selected)
+        if selected_bounds is None:
+            return False
+        selected_minimum, selected_maximum = selected_bounds
+        selected_upper = float("inf") if selected_maximum is None else selected_maximum
+        for population in populations:
+            if population.minimum_age_years is None and population.maximum_age_years is None:
+                if selected in _population_age_groups(population.group_name):
+                    return True
+                continue
+            minimum = 0 if population.minimum_age_years is None else population.minimum_age_years
+            maximum = (
+                float("inf")
+                if population.maximum_age_years is None
+                else population.maximum_age_years
+            )
+            if minimum <= selected_upper and maximum >= selected_minimum:
+                return True
+        return False
+
     def _visible_versions(self) -> list[tuple[QuestionnaireParent, QuestionnaireVersion]]:
         query = self.search_query.strip().casefold()
         matches: list[tuple[QuestionnaireParent, QuestionnaireVersion]] = []
         for family, _path in self.catalog_records:
             for version in family.versions:
-                if (
-                    self.language_filter != "all"
-                    and version.language.casefold() != self.language_filter
+                if self.language_filter != "all" and not self._matches_language_filter(
+                    version, self.language_filter
                 ):
                     continue
                 if (
@@ -474,13 +582,8 @@ class PsyMetriQApplication:
                     and version.form_type != self.form_type_filter
                 ):
                     continue
-                if (
-                    self.population_filter != "all"
-                    and self.population_filter
-                    not in {
-                        population.group_name.casefold()
-                        for population in version.target_populations
-                    }
+                if self.population_filter != "all" and not self._matches_population_filter(
+                    version, self.population_filter
                 ):
                     continue
                 if self.commercial_filter == "commercial" and family.is_commercial is not True:
@@ -492,6 +595,16 @@ class PsyMetriQApplication:
                     continue
                 if self.commercial_filter == "unknown" and family.is_commercial is not None:
                     continue
+                source_licenses = {
+                    source.license_name.casefold() for source in version.source_documents
+                }
+                if self.license_filter == "undocumented" and source_licenses:
+                    continue
+                if (
+                    self.license_filter not in {"all", "undocumented"}
+                    and self.license_filter not in source_licenses
+                ):
+                    continue
                 searchable = " ".join(
                     [
                         family.instrument_id,
@@ -500,6 +613,20 @@ class PsyMetriQApplication:
                         version.display_name or "",
                         version.language,
                         version.locale or "",
+                        version.source_citation or "",
+                        version.source_doi or "",
+                        version.metadata.notes or "",
+                        *(version.source_reported_dimensions),
+                        *(
+                            value
+                            for source in version.source_documents
+                            for value in (
+                                source.title,
+                                source.license_name,
+                                source.permission_basis,
+                                str(source.source_url or ""),
+                            )
+                        ),
                         *(family.construct_ontology),
                         *(item.prompt_text for item in version.items),
                         *(item.dimension for item in version.items),
@@ -556,12 +683,6 @@ class PsyMetriQApplication:
     def _toggle_version(
         self, family: QuestionnaireParent, version: QuestionnaireVersion, selected: bool
     ) -> None:
-        if selected and not version.item_text_included:
-            self._set_status(
-                "Diese Version ist ein Link-only-Metadatensatz; Itemtexte sind nicht freigegeben.",
-                error=True,
-            )
-            return
         current = self._project_selection(family.instrument_id, version.version_id)
         if selected:
             self._set_selection(
@@ -775,11 +896,18 @@ class PsyMetriQApplication:
         )
 
     def _catalog_view(self) -> list[ft.Control]:
+        LOGGER.debug(
+            "Building catalog view: visible_versions=%d query_length=%d",
+            len(self._visible_versions()),
+            len(self.search_query),
+        )
         languages = sorted(
             {
-                version.language
+                value
                 for family, _path in self.catalog_records
                 for version in family.versions
+                for value in (version.language, version.locale)
+                if value
             }
         )
         locales = sorted(
@@ -790,12 +918,12 @@ class PsyMetriQApplication:
                 if version.locale
             }
         )
-        populations = sorted(
+        license_names = sorted(
             {
-                population.group_name
+                source.license_name
                 for family, _path in self.catalog_records
                 for version in family.versions
-                for population in version.target_populations
+                for source in version.source_documents
             }
         )
         language_options = [ft.DropdownOption(key="all", text="Alle Sprachen")]
@@ -829,8 +957,8 @@ class PsyMetriQApplication:
             value=self.population_filter,
             options=[ft.DropdownOption(key="all", text="Alle Zielgruppen")]
             + [
-                ft.DropdownOption(key=value.casefold(), text=value)
-                for value in populations
+                ft.DropdownOption(key=key, text=label)
+                for key, label in AGE_GROUP_LABELS.items()
             ],
             on_select=lambda event: self._set_catalog_filter("population", event.control.value),
             width=220,
@@ -848,27 +976,46 @@ class PsyMetriQApplication:
             ),
             width=230,
         )
+        license_dropdown = ft.Dropdown(
+            value=self.license_filter,
+            options=[
+                ft.DropdownOption(key="all", text="Alle Lizenzen"),
+                ft.DropdownOption(key="undocumented", text="Lizenz nicht dokumentiert"),
+            ]
+            + [
+                ft.DropdownOption(key=value.casefold(), text=value)
+                for value in license_names
+            ],
+            on_select=lambda event: self._set_catalog_filter("license", event.control.value),
+            width=280,
+        )
         self.search_field = ft.TextField(
             value=self.search_query,
             hint_text="Instrument, Sprache, Item oder Konstrukt suchen",
-            expand=True,
+            width=360,
             on_submit=lambda _event: self._submit_search(),
         )
         toolbar = ft.Row(
             wrap=True,
             spacing=8,
             controls=[
-                self._field(
-                    "Suche",
-                    self.search_field,
-                    "Durchsucht Namen, Versionen, Konstrukte, Itemtexte und Antwortoptionen im aktuell geladenen Katalog.",
-                    "Zum Beispiel: PHQ-9, Sorgen, de-CH oder Never.",
+                ft.Container(
+                    width=380,
+                    content=self._field(
+                        "Suche",
+                        self.search_field,
+                        "Durchsucht Namen, Versionen, Konstrukte, Itemtexte und Antwortoptionen im aktuell geladenen Katalog.",
+                        "Zum Beispiel: PHQ-9, Sorgen, de-CH oder Never.",
+                    ),
                 ),
-                self._field(
-                    "Sprache",
-                    language_dropdown,
-                    "Filtert konkrete Fragebogenversionen nach ihrem BCP 47 Sprach-Tag.",
-                    "de, en oder en-US.",
+                ft.Container(
+                    width=200,
+                    content=self._field(
+                        "Sprache",
+                        language_dropdown,
+                        "Filtert nach Sprache oder Locale. Kurze Sprachcodes wie 'de' schließen alle dokumentierten Regionen ein; 'de-AT' wählt genau diese Locale.",
+                        "de = alle deutschen Sprachvarianten; de-AT = österreichisches Deutsch.",
+                    ),
                 ),
                 self._action_button(
                     "Suchen",
@@ -880,34 +1027,54 @@ class PsyMetriQApplication:
                 ),
             ],
         )
-        toolbar.controls[0].expand = True
         facets = ft.Row(
             wrap=True,
             spacing=8,
             controls=[
-                self._field(
-                    "Locale",
-                    locale_dropdown,
-                    "Filtert nach konkretem regionalem Sprachraum. Das ist präziser als der Sprachcode allein.",
-                    "de-CH und de-DE sind separate Adaptationen.",
+                ft.Container(
+                    width=230,
+                    content=self._field(
+                        "Locale",
+                        locale_dropdown,
+                        "Filtert nach konkretem regionalem Sprachraum. Das ist präziser als der Sprachcode allein.",
+                        "de-CH und de-DE sind separate Adaptationen.",
+                    ),
                 ),
-                self._field(
-                    "Formtyp",
-                    form_type_dropdown,
-                    "Filtert vollständige, kurze, lange, Screening- oder benutzerdefinierte Formulare.",
-                    "Eine Kurzform ist nicht automatisch mit der Langform austauschbar.",
+                ft.Container(
+                    width=230,
+                    content=self._field(
+                        "Formtyp",
+                        form_type_dropdown,
+                        "Filtert vollständige, kurze, lange, Screening- oder benutzerdefinierte Formulare.",
+                        "Eine Kurzform ist nicht automatisch mit der Langform austauschbar.",
+                    ),
                 ),
-                self._field(
-                    "Zielgruppe",
-                    population_dropdown,
-                    "Zeigt Zielgruppen, die in den Versionsmetadaten dokumentiert sind.",
-                    "Beispiele: Erwachsene, Jugendliche oder Primärversorgung.",
+                ft.Container(
+                    width=260,
+                    content=self._field(
+                        "Zielgruppe",
+                        population_dropdown,
+                        "Fasst Altersangaben in überlappende Quellbereiche zusammen. Ein Formblatt für 15-69-Jährige erscheint z.B. bei Jugendlichen, Erwachsenen und älteren Erwachsenen.",
+                        "Kinder 0-11; Jugendliche 12-17; Erwachsene 18-64; ältere Erwachsene ab 65; unbekannt.",
+                    ),
                 ),
-                self._field(
-                    "Nutzungsstatus",
-                    rights_dropdown,
-                    "Filtert anhand der dokumentierten kommerziellen Nutzungsangabe. 'Unbekannt' ist keine Nutzungserlaubnis.",
-                    "Prüfe für jede Version zusätzlich Quelldokumente und Lizenztext.",
+                ft.Container(
+                    width=270,
+                    content=self._field(
+                        "Nutzungsstatus",
+                        rights_dropdown,
+                        "Filtert anhand der dokumentierten kommerziellen Nutzungsangabe. 'Unbekannt' ist keine Nutzungserlaubnis.",
+                        "Prüfe für jede Version zusätzlich Quelldokumente und Lizenztext.",
+                    ),
+                ),
+                ft.Container(
+                    width=320,
+                    content=self._field(
+                        "Lizenz / Rechtehinweis",
+                        license_dropdown,
+                        "Filtert nach dem im Quelldatensatz dokumentierten Lizenznamen. Ein Filter oder eine Erlaubnisangabe ist keine Nutzungssperre und kein Rechtsgutachten.",
+                        "Beispiele: Public domain, CC BY 4.0, Registrierung erforderlich.",
+                    ),
                 ),
             ],
         )
@@ -941,7 +1108,7 @@ class PsyMetriQApplication:
                     ],
                 ),
                 ft.ListView(
-                    expand=True,
+                    height=460,
                     spacing=6,
                     controls=[self._version_card(family, version) for family, version in versions]
                     or [
@@ -971,7 +1138,6 @@ class PsyMetriQApplication:
             facets,
             ft.Container(height=4),
             ft.Row(
-                expand=True,
                 spacing=16,
                 vertical_alignment=ft.CrossAxisAlignment.START,
                 controls=[left, right],
@@ -1000,10 +1166,20 @@ class PsyMetriQApplication:
                 (
                     f"{len(selected_ids) if is_selected else 0}/{len(version.items)} Items ausgewählt"
                     if version.item_text_included
-                    else "Itemtexte nicht im Katalog enthalten"
+                    else (
+                        f"Metadatenreferenz · "
+                        f"{version.source_reported_item_count or 'Anzahl unbekannt'} Items laut Quelle"
+                    )
                 ),
             )
             if value
+        )
+        LOGGER.debug(
+            "Building version card: instrument_id=%s version_id=%s item_count=%d link_only=%s",
+            family.instrument_id,
+            version.version_id,
+            len(version.items),
+            not version.item_text_included,
         )
         return ft.Container(
             bgcolor="#FFFFFF",
@@ -1016,11 +1192,10 @@ class PsyMetriQApplication:
                     ft.Checkbox(
                         value=is_selected,
                         label="Auswahl",
-                        disabled=not version.item_text_included,
                         tooltip=(
                             f"{family.name_full} ({version.version_id}) zum Projekt hinzufügen"
                             if version.item_text_included
-                            else "Metadatenprofil: Itemtext nur über die verlinkte Quelle verfügbar"
+                            else "Nimmt die dokumentierte Version als Referenz ins Projekt auf; Itemtexte werden nicht mitkopiert"
                         ),
                         on_change=lambda event, f=family, v=version: self._toggle_version(
                             f, v, bool(event.control.value)
@@ -1075,8 +1250,9 @@ class PsyMetriQApplication:
         for source in version.source_documents:
             source_rows.append(
                 ft.Text(
-                    f"{source.document_type}: {source.title} · "
-                    f"{'Weitergabe laut Quelle dokumentiert' if source.redistribution_permitted else 'Link-/Nutzungsrechte eingeschränkt oder ungeklärt'}"
+                    f"{source.document_type}: {source.title} · Lizenz/Status: {source.license_name} · "
+                    f"{'Weitergabe laut Quelle dokumentiert' if source.redistribution_permitted else 'Weitergabe laut Quelle nicht freigegeben oder ungeklärt'} · "
+                    f"Basis: {source.permission_basis}"
                     + (f" · {source.source_url}" if source.source_url else ""),
                     size=12,
                     color="#55716A",
@@ -1132,7 +1308,17 @@ class PsyMetriQApplication:
         for item in version.items:
             dimension_groups.setdefault(item.dimension, []).append(item.item_id)
         dimension_controls: list[ft.Control] = []
-        if len(dimension_groups) > 1:
+        if not version.item_text_included:
+            dimension_controls = [
+                ft.Text(
+                    f"{dimension} · Metadaten der Quelle",
+                    size=12,
+                    color="#55716A",
+                    selectable=True,
+                )
+                for dimension in version.source_reported_dimensions
+            ]
+        if dimension_groups:
             dimension_controls = [
                 ft.Row(
                     controls=[
@@ -1240,7 +1426,11 @@ class PsyMetriQApplication:
                 f"Sprache {version.language}",
                 f"Locale {version.locale}" if version.locale else "",
                 f"Jahr {version.publication_year}" if version.publication_year else "",
-                f"{len(version.items)} Items",
+                (
+                    f"{len(version.items)} Items"
+                    if version.item_text_included
+                    else f"{version.source_reported_item_count or 'Unbekannte Anzahl'} Items laut Quelle; Itemtext nicht enthalten"
+                ),
             )
             if value
         )
@@ -1252,7 +1442,7 @@ class PsyMetriQApplication:
             )
             if version.item_text_included
             else ft.Text(
-                "Itemtexte sind aus Rechte-/Lizenzgründen nicht im Katalog. Nutze den offiziellen Quellenlink; erforderliche Nutzungslizenzen sind direkt beim Rechteinhaber zu klären.",
+                "Metadatenreferenz: Itemtext ist nicht in dieser Software gespeichert oder exportiert. Nutze den offiziellen Quellenlink, prüfe dortige Nutzungs-/Adaptionsbedingungen und beschaffe eine Nutzungserlaubnis für Feldanwendung, Lehre oder geteilte Materialien, falls erforderlich. Die Auswahl hier dient Literatur-/Meta-Analysen und Projektplanung und ist keine Erlaubnis zur Itemnutzung.",
                 size=12,
                 color="#8A4A2E",
                 selectable=True,
@@ -1355,11 +1545,29 @@ class PsyMetriQApplication:
             found = self._find_version(selection.instrument_id, selection.version_id)
             if found is None:
                 label = f"Nicht aufgelöst: {selection.instrument_id}/{selection.version_id}"
-                item_count = len(selection.item_ids)
+                selection_summary = (
+                    f"{len(selection.item_ids)} ausgewählte Items · Katalogversion nicht aufgelöst"
+                )
             else:
                 family, version = found
                 label = f"{family.name_full} · {version.display_name or version.version_id}"
-                item_count = len(self._selected_item_ids(selection.instrument_id, version))
+                if version.item_text_included:
+                    item_count = len(self._selected_item_ids(selection.instrument_id, version))
+                    selection_summary = f"{item_count} ausgewählte Items"
+                else:
+                    item_count = version.source_reported_item_count or "Unbekannte Anzahl"
+                    selection_summary = (
+                        f"Metadatenreferenz · {item_count} Items laut Quelle · Itemtext nicht enthalten"
+                    )
+                    if version.source_reported_dimensions:
+                        selection_summary += (
+                            " · Dimensionen: "
+                            + ", ".join(version.source_reported_dimensions)
+                        )
+                    if version.source_documents:
+                        selection_summary += (
+                            f" · Lizenz: {version.source_documents[0].license_name}"
+                        )
             adaptation_count = len(selection.item_adaptations)
             selected_rows.append(
                 ft.Row(
@@ -1370,7 +1578,7 @@ class PsyMetriQApplication:
                             controls=[
                                 ft.Text(label, size=13, weight=ft.FontWeight.W_600),
                                 ft.Text(
-                                    f"{item_count} Items · {selection.version_id} · "
+                                    f"{selection_summary} · {selection.version_id} · "
                                     f"{adaptation_count} Studienanpassung(en)",
                                     size=11,
                                     color="#55716A",
@@ -1947,6 +2155,7 @@ class PsyMetriQApplication:
             "form_type": "form_type_filter",
             "population": "population_filter",
             "commercial": "commercial_filter",
+            "license": "license_filter",
         }
         attribute = filter_attributes.get(filter_name)
         if attribute is None:
@@ -2095,11 +2304,42 @@ class PsyMetriQApplication:
             selected.append((family, version, item_ids))
         return selected
 
+    @staticmethod
+    def _metadata_reference_payload(
+        family: QuestionnaireParent, version: QuestionnaireVersion
+    ) -> dict[str, Any]:
+        """Serialize a reference record without adding or implying questionnaire wording."""
+        return {
+            "format": "psymetriq-metadata-reference",
+            "schema_version": 1,
+            "instrument_id": family.instrument_id,
+            "name_full": family.name_full,
+            "constructs": family.construct_ontology,
+            "is_commercial": family.is_commercial,
+            "family_metadata": family.metadata.model_dump(mode="json"),
+            "version": version.model_dump(mode="json"),
+            "item_text_included": False,
+            "reference_note": (
+                "Reference metadata only. This file does not contain item wording or grant "
+                "permission to reproduce, administer, translate, adapt, or redistribute the form."
+            ),
+        }
+
     def _export_preview_text(self) -> str:
         selected = self._selected_versions()
         if not selected:
             return "Wähle zuerst Versionen oder Items in Bibliothek und Projekt."
         family, version, item_ids = selected[0]
+        note = (
+            f"Vorschau: {family.instrument_id}/{version.version_id}; "
+            f"{len(selected)} Version(en) im ZIP.\n\n"
+        )
+        if not version.item_text_included:
+            return note + json.dumps(
+                self._metadata_reference_payload(family, version),
+                ensure_ascii=False,
+                indent=2,
+            )[:12_000]
         try:
             subset = select_questionnaire_items(
                 family,
@@ -2110,10 +2350,6 @@ class PsyMetriQApplication:
                 ),
             )
             _, content = export_questionnaire(subset, version.version_id, self.export_format)
-            note = (
-                f"Vorschau: {family.instrument_id}/{version.version_id}; "
-                f"{len(selected)} Version(en) im ZIP.\n\n"
-            )
             if isinstance(content, bytes):
                 preview = (
                     f"XLSX-Arbeitsmappe mit {len(subset.versions[0].items)} Items. "
@@ -2146,6 +2382,32 @@ class PsyMetriQApplication:
         try:
             with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as archive:
                 for family, version, item_ids in selected:
+                    if not version.item_text_included:
+                        file_name = (
+                            f"{_safe_filename(family.instrument_id)}_"
+                            f"{_safe_filename(version.version_id)}.reference.json"
+                        )
+                        reference_payload = self._metadata_reference_payload(family, version)
+                        archive.writestr(
+                            file_name,
+                            json.dumps(reference_payload, ensure_ascii=False, indent=2).encode(
+                                "utf-8"
+                            ),
+                        )
+                        manifest["selections"].append(
+                            {
+                                "instrument_id": family.instrument_id,
+                                "version_id": version.version_id,
+                                "selection_type": "metadata_reference",
+                                "item_text_included": False,
+                                "item_ids": [],
+                                "license_names": [
+                                    source.license_name for source in version.source_documents
+                                ],
+                                "file": file_name,
+                            }
+                        )
+                        continue
                     adaptations = self._adaptations_for_selection(
                         family.instrument_id, version.version_id
                     )
@@ -2170,6 +2432,8 @@ class PsyMetriQApplication:
                         {
                             "instrument_id": family.instrument_id,
                             "version_id": version.version_id,
+                            "selection_type": "item_selection",
+                            "item_text_included": True,
                             "item_ids": item_ids,
                             "adapted_item_ids": sorted(adaptations),
                             "adaptation_reasons": {
@@ -2398,6 +2662,8 @@ class PsyMetriQApplication:
 
 def main(page: ft.Page) -> None:
     """Run the local Flet application."""
-    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
     load_dotenv(PROJECT_ROOT / ".env", override=False)
+    LOGGER.info(
+        "Flet page connected: platform=%s", getattr(page, "platform", "unknown")
+    )
     PsyMetriQApplication(page)

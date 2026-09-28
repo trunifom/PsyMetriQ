@@ -10,7 +10,7 @@ Implemented:
 
 - Pydantic v2 models for questionnaire families, concrete versions, items, response scales, scoring, population, provenance, metadata, and source documents.
 - Portable JSON file catalog with case-insensitive search and composable filters; no database server or database file is required.
-- A real-form catalogue: PHQ-9, GAD-7, DASS-21, DASS-Y, IPAQ and the English public-domain Rosenberg Self-Esteem Scale have item-bearing records; WHO-5 and WEMWBS are searchable link-only profiles while their public redistribution terms remain unconfirmed/restricted.
+- A real-form catalogue: PHQ-9, GAD-7, DASS-21, DASS-Y, IPAQ and the English public-domain Rosenberg Self-Esteem Scale have item-bearing records. WHO-5, WEMWBS/SWEMWBS, GSE and PSS are searchable, selectable metadata references with source-reported dimensions/length and explicit rights notes; reference selection does not include or authorize item wording.
 - PDF SHA-256 verification, source links, retrieval dates, and explicit redistribution basis in the JSON records.
 - A local PDF inbox with text extraction/OCR, heuristic domain routing, optional opt-in OpenAI, Anthropic, AlpineAI SwissGPT, or OpenAI-compatible LLM extraction, private review drafts, and checksum-bound rights-gated promotion for questionnaire forms and validation-study references.
 - A Flet workspace for faceted catalogue search, detailed item/response/source inspection, whole-scale/item selection, reasoned study-only adaptations, saved projects/settings, PDF intake, and ZIP exchange containing PsyMetriQ JSON, FHIR R4, XLSX workbooks, item CSV, or REDCap Data Dictionary CSV. Public NIH CDE/LOINC/PubMed discovery is still available from Python/CLI, not yet embedded in the GUI.

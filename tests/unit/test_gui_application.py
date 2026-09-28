@@ -1,4 +1,7 @@
 import asyncio
+import io
+import json
+import zipfile
 from pathlib import Path
 from types import SimpleNamespace
 from typing import Any
@@ -30,6 +33,15 @@ class FakePage:
         return self.dialogs.pop() if self.dialogs else None
 
 
+class FakeSaveFilePicker:
+    def __init__(self) -> None:
+        self.payload: bytes | None = None
+
+    async def save_file(self, **kwargs: Any) -> str:
+        self.payload = kwargs["src_bytes"]
+        return "study-reference-export.zip"
+
+
 def test_gui_starts_with_validated_catalog_and_renders_each_workspace_view(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
@@ -38,7 +50,7 @@ def test_gui_starts_with_validated_catalog_and_renders_each_workspace_view(
 
     app = PsyMetriQApplication(page)  # type: ignore[arg-type]
 
-    assert len(app.catalog_records) == 8
+    assert len(app.catalog_records) == 10
     assert app.search_field.label == "Suche"
     assert len(page.controls) == 1
     for view in ("project", "exchange", "intake", "settings", "catalog"):
@@ -187,7 +199,7 @@ def test_gui_help_opens_explanation_and_example(
     assert len(dialog.content.controls) == 3
 
 
-def test_catalogue_filters_limit_versions_by_locale_and_rights_status(
+def test_catalogue_filters_limit_versions_by_locale_commercial_and_license_status(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
     monkeypatch.setattr(application, "SETTINGS_PATH", tmp_path / "settings.json")
@@ -218,8 +230,116 @@ def test_catalogue_filters_limit_versions_by_locale_and_rights_status(
     assert unknown_rights
     assert all(family.is_commercial is None for family, _version in unknown_rights)
 
+    app.commercial_filter = "all"
+    license_name = next(
+        version.source_documents[0].license_name
+        for _family, version in app._visible_versions()
+        if version.source_documents
+    )
+    app.license_filter = license_name.casefold()
+    license_matches = app._visible_versions()
+    assert license_matches
+    assert all(
+        any(
+            source.license_name.casefold() == license_name.casefold()
+            for source in version.source_documents
+        )
+        for _family, version in license_matches
+    )
 
-def test_open_and_link_only_wellbeing_records_are_discoverable_but_guarded(
+    source_family, path = app.catalog_records[0]
+    undocumented_version = source_family.versions[0].model_copy(
+        update={"version_id": "synthetic_undocumented_v1", "source_documents": []}
+    )
+    app.catalog_records.append(
+        (
+            source_family.model_copy(
+                update={
+                    "instrument_id": "synthetic_undocumented",
+                    "versions": [undocumented_version],
+                }
+            ),
+            path,
+        )
+    )
+    app.license_filter = "undocumented"
+    undocumented = app._visible_versions()
+    assert undocumented
+    assert all(not version.source_documents for _family, version in undocumented)
+
+
+def test_language_filter_matches_regional_locale_and_language_parent(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(application, "SETTINGS_PATH", tmp_path / "settings.json")
+    app = PsyMetriQApplication(FakePage())  # type: ignore[arg-type]
+
+    app.language_filter = "de-at"
+    regional = app._visible_versions()
+    assert regional
+    assert all(
+        version.locale.casefold() == "de-at"
+        for _family, version in regional
+    )
+    assert any(version.version_id == "gad7_de_at_v1" for _family, version in regional)
+
+    app.language_filter = "de"
+    german = app._visible_versions()
+    assert german
+    assert any(version.locale == "de-AT" for _family, version in german)
+    assert any(version.locale == "de-CH" for _family, version in german)
+
+
+def test_population_filter_uses_broad_source_age_bands(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(application, "SETTINGS_PATH", tmp_path / "settings.json")
+    app = PsyMetriQApplication(FakePage())  # type: ignore[arg-type]
+    youth_family = app._find_family("dass_y")
+    assert youth_family is not None
+    youth_version = youth_family.versions[0]
+    assert youth_version.target_populations[0].minimum_age_years == 8
+    assert youth_version.target_populations[0].maximum_age_years == 17
+
+    app.population_filter = "children"
+    assert any(
+        version.version_id == youth_version.version_id
+        for _family, version in app._visible_versions()
+    )
+    app.population_filter = "adolescents"
+    assert any(
+        version.version_id == youth_version.version_id
+        for _family, version in app._visible_versions()
+    )
+    app.population_filter = "adults"
+    assert all(
+        version.version_id != youth_version.version_id
+        for _family, version in app._visible_versions()
+    )
+
+    app.population_filter = "unknown"
+    assert any(family.instrument_id == "who5" for family, _version in app._visible_versions())
+
+
+def test_catalogue_layout_bounds_filter_fields_and_version_list(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(application, "SETTINGS_PATH", tmp_path / "settings.json")
+    app = PsyMetriQApplication(FakePage())  # type: ignore[arg-type]
+
+    catalog_controls = app._catalog_view()
+    main_row = catalog_controls[-1]
+    left_column = main_row.controls[0]
+    version_list = left_column.controls[1]
+
+    assert app.search_field.width == 360
+    assert app.search_field.expand is None
+    assert version_list.height == 460
+    assert left_column.expand == 5
+    assert main_row.controls[1].expand == 6
+
+
+def test_link_only_wellbeing_records_are_discoverable_and_selectable_as_references(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
     monkeypatch.setattr(application, "SETTINGS_PATH", tmp_path / "settings.json")
@@ -230,40 +350,100 @@ def test_open_and_link_only_wellbeing_records_are_discoverable_but_guarded(
     assert len(rosenberg.versions[0].items) == 10
     assert rosenberg.versions[0].source_documents[0].redistribution_permitted is True
 
-    for instrument_id in ("who5", "wemwbs"):
+    for instrument_id in (
+        "who5",
+        "wemwbs",
+        "general_self_efficacy",
+        "perceived_stress_scale",
+    ):
         family = app._find_family(instrument_id)
         assert family is not None
-        version = family.versions[0]
-        assert version.item_text_included is False
-        assert version.items == []
-        card = app._version_card(family, version)
-        assert card.content.controls[0].disabled is True
-        app.active_version_key = (family.instrument_id, version.version_id)
-        details = app._version_detail()
-        detail_controls = details.content.controls[1].controls
-        source_texts = [
-            control.value for control in detail_controls if isinstance(control, application.ft.Text)
-        ]
-        source_url = str(family.versions[0].source_documents[0].source_url)
-        assert any(source_url in value for value in source_texts)
-        item_header = next(
-            control
-            for control in detail_controls
-            if isinstance(control, application.ft.Row)
-            and control.controls[0].value == "Itemtext nicht enthalten"
-        )
-        assert (
-            "Itemtexte sind aus Rechte-/Lizenzgründen nicht im Katalog"
-            in item_header.controls[1].value
-        )
+        for version in family.versions:
+            assert version.item_text_included is False
+            assert version.items == []
+            card = app._version_card(family, version)
+            assert card.content.controls[0].disabled is False
+            app.active_version_key = (family.instrument_id, version.version_id)
+            details = app._version_detail()
+            detail_controls = details.content.controls[1].controls
+            source_texts = [
+                control.value
+                for control in detail_controls
+                if isinstance(control, application.ft.Text)
+            ]
+            source_url = str(version.source_documents[0].source_url)
+            assert any(source_url in value for value in source_texts)
+            metadata_line = next(value for value in source_texts if value.startswith("ID "))
+            assert f"{version.source_reported_item_count} Items laut Quelle" in metadata_line
+            source_dimensions = [
+                child.value
+                for control in detail_controls
+                if isinstance(control, application.ft.Column)
+                for child in control.controls
+                if isinstance(child, application.ft.Text)
+            ]
+            for dimension in version.source_reported_dimensions:
+                assert any(dimension in value for value in source_dimensions)
+            item_header = next(
+                control
+                for control in detail_controls
+                if isinstance(control, application.ft.Row)
+                and control.controls[0].value == "Itemtext nicht enthalten"
+            )
+            assert (
+                "Metadatenreferenz: Itemtext ist nicht in dieser Software gespeichert"
+                in item_header.controls[1].value
+            )
 
-        app._toggle_version(family, version, True)
+            app._toggle_version(family, version, True)
 
-        assert app._project_selection(family.instrument_id, version.version_id) is None
-        assert app.status_is_error is True
+            selection = app._project_selection(family.instrument_id, version.version_id)
+            assert selection is not None
+            assert selection.item_ids == []
+            assert app.status_is_error is False
 
     app.search_query = "WHO-5"
     assert [family.instrument_id for family, _version in app._visible_versions()] == ["who5"]
+
+    app.search_query = "PSS-4"
+    assert [
+        version.version_id
+        for _family, version in app._visible_versions()
+        if _family.instrument_id == "perceived_stress_scale"
+    ] == ["pss4_en_v1"]
+
+
+def test_metadata_reference_can_be_included_in_project_and_exported_without_item_text(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(application, "SETTINGS_PATH", tmp_path / "settings.json")
+    app = PsyMetriQApplication(FakePage())  # type: ignore[arg-type]
+    family = app._find_family("who5")
+    assert family is not None
+    version = family.versions[0]
+    picker = FakeSaveFilePicker()
+    app.file_picker = picker  # type: ignore[assignment]
+
+    app._toggle_version(family, version, True)
+    app._set_export_format("fhir_json")
+    preview = app._export_preview_text()
+    asyncio.run(app._export_bundle(None))
+
+    assert "psymetriq-metadata-reference" in preview
+    assert '"item_text_included": false' in preview
+    assert picker.payload is not None
+    with zipfile.ZipFile(io.BytesIO(picker.payload)) as archive:
+        reference_name = next(
+            name for name in archive.namelist() if name.endswith(".reference.json")
+        )
+        reference = json.loads(archive.read(reference_name))
+        manifest = json.loads(archive.read("manifest.json"))
+
+    assert reference["item_text_included"] is False
+    assert reference["version"]["items"] == []
+    assert "permission to reproduce" in reference["reference_note"]
+    assert manifest["selections"][0]["selection_type"] == "metadata_reference"
+    assert manifest["selections"][0]["license_names"]
 
 
 def test_score_scale_group_selection_adds_all_target_items(
@@ -289,6 +469,28 @@ def test_score_scale_group_selection_adds_all_target_items(
     selection = app._project_selection(family.instrument_id, version.version_id)
     assert selection is not None
     assert set(selection.item_ids) == set(scale.target_items)
+
+
+def test_single_item_dimension_is_visible_as_a_group(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(application, "SETTINGS_PATH", tmp_path / "settings.json")
+    app = PsyMetriQApplication(FakePage())  # type: ignore[arg-type]
+    family = app._find_family("rosenberg_self_esteem")
+    assert family is not None
+    version = family.versions[0]
+    app.active_version_key = (family.instrument_id, version.version_id)
+
+    details = app._version_detail()
+    body_controls = details.content.controls[1].controls
+    dimension_index = next(
+        index
+        for index, control in enumerate(body_controls)
+        if isinstance(control, application.ft.Text) and control.value == "Itemdimensionen"
+    )
+    dimension_group = body_controls[dimension_index + 1].controls[0]
+
+    assert dimension_group.controls[0].label == "self_esteem"
 
 
 def test_item_adaptation_dialog_saves_reason_without_changing_source_catalog(
