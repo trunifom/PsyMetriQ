@@ -1,0 +1,106 @@
+{
+  "instrument_id": "sessko",
+  "name_full": "Skalen zur Erfassung des schulischen Selbstkonzepts",
+  "construct_ontology": [
+    "academic self-concept"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "German questionnaire family for students' academic self-concept and perceived comparison standards.",
+    "intended_use": "Educational research, school counselling, and evaluation of students' academic self-perceptions.",
+    "name_origin": "SESSKO is the German abbreviation for Skalen zur Erfassung des schulischen Selbstkonzepts.",
+    "development_history": "Developed for school-age students with differentiated self-concept dimensions and age-appropriate administration.",
+    "measurement_rationale": "Academic self-concept relates to motivation, learning behavior, and educational choices but is not the same as achievement.",
+    "interpretation_notes": "Interpret with the relevant school level and norm sample; do not treat self-concept scores as objective performance measures.",
+    "keywords": [
+      "SESSKO",
+      "schulisches Selbstkonzept",
+      "academic self-concept"
+    ],
+    "search_aliases": [
+      "SESSKO-S",
+      "SESSKO-K"
+    ],
+    "mesh_terms": [],
+    "characteristics": [
+      "metadata-reference",
+      "German-relevant",
+      "version-specific-evidence"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "sessko_de_v1",
+      "language": "de",
+      "display_name": "SESSKO Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "children and adolescents",
+          "minimum_age_years": 3.0,
+          "maximum_age_years": 17.0,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": null,
+      "source_citation": "Schöne et al. (2002). SESSKO: Skalen zur Erfassung des schulischen Selbstkonzepts.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "SESSKO German school self-concept reference",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.testzentrale.de/sessko.html",
+          "local_path": null,
+          "license_name": "Commercial test family; edition and use terms apply",
+          "license_url": "https://www.testzentrale.de/",
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "German questionnaire family for students' academic self-concept and perceived comparison standards.",
+        "intended_use": "Educational research, school counselling, and evaluation of students' academic self-perceptions.",
+        "name_origin": "SESSKO is the German abbreviation for Skalen zur Erfassung des schulischen Selbstkonzepts.",
+        "development_history": "Developed for school-age students with differentiated self-concept dimensions and age-appropriate administration.",
+        "measurement_rationale": "Academic self-concept relates to motivation, learning behavior, and educational choices but is not the same as achievement.",
+        "interpretation_notes": "Interpret with the relevant school level and norm sample; do not treat self-concept scores as objective performance measures.",
+        "keywords": [
+          "SESSKO",
+          "schulisches Selbstkonzept",
+          "academic self-concept"
+        ],
+        "search_aliases": [
+          "SESSKO-S",
+          "SESSKO-K"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": null,
+      "source_reported_dimensions": [
+        "ability self-concept",
+        "social comparison",
+        "individual comparison"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

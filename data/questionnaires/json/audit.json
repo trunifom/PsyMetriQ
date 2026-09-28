@@ -1,0 +1,97 @@
+{
+  "instrument_id": "audit",
+  "name_full": "Alcohol Use Disorders Identification Test",
+  "construct_ontology": [
+    "alcohol-related risk"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Ten-item screening questionnaire for hazardous and harmful alcohol use and possible dependence symptoms.",
+    "intended_use": "Primary-care, public-health, addiction-care, and research screening for alcohol-related risk.",
+    "name_origin": "Alcohol Use Disorders Identification Test, abbreviated AUDIT.",
+    "development_history": "Developed through a WHO collaborative project for international primary-care screening.",
+    "measurement_rationale": "Questions cover consumption, dependence-related symptoms, and consequences instead of relying only on quantity consumed.",
+    "interpretation_notes": "A positive screen requires clinical or counselling follow-up; cutoffs vary by context and should follow the official manual and German version.",
+    "keywords": [
+      "AUDIT",
+      "alcohol",
+      "Alkoholkonsum",
+      "Sucht-Screening"
+    ],
+    "search_aliases": [],
+    "mesh_terms": [],
+    "characteristics": [
+      "self-report",
+      "primary-care-screening",
+      "German-version-available",
+      "metadata-reference"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "audit_de_v1",
+      "language": "de",
+      "display_name": "Alcohol Use Disorders Identification Test Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2001,
+      "source_citation": "Babor et al. (2001). AUDIT: The Alcohol Use Disorders Identification Test.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "WHO AUDIT official manual and German reference",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://apps.who.int/iris/handle/10665/67205",
+          "local_path": null,
+          "license_name": "WHO instrument; exact translation and use terms require source review",
+          "license_url": "https://www.who.int/about/policies/publishing/copyright",
+          "redistribution_permitted": false,
+          "permission_basis": "Only bibliographic and discovery metadata is stored. Questionnaire wording and forms are not included until exact edition, language, and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Ten-item screening questionnaire for hazardous and harmful alcohol use and possible dependence symptoms.",
+        "intended_use": "Primary-care, public-health, addiction-care, and research screening for alcohol-related risk.",
+        "name_origin": "Alcohol Use Disorders Identification Test, abbreviated AUDIT.",
+        "development_history": "Developed through a WHO collaborative project for international primary-care screening.",
+        "measurement_rationale": "Questions cover consumption, dependence-related symptoms, and consequences instead of relying only on quantity consumed.",
+        "interpretation_notes": "A positive screen requires clinical or counselling follow-up; cutoffs vary by context and should follow the official manual and German version.",
+        "keywords": [
+          "AUDIT",
+          "alcohol",
+          "Alkoholkonsum",
+          "Sucht-Screening"
+        ],
+        "search_aliases": [],
+        "mesh_terms": [],
+        "characteristics": [
+          "self-report",
+          "primary-care-screening",
+          "German-version-available",
+          "metadata-reference"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 10,
+      "source_reported_dimensions": [
+        "alcohol consumption",
+        "dependence symptoms",
+        "alcohol-related harm"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

@@ -350,6 +350,179 @@ def build_sdq() -> QuestionnaireParent:
     )
 
 
+def build_whoqol_bref() -> QuestionnaireParent:
+    source = _source(
+        title="WHOQOL-BREF official German translation and scoring resources",
+        source_url="https://www.who.int/tools/whoqol/whoqol-bref",
+        citation="World Health Organization (1996/2004). WHOQOL-BREF: Introduction, administration, scoring and generic version.",
+        license_name="WHO source; translation and permission terms require exact-use review",
+        license_url="https://www.who.int/about/policies/publishing/copyright",
+    )
+    version = _version(
+        version_id="whoqol_bref_de_v1",
+        display_name="WHOQOL-BREF Deutsch (link-only)",
+        source_documents=[source],
+        source_reported_item_count=26,
+        dimensions=["physical health", "psychological wellbeing", "social relationships", "environment"],
+        description="Twenty-six-item generic quality-of-life questionnaire covering four domains and two general items.",
+        intended_use="Health, rehabilitation, public-health, and clinical research assessment of subjective quality of life.",
+        name_origin="WHOQOL-BREF is the brief form of the World Health Organization Quality of Life assessment.",
+        development_history="Developed by the WHOQOL Group as a shorter international form with translated versions, including German resources hosted by WHO.",
+        measurement_rationale="Quality of life is assessed as a person’s perception of their position in life across physical, psychological, social, and environmental contexts.",
+        interpretation_notes="Use WHO scoring syntax and the exact translation; domain scores are not diagnoses and are not interchangeable with EQ-5D or SF-36 scores.",
+        citation="The WHOQOL Group (1998). Development of the World Health Organization WHOQOL-BREF quality of life assessment.",
+        doi="10.1016/S0277-9536(97)00154-8",
+        publication_year=1998,
+        keywords=["WHOQOL-BREF", "Lebensqualität", "quality of life", "Rehabilitation"],
+        characteristics=["self-report", "German-version-available", "health-related-quality-of-life", "metadata-reference"],
+    )
+    return QuestionnaireParent(
+        instrument_id="whoqol_bref",
+        name_full="WHOQOL-BREF Quality of Life",
+        construct_ontology=["health-related quality of life"],
+        metadata=version.metadata,
+        versions=[version],
+    )
+
+
+def build_eq5d5l() -> QuestionnaireParent:
+    source = _source(
+        title="EQ-5D-5L official instrument information",
+        source_url="https://euroqol.org/eq-5d-instruments/eq-5d-5l-about/",
+        citation="Herdman et al. (2011). Development and preliminary testing of the new five-level version of EQ-5D.",
+        license_name="EuroQol instrument; registration and version-specific terms apply",
+        license_url="https://euroqol.org/",
+    )
+    version = _version(
+        version_id="eq5d5l_de_v1",
+        display_name="EQ-5D-5L Deutsch (link-only)",
+        source_documents=[source],
+        source_reported_item_count=6,
+        dimensions=["mobility", "self-care", "usual activities", "pain/discomfort", "anxiety/depression", "health thermometer"],
+        description="Generic health-status measure with five dimensions and a visual analogue health scale.",
+        intended_use="Clinical studies, health services research, outcomes research, and health-economic evaluation.",
+        name_origin="EQ-5D-5L denotes the EuroQol five-dimension instrument with five response levels per dimension.",
+        development_history="The five-level version was developed to reduce ceiling effects of the earlier three-level descriptive system.",
+        measurement_rationale="A concise descriptive health profile can be combined with preference-based value sets for health-economic analyses.",
+        interpretation_notes="The five dimensions and the EQ VAS are separate outcomes; use the appropriate German value set and EuroQol permission for the intended study.",
+        citation="Herdman et al. (2011). Development and preliminary testing of the new five-level version of EQ-5D.",
+        doi="10.1016/j.healthpol.2011.06.006",
+        publication_year=2011,
+        keywords=["EQ-5D-5L", "EuroQol", "Gesundheitszustand", "Health economics"],
+        characteristics=["self-report", "generic-health-status", "German-version-available", "metadata-reference"],
+    )
+    return QuestionnaireParent(
+        instrument_id="eq5d5l",
+        name_full="EQ-5D-5L",
+        construct_ontology=["health status", "health-related quality of life"],
+        metadata=version.metadata,
+        versions=[version],
+    )
+
+
+def build_hads() -> QuestionnaireParent:
+    source = _source(
+        title="Hospital Anxiety and Depression Scale German reference",
+        source_url="https://www.testzentrale.de/hospital-anxiety-and-depression-scale.html",
+        citation="Zigmond and Snaith (1983). The hospital anxiety and depression scale.",
+        license_name="Commercial test material; exact German edition and use terms apply",
+        license_url="https://www.testzentrale.de/",
+    )
+    version = _version(
+        version_id="hads_de_v1",
+        display_name="Hospital Anxiety and Depression Scale Deutsch (link-only)",
+        source_documents=[source],
+        source_reported_item_count=14,
+        dimensions=["anxiety", "depression"],
+        description="Fourteen-item screening questionnaire with separate anxiety and depression subscales for medical and psychosomatic settings.",
+        intended_use="Screening of relevant anxiety and depressive symptoms in hospitals, outpatient medicine, and rehabilitation.",
+        name_origin="Hospital Anxiety and Depression Scale, abbreviated HADS.",
+        development_history="Developed to identify anxiety and depression symptoms in hospital patients while minimizing confounding by physical illness.",
+        measurement_rationale="Separate subscales focus on psychological symptoms and avoid many somatic items that can be caused by physical disease.",
+        interpretation_notes="HADS is a screening instrument, not a diagnosis; thresholds and validity depend on setting, population, and the German edition.",
+        citation="Zigmond and Snaith (1983). The hospital anxiety and depression scale.",
+        doi="10.1111/j.1600-0447.1983.tb09716.x",
+        publication_year=1983,
+        keywords=["HADS", "Hospital Anxiety and Depression Scale", "Angst", "Depressivität"],
+        characteristics=["self-report", "clinical-screening", "German-version-available", "metadata-reference"],
+    )
+    return QuestionnaireParent(
+        instrument_id="hads",
+        name_full="Hospital Anxiety and Depression Scale",
+        construct_ontology=["anxiety symptoms", "depressive symptoms"],
+        metadata=version.metadata,
+        versions=[version],
+    )
+
+
+def build_audit() -> QuestionnaireParent:
+    source = _source(
+        title="WHO AUDIT official manual and German reference",
+        source_url="https://apps.who.int/iris/handle/10665/67205",
+        citation="Babor et al. (2001). AUDIT: The Alcohol Use Disorders Identification Test. Guidelines for use in primary care.",
+        license_name="WHO instrument; exact translation and use terms require source review",
+        license_url="https://www.who.int/about/policies/publishing/copyright",
+    )
+    version = _version(
+        version_id="audit_de_v1",
+        display_name="Alcohol Use Disorders Identification Test Deutsch (link-only)",
+        source_documents=[source],
+        source_reported_item_count=10,
+        dimensions=["alcohol consumption", "dependence symptoms", "alcohol-related harm"],
+        description="Ten-item screening questionnaire for hazardous and harmful alcohol use and possible dependence symptoms.",
+        intended_use="Primary-care, public-health, addiction-care, and research screening for alcohol-related risk.",
+        name_origin="Alcohol Use Disorders Identification Test, abbreviated AUDIT.",
+        development_history="Developed through a WHO collaborative project for international primary-care screening.",
+        measurement_rationale="Questions cover consumption, dependence-related symptoms, and consequences instead of relying only on quantity consumed.",
+        interpretation_notes="A positive screen requires clinical or counselling follow-up; cutoffs vary by context and should follow the official manual and German version.",
+        citation="Babor et al. (2001). AUDIT: The Alcohol Use Disorders Identification Test.",
+        publication_year=2001,
+        keywords=["AUDIT", "alcohol", "Alkoholkonsum", "Sucht-Screening"],
+        characteristics=["self-report", "primary-care-screening", "German-version-available", "metadata-reference"],
+    )
+    return QuestionnaireParent(
+        instrument_id="audit",
+        name_full="Alcohol Use Disorders Identification Test",
+        construct_ontology=["alcohol-related risk"],
+        metadata=version.metadata,
+        versions=[version],
+    )
+
+
+def build_tics() -> QuestionnaireParent:
+    source = _source(
+        title="Trierer Inventar zum chronischen Stress official information",
+        source_url="https://www.tics-online.com/",
+        citation="Schulz, Schlotz, and Becker (2004). Trierer Inventar zum chronischen Stress (TICS).",
+        license_name="German test material; edition and use terms require source review",
+        license_url="https://www.tics-online.com/",
+    )
+    version = _version(
+        version_id="tics_de_v1",
+        display_name="Trierer Inventar zum chronischen Stress Deutsch (link-only)",
+        source_documents=[source],
+        source_reported_item_count=57,
+        dimensions=["chronic stress", "work overload", "social overload", "worry", "lack of social recognition"],
+        description="German multidimensional questionnaire for chronic stress and stress-related demands.",
+        intended_use="Research, occupational health, psychosomatic care, and assessment of chronic stress exposure.",
+        name_origin="Trierer Inventar zum chronischen Stress, abbreviated TICS.",
+        development_history="Developed as a German instrument family with differentiated chronic-stress scales and short forms.",
+        measurement_rationale="Chronic stress is represented through persistent demands, worries, overload, and insufficient recognition or support rather than a single acute event.",
+        interpretation_notes="Use the exact TICS form and norms; scale scores describe perceived chronic stress and do not establish burnout or another diagnosis.",
+        citation="Schulz, Schlotz, and Becker (2004). Trierer Inventar zum chronischen Stress (TICS).",
+        publication_year=2004,
+        keywords=["TICS", "chronischer Stress", "Arbeitsstress", "Belastung"],
+        characteristics=["self-report", "German-instrument", "occupational-health-relevant", "metadata-reference"],
+    )
+    return QuestionnaireParent(
+        instrument_id="tics",
+        name_full="Trierer Inventar zum chronischen Stress",
+        construct_ontology=["chronic stress"],
+        metadata=version.metadata,
+        versions=[version],
+    )
+
+
 def build_additional_catalog() -> list[QuestionnaireParent]:
     return [
         build_kidscreen(),
@@ -361,6 +534,11 @@ def build_additional_catalog() -> list[QuestionnaireParent]:
         build_f_sozu(),
         build_ucla_loneliness(),
         build_sdq(),
+        build_whoqol_bref(),
+        build_eq5d5l(),
+        build_hads(),
+        build_audit(),
+        build_tics(),
     ]
 
 

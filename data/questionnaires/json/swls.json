@@ -1,0 +1,106 @@
+{
+  "instrument_id": "swls",
+  "name_full": "Satisfaction With Life Scale",
+  "construct_ontology": [
+    "life satisfaction"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Five-item global measure of cognitive life satisfaction.",
+    "intended_use": "Wellbeing research, social-care evaluation, health research, and population surveys.",
+    "name_origin": "Satisfaction With Life Scale, abbreviated SWLS.",
+    "development_history": "Developed as a brief global judgement of satisfaction with one's life rather than a measure of affect alone.",
+    "measurement_rationale": "Global cognitive evaluation complements symptom and domain-specific wellbeing measures.",
+    "interpretation_notes": "It measures perceived life satisfaction, not objective living conditions or clinical wellbeing; German translation evidence and permission remain version-specific.",
+    "keywords": [
+      "SWLS",
+      "life satisfaction",
+      "Lebenszufriedenheit",
+      "wellbeing"
+    ],
+    "search_aliases": [
+      "Satisfaction With Life Scale",
+      "Diener Life Satisfaction Scale"
+    ],
+    "mesh_terms": [],
+    "characteristics": [
+      "metadata-reference",
+      "German-relevant",
+      "version-specific-evidence"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "swls_de_v1",
+      "language": "de",
+      "display_name": "SWLS Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "adults",
+          "minimum_age_years": 18.0,
+          "maximum_age_years": null,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 1985,
+      "source_citation": "Diener et al. (1985). The Satisfaction With Life Scale.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "Satisfaction With Life Scale source publication",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://doi.org/10.1207/s15327752jpa4901_13",
+          "local_path": null,
+          "license_name": "Metadata reference; exact German edition and reuse terms require source review",
+          "license_url": null,
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Five-item global measure of cognitive life satisfaction.",
+        "intended_use": "Wellbeing research, social-care evaluation, health research, and population surveys.",
+        "name_origin": "Satisfaction With Life Scale, abbreviated SWLS.",
+        "development_history": "Developed as a brief global judgement of satisfaction with one's life rather than a measure of affect alone.",
+        "measurement_rationale": "Global cognitive evaluation complements symptom and domain-specific wellbeing measures.",
+        "interpretation_notes": "It measures perceived life satisfaction, not objective living conditions or clinical wellbeing; German translation evidence and permission remain version-specific.",
+        "keywords": [
+          "SWLS",
+          "life satisfaction",
+          "Lebenszufriedenheit",
+          "wellbeing"
+        ],
+        "search_aliases": [
+          "Satisfaction With Life Scale",
+          "Diener Life Satisfaction Scale"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 5,
+      "source_reported_dimensions": [
+        "global life satisfaction"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

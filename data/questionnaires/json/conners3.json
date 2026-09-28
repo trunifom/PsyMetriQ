@@ -1,0 +1,109 @@
+{
+  "instrument_id": "conners3",
+  "name_full": "Conners 3",
+  "construct_ontology": [
+    "ADHD and related behavioral symptoms"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Multi-informant rating-scale family for ADHD symptoms, executive difficulties, and related behavior in children and adolescents.",
+    "intended_use": "Clinical and educational assessment using parent, teacher, and self-report perspectives.",
+    "name_origin": "Conners 3 is the third edition of the Conners behavior-rating family.",
+    "development_history": "Maintained as an age- and informant-specific rating-scale system with multiple forms.",
+    "measurement_rationale": "Cross-informant ratings capture behavior across home and school contexts and support hypothesis generation.",
+    "interpretation_notes": "Commercial norms and clinical interpretation are edition-specific; ratings alone do not establish an ADHD diagnosis.",
+    "keywords": [
+      "Conners 3",
+      "ADHS",
+      "ADHD",
+      "Verhaltensbeurteilung"
+    ],
+    "search_aliases": [
+      "Conners-3",
+      "Conners Rating Scales"
+    ],
+    "mesh_terms": [],
+    "characteristics": [
+      "metadata-reference",
+      "German-relevant",
+      "version-specific-evidence"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "conners3_de_v1",
+      "language": "de",
+      "display_name": "Conners 3 Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "children and adolescents",
+          "minimum_age_years": 3.0,
+          "maximum_age_years": 17.0,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": null,
+      "source_citation": "Conners 3 German edition; commercial multi-informant ADHD and behavior assessment.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "Conners 3 German reference",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.testzentrale.de/conners-3.html",
+          "local_path": null,
+          "license_name": "Commercial test family; edition and use terms apply",
+          "license_url": "https://www.testzentrale.de/",
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Multi-informant rating-scale family for ADHD symptoms, executive difficulties, and related behavior in children and adolescents.",
+        "intended_use": "Clinical and educational assessment using parent, teacher, and self-report perspectives.",
+        "name_origin": "Conners 3 is the third edition of the Conners behavior-rating family.",
+        "development_history": "Maintained as an age- and informant-specific rating-scale system with multiple forms.",
+        "measurement_rationale": "Cross-informant ratings capture behavior across home and school contexts and support hypothesis generation.",
+        "interpretation_notes": "Commercial norms and clinical interpretation are edition-specific; ratings alone do not establish an ADHD diagnosis.",
+        "keywords": [
+          "Conners 3",
+          "ADHS",
+          "ADHD",
+          "Verhaltensbeurteilung"
+        ],
+        "search_aliases": [
+          "Conners-3",
+          "Conners Rating Scales"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": null,
+      "source_reported_dimensions": [
+        "inattention",
+        "hyperactivity/impulsivity",
+        "executive functioning",
+        "behavioral problems"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

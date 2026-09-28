@@ -1,0 +1,101 @@
+{
+  "instrument_id": "eq5d5l",
+  "name_full": "EQ-5D-5L",
+  "construct_ontology": [
+    "health status",
+    "health-related quality of life"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Generic health-status measure with five dimensions and a visual analogue health scale.",
+    "intended_use": "Clinical studies, health services research, outcomes research, and health-economic evaluation.",
+    "name_origin": "EQ-5D-5L denotes the EuroQol five-dimension instrument with five response levels per dimension.",
+    "development_history": "The five-level version was developed to reduce ceiling effects of the earlier three-level descriptive system.",
+    "measurement_rationale": "A concise descriptive health profile can be combined with preference-based value sets for health-economic analyses.",
+    "interpretation_notes": "The five dimensions and the EQ VAS are separate outcomes; use the appropriate German value set and EuroQol permission for the intended study.",
+    "keywords": [
+      "EQ-5D-5L",
+      "EuroQol",
+      "Gesundheitszustand",
+      "Health economics"
+    ],
+    "search_aliases": [],
+    "mesh_terms": [],
+    "characteristics": [
+      "self-report",
+      "generic-health-status",
+      "German-version-available",
+      "metadata-reference"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "eq5d5l_de_v1",
+      "language": "de",
+      "display_name": "EQ-5D-5L Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2011,
+      "source_citation": "Herdman et al. (2011). Development and preliminary testing of the new five-level version of EQ-5D.",
+      "source_doi": "10.1016/j.healthpol.2011.06.006",
+      "source_documents": [
+        {
+          "title": "EQ-5D-5L official instrument information",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://euroqol.org/eq-5d-instruments/eq-5d-5l-about/",
+          "local_path": null,
+          "license_name": "EuroQol instrument; registration and version-specific terms apply",
+          "license_url": "https://euroqol.org/",
+          "redistribution_permitted": false,
+          "permission_basis": "Only bibliographic and discovery metadata is stored. Questionnaire wording and forms are not included until exact edition, language, and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Generic health-status measure with five dimensions and a visual analogue health scale.",
+        "intended_use": "Clinical studies, health services research, outcomes research, and health-economic evaluation.",
+        "name_origin": "EQ-5D-5L denotes the EuroQol five-dimension instrument with five response levels per dimension.",
+        "development_history": "The five-level version was developed to reduce ceiling effects of the earlier three-level descriptive system.",
+        "measurement_rationale": "A concise descriptive health profile can be combined with preference-based value sets for health-economic analyses.",
+        "interpretation_notes": "The five dimensions and the EQ VAS are separate outcomes; use the appropriate German value set and EuroQol permission for the intended study.",
+        "keywords": [
+          "EQ-5D-5L",
+          "EuroQol",
+          "Gesundheitszustand",
+          "Health economics"
+        ],
+        "search_aliases": [],
+        "mesh_terms": [],
+        "characteristics": [
+          "self-report",
+          "generic-health-status",
+          "German-version-available",
+          "metadata-reference"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 6,
+      "source_reported_dimensions": [
+        "mobility",
+        "self-care",
+        "usual activities",
+        "pain/discomfort",
+        "anxiety/depression",
+        "health thermometer"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

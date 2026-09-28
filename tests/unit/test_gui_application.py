@@ -50,7 +50,7 @@ def test_gui_starts_with_validated_catalog_and_renders_each_workspace_view(
 
     app = PsyMetriQApplication(page)  # type: ignore[arg-type]
 
-    assert len(app.catalog_records) == 19
+    assert len(app.catalog_records) == 39
     assert app.search_field.label == "Suche"
     assert len(page.controls) == 1
     for view in ("project", "exchange", "intake", "settings", "catalog"):
@@ -514,7 +514,7 @@ def test_every_catalog_family_has_a_research_profile(
         "interpretation_notes",
     )
 
-    assert len(app.catalog_records) == 19
+    assert len(app.catalog_records) == 39
     for family, _path in app.catalog_records:
         assert all(getattr(family.metadata, field) for field in profile_fields)
 

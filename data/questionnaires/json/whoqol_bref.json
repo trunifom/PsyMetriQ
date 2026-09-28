@@ -1,0 +1,98 @@
+{
+  "instrument_id": "whoqol_bref",
+  "name_full": "WHOQOL-BREF Quality of Life",
+  "construct_ontology": [
+    "health-related quality of life"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Twenty-six-item generic quality-of-life questionnaire covering four domains and two general items.",
+    "intended_use": "Health, rehabilitation, public-health, and clinical research assessment of subjective quality of life.",
+    "name_origin": "WHOQOL-BREF is the brief form of the World Health Organization Quality of Life assessment.",
+    "development_history": "Developed by the WHOQOL Group as a shorter international form with translated versions, including German resources hosted by WHO.",
+    "measurement_rationale": "Quality of life is assessed as a person’s perception of their position in life across physical, psychological, social, and environmental contexts.",
+    "interpretation_notes": "Use WHO scoring syntax and the exact translation; domain scores are not diagnoses and are not interchangeable with EQ-5D or SF-36 scores.",
+    "keywords": [
+      "WHOQOL-BREF",
+      "Lebensqualität",
+      "quality of life",
+      "Rehabilitation"
+    ],
+    "search_aliases": [],
+    "mesh_terms": [],
+    "characteristics": [
+      "self-report",
+      "German-version-available",
+      "health-related-quality-of-life",
+      "metadata-reference"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "whoqol_bref_de_v1",
+      "language": "de",
+      "display_name": "WHOQOL-BREF Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 1998,
+      "source_citation": "The WHOQOL Group (1998). Development of the World Health Organization WHOQOL-BREF quality of life assessment.",
+      "source_doi": "10.1016/S0277-9536(97)00154-8",
+      "source_documents": [
+        {
+          "title": "WHOQOL-BREF official German translation and scoring resources",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.who.int/tools/whoqol/whoqol-bref",
+          "local_path": null,
+          "license_name": "WHO source; translation and permission terms require exact-use review",
+          "license_url": "https://www.who.int/about/policies/publishing/copyright",
+          "redistribution_permitted": false,
+          "permission_basis": "Only bibliographic and discovery metadata is stored. Questionnaire wording and forms are not included until exact edition, language, and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Twenty-six-item generic quality-of-life questionnaire covering four domains and two general items.",
+        "intended_use": "Health, rehabilitation, public-health, and clinical research assessment of subjective quality of life.",
+        "name_origin": "WHOQOL-BREF is the brief form of the World Health Organization Quality of Life assessment.",
+        "development_history": "Developed by the WHOQOL Group as a shorter international form with translated versions, including German resources hosted by WHO.",
+        "measurement_rationale": "Quality of life is assessed as a person’s perception of their position in life across physical, psychological, social, and environmental contexts.",
+        "interpretation_notes": "Use WHO scoring syntax and the exact translation; domain scores are not diagnoses and are not interchangeable with EQ-5D or SF-36 scores.",
+        "keywords": [
+          "WHOQOL-BREF",
+          "Lebensqualität",
+          "quality of life",
+          "Rehabilitation"
+        ],
+        "search_aliases": [],
+        "mesh_terms": [],
+        "characteristics": [
+          "self-report",
+          "German-version-available",
+          "health-related-quality-of-life",
+          "metadata-reference"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 26,
+      "source_reported_dimensions": [
+        "physical health",
+        "psychological wellbeing",
+        "social relationships",
+        "environment"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

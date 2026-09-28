@@ -1,0 +1,106 @@
+{
+  "instrument_id": "olbi",
+  "name_full": "Oldenburg Burnout Inventory",
+  "construct_ontology": [
+    "burnout",
+    "occupational exhaustion"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Questionnaire measuring occupational exhaustion and disengagement as burnout-related dimensions.",
+    "intended_use": "Occupational-health research, organizational surveys, and burnout-related assessment.",
+    "name_origin": "Oldenburg Burnout Inventory, abbreviated OLBI.",
+    "development_history": "Developed as an alternative burnout measure with positively and negatively worded exhaustion and disengagement items.",
+    "measurement_rationale": "Burnout-related strain includes both depletion of energy and psychological distancing from work.",
+    "interpretation_notes": "Use the validated German version and scoring; the OLBI is not a standalone clinical diagnosis and context affects interpretation.",
+    "keywords": [
+      "OLBI",
+      "Burnout",
+      "Erschöpfung",
+      "Arbeitsdistanzierung"
+    ],
+    "search_aliases": [
+      "Oldenburg Burnout Inventory"
+    ],
+    "mesh_terms": [],
+    "characteristics": [
+      "metadata-reference",
+      "German-relevant",
+      "version-specific-evidence"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "olbi_de_v1",
+      "language": "de",
+      "display_name": "OLBI Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "adults",
+          "minimum_age_years": 18.0,
+          "maximum_age_years": null,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2003,
+      "source_citation": "Demerouti et al. (2003). The convergent validity of two burnout instruments.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "Oldenburg Burnout Inventory source publication",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://doi.org/10.1037/0021-9010.88.3.499",
+          "local_path": null,
+          "license_name": "Metadata reference; exact German edition and reuse terms require source review",
+          "license_url": null,
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Questionnaire measuring occupational exhaustion and disengagement as burnout-related dimensions.",
+        "intended_use": "Occupational-health research, organizational surveys, and burnout-related assessment.",
+        "name_origin": "Oldenburg Burnout Inventory, abbreviated OLBI.",
+        "development_history": "Developed as an alternative burnout measure with positively and negatively worded exhaustion and disengagement items.",
+        "measurement_rationale": "Burnout-related strain includes both depletion of energy and psychological distancing from work.",
+        "interpretation_notes": "Use the validated German version and scoring; the OLBI is not a standalone clinical diagnosis and context affects interpretation.",
+        "keywords": [
+          "OLBI",
+          "Burnout",
+          "Erschöpfung",
+          "Arbeitsdistanzierung"
+        ],
+        "search_aliases": [
+          "Oldenburg Burnout Inventory"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 16,
+      "source_reported_dimensions": [
+        "exhaustion",
+        "disengagement"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

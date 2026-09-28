@@ -86,6 +86,26 @@ All fifteen families currently shipped in `data/questionnaires/json/` now carry 
 | F-SozU | Perceived social support | German short form relevant to psychosocial counselling, rehabilitation, and social work. |
 | UCLA Loneliness Scale | Subjective loneliness and social isolation | Three-item short-form reference; German translation equivalence and reuse terms require version-specific review. |
 | SDQ | Strengths and difficulties in children and adolescents | German parent, teacher, and self-report references are separate versions with different age ranges. |
+| WHOQOL-BREF | Generic health-related quality of life | German WHO translation reference with physical, psychological, social, and environmental domains. |
+| EQ-5D-5L | Generic health status and health economics | German EuroQol reference with five dimensions and EQ VAS; registration and value-set terms apply. |
+| HADS | Anxiety and depression symptoms in medical settings | German clinical screening reference with separate anxiety and depression subscales. |
+| AUDIT | Risky and harmful alcohol use | German WHO screening reference for consumption, dependence symptoms, and alcohol-related harm. |
+| TICS | Chronic stress and occupational strain | German multidimensional chronic-stress inventory reference. |
+| K6/K10 | Non-specific psychological distress | Six- and ten-item German-relevant population screening forms; not disorder diagnoses. |
+| SWLS | Global life satisfaction | Five-item wellbeing reference for perceived life satisfaction. |
+| PHQ-15 | Somatic symptom burden | Fifteen-item somatic-symptom reference for primary care and psychosomatic research. |
+| FEESS | Emotional and social school experiences | German school-experience and classroom-climate reference family. |
+| SESSKO | Academic self-concept | German school self-concept reference family. |
+| FAS III | Family material affluence | Adolescent school-survey indicator of material socioeconomic position. |
+| ASRS | Adult ADHD symptoms | Adult self-report screening reference; positive screens require diagnostic follow-up. |
+| DISYPS-III FBB-ADHS | ADHD symptoms in children and adolescents | German observer-form reference; informant and edition are clinically important. |
+| Conners 3 | ADHD and related behavior | German multi-informant commercial reference family. |
+| AQ | Autistic traits | Adult/adolescent autism-trait screening reference, not diagnostic. |
+| SRS-2 | Social responsiveness | German multi-informant social-communication reference family. |
+| M-CHAT-R/F | Early autism risk | Toddler parent screening with follow-up; not a diagnostic result. |
+| COPSOQ | Psychosocial working conditions | German occupational-stress and work-environment reference family. |
+| ERI | Effort-reward imbalance | Occupational stress model covering effort, reward, and overcommitment. |
+| OLBI | Burnout-related exhaustion and disengagement | German-relevant occupational burnout reference. |
 
 The profile fields are intentionally source-grounded: description, intended use, name origin, development history, measurement rationale, and interpretation notes. They are complemented by structured publication year, citation, DOI, contributors, target populations, dimensions, and `cosmin_metrics` where available. The GUI displays **nicht dokumentiert** when a field is absent at family and version scope. This is a catalog gap, not a claim that the fact does not exist in the literature.
 
@@ -100,6 +120,11 @@ The following references informed the shortlist. They identify original or key v
 - **F-SozU social support:** German questionnaire family by Fydrich, Sommer, and Brähler; exact form and licence should be checked through the [Hogrefe Testzentrale](https://www.testzentrale.de/fragebogen-zur-sozialen-unterstuetzung.html).
 - **UCLA loneliness:** Hughes et al., 2004, three-item short form, [DOI 10.1177/0164027504268574](https://doi.org/10.1177/0164027504268574). German use does not automatically establish a validated or redistributable translation.
 - **SDQ:** Goodman, 2001, psychometric properties, [DOI 10.1037/1040-3590.13.3.367](https://doi.org/10.1037/1040-3590.13.3.367); German and other language forms are listed at the [official SDQ site](https://www.sdqinfo.org/py/sdqinfo/b0.py). Parent, teacher, and self-report forms must not be pooled without accounting for informant and age.
+- **WHOQOL-BREF:** WHO provides German translation and scoring resources on the [official WHOQOL-BREF page](https://www.who.int/tools/whoqol/whoqol-bref); WHO states that translations were not created by WHO and must be checked against the original.
+- **EQ-5D-5L:** the [EuroQol Group](https://euroqol.org/eq-5d-instruments/eq-5d-5l-about/) controls instrument access, translations, value sets, and use terms; the five-level development is described by Herdman et al., [DOI 10.1016/j.healthpol.2011.06.006](https://doi.org/10.1016/j.healthpol.2011.06.006).
+- **HADS:** Zigmond and Snaith, 1983, [DOI 10.1111/j.1600-0447.1983.tb09716.x](https://doi.org/10.1111/j.1600-0447.1983.tb09716.x); German edition and commercial terms should be checked through the [Testzentrale](https://www.testzentrale.de/).
+- **AUDIT:** WHO's [AUDIT manual in IRIS](https://apps.who.int/iris/handle/10665/67205) documents the ten-item alcohol-risk screening instrument; exact German form and use terms remain version-specific.
+- **TICS:** the [TICS source site](https://www.tics-online.com/) documents the German chronic-stress inventory family; select the exact form and norms before administration.
 - **School refusal:** Kearney's SRAS-R, 2002, [DOI 10.1023/A:1020774932043](https://doi.org/10.1023/A:1020774932043). A German adaptation study found concerns with the older adaptation's structure/content, so translation equivalence is not assumed.
 - **School wellbeing:** Renshaw et al. SSWQ, 2015, grades 6-8, [DOI 10.1037/spq0000088](https://doi.org/10.1037/spq0000088).
 - **Problematic internet use:** CIUS original, Meerkerk et al., 2009, [DOI 10.1089/cpb.2008.0181](https://doi.org/10.1089/cpb.2008.0181); German adolescent validation, [DOI 10.1089/cyber.2012.0689](https://doi.org/10.1089/cyber.2012.0689); German/English adult language invariance, [DOI 10.1089/cyber.2018.0731](https://doi.org/10.1089/cyber.2018.0731).

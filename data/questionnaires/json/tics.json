@@ -1,0 +1,99 @@
+{
+  "instrument_id": "tics",
+  "name_full": "Trierer Inventar zum chronischen Stress",
+  "construct_ontology": [
+    "chronic stress"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "German multidimensional questionnaire for chronic stress and stress-related demands.",
+    "intended_use": "Research, occupational health, psychosomatic care, and assessment of chronic stress exposure.",
+    "name_origin": "Trierer Inventar zum chronischen Stress, abbreviated TICS.",
+    "development_history": "Developed as a German instrument family with differentiated chronic-stress scales and short forms.",
+    "measurement_rationale": "Chronic stress is represented through persistent demands, worries, overload, and insufficient recognition or support rather than a single acute event.",
+    "interpretation_notes": "Use the exact TICS form and norms; scale scores describe perceived chronic stress and do not establish burnout or another diagnosis.",
+    "keywords": [
+      "TICS",
+      "chronischer Stress",
+      "Arbeitsstress",
+      "Belastung"
+    ],
+    "search_aliases": [],
+    "mesh_terms": [],
+    "characteristics": [
+      "self-report",
+      "German-instrument",
+      "occupational-health-relevant",
+      "metadata-reference"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "tics_de_v1",
+      "language": "de",
+      "display_name": "Trierer Inventar zum chronischen Stress Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2004,
+      "source_citation": "Schulz, Schlotz, and Becker (2004). Trierer Inventar zum chronischen Stress (TICS).",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "Trierer Inventar zum chronischen Stress official information",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.tics-online.com/",
+          "local_path": null,
+          "license_name": "German test material; edition and use terms require source review",
+          "license_url": "https://www.tics-online.com/",
+          "redistribution_permitted": false,
+          "permission_basis": "Only bibliographic and discovery metadata is stored. Questionnaire wording and forms are not included until exact edition, language, and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "German multidimensional questionnaire for chronic stress and stress-related demands.",
+        "intended_use": "Research, occupational health, psychosomatic care, and assessment of chronic stress exposure.",
+        "name_origin": "Trierer Inventar zum chronischen Stress, abbreviated TICS.",
+        "development_history": "Developed as a German instrument family with differentiated chronic-stress scales and short forms.",
+        "measurement_rationale": "Chronic stress is represented through persistent demands, worries, overload, and insufficient recognition or support rather than a single acute event.",
+        "interpretation_notes": "Use the exact TICS form and norms; scale scores describe perceived chronic stress and do not establish burnout or another diagnosis.",
+        "keywords": [
+          "TICS",
+          "chronischer Stress",
+          "Arbeitsstress",
+          "Belastung"
+        ],
+        "search_aliases": [],
+        "mesh_terms": [],
+        "characteristics": [
+          "self-report",
+          "German-instrument",
+          "occupational-health-relevant",
+          "metadata-reference"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 57,
+      "source_reported_dimensions": [
+        "chronic stress",
+        "work overload",
+        "social overload",
+        "worry",
+        "lack of social recognition"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

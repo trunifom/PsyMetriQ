@@ -1,0 +1,106 @@
+{
+  "instrument_id": "phq15",
+  "name_full": "Patient Health Questionnaire-15",
+  "construct_ontology": [
+    "somatic symptom severity"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Fifteen-item measure of the severity and burden of common somatic symptoms.",
+    "intended_use": "Primary care, psychosomatic medicine, health research, and screening of somatic symptom burden.",
+    "name_origin": "Patient Health Questionnaire, fifteen-symptom form, abbreviated PHQ-15.",
+    "development_history": "Developed from the somatic symptom module of the Patient Health Questionnaire family.",
+    "measurement_rationale": "A common symptom-burden score supports recognition of somatic distress without assuming a single disease cause.",
+    "interpretation_notes": "A high score is not proof of medically unexplained symptoms or a psychiatric diagnosis; rule out relevant medical causes and use the German version's guidance.",
+    "keywords": [
+      "PHQ-15",
+      "somatic symptoms",
+      "somatische Beschwerden",
+      "primary care"
+    ],
+    "search_aliases": [
+      "Patient Health Questionnaire-15",
+      "PHQ15"
+    ],
+    "mesh_terms": [],
+    "characteristics": [
+      "metadata-reference",
+      "German-relevant",
+      "version-specific-evidence"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "phq15_de_v1",
+      "language": "de",
+      "display_name": "PHQ-15 Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "screening",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "adults",
+          "minimum_age_years": 18.0,
+          "maximum_age_years": null,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2002,
+      "source_citation": "Kroenke, Spitzer, and Williams (2002). The PHQ-15: validity of a new measure for evaluating the severity of somatic symptoms.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "PHQ-15 source publication",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://doi.org/10.1001/archinte.162.10.1049",
+          "local_path": null,
+          "license_name": "Metadata reference; exact German edition and reuse terms require source review",
+          "license_url": null,
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Fifteen-item measure of the severity and burden of common somatic symptoms.",
+        "intended_use": "Primary care, psychosomatic medicine, health research, and screening of somatic symptom burden.",
+        "name_origin": "Patient Health Questionnaire, fifteen-symptom form, abbreviated PHQ-15.",
+        "development_history": "Developed from the somatic symptom module of the Patient Health Questionnaire family.",
+        "measurement_rationale": "A common symptom-burden score supports recognition of somatic distress without assuming a single disease cause.",
+        "interpretation_notes": "A high score is not proof of medically unexplained symptoms or a psychiatric diagnosis; rule out relevant medical causes and use the German version's guidance.",
+        "keywords": [
+          "PHQ-15",
+          "somatic symptoms",
+          "somatische Beschwerden",
+          "primary care"
+        ],
+        "search_aliases": [
+          "Patient Health Questionnaire-15",
+          "PHQ15"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 15,
+      "source_reported_dimensions": [
+        "somatic symptom burden"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

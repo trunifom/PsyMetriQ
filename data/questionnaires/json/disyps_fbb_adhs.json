@@ -1,0 +1,112 @@
+{
+  "instrument_id": "disyps_fbb_adhs",
+  "name_full": "DISYPS-III FBB-ADHS",
+  "construct_ontology": [
+    "ADHD symptoms in children and adolescents"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "German diagnostic-system reference with observer forms for ADHD symptoms in children and adolescents.",
+    "intended_use": "Multi-informant assessment in child and adolescent clinical, educational, and research settings.",
+    "name_origin": "DISYPS is the German diagnostic system for mental disorders in children and adolescents; FBB-ADHS is its Fremdbeurteilungsbogen for ADHD.",
+    "development_history": "Developed as a German age- and disorder-specific system with parent and teacher assessment forms.",
+    "measurement_rationale": "Combining observer ratings with clinical information helps assess ADHD symptoms across settings and developmental contexts.",
+    "interpretation_notes": "The questionnaire does not replace a full diagnostic process; use the exact DISYPS edition, informant form, norms, and clinical manual.",
+    "keywords": [
+      "DISYPS",
+      "FBB-ADHS",
+      "ADHS",
+      "Kinder",
+      "Jugendliche"
+    ],
+    "search_aliases": [
+      "DISYPS-III",
+      "FBB-ADHS",
+      "SBB-ADHS"
+    ],
+    "mesh_terms": [],
+    "characteristics": [
+      "metadata-reference",
+      "German-relevant",
+      "version-specific-evidence"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "disyps_fbb_adhs_de_v1",
+      "language": "de",
+      "display_name": "DISYPS-III FBB-ADHS Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "children and adolescents",
+          "minimum_age_years": 3.0,
+          "maximum_age_years": 17.0,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": null,
+      "source_citation": "Döpfner and Görtz-Dorten. DISYPS-III: Diagnostik-System für psychische Störungen nach ICD-10 und DSM-5 bei Kindern und Jugendlichen.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "DISYPS-III German diagnostic system reference",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.testzentrale.de/disyps-iii.html",
+          "local_path": null,
+          "license_name": "Commercial diagnostic system; edition and use terms apply",
+          "license_url": "https://www.testzentrale.de/",
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "German diagnostic-system reference with observer forms for ADHD symptoms in children and adolescents.",
+        "intended_use": "Multi-informant assessment in child and adolescent clinical, educational, and research settings.",
+        "name_origin": "DISYPS is the German diagnostic system for mental disorders in children and adolescents; FBB-ADHS is its Fremdbeurteilungsbogen for ADHD.",
+        "development_history": "Developed as a German age- and disorder-specific system with parent and teacher assessment forms.",
+        "measurement_rationale": "Combining observer ratings with clinical information helps assess ADHD symptoms across settings and developmental contexts.",
+        "interpretation_notes": "The questionnaire does not replace a full diagnostic process; use the exact DISYPS edition, informant form, norms, and clinical manual.",
+        "keywords": [
+          "DISYPS",
+          "FBB-ADHS",
+          "ADHS",
+          "Kinder",
+          "Jugendliche"
+        ],
+        "search_aliases": [
+          "DISYPS-III",
+          "FBB-ADHS",
+          "SBB-ADHS"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": null,
+      "source_reported_dimensions": [
+        "inattention",
+        "hyperactivity",
+        "impulsivity"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

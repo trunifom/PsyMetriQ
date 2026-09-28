@@ -1,0 +1,97 @@
+{
+  "instrument_id": "hads",
+  "name_full": "Hospital Anxiety and Depression Scale",
+  "construct_ontology": [
+    "anxiety symptoms",
+    "depressive symptoms"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Fourteen-item screening questionnaire with separate anxiety and depression subscales for medical and psychosomatic settings.",
+    "intended_use": "Screening of relevant anxiety and depressive symptoms in hospitals, outpatient medicine, and rehabilitation.",
+    "name_origin": "Hospital Anxiety and Depression Scale, abbreviated HADS.",
+    "development_history": "Developed to identify anxiety and depression symptoms in hospital patients while minimizing confounding by physical illness.",
+    "measurement_rationale": "Separate subscales focus on psychological symptoms and avoid many somatic items that can be caused by physical disease.",
+    "interpretation_notes": "HADS is a screening instrument, not a diagnosis; thresholds and validity depend on setting, population, and the German edition.",
+    "keywords": [
+      "HADS",
+      "Hospital Anxiety and Depression Scale",
+      "Angst",
+      "Depressivität"
+    ],
+    "search_aliases": [],
+    "mesh_terms": [],
+    "characteristics": [
+      "self-report",
+      "clinical-screening",
+      "German-version-available",
+      "metadata-reference"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "hads_de_v1",
+      "language": "de",
+      "display_name": "Hospital Anxiety and Depression Scale Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 1983,
+      "source_citation": "Zigmond and Snaith (1983). The hospital anxiety and depression scale.",
+      "source_doi": "10.1111/j.1600-0447.1983.tb09716.x",
+      "source_documents": [
+        {
+          "title": "Hospital Anxiety and Depression Scale German reference",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.testzentrale.de/hospital-anxiety-and-depression-scale.html",
+          "local_path": null,
+          "license_name": "Commercial test material; exact German edition and use terms apply",
+          "license_url": "https://www.testzentrale.de/",
+          "redistribution_permitted": false,
+          "permission_basis": "Only bibliographic and discovery metadata is stored. Questionnaire wording and forms are not included until exact edition, language, and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Fourteen-item screening questionnaire with separate anxiety and depression subscales for medical and psychosomatic settings.",
+        "intended_use": "Screening of relevant anxiety and depressive symptoms in hospitals, outpatient medicine, and rehabilitation.",
+        "name_origin": "Hospital Anxiety and Depression Scale, abbreviated HADS.",
+        "development_history": "Developed to identify anxiety and depression symptoms in hospital patients while minimizing confounding by physical illness.",
+        "measurement_rationale": "Separate subscales focus on psychological symptoms and avoid many somatic items that can be caused by physical disease.",
+        "interpretation_notes": "HADS is a screening instrument, not a diagnosis; thresholds and validity depend on setting, population, and the German edition.",
+        "keywords": [
+          "HADS",
+          "Hospital Anxiety and Depression Scale",
+          "Angst",
+          "Depressivität"
+        ],
+        "search_aliases": [],
+        "mesh_terms": [],
+        "characteristics": [
+          "self-report",
+          "clinical-screening",
+          "German-version-available",
+          "metadata-reference"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 14,
+      "source_reported_dimensions": [
+        "anxiety",
+        "depression"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

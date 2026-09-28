@@ -1,0 +1,110 @@
+{
+  "instrument_id": "srs2",
+  "name_full": "Social Responsiveness Scale-2",
+  "construct_ontology": [
+    "social communication and autistic social traits"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Rating-scale family for social communication, restricted interests, and social responsiveness across development.",
+    "intended_use": "Clinical, educational, and research assessment of social functioning and autism-related traits.",
+    "name_origin": "Social Responsiveness Scale, second edition, abbreviated SRS-2.",
+    "development_history": "Developed as a multi-informant scale with age- and informant-specific forms.",
+    "measurement_rationale": "Social communication and repetitive/restricted behavior are rated dimensionally across everyday contexts.",
+    "interpretation_notes": "SRS-2 scores are not sufficient for an autism diagnosis and can be influenced by language, ADHD, anxiety, and other conditions.",
+    "keywords": [
+      "SRS-2",
+      "Autismus",
+      "ASS",
+      "soziale Responsivität"
+    ],
+    "search_aliases": [
+      "Social Responsiveness Scale",
+      "SRS II"
+    ],
+    "mesh_terms": [],
+    "characteristics": [
+      "metadata-reference",
+      "German-relevant",
+      "version-specific-evidence"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "srs2_de_v1",
+      "language": "de",
+      "display_name": "SRS-2 Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "children and adolescents",
+          "minimum_age_years": 3.0,
+          "maximum_age_years": 17.0,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": null,
+      "source_citation": "SRS-2 German edition; social-responsiveness rating scale family.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "SRS-2 German reference",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.testzentrale.de/social-responsiveness-scale-2.html",
+          "local_path": null,
+          "license_name": "Commercial test family; edition and use terms apply",
+          "license_url": "https://www.testzentrale.de/",
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Rating-scale family for social communication, restricted interests, and social responsiveness across development.",
+        "intended_use": "Clinical, educational, and research assessment of social functioning and autism-related traits.",
+        "name_origin": "Social Responsiveness Scale, second edition, abbreviated SRS-2.",
+        "development_history": "Developed as a multi-informant scale with age- and informant-specific forms.",
+        "measurement_rationale": "Social communication and repetitive/restricted behavior are rated dimensionally across everyday contexts.",
+        "interpretation_notes": "SRS-2 scores are not sufficient for an autism diagnosis and can be influenced by language, ADHD, anxiety, and other conditions.",
+        "keywords": [
+          "SRS-2",
+          "Autismus",
+          "ASS",
+          "soziale Responsivität"
+        ],
+        "search_aliases": [
+          "Social Responsiveness Scale",
+          "SRS II"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": null,
+      "source_reported_dimensions": [
+        "social awareness",
+        "social cognition",
+        "social communication",
+        "social motivation",
+        "restricted interests and repetitive behavior"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "instrument_id": "asrs",
+  "name_full": "Adult ADHD Self-Report Scale",
+  "construct_ontology": [
+    "adult ADHD symptoms"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Adult self-report screening scale for symptoms associated with attention-deficit/hyperactivity disorder.",
+    "intended_use": "Initial adult ADHD screening in research and clinical pathways, followed by diagnostic assessment.",
+    "name_origin": "Adult ADHD Self-Report Scale, abbreviated ASRS.",
+    "development_history": "Developed through a WHO collaborative process; short and full forms are used in different settings.",
+    "measurement_rationale": "Inattention and hyperactivity/impulsivity symptoms are sampled as a first-stage screen for adult assessment.",
+    "interpretation_notes": "A positive screen is not an ADHD diagnosis; developmental history, impairment, differential diagnosis, and informant evidence are required.",
+    "keywords": [
+      "ASRS",
+      "ADHS",
+      "ADHD",
+      "Aufmerksamkeitsdefizit",
+      "Erwachsene"
+    ],
+    "search_aliases": [
+      "ASRS-v1.1",
+      "ASRS-5",
+      "Adult ADHD Self-Report Scale"
+    ],
+    "mesh_terms": [],
+    "characteristics": [
+      "metadata-reference",
+      "German-relevant",
+      "version-specific-evidence"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "asrs_de_v1",
+      "language": "de",
+      "display_name": "ASRS Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "screening",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "adults",
+          "minimum_age_years": 18.0,
+          "maximum_age_years": null,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2005,
+      "source_citation": "Kessler et al. (2005). The World Health Organization Adult ADHD Self-Report Scale (ASRS).",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "WHO Adult ADHD Self-Report Scale reference",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.hcp.med.harvard.edu/ncs/asrs.php",
+          "local_path": null,
+          "license_name": "Metadata reference; exact German edition and reuse terms require source review",
+          "license_url": null,
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Adult self-report screening scale for symptoms associated with attention-deficit/hyperactivity disorder.",
+        "intended_use": "Initial adult ADHD screening in research and clinical pathways, followed by diagnostic assessment.",
+        "name_origin": "Adult ADHD Self-Report Scale, abbreviated ASRS.",
+        "development_history": "Developed through a WHO collaborative process; short and full forms are used in different settings.",
+        "measurement_rationale": "Inattention and hyperactivity/impulsivity symptoms are sampled as a first-stage screen for adult assessment.",
+        "interpretation_notes": "A positive screen is not an ADHD diagnosis; developmental history, impairment, differential diagnosis, and informant evidence are required.",
+        "keywords": [
+          "ASRS",
+          "ADHS",
+          "ADHD",
+          "Aufmerksamkeitsdefizit",
+          "Erwachsene"
+        ],
+        "search_aliases": [
+          "ASRS-v1.1",
+          "ASRS-5",
+          "Adult ADHD Self-Report Scale"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 18,
+      "source_reported_dimensions": [
+        "inattention",
+        "hyperactivity/impulsivity"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

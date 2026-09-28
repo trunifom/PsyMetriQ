@@ -1,0 +1,110 @@
+{
+  "instrument_id": "aq",
+  "name_full": "Autism-Spectrum Quotient",
+  "construct_ontology": [
+    "autistic traits"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Self-report screening questionnaire for autistic traits in adolescents and adults with average or above-average intelligence.",
+    "intended_use": "Research and initial autism-trait screening; not a diagnostic assessment.",
+    "name_origin": "Autism-Spectrum Quotient, abbreviated AQ.",
+    "development_history": "Developed as a dimensional self-report measure of autistic traits in adults and adolescents.",
+    "measurement_rationale": "Social skills, attention switching, attention to detail, communication, and imagination represent different trait domains.",
+    "interpretation_notes": "Cutoffs are screening aids and vary with population; German translation quality and diagnostic follow-up must be considered.",
+    "keywords": [
+      "AQ",
+      "Autism-Spectrum Quotient",
+      "Autismus",
+      "ASS"
+    ],
+    "search_aliases": [
+      "Autism Quotient",
+      "AQ-50"
+    ],
+    "mesh_terms": [],
+    "characteristics": [
+      "metadata-reference",
+      "German-relevant",
+      "version-specific-evidence"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "aq_de_v1",
+      "language": "de",
+      "display_name": "Autism-Spectrum Quotient Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "screening",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "adolescents",
+          "minimum_age_years": 11.0,
+          "maximum_age_years": 17.0,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2001,
+      "source_citation": "Baron-Cohen et al. (2001). The Autism-Spectrum Quotient (AQ): evidence from Asperger syndrome/high-functioning autism, males and females, scientists and mathematicians.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "Autism-Spectrum Quotient source publication",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://doi.org/10.1080/026404101300117134",
+          "local_path": null,
+          "license_name": "Metadata reference; exact German edition and reuse terms require source review",
+          "license_url": null,
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Self-report screening questionnaire for autistic traits in adolescents and adults with average or above-average intelligence.",
+        "intended_use": "Research and initial autism-trait screening; not a diagnostic assessment.",
+        "name_origin": "Autism-Spectrum Quotient, abbreviated AQ.",
+        "development_history": "Developed as a dimensional self-report measure of autistic traits in adults and adolescents.",
+        "measurement_rationale": "Social skills, attention switching, attention to detail, communication, and imagination represent different trait domains.",
+        "interpretation_notes": "Cutoffs are screening aids and vary with population; German translation quality and diagnostic follow-up must be considered.",
+        "keywords": [
+          "AQ",
+          "Autism-Spectrum Quotient",
+          "Autismus",
+          "ASS"
+        ],
+        "search_aliases": [
+          "Autism Quotient",
+          "AQ-50"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 50,
+      "source_reported_dimensions": [
+        "social skills",
+        "attention switching",
+        "attention to detail",
+        "communication",
+        "imagination"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

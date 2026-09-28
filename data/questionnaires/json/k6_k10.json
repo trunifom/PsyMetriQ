@@ -1,0 +1,179 @@
+{
+  "instrument_id": "k6_k10",
+  "name_full": "Kessler Psychological Distress Scale",
+  "construct_ontology": [
+    "non-specific psychological distress"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Brief six- and ten-item screens for non-specific psychological distress.",
+    "intended_use": "Population surveys and mental-health screening for general psychological distress.",
+    "name_origin": "K6 and K10 refer to the six- and ten-item Kessler distress forms.",
+    "development_history": "Developed for efficient monitoring of population prevalence and trends in psychological distress.",
+    "measurement_rationale": "Short symptom-frequency questions identify broad distress without assigning a specific disorder.",
+    "interpretation_notes": "Screening thresholds are context-specific and do not establish a diagnosis; use the selected form's scoring guidance.",
+    "keywords": [
+      "K6",
+      "K10",
+      "psychological distress",
+      "psychische Belastung"
+    ],
+    "search_aliases": [
+      "Kessler-6",
+      "Kessler-10",
+      "Kessler Psychological Distress Scale"
+    ],
+    "mesh_terms": [],
+    "characteristics": [
+      "metadata-reference",
+      "German-relevant",
+      "version-specific-evidence"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "k6_de_v1",
+      "language": "de",
+      "display_name": "K6 Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "screening",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "adults",
+          "minimum_age_years": 18.0,
+          "maximum_age_years": null,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2002,
+      "source_citation": "Kessler et al. (2002). Short screening scales to monitor population prevalences and trends in non-specific psychological distress.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "K6/K10 official scale information",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.hcp.med.harvard.edu/ncs/k6_scales.php",
+          "local_path": null,
+          "license_name": "Metadata reference; exact German edition and reuse terms require source review",
+          "license_url": null,
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Brief six- and ten-item screens for non-specific psychological distress.",
+        "intended_use": "Population surveys and mental-health screening for general psychological distress.",
+        "name_origin": "K6 and K10 refer to the six- and ten-item Kessler distress forms.",
+        "development_history": "Developed for efficient monitoring of population prevalence and trends in psychological distress.",
+        "measurement_rationale": "Short symptom-frequency questions identify broad distress without assigning a specific disorder.",
+        "interpretation_notes": "Screening thresholds are context-specific and do not establish a diagnosis; use the selected form's scoring guidance.",
+        "keywords": [
+          "K6",
+          "K10",
+          "psychological distress",
+          "psychische Belastung"
+        ],
+        "search_aliases": [
+          "Kessler-6",
+          "Kessler-10",
+          "Kessler Psychological Distress Scale"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 6,
+      "source_reported_dimensions": [
+        "psychological distress"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    },
+    {
+      "version_id": "k10_de_v1",
+      "language": "de",
+      "display_name": "K10 Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "screening",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "adults",
+          "minimum_age_years": 18.0,
+          "maximum_age_years": null,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2002,
+      "source_citation": "Kessler et al. (2002). Short screening scales to monitor population prevalences and trends in non-specific psychological distress.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "K6/K10 official scale information",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.hcp.med.harvard.edu/ncs/k6_scales.php",
+          "local_path": null,
+          "license_name": "Metadata reference; exact German edition and reuse terms require source review",
+          "license_url": null,
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Brief six- and ten-item screens for non-specific psychological distress.",
+        "intended_use": "Population surveys and mental-health screening for general psychological distress.",
+        "name_origin": "K6 and K10 refer to the six- and ten-item Kessler distress forms.",
+        "development_history": "Developed for efficient monitoring of population prevalence and trends in psychological distress.",
+        "measurement_rationale": "Short symptom-frequency questions identify broad distress without assigning a specific disorder.",
+        "interpretation_notes": "Screening thresholds are context-specific and do not establish a diagnosis; use the selected form's scoring guidance.",
+        "keywords": [
+          "K6",
+          "K10",
+          "psychological distress",
+          "psychische Belastung"
+        ],
+        "search_aliases": [
+          "Kessler-6",
+          "Kessler-10",
+          "Kessler Psychological Distress Scale"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 10,
+      "source_reported_dimensions": [
+        "psychological distress"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

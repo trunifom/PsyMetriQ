@@ -1,0 +1,106 @@
+{
+  "instrument_id": "fas3",
+  "name_full": "Family Affluence Scale III",
+  "construct_ontology": [
+    "family socioeconomic status"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Adolescent self-report indicator of material family affluence for school and population surveys.",
+    "intended_use": "International school-health surveys and socioeconomic-stratification research with adolescents.",
+    "name_origin": "Family Affluence Scale, third revision, abbreviated FAS III.",
+    "development_history": "Revised to improve cross-national measurement of material family affluence among adolescents.",
+    "measurement_rationale": "Concrete household possessions and conditions can provide a less abstract socioeconomic indicator for adolescents.",
+    "interpretation_notes": "FAS is not a complete measure of socioeconomic status; interpret across time and country carefully and do not substitute it for income or deprivation data.",
+    "keywords": [
+      "FAS III",
+      "Family Affluence Scale",
+      "sozioökonomischer Status",
+      "Jugendliche"
+    ],
+    "search_aliases": [
+      "FAS3",
+      "Family Affluence Scale III"
+    ],
+    "mesh_terms": [],
+    "characteristics": [
+      "metadata-reference",
+      "German-relevant",
+      "version-specific-evidence"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "fas3_de_v1",
+      "language": "de",
+      "display_name": "Family Affluence Scale III Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "screening",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "adolescents",
+          "minimum_age_years": 11.0,
+          "maximum_age_years": 17.0,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2016,
+      "source_citation": "Hartley et al. (2016). Assessing family socioeconomic position through adolescent self-report: the Family Affluence Scale III.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "Family Affluence Scale III source publication",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://doi.org/10.1007/s12187-015-9325-3",
+          "local_path": null,
+          "license_name": "Metadata reference; exact German edition and reuse terms require source review",
+          "license_url": null,
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Adolescent self-report indicator of material family affluence for school and population surveys.",
+        "intended_use": "International school-health surveys and socioeconomic-stratification research with adolescents.",
+        "name_origin": "Family Affluence Scale, third revision, abbreviated FAS III.",
+        "development_history": "Revised to improve cross-national measurement of material family affluence among adolescents.",
+        "measurement_rationale": "Concrete household possessions and conditions can provide a less abstract socioeconomic indicator for adolescents.",
+        "interpretation_notes": "FAS is not a complete measure of socioeconomic status; interpret across time and country carefully and do not substitute it for income or deprivation data.",
+        "keywords": [
+          "FAS III",
+          "Family Affluence Scale",
+          "sozioökonomischer Status",
+          "Jugendliche"
+        ],
+        "search_aliases": [
+          "FAS3",
+          "Family Affluence Scale III"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 6,
+      "source_reported_dimensions": [
+        "family material affluence"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

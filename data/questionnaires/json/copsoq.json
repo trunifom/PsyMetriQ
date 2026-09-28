@@ -1,0 +1,108 @@
+{
+  "instrument_id": "copsoq",
+  "name_full": "Copenhagen Psychosocial Questionnaire",
+  "construct_ontology": [
+    "psychosocial working conditions"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Questionnaire family for psychosocial working conditions, demands, resources, leadership, and wellbeing.",
+    "intended_use": "Occupational health, organizational development, employee surveys, and psychosocial risk assessment.",
+    "name_origin": "Copenhagen Psychosocial Questionnaire, abbreviated COPSOQ.",
+    "development_history": "Developed as a multidimensional occupational-health questionnaire and adapted for national versions including German use.",
+    "measurement_rationale": "Work demands, influence, social relations, leadership, and health-related outcomes interact in psychosocial work environments.",
+    "interpretation_notes": "Use the selected German COPSOQ version and benchmark guidance; results describe working conditions and do not diagnose individual mental disorders.",
+    "keywords": [
+      "COPSOQ",
+      "Arbeitsstress",
+      "psychosoziale Belastung",
+      "Arbeitsbedingungen"
+    ],
+    "search_aliases": [
+      "Copenhagen Psychosocial Questionnaire"
+    ],
+    "mesh_terms": [],
+    "characteristics": [
+      "metadata-reference",
+      "German-relevant",
+      "version-specific-evidence"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "copsoq_de_v1",
+      "language": "de",
+      "display_name": "COPSOQ Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "adults",
+          "minimum_age_years": 18.0,
+          "maximum_age_years": null,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2005,
+      "source_citation": "Kristensen et al. (2005). The Copenhagen Psychosocial Questionnaire: a tool for the assessment and improvement of the psychosocial work environment.",
+      "source_doi": "10.1080/02678370500089585",
+      "source_documents": [
+        {
+          "title": "COPSOQ German source and questionnaire information",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.copsoq.de/",
+          "local_path": null,
+          "license_name": "Metadata reference; exact German edition and reuse terms require source review",
+          "license_url": "https://www.copsoq.de/",
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Questionnaire family for psychosocial working conditions, demands, resources, leadership, and wellbeing.",
+        "intended_use": "Occupational health, organizational development, employee surveys, and psychosocial risk assessment.",
+        "name_origin": "Copenhagen Psychosocial Questionnaire, abbreviated COPSOQ.",
+        "development_history": "Developed as a multidimensional occupational-health questionnaire and adapted for national versions including German use.",
+        "measurement_rationale": "Work demands, influence, social relations, leadership, and health-related outcomes interact in psychosocial work environments.",
+        "interpretation_notes": "Use the selected German COPSOQ version and benchmark guidance; results describe working conditions and do not diagnose individual mental disorders.",
+        "keywords": [
+          "COPSOQ",
+          "Arbeitsstress",
+          "psychosoziale Belastung",
+          "Arbeitsbedingungen"
+        ],
+        "search_aliases": [
+          "Copenhagen Psychosocial Questionnaire"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": null,
+      "source_reported_dimensions": [
+        "work demands",
+        "influence",
+        "social relations",
+        "leadership",
+        "health and wellbeing"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

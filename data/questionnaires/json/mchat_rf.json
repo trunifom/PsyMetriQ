@@ -1,0 +1,109 @@
+{
+  "instrument_id": "mchat_rf",
+  "name_full": "Modified Checklist for Autism in Toddlers, Revised with Follow-Up",
+  "construct_ontology": [
+    "early autism risk"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Two-stage parent-report screening tool for autism risk in toddlers.",
+    "intended_use": "Early screening and follow-up referral for toddlers approximately 16-30 months old.",
+    "name_origin": "Modified Checklist for Autism in Toddlers, Revised with Follow-Up, abbreviated M-CHAT-R/F.",
+    "development_history": "Revised the original M-CHAT and added a structured follow-up interview to reduce false-positive screens.",
+    "measurement_rationale": "Early parent-observed social-communication and behavior indicators can support timely developmental evaluation.",
+    "interpretation_notes": "A positive screen indicates need for follow-up or developmental evaluation, not autism diagnosis; use the official German form and process.",
+    "keywords": [
+      "M-CHAT-R/F",
+      "Autismus",
+      "ASS",
+      "Kleinkinder",
+      "Früherkennung"
+    ],
+    "search_aliases": [
+      "M-CHAT",
+      "Modified Checklist for Autism in Toddlers"
+    ],
+    "mesh_terms": [],
+    "characteristics": [
+      "metadata-reference",
+      "German-relevant",
+      "version-specific-evidence"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "mchat_rf_de_v1",
+      "language": "de",
+      "display_name": "M-CHAT-R/F Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "screening",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "toddlers",
+          "minimum_age_years": 1.0,
+          "maximum_age_years": 3.0,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2014,
+      "source_citation": "Robins et al. (2014). Validation of the Modified Checklist for Autism in Toddlers, Revised with Follow-up.",
+      "source_doi": "10.1177/1362361315605763",
+      "source_documents": [
+        {
+          "title": "M-CHAT-R/F official screening resources",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.mchatscreen.com/",
+          "local_path": null,
+          "license_name": "Official screening form; exact language and use terms apply",
+          "license_url": "https://www.mchatscreen.com/",
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Two-stage parent-report screening tool for autism risk in toddlers.",
+        "intended_use": "Early screening and follow-up referral for toddlers approximately 16-30 months old.",
+        "name_origin": "Modified Checklist for Autism in Toddlers, Revised with Follow-Up, abbreviated M-CHAT-R/F.",
+        "development_history": "Revised the original M-CHAT and added a structured follow-up interview to reduce false-positive screens.",
+        "measurement_rationale": "Early parent-observed social-communication and behavior indicators can support timely developmental evaluation.",
+        "interpretation_notes": "A positive screen indicates need for follow-up or developmental evaluation, not autism diagnosis; use the official German form and process.",
+        "keywords": [
+          "M-CHAT-R/F",
+          "Autismus",
+          "ASS",
+          "Kleinkinder",
+          "Früherkennung"
+        ],
+        "search_aliases": [
+          "M-CHAT",
+          "Modified Checklist for Autism in Toddlers"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 20,
+      "source_reported_dimensions": [
+        "social communication",
+        "early behavior indicators"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

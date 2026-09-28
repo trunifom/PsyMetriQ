@@ -1,0 +1,113 @@
+{
+  "instrument_id": "feess",
+  "name_full": "Fragebogen zur Erfassung emotionaler und sozialer Schulerfahrungen",
+  "construct_ontology": [
+    "school wellbeing",
+    "social integration"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "German school questionnaire family for emotional and social experiences in the classroom and school.",
+    "intended_use": "School psychology, educational research, school development, and evaluation of classroom climate.",
+    "name_origin": "FEESS is the German abbreviation for Fragebogen zur Erfassung emotionaler und sozialer Schulerfahrungen.",
+    "development_history": "Developed as age- and grade-appropriate German forms for primary and secondary school contexts.",
+    "measurement_rationale": "School wellbeing and social experience influence participation, learning conditions, and perceived belonging.",
+    "interpretation_notes": "Use the correct grade version and norm tables; results support educational planning and are not diagnostic labels for pupils.",
+    "keywords": [
+      "FEESS",
+      "Schulerfahrungen",
+      "Klassenklima",
+      "Schulwohlbefinden"
+    ],
+    "search_aliases": [
+      "FEESS 1-2",
+      "FEESS 3-4",
+      "FEESS 5-6",
+      "FEESS 7-10"
+    ],
+    "mesh_terms": [],
+    "characteristics": [
+      "metadata-reference",
+      "German-relevant",
+      "version-specific-evidence"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "feess_de_v1",
+      "language": "de",
+      "display_name": "FEESS Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "children and adolescents",
+          "minimum_age_years": 3.0,
+          "maximum_age_years": 17.0,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": null,
+      "source_citation": "Rauer and Schuck. FEESS: Fragebogen zur Erfassung emotionaler und sozialer Schulerfahrungen.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "FEESS German school assessment reference",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.testzentrale.de/feess.html",
+          "local_path": null,
+          "license_name": "Commercial test family; edition and use terms apply",
+          "license_url": "https://www.testzentrale.de/",
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "German school questionnaire family for emotional and social experiences in the classroom and school.",
+        "intended_use": "School psychology, educational research, school development, and evaluation of classroom climate.",
+        "name_origin": "FEESS is the German abbreviation for Fragebogen zur Erfassung emotionaler und sozialer Schulerfahrungen.",
+        "development_history": "Developed as age- and grade-appropriate German forms for primary and secondary school contexts.",
+        "measurement_rationale": "School wellbeing and social experience influence participation, learning conditions, and perceived belonging.",
+        "interpretation_notes": "Use the correct grade version and norm tables; results support educational planning and are not diagnostic labels for pupils.",
+        "keywords": [
+          "FEESS",
+          "Schulerfahrungen",
+          "Klassenklima",
+          "Schulwohlbefinden"
+        ],
+        "search_aliases": [
+          "FEESS 1-2",
+          "FEESS 3-4",
+          "FEESS 5-6",
+          "FEESS 7-10"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": null,
+      "source_reported_dimensions": [
+        "classroom climate",
+        "social integration",
+        "school wellbeing"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}
