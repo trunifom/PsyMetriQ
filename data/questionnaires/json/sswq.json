@@ -1,0 +1,104 @@
+{
+  "instrument_id": "sswq",
+  "name_full": "School Well-being Questionnaire",
+  "construct_ontology": [
+    "school wellbeing"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Sixteen-item school questionnaire covering students' perceived school wellbeing and belonging.",
+    "intended_use": "School research and evaluation of students' school-related wellbeing and connectedness.",
+    "name_origin": "School Well-being Questionnaire, abbreviated SSWQ.",
+    "development_history": "Developed and initially validated with students in grades 6-8.",
+    "measurement_rationale": "School belonging, positive affect, and academic efficacy reflect psychosocial conditions relevant to learning and participation.",
+    "interpretation_notes": "The initial evidence is age- and language-specific; German validation and exact form rights should be checked before administration.",
+    "keywords": [
+      "SSWQ",
+      "school wellbeing",
+      "Schulwohlbefinden"
+    ],
+    "search_aliases": [
+      "School Well-being Questionnaire"
+    ],
+    "mesh_terms": [],
+    "characteristics": [
+      "metadata-reference",
+      "German-relevant",
+      "version-specific-evidence"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "sswq_de_v1",
+      "language": "de",
+      "display_name": "SSWQ Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "children and adolescents",
+          "minimum_age_years": 6.0,
+          "maximum_age_years": 18.0,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2015,
+      "source_citation": "Renshaw et al. (2015). Psychometric properties of the School Well-being Questionnaire.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "School Well-being Questionnaire source publication",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://doi.org/10.1037/spq0000088",
+          "local_path": null,
+          "license_name": "Metadata reference; exact German edition and reuse terms require source review",
+          "license_url": null,
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Sixteen-item school questionnaire covering students' perceived school wellbeing and belonging.",
+        "intended_use": "School research and evaluation of students' school-related wellbeing and connectedness.",
+        "name_origin": "School Well-being Questionnaire, abbreviated SSWQ.",
+        "development_history": "Developed and initially validated with students in grades 6-8.",
+        "measurement_rationale": "School belonging, positive affect, and academic efficacy reflect psychosocial conditions relevant to learning and participation.",
+        "interpretation_notes": "The initial evidence is age- and language-specific; German validation and exact form rights should be checked before administration.",
+        "keywords": [
+          "SSWQ",
+          "school wellbeing",
+          "Schulwohlbefinden"
+        ],
+        "search_aliases": [
+          "School Well-being Questionnaire"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 16,
+      "source_reported_dimensions": [
+        "school belonging",
+        "positive affect",
+        "academic efficacy"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

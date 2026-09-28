@@ -1,0 +1,104 @@
+{
+  "instrument_id": "bdi_ii",
+  "name_full": "Beck-Depressions-Inventar II",
+  "construct_ontology": [
+    "depressive symptom severity"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Twenty-one-item self-report measure of depressive symptom severity.",
+    "intended_use": "Clinical and research assessment of depressive symptom burden in adolescents and adults.",
+    "name_origin": "Beck Depression Inventory, second edition, abbreviated BDI-II.",
+    "development_history": "The second edition revised the original inventory to align symptom content and diagnostic criteria more closely.",
+    "measurement_rationale": "A broad symptom inventory covers cognitive, affective, somatic, and behavioral aspects of depression.",
+    "interpretation_notes": "Scores support severity assessment but do not replace a diagnostic interview; use the German edition's norms and license.",
+    "keywords": [
+      "BDI-II",
+      "Depression",
+      "Depressivität"
+    ],
+    "search_aliases": [
+      "Beck-Depressions-Inventar",
+      "Beck Depression Inventory"
+    ],
+    "mesh_terms": [],
+    "characteristics": [
+      "metadata-reference",
+      "German-relevant",
+      "version-specific-evidence"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "bdi_ii_de_v1",
+      "language": "de",
+      "display_name": "BDI-II Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "screening",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "adults",
+          "minimum_age_years": 18.0,
+          "maximum_age_years": null,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 1996,
+      "source_citation": "Beck et al. (1996). Beck Depression Inventory-II; German commercial edition.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "BDI-II German edition reference",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.testzentrale.de/bdi-ii.html",
+          "local_path": null,
+          "license_name": "Commercial test material; edition and use terms apply",
+          "license_url": "https://www.testzentrale.de/",
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Twenty-one-item self-report measure of depressive symptom severity.",
+        "intended_use": "Clinical and research assessment of depressive symptom burden in adolescents and adults.",
+        "name_origin": "Beck Depression Inventory, second edition, abbreviated BDI-II.",
+        "development_history": "The second edition revised the original inventory to align symptom content and diagnostic criteria more closely.",
+        "measurement_rationale": "A broad symptom inventory covers cognitive, affective, somatic, and behavioral aspects of depression.",
+        "interpretation_notes": "Scores support severity assessment but do not replace a diagnostic interview; use the German edition's norms and license.",
+        "keywords": [
+          "BDI-II",
+          "Depression",
+          "Depressivität"
+        ],
+        "search_aliases": [
+          "Beck-Depressions-Inventar",
+          "Beck Depression Inventory"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 21,
+      "source_reported_dimensions": [
+        "depressive symptoms"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

@@ -106,6 +106,16 @@ All fifteen families currently shipped in `data/questionnaires/json/` now carry 
 | COPSOQ | Psychosocial working conditions | German occupational-stress and work-environment reference family. |
 | ERI | Effort-reward imbalance | Occupational stress model covering effort, reward, and overcommitment. |
 | OLBI | Burnout-related exhaustion and disengagement | German-relevant occupational burnout reference. |
+| BDI-II | Depressive symptom severity | German commercial reference for adolescents and adults. |
+| SCL-90-R | Broad psychological and somatic symptom burden | German commercial symptom-profile reference. |
+| SSWQ | School wellbeing | School-wellbeing reference initially studied in grades 6-8. |
+| ADHD-RS-IV | Childhood ADHD symptoms | Parent/teacher rating reference for inattention and hyperactivity/impulsivity. |
+| SNAP-IV | ADHD and oppositional symptoms | Parent/teacher screening reference; German form and permissions require review. |
+| SCQ | Autism-related social communication | Forty-item caregiver screening reference. |
+| ASSQ | Autistic traits in school-age children | German-relevant observer screening reference. |
+| MBI | Occupational burnout | Commercial multidimensional burnout reference. |
+| JCQ | Job demands, control, and social support | Occupational psychosocial-stress reference. |
+| EORTC QLQ-C30 | Cancer-related health-related quality of life | German EORTC core questionnaire reference with official modules and permissions. |
 
 The profile fields are intentionally source-grounded: description, intended use, name origin, development history, measurement rationale, and interpretation notes. They are complemented by structured publication year, citation, DOI, contributors, target populations, dimensions, and `cosmin_metrics` where available. The GUI displays **nicht dokumentiert** when a field is absent at family and version scope. This is a catalog gap, not a claim that the fact does not exist in the literature.
 

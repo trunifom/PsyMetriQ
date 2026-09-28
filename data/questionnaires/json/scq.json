@@ -1,0 +1,105 @@
+{
+  "instrument_id": "scq",
+  "name_full": "Social Communication Questionnaire",
+  "construct_ontology": [
+    "autism-related social communication"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Forty-item caregiver questionnaire for autism-related social communication and behavior history.",
+    "intended_use": "Screening and referral support for children and adolescents with possible autism-related characteristics.",
+    "name_origin": "Social Communication Questionnaire, abbreviated SCQ.",
+    "development_history": "Derived from the Autism Diagnostic Interview framework as a briefer caregiver screening tool.",
+    "measurement_rationale": "Caregiver-reported developmental social communication and restricted behavior indicators support referral decisions.",
+    "interpretation_notes": "A screening result requires developmental evaluation; age, language, intellectual ability, and informant knowledge affect interpretation.",
+    "keywords": [
+      "SCQ",
+      "Autismus",
+      "ASS",
+      "Elternbericht"
+    ],
+    "search_aliases": [
+      "Social Communication Questionnaire"
+    ],
+    "mesh_terms": [],
+    "characteristics": [
+      "metadata-reference",
+      "German-relevant",
+      "version-specific-evidence"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "scq_de_v1",
+      "language": "de",
+      "display_name": "SCQ Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "screening",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "children and adolescents",
+          "minimum_age_years": 6.0,
+          "maximum_age_years": 18.0,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": null,
+      "source_citation": "Rutter, Bailey, and Lord. Social Communication Questionnaire; German reference edition.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "SCQ official publisher reference",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.wpspublish.com/scq",
+          "local_path": null,
+          "license_name": "Commercial test material; edition and use terms apply",
+          "license_url": "https://www.wpspublish.com/",
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Forty-item caregiver questionnaire for autism-related social communication and behavior history.",
+        "intended_use": "Screening and referral support for children and adolescents with possible autism-related characteristics.",
+        "name_origin": "Social Communication Questionnaire, abbreviated SCQ.",
+        "development_history": "Derived from the Autism Diagnostic Interview framework as a briefer caregiver screening tool.",
+        "measurement_rationale": "Caregiver-reported developmental social communication and restricted behavior indicators support referral decisions.",
+        "interpretation_notes": "A screening result requires developmental evaluation; age, language, intellectual ability, and informant knowledge affect interpretation.",
+        "keywords": [
+          "SCQ",
+          "Autismus",
+          "ASS",
+          "Elternbericht"
+        ],
+        "search_aliases": [
+          "Social Communication Questionnaire"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 40,
+      "source_reported_dimensions": [
+        "social communication",
+        "restricted and repetitive behavior"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

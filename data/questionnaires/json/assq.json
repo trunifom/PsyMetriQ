@@ -1,0 +1,106 @@
+{
+  "instrument_id": "assq",
+  "name_full": "Autism Spectrum Screening Questionnaire",
+  "construct_ontology": [
+    "autistic traits in school-age children"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Twenty-seven-item parent or teacher screening questionnaire for autistic traits in school-age children.",
+    "intended_use": "School and clinical screening support for children with possible autism-spectrum characteristics.",
+    "name_origin": "Autism Spectrum Screening Questionnaire, abbreviated ASSQ.",
+    "development_history": "Developed as a brief observer screening instrument for Asperger/autism-spectrum characteristics in school-age children.",
+    "measurement_rationale": "Observable social, communication, and behavior characteristics are sampled across everyday school-age functioning.",
+    "interpretation_notes": "The ASSQ is a screening aid, not a diagnostic test; use German validation and informant-specific guidance.",
+    "keywords": [
+      "ASSQ",
+      "Autismus",
+      "ASS",
+      "Schulalter"
+    ],
+    "search_aliases": [
+      "Autism Spectrum Screening Questionnaire"
+    ],
+    "mesh_terms": [],
+    "characteristics": [
+      "metadata-reference",
+      "German-relevant",
+      "version-specific-evidence"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "assq_de_v1",
+      "language": "de",
+      "display_name": "ASSQ Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "screening",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "children and adolescents",
+          "minimum_age_years": 6.0,
+          "maximum_age_years": 18.0,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2006,
+      "source_citation": "ASSQ German validation reference for autism-spectrum traits in school-age children.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "ASSQ German validation reference",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://doi.org/10.1007/s00787-006-0535-9",
+          "local_path": null,
+          "license_name": "Metadata reference; exact German edition and reuse terms require source review",
+          "license_url": null,
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Twenty-seven-item parent or teacher screening questionnaire for autistic traits in school-age children.",
+        "intended_use": "School and clinical screening support for children with possible autism-spectrum characteristics.",
+        "name_origin": "Autism Spectrum Screening Questionnaire, abbreviated ASSQ.",
+        "development_history": "Developed as a brief observer screening instrument for Asperger/autism-spectrum characteristics in school-age children.",
+        "measurement_rationale": "Observable social, communication, and behavior characteristics are sampled across everyday school-age functioning.",
+        "interpretation_notes": "The ASSQ is a screening aid, not a diagnostic test; use German validation and informant-specific guidance.",
+        "keywords": [
+          "ASSQ",
+          "Autismus",
+          "ASS",
+          "Schulalter"
+        ],
+        "search_aliases": [
+          "Autism Spectrum Screening Questionnaire"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 27,
+      "source_reported_dimensions": [
+        "social interaction",
+        "communication",
+        "restricted behavior"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "instrument_id": "mbi",
+  "name_full": "Maslach Burnout Inventory",
+  "construct_ontology": [
+    "occupational burnout"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Burnout questionnaire family covering emotional exhaustion, depersonalization or cynicism, and professional efficacy.",
+    "intended_use": "Occupational-health research and organizational assessment of burnout-related work experience.",
+    "name_origin": "Maslach Burnout Inventory, abbreviated MBI.",
+    "development_history": "Developed by Christina Maslach and colleagues with profession-specific versions.",
+    "measurement_rationale": "Burnout is represented as a multidimensional work-related experience rather than a single distress score.",
+    "interpretation_notes": "Use the correct MBI version and licensed scoring; burnout scores do not diagnose depression or a mental disorder.",
+    "keywords": [
+      "MBI",
+      "Maslach",
+      "Burnout",
+      "Erschöpfung"
+    ],
+    "search_aliases": [
+      "Maslach Burnout Inventory"
+    ],
+    "mesh_terms": [],
+    "characteristics": [
+      "metadata-reference",
+      "German-relevant",
+      "version-specific-evidence"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "mbi_de_v1",
+      "language": "de",
+      "display_name": "MBI Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "adults",
+          "minimum_age_years": 18.0,
+          "maximum_age_years": null,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": null,
+      "source_citation": "Maslach Burnout Inventory; German commercial reference edition.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "Maslach Burnout Inventory official publisher reference",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.mindgarden.com/maslach-burnout-inventory-mbi",
+          "local_path": null,
+          "license_name": "Commercial test material; edition and use terms apply",
+          "license_url": "https://www.mindgarden.com/",
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Burnout questionnaire family covering emotional exhaustion, depersonalization or cynicism, and professional efficacy.",
+        "intended_use": "Occupational-health research and organizational assessment of burnout-related work experience.",
+        "name_origin": "Maslach Burnout Inventory, abbreviated MBI.",
+        "development_history": "Developed by Christina Maslach and colleagues with profession-specific versions.",
+        "measurement_rationale": "Burnout is represented as a multidimensional work-related experience rather than a single distress score.",
+        "interpretation_notes": "Use the correct MBI version and licensed scoring; burnout scores do not diagnose depression or a mental disorder.",
+        "keywords": [
+          "MBI",
+          "Maslach",
+          "Burnout",
+          "Erschöpfung"
+        ],
+        "search_aliases": [
+          "Maslach Burnout Inventory"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 22,
+      "source_reported_dimensions": [
+        "emotional exhaustion",
+        "depersonalization/cynicism",
+        "professional efficacy"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

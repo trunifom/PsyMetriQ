@@ -1,0 +1,112 @@
+{
+  "instrument_id": "eortc_qlq_c30",
+  "name_full": "EORTC QLQ-C30",
+  "construct_ontology": [
+    "cancer-related health-related quality of life"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Thirty-item cancer-specific health-related quality-of-life questionnaire with functional and symptom scales.",
+    "intended_use": "Oncology clinical trials, cancer care, survivorship, and health-outcomes research.",
+    "name_origin": "EORTC QLQ-C30 is the 30-item core questionnaire of the European Organisation for Research and Treatment of Cancer quality-of-life system.",
+    "development_history": "Developed as a cross-cultural core measure with disease- and treatment-specific modules.",
+    "measurement_rationale": "Functioning, symptoms, global health, and quality of life are measured together to capture patient-reported cancer outcomes.",
+    "interpretation_notes": "Use the official German translation, scoring manual, and applicable EORTC permissions; modules and core scores must not be mixed casually.",
+    "keywords": [
+      "EORTC QLQ-C30",
+      "Onkologie",
+      "Krebs",
+      "Lebensqualität"
+    ],
+    "search_aliases": [
+      "QLQ-C30",
+      "EORTC C30"
+    ],
+    "mesh_terms": [],
+    "characteristics": [
+      "metadata-reference",
+      "German-relevant",
+      "version-specific-evidence"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "eortc_qlq_c30_de_v1",
+      "language": "de",
+      "display_name": "EORTC QLQ-C30 Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "adults",
+          "minimum_age_years": 18.0,
+          "maximum_age_years": null,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 1993,
+      "source_citation": "Aaronson et al. (1993). The European Organisation for Research and Treatment of Cancer QLQ-C30.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "EORTC QLQ-C30 official questionnaire reference",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://qol.eortc.org/questionnaire/eortc-qlq-c30/",
+          "local_path": null,
+          "license_name": "EORTC questionnaire; official translation and use terms apply",
+          "license_url": "https://qol.eortc.org/",
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Thirty-item cancer-specific health-related quality-of-life questionnaire with functional and symptom scales.",
+        "intended_use": "Oncology clinical trials, cancer care, survivorship, and health-outcomes research.",
+        "name_origin": "EORTC QLQ-C30 is the 30-item core questionnaire of the European Organisation for Research and Treatment of Cancer quality-of-life system.",
+        "development_history": "Developed as a cross-cultural core measure with disease- and treatment-specific modules.",
+        "measurement_rationale": "Functioning, symptoms, global health, and quality of life are measured together to capture patient-reported cancer outcomes.",
+        "interpretation_notes": "Use the official German translation, scoring manual, and applicable EORTC permissions; modules and core scores must not be mixed casually.",
+        "keywords": [
+          "EORTC QLQ-C30",
+          "Onkologie",
+          "Krebs",
+          "Lebensqualität"
+        ],
+        "search_aliases": [
+          "QLQ-C30",
+          "EORTC C30"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 30,
+      "source_reported_dimensions": [
+        "global health",
+        "physical functioning",
+        "role functioning",
+        "emotional functioning",
+        "cognitive functioning",
+        "social functioning",
+        "symptoms"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

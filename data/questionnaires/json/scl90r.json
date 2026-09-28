@@ -1,0 +1,112 @@
+{
+  "instrument_id": "scl90r",
+  "name_full": "Symptom-Checkliste SCL-90-R",
+  "construct_ontology": [
+    "general psychological symptom burden"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Ninety-item self-report inventory covering a broad range of psychological and somatic symptoms.",
+    "intended_use": "Psychotherapy, rehabilitation, psychosomatic care, and research profiling of symptom burden.",
+    "name_origin": "Symptom Checklist-90-Revised, abbreviated SCL-90-R.",
+    "development_history": "Developed as a broad symptom inventory with multiple symptom dimensions and global indices.",
+    "measurement_rationale": "A broad profile can identify areas requiring clinical exploration rather than reducing distress to one symptom score.",
+    "interpretation_notes": "Profile scores are not diagnoses and can be affected by response style and setting; use the German norms and manual.",
+    "keywords": [
+      "SCL-90-R",
+      "Symptom-Checkliste",
+      "psychische Belastung"
+    ],
+    "search_aliases": [
+      "SCL90R",
+      "Symptom Checklist 90 Revised"
+    ],
+    "mesh_terms": [],
+    "characteristics": [
+      "metadata-reference",
+      "German-relevant",
+      "version-specific-evidence"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "scl90r_de_v1",
+      "language": "de",
+      "display_name": "SCL-90-R Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "adults",
+          "minimum_age_years": 18.0,
+          "maximum_age_years": null,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 1994,
+      "source_citation": "Derogatis (1994). SCL-90-R; German commercial edition.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "SCL-90-R German edition reference",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.testzentrale.de/scl-90-r.html",
+          "local_path": null,
+          "license_name": "Commercial test material; edition and use terms apply",
+          "license_url": "https://www.testzentrale.de/",
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Ninety-item self-report inventory covering a broad range of psychological and somatic symptoms.",
+        "intended_use": "Psychotherapy, rehabilitation, psychosomatic care, and research profiling of symptom burden.",
+        "name_origin": "Symptom Checklist-90-Revised, abbreviated SCL-90-R.",
+        "development_history": "Developed as a broad symptom inventory with multiple symptom dimensions and global indices.",
+        "measurement_rationale": "A broad profile can identify areas requiring clinical exploration rather than reducing distress to one symptom score.",
+        "interpretation_notes": "Profile scores are not diagnoses and can be affected by response style and setting; use the German norms and manual.",
+        "keywords": [
+          "SCL-90-R",
+          "Symptom-Checkliste",
+          "psychische Belastung"
+        ],
+        "search_aliases": [
+          "SCL90R",
+          "Symptom Checklist 90 Revised"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 90,
+      "source_reported_dimensions": [
+        "somatization",
+        "obsessive-compulsive symptoms",
+        "interpersonal sensitivity",
+        "depression",
+        "anxiety",
+        "hostility",
+        "phobic anxiety",
+        "paranoid ideation",
+        "psychoticism"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

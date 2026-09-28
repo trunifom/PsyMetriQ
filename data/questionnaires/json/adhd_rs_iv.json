@@ -1,0 +1,107 @@
+{
+  "instrument_id": "adhd_rs_iv",
+  "name_full": "ADHD Rating Scale-IV",
+  "construct_ontology": [
+    "ADHD symptoms in children"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Eighteen-item parent or teacher rating scale for childhood ADHD symptoms.",
+    "intended_use": "Multi-informant screening and symptom assessment in clinical and school contexts.",
+    "name_origin": "ADHD Rating Scale, fourth edition, abbreviated ADHD-RS-IV.",
+    "development_history": "Designed to map childhood ADHD symptoms to diagnostic symptom domains using parent and teacher ratings.",
+    "measurement_rationale": "Separate inattention and hyperactivity/impulsivity ratings support cross-setting assessment.",
+    "interpretation_notes": "Ratings are one part of diagnosis and must be combined with developmental history, impairment, and differential assessment.",
+    "keywords": [
+      "ADHD-RS-IV",
+      "ADHS",
+      "Lehrerurteil",
+      "Elternurteil"
+    ],
+    "search_aliases": [
+      "ADHD Rating Scale",
+      "ADHS-RS"
+    ],
+    "mesh_terms": [],
+    "characteristics": [
+      "metadata-reference",
+      "German-relevant",
+      "version-specific-evidence"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "adhd_rs_iv_de_v1",
+      "language": "de",
+      "display_name": "ADHD-RS-IV Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "children and adolescents",
+          "minimum_age_years": 6.0,
+          "maximum_age_years": 18.0,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 1998,
+      "source_citation": "DuPaul et al. (1998). ADHD Rating Scale-IV; German reference edition.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "ADHD Rating Scale-IV German reference",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.testzentrale.de/adhd-rating-scale-iv.html",
+          "local_path": null,
+          "license_name": "Commercial test material; edition and use terms apply",
+          "license_url": "https://www.testzentrale.de/",
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Eighteen-item parent or teacher rating scale for childhood ADHD symptoms.",
+        "intended_use": "Multi-informant screening and symptom assessment in clinical and school contexts.",
+        "name_origin": "ADHD Rating Scale, fourth edition, abbreviated ADHD-RS-IV.",
+        "development_history": "Designed to map childhood ADHD symptoms to diagnostic symptom domains using parent and teacher ratings.",
+        "measurement_rationale": "Separate inattention and hyperactivity/impulsivity ratings support cross-setting assessment.",
+        "interpretation_notes": "Ratings are one part of diagnosis and must be combined with developmental history, impairment, and differential assessment.",
+        "keywords": [
+          "ADHD-RS-IV",
+          "ADHS",
+          "Lehrerurteil",
+          "Elternurteil"
+        ],
+        "search_aliases": [
+          "ADHD Rating Scale",
+          "ADHS-RS"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 18,
+      "source_reported_dimensions": [
+        "inattention",
+        "hyperactivity/impulsivity"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

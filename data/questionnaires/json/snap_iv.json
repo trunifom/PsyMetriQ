@@ -1,0 +1,104 @@
+{
+  "instrument_id": "snap_iv",
+  "name_full": "SNAP-IV",
+  "construct_ontology": [
+    "ADHD and oppositional symptoms"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Parent or teacher rating scale for ADHD and oppositional-defiant symptoms.",
+    "intended_use": "Research and multi-informant screening of childhood attention, hyperactivity, and oppositional symptoms.",
+    "name_origin": "SNAP refers to Swanson, Nolan, and Pelham; IV reflects the diagnostic symptom framework used in the scale.",
+    "development_history": "Developed for rating ADHD and oppositional symptoms in children and adolescents.",
+    "measurement_rationale": "Separate symptom domains support comparison across informants and settings.",
+    "interpretation_notes": "German wording, scoring, norms, and permissions must be verified for the selected form; ratings are not a diagnosis.",
+    "keywords": [
+      "SNAP-IV",
+      "ADHS",
+      "oppositionelles Verhalten"
+    ],
+    "search_aliases": [
+      "Swanson Nolan Pelham Rating Scale"
+    ],
+    "mesh_terms": [],
+    "characteristics": [
+      "metadata-reference",
+      "German-relevant",
+      "version-specific-evidence"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "snap_iv_de_v1",
+      "language": "de",
+      "display_name": "SNAP-IV Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "children and adolescents",
+          "minimum_age_years": 6.0,
+          "maximum_age_years": 18.0,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": null,
+      "source_citation": "Swanson, Nolan, and Pelham. SNAP-IV rating scale; German-use reference.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "SNAP-IV rating scale reference",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.adhdchildhood.com/snap-iv",
+          "local_path": null,
+          "license_name": "Metadata reference; exact German edition and reuse terms require source review",
+          "license_url": null,
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Parent or teacher rating scale for ADHD and oppositional-defiant symptoms.",
+        "intended_use": "Research and multi-informant screening of childhood attention, hyperactivity, and oppositional symptoms.",
+        "name_origin": "SNAP refers to Swanson, Nolan, and Pelham; IV reflects the diagnostic symptom framework used in the scale.",
+        "development_history": "Developed for rating ADHD and oppositional symptoms in children and adolescents.",
+        "measurement_rationale": "Separate symptom domains support comparison across informants and settings.",
+        "interpretation_notes": "German wording, scoring, norms, and permissions must be verified for the selected form; ratings are not a diagnosis.",
+        "keywords": [
+          "SNAP-IV",
+          "ADHS",
+          "oppositionelles Verhalten"
+        ],
+        "search_aliases": [
+          "Swanson Nolan Pelham Rating Scale"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 26,
+      "source_reported_dimensions": [
+        "inattention",
+        "hyperactivity/impulsivity",
+        "oppositional behavior"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

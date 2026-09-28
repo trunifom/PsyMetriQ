@@ -1,0 +1,107 @@
+{
+  "instrument_id": "jcq",
+  "name_full": "Job Content Questionnaire",
+  "construct_ontology": [
+    "job demands and control",
+    "workplace social support"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Occupational questionnaire on job demands, decision latitude, and social support.",
+    "intended_use": "Work-stress research, occupational health, and psychosocial workplace assessment.",
+    "name_origin": "Job Content Questionnaire, abbreviated JCQ.",
+    "development_history": "Developed from the demand-control-support model for internationally comparable occupational research.",
+    "measurement_rationale": "High demands combined with low control and low support represent a psychosocial work-stress risk pattern.",
+    "interpretation_notes": "Use the exact German form and scoring syntax; JCQ dimensions describe work characteristics and do not diagnose individual burnout.",
+    "keywords": [
+      "JCQ",
+      "Job Content Questionnaire",
+      "Arbeitsanforderungen",
+      "Arbeitsstress"
+    ],
+    "search_aliases": [
+      "Karasek JCQ"
+    ],
+    "mesh_terms": [],
+    "characteristics": [
+      "metadata-reference",
+      "German-relevant",
+      "version-specific-evidence"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "jcq_de_v1",
+      "language": "de",
+      "display_name": "JCQ Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "adults",
+          "minimum_age_years": 18.0,
+          "maximum_age_years": null,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 1998,
+      "source_citation": "Karasek et al. (1998). The Job Content Questionnaire (JCQ): an instrument for internationally comparative assessments of psychosocial job characteristics.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "Job Content Questionnaire source center",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.jcqcenter.com/",
+          "local_path": null,
+          "license_name": "Metadata reference; exact German edition and reuse terms require source review",
+          "license_url": null,
+          "redistribution_permitted": false,
+          "permission_basis": "Only discovery and bibliographic metadata is stored. Item wording and forms are excluded until the exact German version and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Occupational questionnaire on job demands, decision latitude, and social support.",
+        "intended_use": "Work-stress research, occupational health, and psychosocial workplace assessment.",
+        "name_origin": "Job Content Questionnaire, abbreviated JCQ.",
+        "development_history": "Developed from the demand-control-support model for internationally comparable occupational research.",
+        "measurement_rationale": "High demands combined with low control and low support represent a psychosocial work-stress risk pattern.",
+        "interpretation_notes": "Use the exact German form and scoring syntax; JCQ dimensions describe work characteristics and do not diagnose individual burnout.",
+        "keywords": [
+          "JCQ",
+          "Job Content Questionnaire",
+          "Arbeitsanforderungen",
+          "Arbeitsstress"
+        ],
+        "search_aliases": [
+          "Karasek JCQ"
+        ],
+        "mesh_terms": [],
+        "characteristics": [
+          "metadata-reference",
+          "German-relevant",
+          "version-specific-evidence"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": null,
+      "source_reported_dimensions": [
+        "psychological demands",
+        "decision latitude",
+        "social support"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}
