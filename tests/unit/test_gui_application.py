@@ -351,6 +351,18 @@ def test_population_filter_uses_broad_source_age_bands(
     app.population_filter = "unknown"
     assert any(family.instrument_id == "who5" for family, _version in app._visible_versions())
 
+    app.population_filters = {"children", "adolescents"}
+    selected_groups = {
+        family.instrument_id
+        for family, _version in app._visible_versions()
+        if family.instrument_id == "dass_y"
+    }
+    assert selected_groups == {"dass_y"}
+    app.population_filters = {"adults", "older_adults"}
+    assert all(
+        family.instrument_id != "dass_y" for family, _version in app._visible_versions()
+    )
+
 
 def test_catalogue_layout_bounds_filter_fields_and_version_list(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
@@ -361,7 +373,9 @@ def test_catalogue_layout_bounds_filter_fields_and_version_list(
     catalog_controls = app._catalog_view()
     main_row = catalog_controls[-1]
     left_column = main_row.controls[0]
-    version_list = left_column.controls[1]
+    version_list = next(
+        control for control in left_column.controls if isinstance(control, application.ft.ListView)
+    )
 
     assert app.search_field.width == 360
     assert app.search_field.expand is None
@@ -427,7 +441,6 @@ def test_link_only_wellbeing_records_are_discoverable_and_selectable_as_referenc
             )
 
             app._toggle_version(family, version, True)
-
             selection = app._project_selection(family.instrument_id, version.version_id)
             assert selection is not None
             assert selection.item_ids == []
@@ -442,6 +455,49 @@ def test_link_only_wellbeing_records_are_discoverable_and_selectable_as_referenc
         for _family, version in app._visible_versions()
         if _family.instrument_id == "perceived_stress_scale"
     ] == ["pss4_en_v1"]
+
+
+def test_version_details_expose_instrument_profile_information(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(application, "SETTINGS_PATH", tmp_path / "settings.json")
+    app = PsyMetriQApplication(FakePage())  # type: ignore[arg-type]
+    app.active_version_key = ("phq9", "phq9_en_v1")
+
+    details = app._version_detail()
+    def text_values(control: Any) -> list[str]:
+        if isinstance(control, application.ft.Text):
+            return [control.value]
+        children = getattr(control, "controls", None)
+        if children is None:
+            children = [getattr(control, "content", None)]
+        return [value for child in children if child is not None for value in text_values(child)]
+
+    values = text_values(details)
+
+    assert "Instrumentprofil" in values
+    assert any(value.startswith("Worum geht es:") for value in values)
+    assert any(value.startswith("Erstellungs-/Publikationsjahr: 2001") for value in values)
+    assert any(value.startswith("Gütekriterien / COSMIN-Metriken:") for value in values)
+
+
+def test_catalogue_search_includes_instrument_profile_metadata(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(application, "SETTINGS_PATH", tmp_path / "settings.json")
+    app = PsyMetriQApplication(FakePage())  # type: ignore[arg-type]
+    family, path = app.catalog_records[0]
+    enriched = family.model_copy(
+        update={
+            "metadata": family.metadata.model_copy(
+                update={"description": "Synthetic searchable profile phrase"}
+            )
+        }
+    )
+    app.catalog_records[0] = (enriched, path)
+    app.search_query = "searchable profile phrase"
+
+    assert app._visible_versions()
 
 
 def test_metadata_reference_can_be_included_in_project_and_exported_without_item_text(

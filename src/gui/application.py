@@ -170,6 +170,7 @@ class PsyMetriQApplication:
         self.locale_filter = "all"
         self.form_type_filter = "all"
         self.population_filter = "all"
+        self.population_filters: set[str] = set()
         self.commercial_filter = "all"
         self.license_filter = "all"
         self.export_format = self.settings.default_export_format
@@ -700,6 +701,61 @@ class PsyMetriQApplication:
                 return True
         return False
 
+    def _selected_population_filters(self) -> set[str]:
+        """Return multi-select age filters while accepting the legacy scalar state."""
+        selected = getattr(self, "population_filters", set())
+        if selected:
+            return set(selected)
+        legacy = getattr(self, "population_filter", "all")
+        return set() if legacy == "all" else {legacy}
+
+    def _set_population_filter(self, group: str, selected: bool) -> None:
+        selected_groups = self._selected_population_filters()
+        if selected:
+            selected_groups.add(group)
+        else:
+            selected_groups.discard(group)
+        self.population_filters = selected_groups
+        self.population_filter = "all"
+        self._render()
+
+    def _reset_catalog_filters(self, _event: Any = None) -> None:
+        self.search_query = ""
+        self.language_filter = "all"
+        self.locale_filter = "all"
+        self.form_type_filter = "all"
+        self.population_filter = "all"
+        self.population_filters = set()
+        self.commercial_filter = "all"
+        self.license_filter = "all"
+        self._render()
+
+    def _active_catalog_filter_summary(self) -> str:
+        active: list[str] = []
+        if self.search_query.strip():
+            active.append(f'Suche: "{self.search_query.strip()}"')
+        if self.language_filter != "all":
+            active.append(f"Sprache: {self.language_filter}")
+        if self.locale_filter != "all":
+            active.append(f"Locale: {self.locale_filter}")
+        if self.form_type_filter != "all":
+            active.append(f"Form: {self.form_type_filter}")
+        population_filters = self._selected_population_filters()
+        if population_filters:
+            active.append(
+                "Alter: "
+                + ", ".join(
+                    AGE_GROUP_LABELS[group]
+                    for group in AGE_GROUP_LABELS
+                    if group in population_filters
+                )
+            )
+        if self.commercial_filter != "all":
+            active.append(f"Rechte: {self.commercial_filter}")
+        if self.license_filter != "all":
+            active.append(f"Lizenz: {self.license_filter}")
+        return " · ".join(active) if active else "Keine Filter aktiv"
+
     def _visible_versions(self) -> list[tuple[QuestionnaireParent, QuestionnaireVersion]]:
         query = self.search_query.strip().casefold()
         matches: list[tuple[QuestionnaireParent, QuestionnaireVersion]] = []
@@ -719,8 +775,10 @@ class PsyMetriQApplication:
                     and version.form_type != self.form_type_filter
                 ):
                     continue
-                if self.population_filter != "all" and not self._matches_population_filter(
-                    version, self.population_filter
+                population_filters = self._selected_population_filters()
+                if population_filters and not any(
+                    self._matches_population_filter(version, selected)
+                    for selected in population_filters
                 ):
                     continue
                 if self.commercial_filter == "commercial" and family.is_commercial is not True:
@@ -752,7 +810,26 @@ class PsyMetriQApplication:
                         version.locale or "",
                         version.source_citation or "",
                         version.source_doi or "",
+                        family.metadata.description or "",
+                        family.metadata.intended_use or "",
+                        family.metadata.name_origin or "",
+                        family.metadata.development_history or "",
+                        family.metadata.measurement_rationale or "",
+                        family.metadata.interpretation_notes or "",
+                        version.metadata.description or "",
+                        version.metadata.intended_use or "",
+                        version.metadata.name_origin or "",
+                        version.metadata.development_history or "",
+                        version.metadata.measurement_rationale or "",
+                        version.metadata.interpretation_notes or "",
+                        *(family.metadata.keywords),
+                        *(family.metadata.search_aliases),
+                        *(version.metadata.keywords),
+                        *(version.metadata.search_aliases),
                         version.metadata.notes or "",
+                        *(population.group_name for population in version.target_populations),
+                        *(contributor.name for contributor in family.contributors),
+                        *(contributor.name for contributor in version.contributors),
                         *(version.source_reported_dimensions),
                         *(
                             value
@@ -1090,16 +1167,6 @@ class PsyMetriQApplication:
             on_select=lambda event: self._set_catalog_filter("form_type", event.control.value),
             width=180,
         )
-        population_dropdown = ft.Dropdown(
-            value=self.population_filter,
-            options=[ft.DropdownOption(key="all", text="Alle Zielgruppen")]
-            + [
-                ft.DropdownOption(key=key, text=label)
-                for key, label in AGE_GROUP_LABELS.items()
-            ],
-            on_select=lambda event: self._set_catalog_filter("population", event.control.value),
-            width=220,
-        )
         rights_dropdown = ft.Dropdown(
             value=self.commercial_filter,
             options=[
@@ -1162,6 +1229,12 @@ class PsyMetriQApplication:
                     "Suche nach 'Depression' zeigt passende Instrumentfamilien und Items.",
                     primary=True,
                 ),
+                self._action_button(
+                    "Filter zurücksetzen",
+                    "CLEAR",
+                    self._reset_catalog_filters,
+                    "Entfernt Suchtext und alle aktiven Katalogfilter.",
+                ),
             ],
         )
         facets = ft.Row(
@@ -1187,12 +1260,23 @@ class PsyMetriQApplication:
                     ),
                 ),
                 ft.Container(
-                    width=260,
-                    content=self._field(
+                    width=300,
+                    content=self._panel(
                         "Zielgruppe",
-                        population_dropdown,
-                        "Fasst Altersangaben in überlappende Quellbereiche zusammen. Ein Formblatt für 15-69-Jährige erscheint z.B. bei Jugendlichen, Erwachsenen und älteren Erwachsenen.",
-                        "Kinder 0-11; Jugendliche 12-17; Erwachsene 18-64; ältere Erwachsene ab 65; unbekannt.",
+                        ft.Column(
+                            spacing=2,
+                            controls=[
+                                ft.Checkbox(
+                                    label=label,
+                                    value=key in self._selected_population_filters(),
+                                    on_change=lambda event, group=key: self._set_population_filter(
+                                        group, bool(event.control.value)
+                                    ),
+                                )
+                                for key, label in AGE_GROUP_LABELS.items()
+                            ],
+                        ),
+                        "Mehrere Altersgruppen können gleichzeitig gewählt werden. Die Auswahl verbindet Gruppen mit ODER; ein Instrument für 15-69-Jährige erscheint deshalb in mehreren passenden Gruppen.",
                     ),
                 ),
                 ft.Container(
@@ -1216,6 +1300,9 @@ class PsyMetriQApplication:
             ],
         )
         versions = self._visible_versions()
+        active_filter_summary = ft.Text(
+            self._active_catalog_filter_summary(), size=12, color="#55716A", selectable=True
+        )
         left = ft.Column(
             expand=5,
             spacing=8,
@@ -1244,6 +1331,7 @@ class PsyMetriQApplication:
                         ),
                     ],
                 ),
+                active_filter_summary,
                 ft.ListView(
                     height=460,
                     spacing=6,
@@ -1368,6 +1456,99 @@ class PsyMetriQApplication:
                 ],
             ),
         )
+
+    @staticmethod
+    def _profile_text(label: str, value: str | None) -> ft.Control:
+        return ft.Text(
+            f"{label}: {value or 'nicht dokumentiert'}",
+            size=12,
+            color="#55716A" if value else "#8A4A2E",
+            selectable=True,
+        )
+
+    def _instrument_profile_controls(
+        self, family: QuestionnaireParent, version: QuestionnaireVersion
+    ) -> list[ft.Control]:
+        """Build a source-grounded instrument profile without inventing missing facts."""
+        family_metadata = family.metadata
+        version_metadata = version.metadata
+        populations = [
+            population.group_name
+            + (
+                f" ({population.minimum_age_years:g}-{population.maximum_age_years:g} Jahre)"
+                if population.minimum_age_years is not None
+                and population.maximum_age_years is not None
+                else (
+                    f" (ab {population.minimum_age_years:g} Jahre)"
+                    if population.minimum_age_years is not None
+                    else ""
+                )
+            )
+            + (f"; {population.notes}" if population.notes else "")
+            for population in version.target_populations
+        ]
+        contributors = ", ".join(
+            f"{contributor.name} ({contributor.role})" for contributor in family.contributors
+        )
+        version_contributors = ", ".join(
+            f"{contributor.name} ({contributor.role})"
+            for contributor in version.contributors
+        )
+        characteristics = ", ".join(
+            dict.fromkeys(family_metadata.characteristics + version_metadata.characteristics)
+        )
+        keywords = ", ".join(
+            dict.fromkeys(family_metadata.keywords + version_metadata.keywords)
+        )
+        aliases = ", ".join(
+            dict.fromkeys(family_metadata.search_aliases + version_metadata.search_aliases)
+        )
+        metrics = ", ".join(
+            f"{key}: {value}" for key, value in version.cosmin_metrics.items()
+        )
+        dimensions = ", ".join(version.source_reported_dimensions)
+        constructs = ", ".join(family.construct_ontology)
+        profile_rows: list[ft.Control] = [
+            self._profile_text("Worum geht es", version_metadata.description or family_metadata.description),
+            self._profile_text("Dokumentierter Zweck", version_metadata.intended_use or family_metadata.intended_use),
+            self._profile_text(
+                "Was misst das Instrument",
+                constructs or dimensions or keywords,
+            ),
+            self._profile_text(
+                "Warum wird dieses Merkmal erfasst",
+                version_metadata.measurement_rationale or family_metadata.measurement_rationale,
+            ),
+            self._profile_text(
+                "Namensherkunft",
+                version_metadata.name_origin or family_metadata.name_origin,
+            ),
+            self._profile_text("Namensvarianten / Suchbegriffe", aliases or keywords),
+            self._profile_text("Zielgruppe", "; ".join(populations)),
+            self._profile_text("Merkmale der Durchführung", characteristics),
+            self._profile_text("Entwicklung / Autorenschaft", contributors),
+            self._profile_text("Versionsbeitrag", version_contributors),
+            self._profile_text(
+                "Entwicklungsgeschichte",
+                version_metadata.development_history or family_metadata.development_history,
+            ),
+            self._profile_text(
+                "Gütekriterien / COSMIN-Metriken",
+                metrics or "Keine strukturierten Gütekriterien im Katalog hinterlegt",
+            ),
+            self._profile_text(
+                "Interpretation und Grenzen",
+                version_metadata.interpretation_notes or family_metadata.interpretation_notes,
+            ),
+            self._profile_text(
+                "Quellen-/Reviewhinweis",
+                version_metadata.notes or family_metadata.notes,
+            ),
+            self._profile_text("Erstellungs-/Publikationsjahr", str(version.publication_year) if version.publication_year else None),
+            self._profile_text("Primärquelle", version.source_citation),
+            self._profile_text("DOI", version.source_doi),
+        ]
+        return profile_rows
 
     def _version_detail(self) -> ft.Control:
         if self.active_version_key is None:
@@ -1601,6 +1782,11 @@ class PsyMetriQApplication:
                         "Konstrukte: "
                         + (", ".join(family.construct_ontology) or "nicht angegeben"),
                         size=12,
+                    ),
+                    ft.Text("Instrumentprofil", weight=ft.FontWeight.BOLD, size=13),
+                    ft.Column(
+                        spacing=4,
+                        controls=self._instrument_profile_controls(family, version),
                     ),
                     ft.Divider(height=1),
                     ft.Text("Rechte und Quellen", weight=ft.FontWeight.BOLD, size=13),

@@ -151,6 +151,12 @@ Do not put GUI state, database details, API credentials, participant responses, 
 
 Its fields are:
 
+- `description`: a concise, source-grounded explanation of the instrument or version.
+- `intended_use`: documented purpose or setting; it is not a clinical authorization or a substitute for a manual.
+- `name_origin`: the documented origin of the full name or abbreviation.
+- `development_history`: a brief source-based account of development, revision, or adaptation.
+- `measurement_rationale`: the documented theoretical or measurement rationale for the target construct.
+- `interpretation_notes`: source-based interpretation guidance, limitations, or population-specific cautions.
 - `keywords`: curated terms. They participate in free-text search and can be selected as exact-match filters.
 - `search_aliases`: alternate instrument names, abbreviations, synonyms, and spelling variants. They participate in free-text search but are not controlled-vocabulary filters.
 - `mesh_terms`: structured MeSH descriptor names and optional Unique IDs, with optional qualifiers. Verify descriptor IDs against the official MeSH source before treating them as authoritative.
@@ -182,3 +188,5 @@ Example metadata payload (all values below are synthetic):
 ```
 
 Place this object in a model's `metadata` field. Family-level values are inherited by search/filter matching for its versions and items; version and item metadata add progressively narrower terms without changing the portable JSON hierarchy.
+
+The GUI's instrument profile reads the descriptive fields from family and version metadata, preferring the version value when both scopes provide one. It also combines structured version fields such as `publication_year`, `source_citation`, `contributors`, `target_populations`, `source_reported_dimensions`, and `cosmin_metrics`. Empty fields are displayed as not documented; consumers must not fill them by guessing from a name, abbreviation, or general knowledge.

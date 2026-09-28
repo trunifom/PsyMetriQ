@@ -41,6 +41,31 @@ class MeSHTerm(BaseModel):
 class QuestionnaireMetadata(BaseModel):
 	"""Store search, filter, and human-review metadata at a domain level."""
 
+	description: str | None = Field(
+		default=None,
+		description="Short source-grounded explanation of what the instrument is about.",
+	)
+	intended_use: str | None = Field(
+		default=None,
+		description="Documented purpose, setting, or use case; not a clinical authorization.",
+	)
+	name_origin: str | None = Field(
+		default=None,
+		description="Source-grounded explanation of the instrument name or abbreviation.",
+	)
+	development_history: str | None = Field(
+		default=None,
+		description="Brief documented development or revision history.",
+	)
+	measurement_rationale: str | None = Field(
+		default=None,
+		description="Documented theoretical or measurement rationale for the target construct.",
+	)
+	interpretation_notes: str | None = Field(
+		default=None,
+		description="Source-grounded interpretation, limitations, or population-specific cautions.",
+	)
+
 	keywords: list[str] = Field(
 		default_factory=list,
 		description="Curated keywords used for search and exact-match filters.",
