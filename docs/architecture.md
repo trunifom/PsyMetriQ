@@ -32,8 +32,9 @@ For version lineage, references to versions inside the same instrument family ar
 - `src/core/external_sources.py`: read-only NIH CDE, NLM LOINC, and PubMed connectors; returned candidates are not persisted or rights-approved.
 - `src/ingestion/`: local PDF intake/OCR, structured extraction adapters, and future Zotero integration.
 - `src/exporters/`: translations from domain objects to external formats and remote systems.
-- `src/gui/viewmodels/`: UI-facing state and commands, including the assembled-item collection.
-- `src/gui/views/`: Flet presentation components; no direct SQL or secret management.
+- `src/gui/application.py`: Flet workspace for catalogue search, item/version assembly, import/export, PDF intake, and settings.
+- `src/gui/catalog_store.py` and `src/gui/workspace.py`: validated catalog updates, conflict handling, versioned user settings, project snapshots, and workflow steps.
+- `src/gui/views/` and `src/gui/viewmodels/`: reserved for further decomposition as the workspace grows.
 - `tests/unit/`: deterministic tests of model, service, and view-model behavior.
 - `tests/integration/`: tests spanning adapters, storage, or external-system boundaries with controlled fixtures.
 - `data/`: local working data. Only the explicitly named synthetic demo JSON fixtures are Git-allowlisted; real PDFs, extracted content, and exports are excluded by default.
@@ -49,6 +50,6 @@ Use an access-controlled synchronized folder for private team data. Only synthet
 
 The current implementation includes Phase 1 (schema and synthetic fixture generator), Phase 2 (file-backed search), and a guarded PDF-intake vertical slice. The importer extracts text/metadata locally, can attempt OCR, and routes Pydantic-structured LLM drafts only after explicit cloud-processing opt-in. It promotes a form only after human item review, a rights sidecar bound to the exact PDF SHA-256, one concrete version per source PDF, complete non-truncated extraction, high confidence, and schema validation. A separate validation-study reference path requires reviewed citation metadata and explicit PDF redistribution rights. Unknown rights, manuals/mixed documents, incomplete forms, and low-confidence/scanned documents stay in the ignored review area. This is a guarded document-ingestion foundation, not a guarantee that arbitrary new PDFs can be interpreted perfectly without review.
 
-The federated-search UI, embedding computation, Zotero sync, and REDCap/R export remain planned.
+Catalogue search/selection, project persistence, settings, standard-format exchange, and PDF intake are available in Flet. Federated database search, embedding-based redundancy checks, Zotero sync, full REDCap API upload, and R syntax export remain planned.
 
-The PDF CLI offloads blocking file/PyMuPDF operations to a worker thread and uses an async client for optional LLM calls. When GUI capabilities are added, blocking file or model work must not run on Flet's event loop. Do not make Pydantic models depend on these runtime frameworks.
+The PDF pipeline offloads blocking file/PyMuPDF operations to a worker thread and uses async clients for optional LLM calls. GUI catalogue reads, imports, persistence, and PDF processing likewise run in worker threads where appropriate; event handlers must not block Flet's event loop. Domain models remain independent of Flet and runtime frameworks.

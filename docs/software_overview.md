@@ -10,7 +10,7 @@ The architecture document `psymetriq_readme.md` is the original product and modu
 
 Phase 1 provides the Pydantic source-of-truth models in `schemas/questionnaire_schema.py`, model-level validation, a synthetic fixture generator in `data/generate_mock_data.py`, and unit tests in `tests/unit/test_schema.py`. Phase 2 provides file-backed search in `src/core/search_engine.py`. Rights-reviewed real PHQ-9, GAD-7, DASS-21, DASS-Y, and IPAQ forms and JSON families are maintained under `data/questionnaires/`, separate from the synthetic demo fixtures.
 
-The file-backed search service and guarded PDF intake/review pipeline are implemented. Flet workflow, NLP similarity checks, Zotero sync, and REDCap/R exporters remain roadmap capabilities and are not claimed to be production-ready.
+The file-backed search service, guarded PDF intake/review pipeline, and Flet workspace are implemented. NLP similarity checks, Zotero sync, live REDCap API, and R syntax exporters remain roadmap capabilities and are not claimed to be production-ready.
 
 ## Main capabilities and responsibilities
 
@@ -19,10 +19,10 @@ The file-backed search service and guarded PDF intake/review pipeline are implem
 - **Real instrument test corpus:** provides permission-reviewed PHQ-9, GAD-7, DASS-21, DASS-Y, and IPAQ variants, in clearly separated forms and locales, with precise license, translation-evidence, source-link, and checksum metadata. Forms flagged as translation-quality-uncertain are test fixtures, not automatically interchangeable validated editions.
 - **PDF intake/review:** routes new PDFs into private drafts, optionally extracts a Pydantic candidate with OpenAI, Anthropic, or an OpenAI-compatible LLM endpoint, and requires human, checksum-bound item/license review before cataloguing a questionnaire form. Licensed validation papers use a separate citation-reviewed reference catalog.
 - **File-backed search engine:** validate portable JSON files against the Pydantic models, keep an in-memory view, and search item text, dimensions, response labels, version metadata, constructs, and instrument metadata. It creates no database and can read a synchronized team folder.
-- **Public source connectors:** read-only NIH CDE question/answer previews, NLM LOINC display terms, and PubMed citations are available from Python. Results are ephemeral suggestions with rights marked unassessed; no external result is written into the catalogue. The GUI does not yet expose these calls.
-- **Assembly GUI (planned):** provide search, a questionnaire canvas, and an inspector through Flet, with view state isolated from file loading and search rules.
+- **Public source connectors:** read-only NIH CDE question/answer previews, NLM LOINC display terms, and PubMed citations are available from Python/CLI. Results are ephemeral suggestions with rights marked unassessed; external federated search is not yet in the GUI.
+- **Flet workspace:** faceted local catalogue search, version/rights/item/response inspection, whole-scale or individual-item selection, reasoned study-specific wording adaptations, versioned projects/settings, JSON/FHIR/REDCap CSV imports, and ZIP exports including XLSX, plus guarded PDF intake with explicit remote-processing confirmation.
 - **Redundancy analysis (planned):** calculate semantic similarity between candidate items and items already selected, and surface review warnings rather than making clinical decisions.
-- **Export and ingestion (planned):** map validated models to REDCap metadata or R syntax, and extract source material through configured APIs and PDF parsing.
+- **Export and ingestion:** file exchange supports PsyMetriQ JSON, FHIR R4 Questionnaire JSON, XLSX review workbooks, REDCap Data Dictionary CSV, and item CSV. XLSX is export-only; Unipark import/export, full REDCap API upload, R syntax, CDISC ODM, DDI, and GUI federated-source search remain planned.
 
 ## Phase-1 public model and function reference
 

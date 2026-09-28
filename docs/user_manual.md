@@ -2,7 +2,7 @@
 
 ## Scope
 
-The current runnable workflow covers the data model, synthetic fixture generation, and local file-backed search. Questionnaire assembly in a GUI, similarity warnings, PDF/LLM ingestion, and REDCap upload are planned features.
+The current runnable workflow covers the data model, synthetic fixture generation, local file-backed search, and a Flet workspace for questionnaire assembly, projects, settings, format exchange, and PDF intake. XLSX review workbooks and reasoned study-specific item adaptations are supported. Similarity warnings, Zotero sync, live REDCap upload, Unipark interchange, and R syntax export remain planned.
 
 ## Prerequisites
 
@@ -16,7 +16,23 @@ python -m venv .venv
 python -m pip install -r requirements.txt
 ```
 
-The current implemented workflow requires Pydantic v2. No API key or database installation is needed to generate or search local synthetic fixtures.
+The current implemented workflow requires Pydantic v2 and Flet 1.x. No API key or database installation is needed to launch the local workspace or browse the checked-in catalogue.
+
+## Launch the GUI workspace
+
+From the repository root, open the desktop app:
+
+```powershell
+python -m src.gui.main
+```
+
+Or serve it locally in a browser:
+
+```powershell
+python -m src.gui.main --web --host 127.0.0.1 --port 8550
+```
+
+Use the left navigation for the instrument library, project, import/export, PDF intake, and settings. Every primary field/action has an information button with an explanation and example. See the [GUI workspace guide](gui_workspace.md) for complete workflows and file-format coverage.
 
 ## Generate development fixtures
 

@@ -29,6 +29,9 @@ pytest tests/unit/test_document_pipeline.py -q
 ruff check src/ingestion/ tests/unit/test_document_pipeline.py
 pytest tests/unit/test_external_sources.py -q
 ruff check src/core/external_sources.py src/core/external_search_cli.py tests/unit/test_external_sources.py
+pytest tests/unit/test_data_exchange.py -q
+pytest tests/unit/test_gui_workspace.py tests/unit/test_catalog_store.py tests/unit/test_gui_application.py -q
+ruff check src/exporters/data_exchange.py src/gui/ tests/unit/test_data_exchange.py tests/unit/test_gui_workspace.py tests/unit/test_catalog_store.py tests/unit/test_gui_application.py
 ```
 
 ## Expectations for future features

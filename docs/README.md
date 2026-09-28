@@ -11,6 +11,7 @@ This directory is the maintained home for project documentation. Start here, the
 - [Instrument library](instrument_library.md): curated known instruments, validation/population notes, authoritative sources, and redistribution status.
 - [PDF intake and extraction](pdf_intake.md): local inbox, OCR/LLM options, review drafts, and rights-gated promotion.
 - [External source search](external_sources.md): public NIH CDE, NLM LOINC, and PubMed connectors, previews, and rights boundaries.
+- [GUI workspace](gui_workspace.md): catalogue workflow, project/settings persistence, formats, help dialogs, and limitations.
 - [Coding guidelines](coding_guidelines.md): typing, documentation, validation, asynchronous work, logging, testing, and commit conventions.
 - [Security](security.md): credential handling, protected data, Git safeguards, and incident response.
 - [Testing](testing.md): test scope, local commands, and expectations for adding coverage.

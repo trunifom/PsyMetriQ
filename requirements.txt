@@ -1,5 +1,5 @@
 # Core App
-flet>=0.22.0
+flet>=1.0.0
 pydantic>=2.7.0
 pymupdf>=1.24.0
 sentence-transformers>=2.7.0
@@ -8,6 +8,7 @@ anthropic>=0.75.0
 pyzotero>=1.5.0
 PyCap>=2.1.0
 python-dotenv>=1.0.0
+openpyxl>=3.1.5
 
 # Development & Testing (NEU)
 pytest>=8.0.0

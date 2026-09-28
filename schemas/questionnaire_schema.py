@@ -96,6 +96,10 @@ class ItemSchema(BaseModel):
 		default=False,
 		description="Whether this item's score direction must be reversed during scoring.",
 	)
+	is_required: bool = Field(
+		default=False,
+		description="Whether this item must be answered during administration.",
+	)
 	is_scored: bool = Field(
 		default=True,
 		description=(

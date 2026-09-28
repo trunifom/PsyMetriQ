@@ -23,6 +23,9 @@ data/03_export_artifacts/*
 !data/03_export_artifacts/.gitkeep
 
 # Local PDF intake and rights-review material is private until explicitly approved.
+data/psymetriq-settings.json
+data/workspaces/*
+!data/workspaces/.gitkeep
 data/questionnaires/inbox/*
 !data/questionnaires/inbox/.gitkeep
 !data/questionnaires/inbox/README.md

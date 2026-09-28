@@ -47,7 +47,7 @@ Every version has its own stable `version_id`, language, response sets, items, a
 
 The `items` list is the actual content of the concrete form. A short form must contain its own item list and scoring rules rather than inheriting a parent's item list implicitly. This makes a search result or future export unambiguous.
 Each item can also have its own `QuestionnaireMetadata` for item-specific tags and discovery notes.
-Use `ItemSchema.is_scored=False` for supplementary questions that are present on a form but excluded from the instrument's total score. A response option may have `score=None` when it is intentionally not scored. A scoring algorithm is rejected if it targets an item marked unscored.
+Use `ItemSchema.is_scored=False` for supplementary questions that are present on a form but excluded from the instrument's total score. `ItemSchema.is_required` separately records whether an answer is required during administration. A response option may have `score=None` when it is intentionally not scored. A scoring algorithm is rejected if it targets an item marked unscored.
 
 ## Authorship and provenance
 
