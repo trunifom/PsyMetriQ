@@ -82,6 +82,37 @@ def test_gui_loads_local_environment_file_without_overriding_process_secrets(
     assert calls == [(application.PROJECT_ROOT / ".env", False)]
 
 
+def test_theme_and_font_size_preferences_apply_and_persist(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    settings_path = tmp_path / "settings.json"
+    monkeypatch.setattr(application, "SETTINGS_PATH", settings_path)
+    app = PsyMetriQApplication(FakePage())  # type: ignore[arg-type]
+
+    asyncio.run(app._toggle_dark_mode(None))
+    assert app.dark_mode is True
+    assert app.page.theme_mode == application.ft.ThemeMode.DARK
+    assert app.page.bgcolor == "#111B19"
+
+    asyncio.run(app._set_font_size(SimpleNamespace(control=SimpleNamespace(value="large"))))
+
+    assert app.font_size == "large"
+    assert app.header_title.size > 22
+    saved = application.WorkspaceStore(settings_path).load_settings()
+    assert saved.theme_mode == "dark"
+    assert saved.font_size == "large"
+
+    app._navigate("settings")
+    serialized = app._settings_from_controls()
+    assert serialized.theme_mode == "dark"
+    assert serialized.font_size == "large"
+
+    imported = serialized.model_copy(update={"theme_mode": "light", "font_size": "small"})
+    app._apply_settings(imported)
+    assert app.dark_mode is False
+    assert app.font_size == "small"
+
+
 def test_gui_version_selection_generates_interoperable_export_preview(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:

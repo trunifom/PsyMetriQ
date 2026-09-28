@@ -17,6 +17,8 @@ LOGGER = logging.getLogger(__name__)
 
 ExportFormat = Literal["psymetriq_json", "fhir_json", "xlsx", "item_csv", "redcap_csv"]
 ProviderName = Literal["openai", "anthropic", "alpineai", "openai-compatible"]
+ThemeModeSetting = Literal["light", "dark"]
+FontSizeSetting = Literal["small", "normal", "large"]
 WorkflowAction = Literal[
     "catalog_import",
     "catalog_reload",
@@ -42,6 +44,8 @@ class WorkspaceSettings(BaseModel):
     pdf_review_directory: str = "data/questionnaires/review"
     default_language: str = "en"
     default_export_format: ExportFormat = "psymetriq_json"
+    theme_mode: ThemeModeSetting = "light"
+    font_size: FontSizeSetting = "normal"
     enable_ocr: bool = True
     ocr_languages: str = "eng+deu"
     maximum_pdf_size_mib: int = Field(default=40, ge=1, le=200)

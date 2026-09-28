@@ -19,6 +19,8 @@ def test_workspace_settings_round_trip_without_secret_values(tmp_path: Path) -> 
     settings = WorkspaceSettings(
         catalogue_directory="data/questionnaires/json",
         default_export_format="redcap_csv",
+        theme_mode="dark",
+        font_size="large",
         llm_provider="openai-compatible",
         llm_model="institutional-model",
         llm_base_url="https://llm.example.edu/v1",
@@ -31,6 +33,8 @@ def test_workspace_settings_round_trip_without_secret_values(tmp_path: Path) -> 
     persisted = json.loads(settings_path.read_text(encoding="utf-8"))
 
     assert loaded == settings
+    assert loaded.theme_mode == "dark"
+    assert loaded.font_size == "large"
     assert "SWISSGPT_API_KEY" == loaded.llm_api_key_environment
     assert not any("secret" in key.casefold() or "token" in key.casefold() for key in persisted)
 

@@ -75,6 +75,32 @@ The GUI writes machine-local settings to `data/psymetriq-settings.json`, which i
 
 Settings can be edited directly in JSON or in the Settings screen. The provider key itself must remain in the environment or an institution-approved secret manager. The GUI asks for a second confirmation each time a PDF run would send extracted text to a remote LLM.
 
+Personal display options are at the top of Einstellungen under **Darstellung**. Use the header's sun/moon button for a quick light/dark toggle, or the settings switch; both choices are saved locally. **Schriftgröße** offers Klein, Normal, and Groß and applies to interface labels and form controls. The card-based library layout keeps item names and actions in separate areas so long questionnaire titles can wrap without running across buttons.
+
+### Display options in detail
+
+The display preferences are deliberately part of `WorkspaceSettings` rather than a browser-only preference:
+
+- `theme_mode` accepts `light` or `dark` and defaults to `light` for new installations.
+- `font_size` accepts `small`, `normal`, or `large` and defaults to `normal`.
+- Both values are included in the schema version `1` settings JSON. Existing settings files without these properties remain valid because Pydantic applies the defaults.
+- The settings file contains preference names only. It never contains API-key values; that rule also applies when settings are exported.
+
+There are two ways to change the theme:
+
+1. The sun/moon icon in the application header switches immediately between light and dark design. Its tooltip states the action that will happen on the next click, for example `Dunkles Design aktivieren` or `Helles Design aktivieren`.
+2. The **Dunkles Design** switch under **Einstellungen > Darstellung** exposes the same state in the settings form. This is useful when reviewing or preparing a portable settings JSON.
+
+The **Schriftgröße** dropdown has three stable steps: **Klein** (`0.88x`), **Normal** (`1.00x`), and **Groß** (`1.18x`). The scale is applied to explicitly sized text, text fields, dropdowns, and the Flet theme text styles. A control's original base size is cached before scaling so repeated changes do not compound the multiplier. Newly rendered views are rescanned, and stale controls are removed from the cache.
+
+The dark palette is applied centrally to the application's existing explicit colors. This is necessary because setting Flet's `theme_mode` alone does not recolor every application-defined card, border, label, icon, and status color. The palette preserves semantic distinctions such as normal, selected, warning, and error states while moving them to readable dark-surface equivalents. Dialogs use the same palette and text scale through the shared dialog presentation helper.
+
+Changing either option causes an immediate rerender and a local atomic settings write. The status bar reports `Darstellungseinstellungen lokal gespeichert.` on success. If the write fails, the active session still displays the selected setting, but the status bar reports the persistence error. Saving the complete settings form also serializes the current theme and font size; importing a settings JSON changes the current session immediately and requires **Einstellungen speichern** if the imported values should replace the local file permanently.
+
+For readability, the library uses separate bounded areas for filters, the version list, and version details. Search and facet controls have constrained widths, the version list has its own viewport, and long questionnaire labels are allowed to wrap inside their row instead of competing with the selection and detail buttons. This keeps the first visible cards inside the viewport and prevents an expanding text field from pushing the catalog far below the page.
+
+The display options do not change questionnaire data, item wording, scoring, licensing metadata, export content, or remote-processing consent. They are local presentation preferences only. A browser window can still impose its own zoom or operating-system accessibility settings; those settings are outside the PsyMetriQ settings JSON.
+
 Provider choices are OpenAI, Anthropic, AlpineAI SwissGPT, and a generic OpenAI-compatible endpoint. `Modelle laden` asks the selected provider account for available model IDs (OpenAI/AlpineAI/compatible `GET <base>/models`; Anthropic `GET https://api.anthropic.com/v1/models`). Availability is account- and permission-specific; the model field remains editable for aliases or IDs omitted from discovery. Listing models sends an authenticated metadata request, not PDF text.
 
 For a blank/gray UI, start with `--log-level DEBUG`. GUI logs report session start, catalog family/version counts, visible-version counts, safe version IDs, and render exceptions; item wording, PDF text, and API-key values are not logged. The catalog's version list is bounded to its viewport and scrolls independently; a positive `visible_versions` count with a gray canvas indicates a client-side layout/render issue rather than a missing catalog.

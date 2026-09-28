@@ -48,6 +48,27 @@ EXPORT_FORMATS = {
     "Item CSV": "item_csv",
     "REDCap Data Dictionary CSV": "redcap_csv",
 }
+LIGHT_DARK_COLORS = {
+    "#F3F6F5": "#111B19",
+    "#153C36": "#102A25",
+    "#173D36": "#E0ECE8",
+    "#1B4941": "#193A34",
+    "#203F39": "#DDE9E5",
+    "#28685D": "#2B7768",
+    "#36554E": "#BFCFC9",
+    "#55716A": "#AEC2BB",
+    "#8A4A2E": "#E5A783",
+    "#9B3E35": "#F0A098",
+    "#C4D8D2": "#C4D8D2",
+    "#D7E8E3": "#D7E8E3",
+    "#DDE6E3": "#354742",
+    "#E8EFEC": "#1C2B27",
+    "#EEF3F1": "#293834",
+    "#F7F9F8": "#202E2A",
+    "#FFFFFF": "#192622",
+    "#146B5A": "#278471",
+}
+FONT_SIZE_SCALE = {"small": 0.88, "normal": 1.0, "large": 1.18}
 
 
 def _icon(name: str) -> Any:
@@ -121,6 +142,9 @@ class PsyMetriQApplication:
         except WorkspacePersistenceError as error:
             self.settings = WorkspaceSettings()
             self.startup_warning = str(error) + "; Standardwerte werden verwendet."
+        self.dark_mode = self.settings.theme_mode == "dark"
+        self.font_size = self.settings.font_size
+        self._font_size_bases: dict[int, tuple[Any, float]] = {}
         self.catalog_store = QuestionnaireCatalogStore(
             _resolve_path(self.settings.catalogue_directory)
         )
@@ -285,6 +309,11 @@ class PsyMetriQApplication:
                                 color="#55716A",
                             ),
                             self._help_button(
+                                "Dunkles Design" if not self.dark_mode else "Helles Design",
+                                "Wechselt zwischen hellem und dunklem Farbschema. Die Auswahl wird lokal gespeichert.",
+                            ),
+                            self._appearance_theme_button(),
+                            self._help_button(
                                 "Aktiver Katalog",
                                 "Der Katalog ist ein Ordner mit validierten PsyMetriQ-JSON-Dateien. "
                                 "Der vollständige Pfad und weitere Optionen stehen unter Einstellungen.",
@@ -295,6 +324,113 @@ class PsyMetriQApplication:
                 ],
             ),
         )
+
+    def _appearance_theme_button(self) -> ft.IconButton:
+        self.theme_button = ft.IconButton(
+            icon=_icon("DARK_MODE" if not self.dark_mode else "LIGHT_MODE"),
+            tooltip="Dunkles Design aktivieren" if not self.dark_mode else "Helles Design aktivieren",
+            on_click=self._toggle_dark_mode,
+        )
+        return self.theme_button
+
+    def _iter_controls(self, value: Any):
+        if isinstance(value, ft.Control):
+            yield value
+            for attribute in ("content", "controls", "actions", "overlay"):
+                child = getattr(value, attribute, None)
+                if child is not None:
+                    yield from self._iter_controls(child)
+        elif isinstance(value, (list, tuple)):
+            for child in value:
+                yield from self._iter_controls(child)
+
+    def _apply_appearance(self, root: Any | None = None) -> None:
+        scale = FONT_SIZE_SCALE[self.font_size]
+        text_theme = ft.TextTheme(
+            body_large=ft.TextStyle(size=16 * scale),
+            body_medium=ft.TextStyle(size=14 * scale),
+            body_small=ft.TextStyle(size=12 * scale),
+            label_large=ft.TextStyle(size=14 * scale),
+            label_medium=ft.TextStyle(size=12 * scale),
+            label_small=ft.TextStyle(size=11 * scale),
+            title_large=ft.TextStyle(size=22 * scale),
+            title_medium=ft.TextStyle(size=16 * scale),
+            title_small=ft.TextStyle(size=14 * scale),
+        )
+        self.page.theme_mode = ft.ThemeMode.DARK if self.dark_mode else ft.ThemeMode.LIGHT
+        self.page.theme = ft.Theme(color_scheme_seed="#146B5A", text_theme=text_theme)
+        self.page.dark_theme = ft.Theme(color_scheme_seed="#39A994", text_theme=text_theme)
+        self.page.bgcolor = "#111B19" if self.dark_mode else "#F3F6F5"
+
+        palette = (
+            LIGHT_DARK_COLORS
+            if self.dark_mode
+            else {dark: light for light, dark in LIGHT_DARK_COLORS.items()}
+        )
+        seen_font_controls: set[int] = set()
+        appearance_root = (
+            (self.page.controls, getattr(self.page, "overlay", []))
+            if root is None
+            else root
+        )
+        for control in self._iter_controls(appearance_root):
+            for attribute in ("color", "bgcolor", "icon_color"):
+                value = getattr(control, attribute, None)
+                if isinstance(value, str) and value.upper() in palette:
+                    setattr(control, attribute, palette[value.upper()])
+            if isinstance(control, (ft.Text, ft.TextField, ft.Dropdown)):
+                attribute = "size" if isinstance(control, ft.Text) else "text_size"
+                value = getattr(control, attribute, None)
+                if isinstance(value, (int, float)):
+                    control_id = id(control)
+                    cached = self._font_size_bases.get(control_id)
+                    base_size = cached[1] if cached is not None and cached[0] is control else float(value)
+                    self._font_size_bases[control_id] = (control, base_size)
+                    seen_font_controls.add(control_id)
+                    setattr(control, attribute, base_size * scale)
+        self._font_size_bases = {
+            control_id: cached
+            for control_id, cached in self._font_size_bases.items()
+            if control_id in seen_font_controls
+        }
+        self.theme_button.icon = _icon("LIGHT_MODE" if self.dark_mode else "DARK_MODE")
+        self.theme_button.tooltip = (
+            "Helles Design aktivieren" if self.dark_mode else "Dunkles Design aktivieren"
+        )
+
+    def _show_dialog(self, dialog: ft.AlertDialog) -> None:
+        self.page.show_dialog(dialog)
+        self._apply_appearance(dialog)
+        self.page.update()
+
+    async def _persist_appearance_preferences(self) -> None:
+        self.settings = self.settings.model_copy(
+            update={
+                "theme_mode": "dark" if self.dark_mode else "light",
+                "font_size": self.font_size,
+            }
+        )
+        try:
+            await asyncio.to_thread(self.workspace_store.save_settings, self.settings)
+            self._set_status("Darstellungseinstellungen lokal gespeichert.")
+        except WorkspacePersistenceError as error:
+            LOGGER.warning("Could not persist appearance preferences (%s)", type(error).__name__)
+            self._set_status(f"Darstellung nicht gespeichert: {error}", error=True)
+
+    async def _toggle_dark_mode(self, _event: Any) -> None:
+        self.dark_mode = not self.dark_mode
+        self._render()
+        await self._persist_appearance_preferences()
+
+    async def _set_dark_mode(self, event: Any) -> None:
+        self.dark_mode = bool(event.control.value)
+        self._render()
+        await self._persist_appearance_preferences()
+
+    async def _set_font_size(self, event: Any) -> None:
+        self.font_size = event.control.value
+        self._render()
+        await self._persist_appearance_preferences()
 
     def _render(self) -> None:
         LOGGER.debug(
@@ -331,6 +467,7 @@ class PsyMetriQApplication:
         self.content_host.controls = view_controls
         self.status_text.value = self.status_message
         self.status_text.color = "#9B3E35" if self.status_is_error else "#36554E"
+        self._apply_appearance()
         try:
             self.page.update()
         except Exception:
@@ -366,7 +503,7 @@ class PsyMetriQApplication:
                 )
             ],
         )
-        self.page.show_dialog(dialog)
+        self._show_dialog(dialog)
 
     def _help_button(self, title: str, explanation: str, example: str = "") -> ft.Control:
         return ft.IconButton(
@@ -868,7 +1005,7 @@ class PsyMetriQApplication:
             self.page.pop_dialog()
             self._render()
 
-        self.page.show_dialog(
+        self._show_dialog(
             ft.AlertDialog(
                 modal=True,
                 title=ft.Text("Item für diese Studie anpassen"),
@@ -1845,6 +1982,21 @@ class PsyMetriQApplication:
             value=self.settings.remote_processing_enabled,
             label="Remote-PDF-Extraktion erlauben",
         )
+        self.dark_mode_switch = ft.Switch(
+            value=self.dark_mode,
+            label="Dunkles Design",
+            on_change=self._set_dark_mode,
+        )
+        self.font_size_dropdown = ft.Dropdown(
+            value=self.font_size,
+            options=[
+                ft.DropdownOption(key="small", text="Klein"),
+                ft.DropdownOption(key="normal", text="Normal"),
+                ft.DropdownOption(key="large", text="Groß"),
+            ],
+            on_select=self._set_font_size,
+            width=220,
+        )
         self.export_format_dropdown = ft.Dropdown(
             value=self.settings.default_export_format,
             options=[
@@ -1856,6 +2008,27 @@ class PsyMetriQApplication:
                 "Pfade, Austauschstandard und optionale LLM-Anbindung konfigurieren.",
                 size=13,
                 color="#55716A",
+            ),
+            self._panel(
+                "Darstellung",
+                ft.Row(
+                    wrap=True,
+                    controls=[
+                        self._field(
+                            "Farbschema",
+                            self.dark_mode_switch,
+                            "Schaltet zwischen hellem und dunklem Farbschema um. Die Wahl wird lokal gespeichert und beim nächsten Start wiederhergestellt.",
+                            "Dunkles Design ist unabhängig vom PDF-Remote-Opt-in.",
+                        ),
+                        self._field(
+                            "Schriftgröße",
+                            self.font_size_dropdown,
+                            "Wählt eine kleinere oder größere Lesestufe für UI-Texte, Eingaben und Schaltflächen.",
+                            "Klein, Normal oder Groß.",
+                        ),
+                    ],
+                ),
+                "Persönliche Darstellungsoptionen für diese lokale Installation.",
             ),
             ft.Row(
                 vertical_alignment=ft.CrossAxisAlignment.START,
@@ -2117,7 +2290,7 @@ class PsyMetriQApplication:
             self.page.pop_dialog()
             self._set_status(f"Modell ausgewählt: {model_dropdown.value}")
 
-        self.page.show_dialog(
+        self._show_dialog(
             ft.AlertDialog(
                 modal=True,
                 title=ft.Text(f"Modelle von {provider}"),
@@ -2498,6 +2671,8 @@ class PsyMetriQApplication:
             pdf_review_directory=(self.review_path_field.value or "").strip(),
             default_language=(self.language_field.value or "").strip(),
             default_export_format=self.export_format_dropdown.value,
+            theme_mode="dark" if self.dark_mode else "light",
+            font_size=self.font_size,
             enable_ocr=bool(self.ocr_switch.value),
             ocr_languages=(self.ocr_languages_field.value or "").strip(),
             maximum_pdf_size_mib=int(self.maximum_pdf_size_field.value or "40"),
@@ -2523,6 +2698,8 @@ class PsyMetriQApplication:
         """Apply imported preferences to this session without persisting implicitly."""
         catalog_changed = settings.catalogue_directory != self.settings.catalogue_directory
         self.settings = settings
+        self.dark_mode = settings.theme_mode == "dark"
+        self.font_size = settings.font_size
         self.export_format = settings.default_export_format
         self.project.catalogue_directory = settings.catalogue_directory
         if catalog_changed:
@@ -2636,7 +2813,7 @@ class PsyMetriQApplication:
                 result.set_result(value)
             self.page.pop_dialog()
 
-        self.page.show_dialog(
+        self._show_dialog(
             ft.AlertDialog(
                 modal=True,
                 title=ft.Text("PDF-Text extern verarbeiten?"),

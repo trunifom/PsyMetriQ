@@ -85,6 +85,30 @@ If activation is blocked, use the explicit interpreter commands above; do not ch
 
 Use the left navigation for the instrument library, project, import/export, PDF intake, and settings. Every primary field/action has an information button with an explanation and example. See the [GUI workspace guide](gui_workspace.md) for complete workflows and file-format coverage.
 
+Display preferences are at the top of **Einstellungen > Darstellung**. Choose Klein, Normal, or Groß for interface text, and use the sun/moon button in the header to switch light/dark design quickly. The choices are stored locally and restored at the next launch.
+
+### Appearance and readability
+
+Use **Klein** when more content should fit on screen, **Normal** for the default layout, and **Groß** when labels, questionnaire names, or form fields need more visual space. The change applies immediately across the current view, including the library, settings fields, status text, and modal dialogs. It is safe to switch levels repeatedly; the application scales from each control's original size rather than multiplying an already scaled value.
+
+The dark design changes both Flet's theme mode and PsyMetriQ's explicit surface, text, border, icon, warning, and error colors. This keeps the library cards and settings panels readable even where the application uses fixed semantic colors. The theme icon remains available in every workspace view, while the switch under **Darstellung** makes the current state visible in the settings form.
+
+The preferences are saved to `data/psymetriq-settings.json` (or the configured local settings path) whenever the header switch, settings switch, or font-size dropdown changes. They are also part of settings export/import. A settings import is applied to the current session but is intentionally not written over the local file until **Einstellungen speichern** is pressed. This prevents inspecting an exchanged settings file from silently changing the local installation.
+
+The relevant JSON fragment is:
+
+```json
+{
+	"settings_schema_version": 1,
+	"theme_mode": "light",
+	"font_size": "normal"
+}
+```
+
+Only the documented values are accepted. If an older settings file omits these two properties, PsyMetriQ uses light design and normal text automatically. If a settings file contains an invalid value, the normal settings validation error is shown and the current valid session remains active.
+
+For very narrow windows, use the browser or operating-system zoom in addition to the application setting. The application keeps the main library columns bounded and allows long instrument names to wrap, but it still requires a usable window size; the desktop minimum is 900 by 650 pixels.
+
 ### Start and stop checklist
 
 | Mode | Start | Stop |
