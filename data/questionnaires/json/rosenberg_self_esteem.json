@@ -1,0 +1,329 @@
+{
+  "instrument_id": "rosenberg_self_esteem",
+  "name_full": "Rosenberg Self-Esteem Scale",
+  "construct_ontology": [
+    "self-esteem"
+  ],
+  "is_commercial": false,
+  "contributors": [],
+  "metadata": {
+    "keywords": [
+      "self-esteem",
+      "self-worth",
+      "wellbeing"
+    ],
+    "search_aliases": [],
+    "mesh_terms": [],
+    "characteristics": [],
+    "notes": "English source form; verify language- and population-specific evidence."
+  },
+  "versions": [
+    {
+      "version_id": "rosenberg_en_v1",
+      "language": "en",
+      "display_name": "Rosenberg Self-Esteem Scale (English)",
+      "locale": "en-US",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 1965,
+      "source_citation": "Rosenberg, M. (1965). Society and the Adolescent Self-Image.",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "University of Maryland reuse and scoring notes",
+          "document_type": "questionnaire_form",
+          "language": "en",
+          "source_url": "https://socy.umd.edu/quick-links/using-rosenberg-self-esteem-scale",
+          "local_path": null,
+          "license_name": "Public domain (University of Maryland reuse notice)",
+          "license_url": null,
+          "redistribution_permitted": true,
+          "permission_basis": "The University of Maryland Department of Sociology states that the scale is in the public domain, may be used without charge or notice, and may be translated or adapted with scholarly attribution.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "keywords": [
+          "RSES",
+          "Rosenberg Self-Esteem Scale"
+        ],
+        "search_aliases": [],
+        "mesh_terms": [],
+        "characteristics": [],
+        "notes": "Reverse-score items 3, 5, 8, 9, and 10 (3 minus the response score) before summing; the source describes a 0-30 total. Scoring is metadata, not a validated calculation engine."
+      },
+      "cosmin_metrics": {},
+      "response_sets": {
+        "rosenberg_four_point_agreement": [
+          {
+            "code": "SA",
+            "label": "Strongly agree",
+            "score": 3.0
+          },
+          {
+            "code": "A",
+            "label": "Agree",
+            "score": 2.0
+          },
+          {
+            "code": "D",
+            "label": "Disagree",
+            "score": 1.0
+          },
+          {
+            "code": "SD",
+            "label": "Strongly disagree",
+            "score": 0.0
+          }
+        ]
+      },
+      "item_text_included": true,
+      "items": [
+        {
+          "item_id": "rosenberg_01",
+          "variable_name": "rosenberg_01",
+          "dimension": "self_esteem",
+          "prompt_text": "I feel that I am a person of worth, at least on an equal plane with others.",
+          "response_mode": "categorical",
+          "response_set_ref": "rosenberg_four_point_agreement",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_required": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "rosenberg_02",
+          "variable_name": "rosenberg_02",
+          "dimension": "self_esteem",
+          "prompt_text": "I feel that I have a number of good qualities.",
+          "response_mode": "categorical",
+          "response_set_ref": "rosenberg_four_point_agreement",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_required": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "rosenberg_03",
+          "variable_name": "rosenberg_03",
+          "dimension": "self_esteem",
+          "prompt_text": "All in all, I am inclined to feel that I am a failure.",
+          "response_mode": "categorical",
+          "response_set_ref": "rosenberg_four_point_agreement",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": true,
+          "is_required": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "rosenberg_04",
+          "variable_name": "rosenberg_04",
+          "dimension": "self_esteem",
+          "prompt_text": "I am able to do things as well as most other people.",
+          "response_mode": "categorical",
+          "response_set_ref": "rosenberg_four_point_agreement",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_required": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "rosenberg_05",
+          "variable_name": "rosenberg_05",
+          "dimension": "self_esteem",
+          "prompt_text": "I feel I do not have much to be proud of.",
+          "response_mode": "categorical",
+          "response_set_ref": "rosenberg_four_point_agreement",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": true,
+          "is_required": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "rosenberg_06",
+          "variable_name": "rosenberg_06",
+          "dimension": "self_esteem",
+          "prompt_text": "I take a positive attitude toward myself.",
+          "response_mode": "categorical",
+          "response_set_ref": "rosenberg_four_point_agreement",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_required": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "rosenberg_07",
+          "variable_name": "rosenberg_07",
+          "dimension": "self_esteem",
+          "prompt_text": "On the whole, I am satisfied with myself.",
+          "response_mode": "categorical",
+          "response_set_ref": "rosenberg_four_point_agreement",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": false,
+          "is_required": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "rosenberg_08",
+          "variable_name": "rosenberg_08",
+          "dimension": "self_esteem",
+          "prompt_text": "I wish I could have more respect for myself.",
+          "response_mode": "categorical",
+          "response_set_ref": "rosenberg_four_point_agreement",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": true,
+          "is_required": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "rosenberg_09",
+          "variable_name": "rosenberg_09",
+          "dimension": "self_esteem",
+          "prompt_text": "I certainly feel useless at times.",
+          "response_mode": "categorical",
+          "response_set_ref": "rosenberg_four_point_agreement",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": true,
+          "is_required": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [],
+            "notes": null
+          }
+        },
+        {
+          "item_id": "rosenberg_10",
+          "variable_name": "rosenberg_10",
+          "dimension": "self_esteem",
+          "prompt_text": "At times I think I am no good at all.",
+          "response_mode": "categorical",
+          "response_set_ref": "rosenberg_four_point_agreement",
+          "measurement_unit": null,
+          "numeric_minimum": null,
+          "numeric_maximum": null,
+          "is_reverse_scored": true,
+          "is_required": false,
+          "is_scored": true,
+          "redcap_field_type": "radio",
+          "metadata": {
+            "keywords": [],
+            "search_aliases": [],
+            "mesh_terms": [],
+            "characteristics": [],
+            "notes": null
+          }
+        }
+      ],
+      "scoring_algorithms": [
+        {
+          "output_variable": "rosenberg_total",
+          "method": "sum",
+          "target_items": [
+            "rosenberg_01",
+            "rosenberg_02",
+            "rosenberg_03",
+            "rosenberg_04",
+            "rosenberg_05",
+            "rosenberg_06",
+            "rosenberg_07",
+            "rosenberg_08",
+            "rosenberg_09",
+            "rosenberg_10"
+          ],
+          "multiplier": 1.0,
+          "missing_data_rules": "Reverse-score items 3, 5, 8, 9, and 10 before summing; source range 0-30."
+        }
+      ]
+    }
+  ]
+}

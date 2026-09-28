@@ -140,6 +140,33 @@ def test_questionnaire_version_rejects_unknown_scoring_item() -> None:
         )
 
 
+def test_questionnaire_version_allows_an_explicit_link_only_record() -> None:
+    version = QuestionnaireVersion(
+        version_id="licensed_v1",
+        language="en",
+        item_text_included=False,
+        items=[],
+    )
+
+    assert version.items == []
+    assert version.item_text_included is False
+
+
+def test_questionnaire_version_rejects_empty_complete_record() -> None:
+    with pytest.raises(ValidationError, match="must contain at least one item"):
+        QuestionnaireVersion(version_id="empty_v1", language="en", items=[])
+
+
+def test_questionnaire_version_rejects_item_text_in_link_only_record() -> None:
+    with pytest.raises(ValidationError, match="cannot include item wording"):
+        QuestionnaireVersion(
+            version_id="inconsistent_v1",
+            language="en",
+            item_text_included=False,
+            items=[make_item()],
+        )
+
+
 def test_questionnaire_version_rejects_unscored_item_as_score_target() -> None:
     version = make_version()
     supplementary_item = make_item(variable_name="supplementary", item_id="supplementary")

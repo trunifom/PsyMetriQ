@@ -7,12 +7,14 @@ import asyncio
 import io
 import json
 import logging
+import os
 import re
 import zipfile
 from pathlib import Path
 from typing import Any
 
 import flet as ft
+from dotenv import load_dotenv
 from pydantic import ValidationError
 
 from schemas.questionnaire_schema import QuestionnaireParent, QuestionnaireVersion
@@ -32,6 +34,7 @@ from src.gui.workspace import (
     WorkspaceSettings,
     WorkspaceStore,
 )
+from src.ingestion.provider_models import ModelDiscoveryError, list_available_models
 
 LOGGER = logging.getLogger(__name__)
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -109,6 +112,8 @@ class PsyMetriQApplication:
         self.population_filter = "all"
         self.commercial_filter = "all"
         self.export_format = self.settings.default_export_format
+        self.available_models: list[str] = []
+        self.active_provider = self.settings.llm_provider
         self.status_message = self.startup_warning or self._catalog_status()
         self.status_is_error = bool(self.startup_warning or self.catalog_error)
 
@@ -551,6 +556,12 @@ class PsyMetriQApplication:
     def _toggle_version(
         self, family: QuestionnaireParent, version: QuestionnaireVersion, selected: bool
     ) -> None:
+        if selected and not version.item_text_included:
+            self._set_status(
+                "Diese Version ist ein Link-only-Metadatensatz; Itemtexte sind nicht freigegeben.",
+                error=True,
+            )
+            return
         current = self._project_selection(family.instrument_id, version.version_id)
         if selected:
             self._set_selection(
@@ -986,7 +997,11 @@ class PsyMetriQApplication:
                 version.language,
                 version.locale or "",
                 version.form_type,
-                f"{len(selected_ids) if is_selected else 0}/{len(version.items)} Items ausgewählt",
+                (
+                    f"{len(selected_ids) if is_selected else 0}/{len(version.items)} Items ausgewählt"
+                    if version.item_text_included
+                    else "Itemtexte nicht im Katalog enthalten"
+                ),
             )
             if value
         )
@@ -1001,7 +1016,12 @@ class PsyMetriQApplication:
                     ft.Checkbox(
                         value=is_selected,
                         label="Auswahl",
-                        tooltip=f"{family.name_full} ({version.version_id}) zum Projekt hinzufügen",
+                        disabled=not version.item_text_included,
+                        tooltip=(
+                            f"{family.name_full} ({version.version_id}) zum Projekt hinzufügen"
+                            if version.item_text_included
+                            else "Metadatenprofil: Itemtext nur über die verlinkte Quelle verfügbar"
+                        ),
                         on_change=lambda event, f=family, v=version: self._toggle_version(
                             f, v, bool(event.control.value)
                         ),
@@ -1056,7 +1076,8 @@ class PsyMetriQApplication:
             source_rows.append(
                 ft.Text(
                     f"{source.document_type}: {source.title} · "
-                    f"{'Weitergabe laut Quelle dokumentiert' if source.redistribution_permitted else 'Link-/Nutzungsrechte eingeschränkt oder ungeklärt'}",
+                    f"{'Weitergabe laut Quelle dokumentiert' if source.redistribution_permitted else 'Link-/Nutzungsrechte eingeschränkt oder ungeklärt'}"
+                    + (f" · {source.source_url}" if source.source_url else ""),
                     size=12,
                     color="#55716A",
                     selectable=True,
@@ -1223,6 +1244,20 @@ class PsyMetriQApplication:
             )
             if value
         )
+        item_help: ft.Control = (
+            self._help_button(
+                "Itemauswahl",
+                "Markiere einzelne Items links. Beim Export werden nur markierte Items dieser Version aufgenommen. Rechtebedingungen bleiben pro Quellversion zu prüfen.",
+                "PHQ-9: einzelne Items plus Antwortskala 'Not at all' bis 'Nearly every day'.",
+            )
+            if version.item_text_included
+            else ft.Text(
+                "Itemtexte sind aus Rechte-/Lizenzgründen nicht im Katalog. Nutze den offiziellen Quellenlink; erforderliche Nutzungslizenzen sind direkt beim Rechteinhaber zu klären.",
+                size=12,
+                color="#8A4A2E",
+                selectable=True,
+            )
+        )
         return self._panel(
             "Versionsdetails",
             ft.Column(
@@ -1263,15 +1298,19 @@ class PsyMetriQApplication:
                     ft.Divider(height=1),
                     ft.Row(
                         controls=[
-                            ft.Text("Items", weight=ft.FontWeight.BOLD, size=13),
-                            self._help_button(
-                                "Itemauswahl",
-                                "Markiere einzelne Items links. Beim Export werden nur markierte Items dieser Version aufgenommen. Rechtebedingungen bleiben pro Quellversion zu prüfen.",
-                                "PHQ-9: einzelne Items plus Antwortskala 'Not at all' bis 'Nearly every day'.",
+                            ft.Text(
+                                "Items" if version.item_text_included else "Itemtext nicht enthalten",
+                                weight=ft.FontWeight.BOLD,
+                                size=13,
                             ),
+                            item_help,
                         ]
                     ),
-                    ft.Column(spacing=6, controls=item_controls),
+                    *(
+                        [ft.Column(spacing=6, controls=item_controls)]
+                        if version.item_text_included
+                        else []
+                    ),
                 ],
             ),
             "Metadaten und Itemvorschau der ausgewählten konkreten Instrumentversion.",
@@ -1586,6 +1625,7 @@ class PsyMetriQApplication:
             options=[
                 ft.DropdownOption(key="openai", text="OpenAI"),
                 ft.DropdownOption(key="anthropic", text="Anthropic"),
+                ft.DropdownOption(key="alpineai", text="AlpineAI SwissGPT"),
                 ft.DropdownOption(key="openai-compatible", text="OpenAI-kompatibler Endpoint"),
             ],
             on_select=self._provider_changed,
@@ -1657,14 +1697,21 @@ class PsyMetriQApplication:
                                     self._field(
                                         "Provider",
                                         self.provider_dropdown,
-                                        "OpenAI und Anthropic nutzen native APIs. Andere Anbieter funktionieren nur, wenn sie den OpenAI Chat Completions API-Vertrag unterstützen.",
-                                        "SwissGPT: Alpine AI muss die konkrete API-Base-URL und OpenAI-Kompatibilität bereitstellen.",
+                                        "OpenAI und Anthropic verwenden ihre nativen APIs. AlpineAI SwissGPT verwendet die dokumentierte OpenAI-kompatible Chat-Completions-API; andere Endpoints benötigen denselben Vertrag.",
+                                        "SwissGPT API: https://api.prod.alpineai.ch/v1",
                                     ),
                                     self._field(
                                         "Modell-ID",
                                         self.model_field,
-                                        "Vom jeweiligen Anbieter unterstützte Modellbezeichnung.",
-                                        "gpt-4o-mini oder claude-sonnet-4-6",
+                                        "Wähle ein Konto-verfügbares Modell aus der API-Liste oder gib eine Modell-ID manuell ein.",
+                                        "Die Liste hängt von Account, Berechtigungen und Provider ab.",
+                                    ),
+                                    self._action_button(
+                                        "Modelle laden",
+                                        "REFRESH",
+                                        self._load_provider_models,
+                                        "Fragt die verfügbare Modellliste des gewählten Accounts über dessen Models-API ab. Die freie Modell-ID-Eingabe bleibt für nicht gelistete/alias IDs verfügbar.",
+                                        "OpenAI/AlpineAI: GET /v1/models; Anthropic: GET /v1/models.",
                                     ),
                                     self._field(
                                         "OpenAI-kompatible Base-URL",
@@ -1676,7 +1723,7 @@ class PsyMetriQApplication:
                                         "API-Key-Variablenname",
                                         self.key_environment_field,
                                         "Name einer Umgebungsvariablen, deren Wert den Schlüssel enthält. Das GUI speichert niemals den Schlüssel selbst.",
-                                        "OPENAI_API_KEY, ANTHROPIC_API_KEY oder SWISSGPT_API_KEY",
+                                        "OPENAI_API_KEY, ANTHROPIC_API_KEY, ALPINEAI_API_KEY oder SWISSGPT_API_KEY",
                                     ),
                                     self._field(
                                         "Remote-Opt-in",
@@ -1806,19 +1853,85 @@ class PsyMetriQApplication:
 
     def _provider_changed(self, event: Any) -> None:
         provider = event.control.value
+        previous_provider = self.active_provider
         defaults = {
             "openai": ("gpt-4o-mini", "OPENAI_API_KEY"),
             "anthropic": ("claude-sonnet-4-6", "ANTHROPIC_API_KEY"),
+            "alpineai": ("mistral-large-3-675b-nvfp4", "ALPINEAI_API_KEY"),
             "openai-compatible": ("", "LLM_API_KEY"),
         }
         model, key_environment = defaults.get(provider, defaults["openai"])
         if not self.model_field.value or self.model_field.value in {
-            "gpt-4o-mini",
-            "claude-sonnet-4-6",
+            value[0] for value in defaults.values()
         }:
             self.model_field.value = model
         self.key_environment_field.value = key_environment
+        alpine_default_url = "https://api.prod.alpineai.ch/v1"
+        if provider == "alpineai" and previous_provider != "alpineai":
+            self.base_url_field.value = os.environ.get(
+                "ALPINEAI_BASE_URL", alpine_default_url
+            )
+        elif (
+            previous_provider == "alpineai"
+            and provider == "openai-compatible"
+            and self.base_url_field.value == alpine_default_url
+        ):
+            self.base_url_field.value = ""
+        self.active_provider = provider
+        self.available_models = []
         self.page.update()
+
+    async def _load_provider_models(self, _event: Any) -> None:
+        provider = self.provider_dropdown.value
+        key_environment = (self.key_environment_field.value or "").strip()
+        api_key = os.environ.get(key_environment, "")
+        if provider == "alpineai" and not api_key:
+            api_key = os.environ.get("SWISSGPT_API_KEY", "")
+        try:
+            models = await list_available_models(
+                provider=provider,
+                api_key=api_key,
+                base_url=(self.base_url_field.value or "").strip() or None,
+            )
+        except ModelDiscoveryError as error:
+            self._set_status(str(error), error=True)
+            return
+        self.available_models = models
+        model_dropdown = ft.Dropdown(
+            label="Verfügbare Modell-ID",
+            value=models[0],
+            options=[ft.DropdownOption(key=model, text=model) for model in models],
+            expand=True,
+        )
+
+        def choose_model(_event: Any) -> None:
+            self.model_field.value = model_dropdown.value
+            self.page.pop_dialog()
+            self._set_status(f"Modell ausgewählt: {model_dropdown.value}")
+
+        self.page.show_dialog(
+            ft.AlertDialog(
+                modal=True,
+                title=ft.Text(f"Modelle von {provider}"),
+                content=ft.Column(
+                    tight=True,
+                    controls=[
+                        ft.Text(
+                            f"{len(models)} Modell-IDs verfügbar. Die Liste stammt vom Anbieter-Account.",
+                            size=12,
+                        ),
+                        model_dropdown,
+                    ],
+                ),
+                actions=[
+                    ft.Button(
+                        content="Abbrechen",
+                        on_click=lambda _event: self.page.pop_dialog(),
+                    ),
+                    ft.Button(content="Modell verwenden", on_click=choose_model),
+                ],
+            )
+        )
 
     def _submit_search(self) -> None:
         self.search_query = self.search_field.value or ""
@@ -2286,4 +2399,5 @@ class PsyMetriQApplication:
 def main(page: ft.Page) -> None:
     """Run the local Flet application."""
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
+    load_dotenv(PROJECT_ROOT / ".env", override=False)
     PsyMetriQApplication(page)

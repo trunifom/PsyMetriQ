@@ -16,7 +16,7 @@ from pydantic import BaseModel, Field, ValidationError, field_validator, model_v
 LOGGER = logging.getLogger(__name__)
 
 ExportFormat = Literal["psymetriq_json", "fhir_json", "xlsx", "item_csv", "redcap_csv"]
-ProviderName = Literal["openai", "anthropic", "openai-compatible"]
+ProviderName = Literal["openai", "anthropic", "alpineai", "openai-compatible"]
 WorkflowAction = Literal[
     "catalog_import",
     "catalog_reload",

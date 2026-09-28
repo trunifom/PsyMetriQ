@@ -1249,25 +1249,35 @@ def _create_remote_extractor(
     key_environment = api_key_env or {
         "openai": "OPENAI_API_KEY",
         "anthropic": "ANTHROPIC_API_KEY",
+        "alpineai": "ALPINEAI_API_KEY",
         "openai-compatible": "LLM_API_KEY",
     }[provider]
     api_key = os.environ.get(key_environment, "")
+    if provider == "alpineai" and not api_key:
+        api_key = os.environ.get("SWISSGPT_API_KEY", "")
+        if api_key:
+            key_environment = "SWISSGPT_API_KEY"
     if not api_key:
         raise ValueError(f"{key_environment} is required for remote extraction")
 
     default_models = {
         "openai": os.environ.get("OPENAI_MODEL", "gpt-4o-mini"),
         "anthropic": os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-4-6"),
+        "alpineai": os.environ.get(
+            "ALPINEAI_MODEL", "mistral-large-3-675b-nvfp4"
+        ),
         "openai-compatible": os.environ.get("LLM_MODEL", ""),
     }
     selected_model = model or default_models[provider]
     if not selected_model:
         raise ValueError("Set --model or LLM_MODEL for the OpenAI-compatible provider")
-    selected_base_url = (
-        base_url or os.environ.get("LLM_BASE_URL")
-        if provider == "openai-compatible"
-        else None
-    )
+    selected_base_url = None
+    if provider == "alpineai":
+        selected_base_url = base_url or os.environ.get(
+            "ALPINEAI_BASE_URL", "https://api.prod.alpineai.ch/v1"
+        )
+    elif provider == "openai-compatible":
+        selected_base_url = base_url or os.environ.get("LLM_BASE_URL")
     if provider == "openai-compatible" and not selected_base_url:
         raise ValueError(
             "Set --base-url or LLM_BASE_URL for the OpenAI-compatible provider"
@@ -1302,14 +1312,17 @@ def main() -> None:
     )
     parser.add_argument(
         "--provider",
-        choices=("openai", "anthropic", "openai-compatible"),
+        choices=("openai", "anthropic", "alpineai", "openai-compatible"),
         default="openai",
-        help="Remote extraction provider (default: openai).",
+        help="Remote extraction provider: openai, anthropic, alpineai, or openai-compatible.",
     )
-    parser.add_argument("--model", help="Provider model identifier.")
+    parser.add_argument(
+        "--model",
+        help="Provider model identifier; AlpineAI's API lists account-visible IDs at /v1/models.",
+    )
     parser.add_argument(
         "--base-url",
-        help="API base URL for an OpenAI-compatible provider, such as a SwissGPT endpoint.",
+        help="API base URL for AlpineAI override or an OpenAI-compatible provider.",
     )
     parser.add_argument(
         "--api-key-env",

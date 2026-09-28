@@ -1,6 +1,6 @@
 # PsyMetriQ
 
-PsyMetriQ is an open-source research tool for cataloguing, comparing, assembling, and eventually exporting psychometric questionnaires. Its data model keeps an instrument family separate from each concrete form, so translations, locales, revisions, short forms, target groups, contributors, validation sources, and licensing provenance remain distinguishable.
+PsyMetriQ is an open-source research tool for cataloguing, comparing, assembling, and exporting psychometric questionnaires. Its data model keeps an instrument family separate from each concrete form, so translations, locales, revisions, short forms, target groups, contributors, validation sources, and licensing provenance remain distinguishable.
 
 > PsyMetriQ is a research and data-management tool, not a diagnostic device. Screening scores do not establish a diagnosis, and the bundled example instruments do not replace clinical judgment or their official manuals.
 
@@ -10,9 +10,9 @@ Implemented:
 
 - Pydantic v2 models for questionnaire families, concrete versions, items, response scales, scoring, population, provenance, metadata, and source documents.
 - Portable JSON file catalog with case-insensitive search and composable filters; no database server or database file is required.
-- A rights-reviewed real-form corpus: PHQ-9 (English/Germany-German), GAD-7 (English/Austria-/Switzerland-German), DASS-21 (English/German), DASS-Y (English/German; ages 8-17), and IPAQ short forms (English/German; ages 15-69) plus IPAQ-E (older-adult English form).
+- A real-form catalogue: PHQ-9, GAD-7, DASS-21, DASS-Y, IPAQ and the English public-domain Rosenberg Self-Esteem Scale have item-bearing records; WHO-5 and WEMWBS are searchable link-only profiles while their public redistribution terms remain unconfirmed/restricted.
 - PDF SHA-256 verification, source links, retrieval dates, and explicit redistribution basis in the JSON records.
-- A local PDF inbox with text extraction/OCR, heuristic domain routing, optional opt-in OpenAI, Anthropic, or OpenAI-compatible LLM extraction, private review drafts, and checksum-bound rights-gated promotion for questionnaire forms and validation-study references.
+- A local PDF inbox with text extraction/OCR, heuristic domain routing, optional opt-in OpenAI, Anthropic, AlpineAI SwissGPT, or OpenAI-compatible LLM extraction, private review drafts, and checksum-bound rights-gated promotion for questionnaire forms and validation-study references.
 - A Flet workspace for faceted catalogue search, detailed item/response/source inspection, whole-scale/item selection, reasoned study-only adaptations, saved projects/settings, PDF intake, and ZIP exchange containing PsyMetriQ JSON, FHIR R4, XLSX workbooks, item CSV, or REDCap Data Dictionary CSV. Public NIH CDE/LOINC/PubMed discovery is still available from Python/CLI, not yet embedded in the GUI.
 
 Planned: semantic redundancy review, Zotero sync, full REDCap API upload, and R syntax export. The existing REDCap Data Dictionary CSV exchange is a file export, not a live project integration.
@@ -23,9 +23,8 @@ XLSX is an export/review workbook, not an import format. Unipark is not yet supp
 Python 3.11 or newer is recommended. In PowerShell from the repository root:
 
 ```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
+py -3.11 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
 Generate the two synthetic development examples:
@@ -40,9 +39,10 @@ Generate or refresh the real catalog from PDFs already bundled in the repository
 python data/questionnaires/build_catalog.py
 python data/questionnaires/build_dass_catalog.py
 python data/questionnaires/build_ipaq_catalog.py
+python data/questionnaires/build_wellbeing_catalog.py
 ```
 
-The builders never download files. They validate existing PDFs, calculate checksums, and write Pydantic-validated JSON into `data/questionnaires/json/`. The licensed original forms are organized under `data/questionnaires/forms/<domain>/<instrument>/`.
+The builders never download files. Form builders validate existing PDFs, calculate checksums, and write Pydantic-validated JSON; the wellbeing builder adds the public-domain Rosenberg record and link-only WHO-5/WEMWBS profiles. Licensed original forms are organized under `data/questionnaires/forms/<domain>/<instrument>/`.
 
 Launch the Flet workspace:
 
@@ -57,6 +57,9 @@ python -m src.gui.main --web --host 127.0.0.1 --port 8550
 ```
 
 The GUI guide describes projects, settings, imports, exports, and current limitations: [docs/gui_workspace.md](docs/gui_workspace.md).
+The [user manual](docs/user_manual.md#launch-the-gui-workspace) has step-by-step terminal and VS Code instructions, including how to stop and restart the desktop/browser app.
+
+The GUI can load the model IDs available to an OpenAI, Anthropic, AlpineAI SwissGPT, or OpenAI-compatible account. For SwissGPT, set `ALPINEAI_API_KEY` in the ignored `.env`; the documented endpoint defaults to `https://api.prod.alpineai.ch/v1`. Model IDs are discovered from the provider rather than frozen in the UI.
 
 Import a new PDF by dropping it into `data/questionnaires/inbox/`:
 

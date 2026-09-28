@@ -1,0 +1,67 @@
+{
+  "instrument_id": "wemwbs",
+  "name_full": "Warwick-Edinburgh Mental Wellbeing Scale",
+  "construct_ontology": [
+    "mental wellbeing"
+  ],
+  "is_commercial": true,
+  "contributors": [],
+  "metadata": {
+    "keywords": [
+      "WEMWBS",
+      "wellbeing",
+      "well-being",
+      "mental health"
+    ],
+    "search_aliases": [],
+    "mesh_terms": [],
+    "characteristics": [],
+    "notes": "Metadata-only discovery record. Eligible academic/non-profit organizations can apply for a non-commercial licence; the licence does not allow public sharing."
+  },
+  "versions": [
+    {
+      "version_id": "wemwbs_en_v1",
+      "language": "en",
+      "display_name": "WEMWBS English (licensed; link-only)",
+      "locale": "en-GB",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2007,
+      "source_citation": "Tennant et al. (2007). The Warwick-Edinburgh Mental Well-being Scale (WEMWBS): development and UK validation.",
+      "source_doi": "10.1186/1477-7525-5-63",
+      "source_documents": [
+        {
+          "title": "WEMWBS licences and pricing",
+          "document_type": "other",
+          "language": "en",
+          "source_url": "https://warwick.ac.uk/services/innovations/wemwbs/licenses/",
+          "local_path": null,
+          "license_name": "Registration/licence required; no public redistribution",
+          "license_url": "https://warwick.ac.uk/services/innovations/wemwbs/licenses/non-commercial/",
+          "redistribution_permitted": false,
+          "permission_basis": "University of Warwick offers an application-based non-commercial licence for eligible academic/non-profit organizations, but states that it does not permit public sharing or onward provision of WEMWBS.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "keywords": [
+          "WEMWBS",
+          "Warwick Edinburgh wellbeing"
+        ],
+        "search_aliases": [],
+        "mesh_terms": [],
+        "characteristics": [],
+        "notes": "Request the appropriate licence and retrieve resources from Warwick."
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 
 ## Purpose and date
 
-This page is a curated discovery list for future PsyMetriQ test records. It separates instruments actually bundled in `data/questionnaires/` from instruments that still need source, population, translation, and redistribution review. Status reflects sources checked on **2026-09-27** and is not legal advice; verify the exact version's current terms before downloading, storing, processing, or sharing it.
+This page is a curated discovery list for PsyMetriQ test records. It separates item-bearing instruments from metadata-only link records and candidates that still need review. Status reflects sources checked on **2026-09-28** and is not legal advice; verify the exact version's current terms before downloading, storing, processing, or sharing it.
 
 A scientific citation or public download page is not itself a redistribution licence. Rights can vary by instrument, edition, language, publisher, and intended use. A licence held by one university, research team, or end user does not automatically permit copying an item form into an open GitHub repository.
 
@@ -16,8 +16,18 @@ A scientific citation or public download page is not itself a redistribution lic
 | DASS-Y | Depression, anxiety, stress (youth) | English (`en-AU`), German (`de-DE`; Neuhoff & Noorani-Yazdanabad) | Official youth form is for ages 8-17, may be copied but not modified or sold. It is a separate instrument; scores are not comparable to adult DASS/DASS-21. |
 | IPAQ Short Last 7 Days Self-Administered | Physical activity | English, German (`de-DE`); standard form states ages 15-69 | Official source licenses CC BY 4.0. Its site says researcher-submitted translations are provided as-is and their accuracy is not verified. Numeric day and duration fields are represented separately. |
 | IPAQ-E | Physical activity (older-adult form) | English | CC BY 4.0 source form, kept as its own form. We do not infer an age cutoff or MET score that is not encoded with evidence. |
+| Rosenberg Self-Esteem Scale | Self-esteem | English (`en-US`) | University of Maryland states the scale is public domain and permits use, translation, and adaptation with scholarly attribution. The bundled record flags the five reverse-coded items; score calculation is not performed by the GUI. |
 
 The PDF source forms are organized in `data/questionnaires/forms/<domain>/<instrument>/`; each JSON family is in `data/questionnaires/json/`. The versions reference validation papers without bundling journal PDFs unless those publication rights are separately cleared.
+
+## Link-Only Discovery Records
+
+These records are searchable and show version/provenance details, but the GUI disables project selection because their item wording is not included in the local catalogue:
+
+| Instrument | Current record | Reason item text is not bundled |
+| --- | --- | --- |
+| WHO-5 Well-Being Index | English metadata profile; official source link | The exact WHO-5 publication copyright notice and any third-party credits have not been checked. WHO's general policy requires reviewing the specific publication; item text remains link-only pending that review. |
+| Warwick-Edinburgh Mental Wellbeing Scale (WEMWBS) | English metadata profile; official licence link | Warwick offers a free application-based non-commercial licence to eligible organizations, but explicitly says it does not permit public sharing or onward provision of WEMWBS. |
 
 ## Broader catalogue for future versions
 
@@ -25,7 +35,7 @@ These instruments cover the domains requested for PsyMetriQ. They are discovery 
 
 | Domain | Instrument candidates | Current handling |
 | --- | --- | --- |
-| Wellbeing | WHO-5 Well-Being Index; WEMWBS/SWEMWBS | WHO-5 has a substantial review literature, but check the exact publication license and embedded third-party credits. Warwick's non-commercial WEMWBS licence explicitly does not permit public sharing; link-only absent separate permission. |
+| Wellbeing | WHO-5 Well-Being Index; WEMWBS/SWEMWBS | WHO-5 and WEMWBS are indexed as link-only profiles; SWEMWBS has no record yet. The exact WHO publication terms and Warwick permission for public sharing remain unresolved. |
 | Stress | Perceived Stress Scale (PSS-10/PSS-4) | Carnegie Mellon directs use-permission requests through MAPI/ePROVIDE. DASS is bundled but captures a narrower tension/stress construct. |
 | Anxiety | GAD-7; GAD-2; PROMIS Anxiety | GAD-7 and DASS anxiety are bundled. PROMIS has adult/pediatric forms and many languages; exact measure/translation terms apply. |
 | Obsessive-compulsive symptoms | OCI-R (adult) | Common adult measure; MAPI/ePROVIDE is an authoritative discovery source. Item redistribution not established. |

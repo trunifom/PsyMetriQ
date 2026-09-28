@@ -31,6 +31,7 @@ For version lineage, references to versions inside the same instrument family ar
 - `src/core/`: business services such as file-backed search and NLP, independent of view widgets.
 - `src/core/external_sources.py`: read-only NIH CDE, NLM LOINC, and PubMed connectors; returned candidates are not persisted or rights-approved.
 - `src/ingestion/`: local PDF intake/OCR, structured extraction adapters, and future Zotero integration.
+- `src/ingestion/provider_models.py`: account-scoped, metadata-only provider model discovery; API-key values remain in environment variables.
 - `src/exporters/`: translations from domain objects to external formats and remote systems.
 - `src/gui/application.py`: Flet workspace for catalogue search, item/version assembly, import/export, PDF intake, and settings.
 - `src/gui/catalog_store.py` and `src/gui/workspace.py`: validated catalog updates, conflict handling, versioned user settings, project snapshots, and workflow steps.

@@ -189,7 +189,7 @@ class QuestionnaireExtractor(Protocol):
 		"""Return a provisional extraction without asserting rights or validity."""
 
 
-LLMProviderName = Literal["openai", "anthropic", "openai-compatible"]
+LLMProviderName = Literal["openai", "anthropic", "alpineai", "openai-compatible"]
 
 
 def _extraction_messages(filename: str, extracted_text: str) -> tuple[str, str]:
@@ -387,6 +387,84 @@ class AnthropicQuestionnaireExtractor:
 			) from None
 
 
+class AlpineAIQuestionnaireExtractor:
+	"""Use AlpineAI's documented basic Chat Completions API and validate JSON locally."""
+
+	DEFAULT_BASE_URL = "https://api.prod.alpineai.ch/v1"
+
+	def __init__(
+		self,
+		*,
+		api_key: str,
+		model: str,
+		base_url: str = DEFAULT_BASE_URL,
+		client: Any | None = None,
+	) -> None:
+		"""Configure the OpenAI-compatible AlpineAI endpoint without strict-output calls."""
+		if not api_key.strip() and client is None:
+			raise ValueError("An AlpineAI API key is required for remote extraction")
+		self.model = model
+		self._client = client or AsyncOpenAI(api_key=api_key, base_url=base_url)
+
+	async def extract(
+		self, *, filename: str, extracted_text: str
+	) -> QuestionnaireExtractionDraft:
+		"""Ask for schema-shaped JSON through standard chat completions, then validate locally."""
+		if not extracted_text.strip():
+			raise ValueError("Cannot extract a questionnaire from empty document text")
+		system_prompt, user_prompt = _extraction_messages(filename, extracted_text)
+		transport_schema = json.dumps(
+			OpenAIQuestionnaireExtractionResponse.model_json_schema(),
+			ensure_ascii=False,
+			separators=(",", ":"),
+		)
+		system_prompt += (
+			" Return only one JSON object matching this JSON Schema. Do not include Markdown "
+			f"fences or text outside the JSON object. Schema: {transport_schema}"
+		)
+		try:
+			response = await self._client.chat.completions.create(
+				model=self.model,
+				messages=[
+					{"role": "system", "content": system_prompt},
+					{"role": "user", "content": user_prompt},
+				],
+			)
+		except Exception as error:
+			LOGGER.error(
+				"AlpineAI chat completion failed for %s (%s)",
+				filename,
+				type(error).__name__,
+			)
+			raise QuestionnaireExtractionError(
+				f"Remote extraction failed for {filename}"
+			) from None
+
+		choice = response.choices[0]
+		if choice.finish_reason == "length":
+			raise QuestionnaireExtractionError(
+				f"AlpineAI response was truncated for document {filename}"
+			)
+		message = choice.message
+		if getattr(message, "refusal", None):
+			raise QuestionnaireExtractionError(
+				f"The extraction service refused document {filename}"
+			)
+		response_text = message.content
+		if not isinstance(response_text, str) or not response_text.strip():
+			raise QuestionnaireExtractionError(
+				f"The extraction service returned no structured content for {filename}"
+			)
+		try:
+			parsed = OpenAIQuestionnaireExtractionResponse.model_validate_json(response_text)
+			return parsed.to_extraction_draft()
+		except (TypeError, ValueError, ValidationError, json.JSONDecodeError):
+			LOGGER.error("AlpineAI response failed local validation for %s", filename)
+			raise QuestionnaireExtractionError(
+				f"Extracted questionnaire data is invalid for {filename}"
+			) from None
+
+
 def create_questionnaire_extractor(
 	*,
 	provider: LLMProviderName,
@@ -399,6 +477,12 @@ def create_questionnaire_extractor(
 		if base_url:
 			raise ValueError("Anthropic uses its native API and does not accept base_url")
 		return AnthropicQuestionnaireExtractor(api_key=api_key, model=model)
+	if provider == "alpineai":
+		return AlpineAIQuestionnaireExtractor(
+			api_key=api_key,
+			model=model,
+			base_url=base_url or AlpineAIQuestionnaireExtractor.DEFAULT_BASE_URL,
+		)
 	if provider == "openai-compatible" and not base_url:
 		raise ValueError("An OpenAI-compatible provider requires a configured base_url")
 	return OpenAIQuestionnaireExtractor(

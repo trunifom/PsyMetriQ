@@ -4,7 +4,7 @@
 
 The intake pipeline turns PDFs into inspectable, source-linked drafts and can promote either a completed questionnaire form into the instrument catalogue or an approved validation study into a separate reference-document catalogue. It does not assume that a PDF is an instrument, that a translation is validated, or that a document may be redistributed. Articles, manuals, forms, and mixed PDFs are routed for review unless the document type, extracted content/metadata, and exact redistribution rights have been explicitly approved.
 
-The workflow is implemented as a CLI vertical slice in `src/ingestion/document_pipeline.py`, with its optional Structured Outputs adapter in `src/ingestion/llm_extractor.py`. The Flet GUI does not yet implement file upload or review controls.
+The workflow is implemented in the CLI and the Flet PDF inbox. The GUI can run the configured inbox and review pipeline; detailed human item/license sidecar review and draft promotion remain explicit filesystem/reviewer tasks.
 
 ## Local Folder Workflow
 
@@ -31,12 +31,13 @@ The pipeline is local-only by default. Remote extraction is only enabled with `-
 ```powershell
 python -m src.ingestion.document_pipeline --watch --allow-remote-processing --provider openai
 python -m src.ingestion.document_pipeline --allow-remote-processing --provider anthropic --model claude-sonnet-4-6
+python -m src.ingestion.document_pipeline --allow-remote-processing --provider alpineai --model mistral-large-3-675b-nvfp4
 python -m src.ingestion.document_pipeline --allow-remote-processing --provider openai-compatible --base-url <BASE_URL_FROM_PROVIDER> --model <MODEL_ID> --api-key-env SWISSGPT_API_KEY
 ```
 
-OpenAI is the default provider and model (`gpt-4o-mini`); Anthropic defaults to `claude-sonnet-4-6`. Keys are read from `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, or `LLM_API_KEY`. For a custom compatible service, set `LLM_BASE_URL`, `LLM_MODEL`, and `LLM_API_KEY`, or pass `--base-url`, `--model`, and `--api-key-env` to select another environment variable such as `SWISSGPT_API_KEY`. Never pass the secret itself as a command-line argument.
+OpenAI defaults to `gpt-4o-mini`; Anthropic defaults to `claude-sonnet-4-6`. Keys are read from `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `ALPINEAI_API_KEY`, or `LLM_API_KEY`. AlpineAI defaults to `https://api.prod.alpineai.ch/v1` and the documented example model `mistral-large-3-675b-nvfp4`; override with `ALPINEAI_BASE_URL` / `ALPINEAI_MODEL` or CLI options. `SWISSGPT_API_KEY` remains a legacy fallback. For a custom compatible service, set `LLM_BASE_URL`, `LLM_MODEL`, and `LLM_API_KEY`, or pass `--base-url`, `--model`, and `--api-key-env`. Never pass the secret itself as a command-line argument.
 
-OpenAI and compatible services use the OpenAI SDK's structured-output endpoint. Anthropic uses its Messages API with the shared JSON Schema included in the prompt, then validates the complete response locally against the same Pydantic DTO. The Anthropic schema exceeds the service's current strict-output optional-field limit, so malformed or truncated JSON is rejected and remains a review draft. SwissGPT is usable only if Alpine AI supplies an OpenAI-compatible API endpoint, model identifier, and key; no public endpoint or protocol was verified for this project. Other OpenAI-compatible services can use the same generic endpoint adapter.
+OpenAI uses Structured Outputs. Anthropic uses its Messages API with the shared JSON Schema included in the prompt, then validates locally against the same Pydantic DTO. AlpineAI uses its documented basic `/v1/chat/completions` route and locally validates prompted JSON; its supplied documentation does not establish Structured Outputs, so the adapter does not send `response_format`. Truncated, malformed, or schema-invalid responses are rejected and remain review drafts. The GUI's `Modelle laden` queries account-visible IDs through `/v1/models` (Anthropic uses its native models endpoint); an editable model field remains available if a provider omits an alias.
 
 All providers receive the same instructions: PDF text is untrusted data, wording must be transcribed exactly, and rights, clinical validity, age suitability, scoring, and citations must not be invented. Refusals, invalid JSON/schema, API errors, and extraction limitations do not produce a catalogue entry.
 

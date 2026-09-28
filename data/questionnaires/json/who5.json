@@ -1,0 +1,67 @@
+{
+  "instrument_id": "who5",
+  "name_full": "WHO-5 Well-Being Index",
+  "construct_ontology": [
+    "subjective psychological well-being"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "keywords": [
+      "WHO-5",
+      "wellbeing",
+      "well-being",
+      "positive mental health"
+    ],
+    "search_aliases": [],
+    "mesh_terms": [],
+    "characteristics": [],
+    "notes": "Metadata-only discovery record. Verify the copyright notice for the exact WHO-5 publication and any third-party credits before copying the items."
+  },
+  "versions": [
+    {
+      "version_id": "who5_en_v1",
+      "language": "en",
+      "display_name": "WHO-5 English (official source; link-only)",
+      "locale": null,
+      "form_type": "short",
+      "variant_types": [],
+      "target_populations": [],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": null,
+      "source_citation": null,
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "WHO-5 official site",
+          "document_type": "questionnaire_form",
+          "language": "en",
+          "source_url": "https://www.who-5.org/",
+          "local_path": null,
+          "license_name": "Exact publication terms not verified; link only",
+          "license_url": "https://www.who.int/about/policies/publishing/copyright",
+          "redistribution_permitted": false,
+          "permission_basis": "The official WHO copyright policy requires checking the copyright notice on the exact publication and any third-party credits. The linked WHO-5 host redirects to the official regional site; item text and PDFs are not included pending edition-specific rights review.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "keywords": [
+          "WHO-5",
+          "WHO five-item wellbeing index"
+        ],
+        "search_aliases": [],
+        "mesh_terms": [],
+        "characteristics": [],
+        "notes": "Open the official source and verify terms for the exact form/version. Topp et al. (2015) review: DOI 10.1159/000376585; this is not the underlying WHO form publication."
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

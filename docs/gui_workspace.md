@@ -22,6 +22,8 @@ Search locally by instrument/version names, language, constructs, item prompts, 
 
 Psychometric metrics remain visible through version metadata where available; advanced metric-specific threshold filters are not yet exposed.
 
+Link-only records such as WHO-5 and WEMWBS remain discoverable with their official source and rights notes, but their disabled selection control prevents copying unavailable/unlicensed wording into a study. The English Rosenberg Self-Esteem Scale is bundled under the University of Maryland's public-domain notice.
+
 ## Projects and process history
 
 Projects use versioned `.psymetriq.json` files. They store:
@@ -73,7 +75,11 @@ The GUI writes machine-local settings to `data/psymetriq-settings.json`, which i
 
 Settings can be edited directly in JSON or in the Settings screen. The provider key itself must remain in the environment or an institution-approved secret manager. The GUI asks for a second confirmation each time a PDF run would send extracted text to a remote LLM.
 
-For Alpine AI / SwissGPT, choose `OpenAI-kompatibler Endpoint` only after Alpine supplies the authorized base URL, model ID, key, and confirms OpenAI Chat Completions/Structured Outputs compatibility. No SwissGPT endpoint is hard-coded. Anthropic uses its native Messages API. OpenAI and compatible endpoints use Structured Outputs; Claude returns schema-prompted JSON that PsyMetriQ validates locally because the extraction schema exceeds Anthropic's current strict-output optional-field limit.
+Provider choices are OpenAI, Anthropic, AlpineAI SwissGPT, and a generic OpenAI-compatible endpoint. `Modelle laden` asks the selected provider account for available model IDs (OpenAI/AlpineAI/compatible `GET <base>/models`; Anthropic `GET https://api.anthropic.com/v1/models`). Availability is account- and permission-specific; the model field remains editable for aliases or IDs omitted from discovery. Listing models sends an authenticated metadata request, not PDF text.
+
+AlpineAI SwissGPT follows the supplied API documentation: base URL `https://api.prod.alpineai.ch/v1`, Bearer API-key authentication, `POST /chat/completions`, and `GET /models`. Set `ALPINEAI_API_KEY`; optional `ALPINEAI_BASE_URL` and `ALPINEAI_MODEL` configure CLI defaults. The example model `mistral-large-3-675b-nvfp4` comes from AlpineAI's documentation; use the live model list to select the models your account actually exposes. The legacy `SWISSGPT_API_KEY` is accepted as a fallback.
+
+AlpineAI's documentation confirms basic chat completions, but does not establish OpenAI Structured Outputs compatibility. PsyMetriQ therefore sends the extraction schema as prompt text and validates returned JSON locally with Pydantic; malformed or truncated responses are rejected. This workflow does not use streaming, tools, prompt-based Llama tool calls, file upload, or extended-thinking fields. OpenAI uses Structured Outputs; Anthropic uses its native Messages API with schema-prompted JSON and local validation. Remote PDF content is still off by default and requires per-run confirmation.
 
 ## Help and limitations
 

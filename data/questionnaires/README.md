@@ -1,6 +1,6 @@
 # Questionnaire Test Data
 
-This is a portable, database-free library of questionnaire-family JSON records and source forms with documented redistribution rights. It contains real item wording for PHQ-9, GAD-7, DASS-21, DASS-Y, and IPAQ variants. These are research and software test fixtures, not diagnostic software or clinical response procedures.
+This is a portable, database-free library of questionnaire-family JSON records and source forms with documented redistribution rights. It contains real item wording for PHQ-9, GAD-7, DASS-21, DASS-Y, IPAQ, and the public-domain English Rosenberg Self-Esteem Scale. WHO-5 and WEMWBS are indexed as link-only metadata profiles because public redistribution of their item wording has not been established. These are research and software test fixtures, not diagnostic software or clinical response procedures.
 
 ## Directory Layout
 
@@ -19,6 +19,9 @@ data/questionnaires/
 |   |-- dass_y.json
 |   |-- gad7.json
 |   |-- ipaq.json
+|   |-- rosenberg_self_esteem.json
+|   |-- wemwbs.json      # Link-only; no item text
+|   |-- who5.json        # Link-only; no item text
 |   `-- phq9.json
 |-- references/
 |   |-- json/  # Reviewed metadata records for licensed validation-study PDFs
@@ -27,7 +30,8 @@ data/questionnaires/
 |-- review/    # Local drafts and unapproved source PDFs; contents ignored
 |-- build_catalog.py
 |-- build_dass_catalog.py
-`-- build_ipaq_catalog.py
+|-- build_ipaq_catalog.py
+`-- build_wellbeing_catalog.py
 ```
 
 Each PDF folder holds source forms for one instrument and domain. Each JSON represents one instrument family; each language, locale, population, and form is a separate `QuestionnaireVersion`. Its `source_documents` record holds the official URL, redistribution basis, retrieval date, local path, and SHA-256 digest.
@@ -46,23 +50,29 @@ For new uploads, use the Git-ignored [PDF inbox](inbox/README.md) and follow the
 | DASS-Y | English; German (Neuhoff & Noorani-Yazdanabad), ages 8-17 | Separate youth form. Scores are not interchangeable with adult DASS/DASS-21. Translation validity is not assured by the source. |
 | IPAQ standard short self-administered | English; German translation, ages 15-69 | CC BY 4.0. Source-provided German form is supplied as-is; translation accuracy is not endorsed by the website. Numeric days and durations remain separate fields. |
 | IPAQ-E | English, older-adult form | CC BY 4.0; kept separate from the standard short form. No numeric age range or MET score is invented. |
+| Rosenberg Self-Esteem Scale | English (`en-US`), 10 items | University of Maryland states the scale is public domain and permits use, translation, and adaptation with scholarly attribution. Reverse-coded items are flagged; the GUI does not calculate participant scores. |
+| WHO-5 Well-Being Index | English metadata profile | Link-only. The exact source-publication notice and any third-party credits must be verified before item text is copied. |
+| Warwick-Edinburgh Mental Wellbeing Scale (WEMWBS) | English metadata profile | Link-only. Eligible non-commercial organizations may apply for a licence; Warwick says the licence does not allow public sharing or onward provision. |
 
 ## Original Forms and Permissions
 
 - **PHQ-9/GAD-7:** [official PHQ Screeners page](https://www.phqscreeners.com/select-screener) explicitly says no permission is required to reproduce, translate, display, or distribute its screeners and translations.
 - **DASS/DASS-Y:** [official downloads](https://www2.psy.unsw.edu.au/dass/down.htm) say the forms are public domain/copyable, but may not be modified or sold. The [FAQ](https://www2.psy.unsw.edu.au/dass/DASSFAQ.htm) gives age guidance (adult DASS 14+; DASS-Y 8-17), says DASS-Y is not comparable to adult forms, and warns translations may not be validated by the Foundation.
 - **IPAQ:** [official FAQ](https://sites.google.com/view/ipaq/faq) states CC BY 4.0; [official download page](https://sites.google.com/view/ipaq/download) says researcher-submitted translations are provided as-is and their accuracy is not checked.
+- **Rosenberg Self-Esteem Scale:** the [University of Maryland use page](https://socy.umd.edu/quick-links/using-rosenberg-self-esteem-scale) states that the scale is in the public domain and may be used without charge or notice, including translations/adaptations with scholarly attribution.
+- **WHO-5/WEMWBS:** link-only records preserve discoverability without redistributing item text; see the [instrument licensing guide](../../docs/instrument_library.md).
 
 Validation-study papers are linked by citation/DOI unless their own publication license separately permits bundling. A questionnaire-form permission is not blanket permission to copy its journal articles.
 
 ## Rebuild and Validate
 
-The builders never download PDFs. They validate the local forms, recalculate checksums, and regenerate all five family JSON files:
+The builders never download PDFs. Existing form builders validate local PDFs and write five form-bearing families. The wellbeing builder writes three additional JSON families, including two rights-safe link-only profiles:
 
 ```powershell
 python data/questionnaires/build_catalog.py
 python data/questionnaires/build_dass_catalog.py
 python data/questionnaires/build_ipaq_catalog.py
+python data/questionnaires/build_wellbeing_catalog.py
 pytest tests/unit/test_instrument_catalog.py -q
 ```
 

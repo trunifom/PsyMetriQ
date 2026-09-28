@@ -7,6 +7,7 @@ import pytest
 from src.ingestion import llm_extractor
 from src.ingestion.document_pipeline import _create_remote_extractor
 from src.ingestion.llm_extractor import (
+    AlpineAIQuestionnaireExtractor,
     AnthropicQuestionnaireExtractor,
     OpenAIQuestionnaireExtractionResponse,
     QuestionnaireExtractionError,
@@ -30,6 +31,71 @@ class FakeAnthropicMessages:
                 )
             ],
         )
+
+
+class FakeAlpineCompletions:
+    def __init__(self, response_text: str, *, finish_reason: str = "stop") -> None:
+        self.response_text = response_text
+        self.finish_reason = finish_reason
+        self.request: dict[str, Any] | None = None
+
+    async def create(self, **kwargs: Any) -> Any:
+        self.request = kwargs
+        return SimpleNamespace(
+            choices=[
+                SimpleNamespace(
+                    finish_reason=self.finish_reason,
+                    message=SimpleNamespace(content=self.response_text, refusal=None),
+                )
+            ]
+        )
+
+
+class FakeAlpineClient:
+    def __init__(self, completions: FakeAlpineCompletions) -> None:
+        self.chat = SimpleNamespace(completions=completions)
+
+
+def test_alpineai_extractor_uses_basic_chat_completion_and_local_json_validation() -> None:
+    parsed_output = OpenAIQuestionnaireExtractionResponse(
+        document_kind="unknown",
+        extraction_confidence=0.25,
+    )
+    completions = FakeAlpineCompletions(parsed_output.model_dump_json())
+    extractor = AlpineAIQuestionnaireExtractor(
+        api_key="test-key",
+        model="mistral-large-3-675b-nvfp4",
+        client=FakeAlpineClient(completions),
+    )
+
+    draft = asyncio.run(
+        extractor.extract(filename="source.pdf", extracted_text="Synthetic document text")
+    )
+
+    assert completions.request is not None
+    assert completions.request["model"] == "mistral-large-3-675b-nvfp4"
+    assert "JSON Schema" in completions.request["messages"][0]["content"]
+    assert "Synthetic document text" in completions.request["messages"][1]["content"]
+    assert "response_format" not in completions.request
+    assert draft.document_kind == "unknown"
+
+
+def test_alpineai_extractor_rejects_truncated_and_invalid_json() -> None:
+    truncated = AlpineAIQuestionnaireExtractor(
+        api_key="test-key",
+        model="alpine-model",
+        client=FakeAlpineClient(FakeAlpineCompletions("{}", finish_reason="length")),
+    )
+    with pytest.raises(QuestionnaireExtractionError, match="truncated"):
+        asyncio.run(truncated.extract(filename="long.pdf", extracted_text="source"))
+
+    invalid = AlpineAIQuestionnaireExtractor(
+        api_key="test-key",
+        model="alpine-model",
+        client=FakeAlpineClient(FakeAlpineCompletions("not-json")),
+    )
+    with pytest.raises(QuestionnaireExtractionError, match="invalid"):
+        asyncio.run(invalid.extract(filename="bad.pdf", extracted_text="source"))
 
 
 def test_anthropic_extractor_uses_shared_strict_dto_and_maps_response() -> None:
@@ -107,6 +173,71 @@ def test_provider_factory_builds_native_anthropic_client() -> None:
 
     assert isinstance(extractor, AnthropicQuestionnaireExtractor)
     assert extractor.model == "claude-sonnet-test"
+
+
+def test_provider_factory_builds_alpineai_extractor_with_documented_default_url() -> None:
+    extractor = create_questionnaire_extractor(
+        provider="alpineai",
+        api_key="test-key",
+        model="mistral-large-3-675b-nvfp4",
+    )
+
+    assert isinstance(extractor, AlpineAIQuestionnaireExtractor)
+    assert extractor.model == "mistral-large-3-675b-nvfp4"
+
+
+def test_alpineai_provider_requires_key_in_remote_pipeline(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    observed: dict[str, Any] = {}
+
+    def fake_factory(**kwargs: Any) -> object:
+        observed.update(kwargs)
+        return object()
+
+    monkeypatch.setattr(
+        "src.ingestion.document_pipeline.create_questionnaire_extractor", fake_factory
+    )
+    monkeypatch.setenv("ALPINEAI_API_KEY", "test-key")
+
+    _create_remote_extractor(
+        provider="alpineai",
+        model=None,
+        base_url=None,
+        api_key_env=None,
+    )
+
+    assert observed == {
+        "provider": "alpineai",
+        "api_key": "test-key",
+        "model": "mistral-large-3-675b-nvfp4",
+        "base_url": "https://api.prod.alpineai.ch/v1",
+    }
+
+
+def test_alpineai_pipeline_keeps_legacy_swissgpt_key_compatibility(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    observed: dict[str, Any] = {}
+
+    def fake_factory(**kwargs: Any) -> object:
+        observed.update(kwargs)
+        return object()
+
+    monkeypatch.setattr(
+        "src.ingestion.document_pipeline.create_questionnaire_extractor", fake_factory
+    )
+    monkeypatch.delenv("ALPINEAI_API_KEY", raising=False)
+    monkeypatch.setenv("SWISSGPT_API_KEY", "legacy-key")
+
+    _create_remote_extractor(
+        provider="alpineai",
+        model="documented-model",
+        base_url=None,
+        api_key_env=None,
+    )
+
+    assert observed["api_key"] == "legacy-key"
 
 
 def test_provider_factory_requires_endpoint_for_openai_compatible_services() -> None:

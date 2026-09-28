@@ -314,8 +314,15 @@ class QuestionnaireVersion(BaseModel):
 		default_factory=dict,
 		description="Named categorical response scales; numeric forms may define none.",
 	)
+	item_text_included: bool = Field(
+		default=True,
+		description=(
+			"Whether item wording is included in this catalogue record. False is for "
+			"link-only records where redistribution has not been established."
+		),
+	)
 	items: list[ItemSchema] = Field(
-		min_length=1,
+		default_factory=list,
 		description="Items included in this questionnaire version.",
 	)
 	scoring_algorithms: list[ScoringAlgorithm] = Field(
@@ -336,6 +343,10 @@ class QuestionnaireVersion(BaseModel):
 	@model_validator(mode="after")
 	def validate_references(self) -> "QuestionnaireVersion":
 		"""Reject duplicate identifiers and references that cannot resolve locally."""
+		if self.item_text_included and not self.items:
+			raise ValueError("Versions with included item text must contain at least one item")
+		if not self.item_text_included and self.items:
+			raise ValueError("Link-only versions cannot include item wording")
 		item_ids = [item.item_id for item in self.items]
 		if len(item_ids) != len(set(item_ids)):
 			raise ValueError("item_id values must be unique within a questionnaire version")

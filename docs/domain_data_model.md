@@ -44,6 +44,7 @@ Every version has its own stable `version_id`, language, response sets, items, a
 - `based_on`: one or more `(instrument_id, version_id)` references identifying source forms.
 - `metadata`: version-specific keywords, search aliases, MeSH terms, characteristics, and review notes.
 - `source_documents`: version-specific official forms, manuals, or validation-study references with licensing and integrity metadata.
+- `item_text_included`: whether the source wording is included in this version. Set it to `false` only for explicit link-only records with no items; the GUI then disables project selection/export for that record.
 
 The `items` list is the actual content of the concrete form. A short form must contain its own item list and scoring rules rather than inheriting a parent's item list implicitly. This makes a search result or future export unambiguous.
 Each item can also have its own `QuestionnaireMetadata` for item-specific tags and discovery notes.
@@ -77,6 +78,7 @@ This abbreviated example shows the variant metadata. Item and response-set detai
       "display_name": "Original Full Form",
       "locale": "en-US",
       "form_type": "full",
+      "item_text_included": false,
       "response_sets": {},
       "items": [],
       "scoring_algorithms": []
@@ -116,7 +118,7 @@ This abbreviated example shows the variant metadata. Item and response-set detai
 }
 ```
 
-The empty lists and maps in this excerpt illustrate omitted content only; `QuestionnaireVersion` requires valid response-set and item fields under the current schema.
+The empty lists and maps in this excerpt illustrate a metadata-only link record: `item_text_included` is explicitly false and no item wording is present. Item-bearing records still require at least one valid item.
 
 ## Validation and identity rules
 
