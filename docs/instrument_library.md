@@ -61,6 +61,34 @@ These instruments cover the domains requested for PsyMetriQ. They are discovery 
 
 ## Validation and Population Evidence
 
+## Instrument profiles in the GUI
+
+All fifteen families currently shipped in `data/questionnaires/json/` now carry a structured research profile that is shown before rights, scoring, dimensions, and item details in the GUI:
+
+| Family | Profile focus | Version-specific distinctions |
+| --- | --- | --- |
+| PHQ-9 | Depressive symptom severity, two-week frame, screening versus diagnosis | English and German forms remain separate versions. |
+| GAD-7 | Generalized anxiety symptoms, two-week frame, screening versus diagnosis | US English, Austrian German, and Swiss German remain separate versions. |
+| DASS-21 | Dimensional depression, anxiety, and stress subscales | Adult form; German translation evidence is kept distinct. |
+| DASS-Y | Dimensional negative emotional states in youth | Ages 8-17; not interchangeable with adult DASS-21. |
+| IPAQ | Seven-day physical-activity recall and activity domains | Standard short form and IPAQ-E are distinct; no unsupported MET score is inferred. |
+| Rosenberg Self-Esteem Scale | Global self-esteem and self-regard | Ten-item English source form with reverse-keying notes. |
+| WHO-5 | Positive subjective wellbeing | Five-item link-only reference; publication-specific rights remain to be checked. |
+| WEMWBS / SWEMWBS | Positive mental wellbeing | Fourteen-item and seven-item licensed forms remain separate. |
+| General Self-Efficacy Scale | Generalized coping/self-efficacy beliefs | Ten-item English link-only reference with age guidance from the source. |
+| Perceived Stress Scale | Appraised unpredictability, uncontrollability, and overload | PSS-10 and PSS-4 are separate link-only forms without diagnostic cutoffs. |
+| KIDSCREEN | Health-related quality of life in children and adolescents | German KIDSCREEN-52, KIDSCREEN-27, and KIDSCREEN-10 references; official site reports open access and version-specific psychometric summaries. |
+| MSPSS | Perceived support from family, friends, and significant others | German reference with psychometric evidence including older-adult research; item rights remain unverified. |
+| CIUS | Problematic or compulsive internet use | German adolescent validation reference; adolescent and adult evidence must not be conflated. |
+| GADIS-A | Gaming-disorder symptoms in adolescents | German ICD-11-oriented validation reference for frequent gamers aged 10-17. |
+| ISAP | School-attendance problems and school refusal contexts | German youth reference; ISAP-P parent evidence remains a separate future version and has documented limitations. |
+| PSQ | Multidimensional perceived stress | German psychometric/reference record with worries, tension, demands, and joy dimensions. |
+| F-SozU | Perceived social support | German short form relevant to psychosocial counselling, rehabilitation, and social work. |
+| UCLA Loneliness Scale | Subjective loneliness and social isolation | Three-item short-form reference; German translation equivalence and reuse terms require version-specific review. |
+| SDQ | Strengths and difficulties in children and adolescents | German parent, teacher, and self-report references are separate versions with different age ranges. |
+
+The profile fields are intentionally source-grounded: description, intended use, name origin, development history, measurement rationale, and interpretation notes. They are complemented by structured publication year, citation, DOI, contributors, target populations, dimensions, and `cosmin_metrics` where available. The GUI displays **nicht dokumentiert** when a field is absent at family and version scope. This is a catalog gap, not a claim that the fact does not exist in the literature.
+
 The following references informed the shortlist. They identify original or key validation work, not blanket evidence for every translation, population, or cutoff:
 
 - **MSPSS social support:** Zimet et al., 1988, [DOI 10.1207/s15327752jpa5201_2](https://doi.org/10.1207/s15327752jpa5201_2); German older-adult psychometric study, Boggatz, [DOI 10.1111/opn.12540](https://doi.org/10.1111/opn.12540).
@@ -68,6 +96,10 @@ The following references informed the shortlist. They identify original or key v
 - **KIDSCREEN:** Ravens-Sieberer et al., 2008, 22,827 children/adolescents ages 8-18 across 13 European countries, [DOI 10.1111/j.1524-4733.2007.00291.x](https://doi.org/10.1111/j.1524-4733.2007.00291.x).
 - **Friendship Quality Questionnaire:** Parker & Asher, 1993, children in grades 3-5, [DOI 10.1037/0012-1649.29.4.611](https://doi.org/10.1037/0012-1649.29.4.611).
 - **ISAP school attendance:** Knollmann, Reissner & Hebebrand, 2019, clinical youth sample, [DOI 10.1007/s00787-018-1204-2](https://doi.org/10.1007/s00787-018-1204-2); ISAP-P parent form, [DOI 10.3389/frcha.2025.1543527](https://doi.org/10.3389/frcha.2025.1543527). The parent validation found limitations in associations with absence; pair attendance-problem scales with actual attendance records.
+- **PSQ stress:** Fliege et al., 2005, German validation and reference values, [DOI 10.1097/01.psy.0000151491.80157.07](https://doi.org/10.1097/01.psy.0000151491.80157.07). The PSQ is a perceived-stress measure, not a diagnostic instrument.
+- **F-SozU social support:** German questionnaire family by Fydrich, Sommer, and Brähler; exact form and licence should be checked through the [Hogrefe Testzentrale](https://www.testzentrale.de/fragebogen-zur-sozialen-unterstuetzung.html).
+- **UCLA loneliness:** Hughes et al., 2004, three-item short form, [DOI 10.1177/0164027504268574](https://doi.org/10.1177/0164027504268574). German use does not automatically establish a validated or redistributable translation.
+- **SDQ:** Goodman, 2001, psychometric properties, [DOI 10.1037/1040-3590.13.3.367](https://doi.org/10.1037/1040-3590.13.3.367); German and other language forms are listed at the [official SDQ site](https://www.sdqinfo.org/py/sdqinfo/b0.py). Parent, teacher, and self-report forms must not be pooled without accounting for informant and age.
 - **School refusal:** Kearney's SRAS-R, 2002, [DOI 10.1023/A:1020774932043](https://doi.org/10.1023/A:1020774932043). A German adaptation study found concerns with the older adaptation's structure/content, so translation equivalence is not assumed.
 - **School wellbeing:** Renshaw et al. SSWQ, 2015, grades 6-8, [DOI 10.1037/spq0000088](https://doi.org/10.1037/spq0000088).
 - **Problematic internet use:** CIUS original, Meerkerk et al., 2009, [DOI 10.1089/cpb.2008.0181](https://doi.org/10.1089/cpb.2008.0181); German adolescent validation, [DOI 10.1089/cyber.2012.0689](https://doi.org/10.1089/cyber.2012.0689); German/English adult language invariance, [DOI 10.1089/cyber.2018.0731](https://doi.org/10.1089/cyber.2018.0731).

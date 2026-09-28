@@ -454,10 +454,34 @@ def build_phq9_versions(pdf_directory: Path) -> QuestionnaireParent:
     return QuestionnaireParent(
         instrument_id="phq9",
         name_full="Patient Health Questionnaire-9",
-        construct_ontology=[],
+        construct_ontology=["depressive symptom severity"],
         is_commercial=False,
         contributors=PHQ_AUTHORS,
         metadata=QuestionnaireMetadata(
+            description=(
+                "Nine-item self-report measure of depressive symptom frequency and severity "
+                "during the preceding two weeks."
+            ),
+            intended_use=(
+                "Screening and monitoring depressive symptoms in primary care and research; "
+                "the score is not a diagnosis by itself."
+            ),
+            name_origin=(
+                "Patient Health Questionnaire, nine-item depression module; commonly shortened "
+                "to PHQ-9."
+            ),
+            development_history=(
+                "Published and validated as the nine-item depression module of the PHQ in 2001; "
+                "language versions must be interpreted with their own evidence."
+            ),
+            measurement_rationale=(
+                "The items represent core depressive symptom domains and use a common two-week "
+                "frequency frame to support a severity summary."
+            ),
+            interpretation_notes=(
+                "Cutoffs, diagnostic accuracy, and response to change depend on the setting, "
+                "population, language version, and clinical assessment."
+            ),
             keywords=["depression", "mental health", "primary care"],
             search_aliases=["PHQ-9", "PHQ9", "Patient Health Questionnaire"],
         ),
@@ -625,10 +649,34 @@ def build_gad7_versions(pdf_directory: Path) -> QuestionnaireParent:
     return QuestionnaireParent(
         instrument_id="gad7",
         name_full="Generalized Anxiety Disorder-7",
-        construct_ontology=[],
+        construct_ontology=["generalized anxiety symptom severity"],
         is_commercial=False,
         contributors=GAD_AUTHORS,
         metadata=QuestionnaireMetadata(
+            description=(
+                "Seven-item self-report measure of generalized anxiety symptom frequency "
+                "during the preceding two weeks."
+            ),
+            intended_use=(
+                "Screening and monitoring anxiety symptoms in primary care and research; "
+                "it does not establish a diagnosis without further assessment."
+            ),
+            name_origin=(
+                "Generalized Anxiety Disorder questionnaire, seven-item form; abbreviated "
+                "GAD-7."
+            ),
+            development_history=(
+                "Introduced and evaluated by Spitzer, Kroenke, Williams, and Lowe in 2006; "
+                "regional translations are separate versions in this catalog."
+            ),
+            measurement_rationale=(
+                "The items sample common cognitive, emotional, and physiological anxiety "
+                "symptoms with a shared two-week frequency frame."
+            ),
+            interpretation_notes=(
+                "Thresholds and diagnostic performance are context- and language-specific; "
+                "use the official scoring and clinical guidance for the chosen version."
+            ),
             keywords=["anxiety", "generalized anxiety", "mental health"],
             search_aliases=["GAD-7", "GAD7", "Generalized Anxiety Disorder-7"],
         ),

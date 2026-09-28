@@ -1,0 +1,97 @@
+{
+  "instrument_id": "f_sozu",
+  "name_full": "Fragebogen zur sozialen Unterstützung",
+  "construct_ontology": [
+    "perceived social support"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "German short questionnaire on perceived social support and social integration.",
+    "intended_use": "Research, psychosocial counselling, rehabilitation, and social-work assessment of perceived support.",
+    "name_origin": "F-SozU is the German abbreviation for Fragebogen zur sozialen Unterstützung.",
+    "development_history": "Developed as a German family of social-support questionnaires with longer and shorter forms; the K-14 form is represented here separately.",
+    "measurement_rationale": "Perceived emotional, practical, and integrative support are distinct resources relevant to coping and participation.",
+    "interpretation_notes": "Perceived support is not the same as objective network size or received help; use the exact form manual and target-population evidence.",
+    "keywords": [
+      "F-SozU",
+      "soziale Unterstützung",
+      "social support",
+      "Sozialarbeit"
+    ],
+    "search_aliases": [],
+    "mesh_terms": [],
+    "characteristics": [
+      "self-report",
+      "German-instrument",
+      "social-work-relevant",
+      "metadata-reference"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "f_sozu_k14_de_v1",
+      "language": "de",
+      "display_name": "F-SozU K-14 Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": null,
+      "source_citation": "Fydrich et al. (2007). Fragebogen zur sozialen Unterstützung (F-SozU K-14/K-22).",
+      "source_doi": null,
+      "source_documents": [
+        {
+          "title": "Fragebogen zur sozialen Unterstützung (F-SozU)",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.testzentrale.de/fragebogen-zur-sozialen-unterstuetzung.html",
+          "local_path": null,
+          "license_name": "Metadata reference; exact reuse terms require source review",
+          "license_url": null,
+          "redistribution_permitted": false,
+          "permission_basis": "Only bibliographic and discovery metadata is stored. Questionnaire wording and forms are not included until exact edition, language, and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "German short questionnaire on perceived social support and social integration.",
+        "intended_use": "Research, psychosocial counselling, rehabilitation, and social-work assessment of perceived support.",
+        "name_origin": "F-SozU is the German abbreviation for Fragebogen zur sozialen Unterstützung.",
+        "development_history": "Developed as a German family of social-support questionnaires with longer and shorter forms; the K-14 form is represented here separately.",
+        "measurement_rationale": "Perceived emotional, practical, and integrative support are distinct resources relevant to coping and participation.",
+        "interpretation_notes": "Perceived support is not the same as objective network size or received help; use the exact form manual and target-population evidence.",
+        "keywords": [
+          "F-SozU",
+          "soziale Unterstützung",
+          "social support",
+          "Sozialarbeit"
+        ],
+        "search_aliases": [],
+        "mesh_terms": [],
+        "characteristics": [
+          "self-report",
+          "German-instrument",
+          "social-work-relevant",
+          "metadata-reference"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 14,
+      "source_reported_dimensions": [
+        "emotional support",
+        "practical support",
+        "social integration"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

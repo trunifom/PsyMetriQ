@@ -7,6 +7,12 @@
   "is_commercial": null,
   "contributors": [],
   "metadata": {
+    "description": "Five-item positive mental wellbeing index referring to recent subjective wellbeing.",
+    "intended_use": "Brief wellbeing screening and population research; the exact publication and administration terms must be checked before use.",
+    "name_origin": "WHO-5 Well-Being Index, named for its five-item format and WHO source.",
+    "development_history": "The catalog records the WHO-5 as a link-only reference; the exact underlying publication history remains to be verified for the selected edition.",
+    "measurement_rationale": "Short positively worded wellbeing content is intended to provide a compact indicator of subjective psychological wellbeing.",
+    "interpretation_notes": "Do not infer a diagnostic cutoff or reproduction permission from this reference record; consult the official form and publication-specific evidence.",
     "keywords": [
       "WHO-5",
       "wellbeing",
@@ -48,6 +54,12 @@
         }
       ],
       "metadata": {
+        "description": null,
+        "intended_use": null,
+        "name_origin": null,
+        "development_history": null,
+        "measurement_rationale": null,
+        "interpretation_notes": null,
         "keywords": [
           "WHO-5",
           "WHO five-item wellbeing index"

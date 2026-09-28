@@ -108,6 +108,30 @@ def build_rosenberg_self_esteem() -> QuestionnaireParent:
         construct_ontology=["self-esteem"],
         is_commercial=False,
         metadata=QuestionnaireMetadata(
+            description=(
+                "Ten-item self-report measure of global self-esteem and positive/negative "
+                "self-regard."
+            ),
+            intended_use=(
+                "Research and survey assessment of perceived self-esteem; interpretation depends "
+                "on the population and language evidence."
+            ),
+            name_origin=(
+                "Rosenberg Self-Esteem Scale, named after Morris Rosenberg; commonly abbreviated "
+                "RSES."
+            ),
+            development_history=(
+                "Introduced in Rosenberg's 1965 work on the adolescent self-image; the source "
+                "record notes the original high-school development context."
+            ),
+            measurement_rationale=(
+                "The items cover a broad global evaluation of personal worth and self-acceptance, "
+                "including reverse-keyed statements."
+            ),
+            interpretation_notes=(
+                "Reverse-scoring and total-score handling must follow the cited source; a total "
+                "score is not a diagnosis and translation evidence is population-specific."
+            ),
             keywords=["self-esteem", "self-worth", "wellbeing"],
             notes="English source form; verify language- and population-specific evidence.",
         ),
@@ -168,6 +192,27 @@ def build_who5_link_only() -> QuestionnaireParent:
         construct_ontology=["subjective psychological well-being"],
         is_commercial=None,
         metadata=QuestionnaireMetadata(
+            description=(
+                "Five-item positive mental wellbeing index referring to recent subjective "
+                "wellbeing."
+            ),
+            intended_use=(
+                "Brief wellbeing screening and population research; the exact publication and "
+                "administration terms must be checked before use."
+            ),
+            name_origin="WHO-5 Well-Being Index, named for its five-item format and WHO source.",
+            development_history=(
+                "The catalog records the WHO-5 as a link-only reference; the exact underlying "
+                "publication history remains to be verified for the selected edition."
+            ),
+            measurement_rationale=(
+                "Short positively worded wellbeing content is intended to provide a compact "
+                "indicator of subjective psychological wellbeing."
+            ),
+            interpretation_notes=(
+                "Do not infer a diagnostic cutoff or reproduction permission from this reference "
+                "record; consult the official form and publication-specific evidence."
+            ),
             keywords=["WHO-5", "wellbeing", "well-being", "positive mental health"],
             notes=(
                 "Metadata-only discovery record. Verify the copyright notice for the exact "
@@ -221,6 +266,30 @@ def build_wemwbs_link_only() -> QuestionnaireParent:
         construct_ontology=["mental wellbeing"],
         is_commercial=True,
         metadata=QuestionnaireMetadata(
+            description=(
+                "Fourteen-item measure of positive mental wellbeing developed for population and "
+                "health research."
+            ),
+            intended_use=(
+                "Research and wellbeing monitoring under the applicable Warwick licence; it is "
+                "not a diagnostic instrument."
+            ),
+            name_origin=(
+                "Warwick-Edinburgh Mental Wellbeing Scale, abbreviated WEMWBS; the short form "
+                "is SWEMWBS."
+            ),
+            development_history=(
+                "WEMWBS development and UK validation were published in 2007; SWEMWBS is the "
+                "seven-item short form represented as a separate version."
+            ),
+            measurement_rationale=(
+                "The scale focuses on positive mental wellbeing rather than only symptoms or "
+                "mental illness."
+            ),
+            interpretation_notes=(
+                "Use the appropriate form, scoring guidance, licence, and validation evidence; "
+                "WEMWBS and SWEMWBS scores are not automatically interchangeable."
+            ),
             keywords=["WEMWBS", "wellbeing", "well-being", "mental health"],
             notes=(
                 "Metadata-only discovery record. Eligible academic/non-profit organizations "
@@ -312,6 +381,30 @@ def build_gse_link_only() -> QuestionnaireParent:
         construct_ontology=["general self-efficacy"],
         is_commercial=None,
         metadata=QuestionnaireMetadata(
+            description=(
+                "Ten-item self-report measure of generalized confidence in initiating and "
+                "managing actions across different situations."
+            ),
+            intended_use=(
+                "Research assessment of general self-efficacy in adolescents and adults; this "
+                "reference record does not include item wording."
+            ),
+            name_origin=(
+                "General Self-Efficacy Scale, often abbreviated GSE; generalized refers to "
+                "cross-situational rather than task-specific efficacy."
+            ),
+            development_history=(
+                "The English source record cites Schwarzer and Jerusalem's 1995 measurement "
+                "chapter and provides language-version resources."
+            ),
+            measurement_rationale=(
+                "General self-efficacy concerns perceived capability to cope with a broad range "
+                "of demands, rather than ability in one task."
+            ),
+            interpretation_notes=(
+                "The source guidance excludes children below age 12; use the source scoring and "
+                "language-specific evidence and do not treat the score as competence proof."
+            ),
             keywords=["GSE", "general self-efficacy", "coping", "wellbeing"],
             notes=(
                 "Link-only record. The FU Berlin author site hosts the scale and translations, "
@@ -433,6 +526,30 @@ def build_pss_link_only() -> QuestionnaireParent:
         construct_ontology=["perceived stress"],
         is_commercial=None,
         metadata=QuestionnaireMetadata(
+            description=(
+                "Self-report measure of perceived stress, especially the extent to which life "
+                "situations are appraised as unpredictable, uncontrollable, or overloaded."
+            ),
+            intended_use=(
+                "Research and survey assessment of perceived stress; PSS-10 and PSS-4 are "
+                "separate forms and the record contains no item wording."
+            ),
+            name_origin=(
+                "Perceived Stress Scale, abbreviated PSS; the suffix identifies the item-count "
+                "form such as PSS-10 or PSS-4."
+            ),
+            development_history=(
+                "Developed by Cohen, Kamarck, and Mermelstein and published in 1983 as a global "
+                "measure of perceived stress."
+            ),
+            measurement_rationale=(
+                "The construct concerns appraisal of stressfulness and perceived control, not a "
+                "diagnosis or a direct count of external events."
+            ),
+            interpretation_notes=(
+                "The source record notes that there are no diagnostic cutoffs; compare scores in "
+                "the appropriate sample and follow the exact form's permissions and guidance."
+            ),
             keywords=["PSS", "Cohen Perceived Stress Scale", "stress"],
             notes=(
                 "Link-only. The creator's university page directs requests through ePROVIDE; "

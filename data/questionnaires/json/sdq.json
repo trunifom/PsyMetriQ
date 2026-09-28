@@ -1,0 +1,254 @@
+{
+  "instrument_id": "sdq",
+  "name_full": "Strengths and Difficulties Questionnaire",
+  "construct_ontology": [
+    "child and adolescent mental health"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Twenty-five-item behavioral screening questionnaire with five strengths and difficulties domains.",
+    "intended_use": "Child and adolescent mental-health, school, pediatric, and social-work screening with multiple informants.",
+    "name_origin": "Strengths and Difficulties Questionnaire, abbreviated SDQ.",
+    "development_history": "Developed as a brief multi-informant behavioral screening family with parent, teacher, and self-report forms.",
+    "measurement_rationale": "Combining difficulty domains with prosocial behavior gives a balanced profile of emotional, behavioral, attentional, peer, and strength-related functioning.",
+    "interpretation_notes": "Screening bands are not diagnoses; compare the informant, age band, language version, and local manual. Impact supplements are separate from the 25 core items.",
+    "keywords": [
+      "SDQ",
+      "Strengths and Difficulties Questionnaire",
+      "Verhaltensscreening",
+      "Kinder",
+      "Jugendliche"
+    ],
+    "search_aliases": [],
+    "mesh_terms": [],
+    "characteristics": [
+      "multi-informant",
+      "German-version-available",
+      "school-relevant",
+      "metadata-reference"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "sdq_parent_de_v1",
+      "language": "de",
+      "display_name": "SDQ Elternversion Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "children and adolescents",
+          "minimum_age_years": 2.0,
+          "maximum_age_years": 17.0,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2001,
+      "source_citation": "Goodman (2001). Psychometric properties of the strengths and difficulties questionnaire.",
+      "source_doi": "10.1037/1040-3590.13.3.367",
+      "source_documents": [
+        {
+          "title": "Strengths and Difficulties Questionnaire official forms and German versions",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.sdqinfo.org/py/sdqinfo/b0.py",
+          "local_path": null,
+          "license_name": "Official forms available; copyright and version-specific use terms apply",
+          "license_url": "https://www.sdqinfo.org/py/sdqinfo/c0.py",
+          "redistribution_permitted": false,
+          "permission_basis": "Only bibliographic and discovery metadata is stored. Questionnaire wording and forms are not included until exact edition, language, and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Twenty-five-item behavioral screening questionnaire with five strengths and difficulties domains.",
+        "intended_use": "Child and adolescent mental-health, school, pediatric, and social-work screening with multiple informants.",
+        "name_origin": "Strengths and Difficulties Questionnaire, abbreviated SDQ.",
+        "development_history": "Developed as a brief multi-informant behavioral screening family with parent, teacher, and self-report forms.",
+        "measurement_rationale": "Combining difficulty domains with prosocial behavior gives a balanced profile of emotional, behavioral, attentional, peer, and strength-related functioning.",
+        "interpretation_notes": "Screening bands are not diagnoses; compare the informant, age band, language version, and local manual. Impact supplements are separate from the 25 core items.",
+        "keywords": [
+          "SDQ",
+          "Strengths and Difficulties Questionnaire",
+          "Verhaltensscreening",
+          "Kinder",
+          "Jugendliche"
+        ],
+        "search_aliases": [],
+        "mesh_terms": [],
+        "characteristics": [
+          "multi-informant",
+          "German-version-available",
+          "school-relevant",
+          "metadata-reference"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 25,
+      "source_reported_dimensions": [
+        "emotional symptoms",
+        "conduct problems",
+        "hyperactivity",
+        "peer problems",
+        "prosocial behavior"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    },
+    {
+      "version_id": "sdq_teacher_de_v1",
+      "language": "de",
+      "display_name": "SDQ Lehrkraftversion Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "children and adolescents",
+          "minimum_age_years": 2.0,
+          "maximum_age_years": 17.0,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2001,
+      "source_citation": "Goodman (2001). Psychometric properties of the strengths and difficulties questionnaire.",
+      "source_doi": "10.1037/1040-3590.13.3.367",
+      "source_documents": [
+        {
+          "title": "Strengths and Difficulties Questionnaire official forms and German versions",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.sdqinfo.org/py/sdqinfo/b0.py",
+          "local_path": null,
+          "license_name": "Official forms available; copyright and version-specific use terms apply",
+          "license_url": "https://www.sdqinfo.org/py/sdqinfo/c0.py",
+          "redistribution_permitted": false,
+          "permission_basis": "Only bibliographic and discovery metadata is stored. Questionnaire wording and forms are not included until exact edition, language, and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Twenty-five-item behavioral screening questionnaire with five strengths and difficulties domains.",
+        "intended_use": "Child and adolescent mental-health, school, pediatric, and social-work screening with multiple informants.",
+        "name_origin": "Strengths and Difficulties Questionnaire, abbreviated SDQ.",
+        "development_history": "Developed as a brief multi-informant behavioral screening family with parent, teacher, and self-report forms.",
+        "measurement_rationale": "Combining difficulty domains with prosocial behavior gives a balanced profile of emotional, behavioral, attentional, peer, and strength-related functioning.",
+        "interpretation_notes": "Screening bands are not diagnoses; compare the informant, age band, language version, and local manual. Impact supplements are separate from the 25 core items.",
+        "keywords": [
+          "SDQ",
+          "Strengths and Difficulties Questionnaire",
+          "Verhaltensscreening",
+          "Kinder",
+          "Jugendliche"
+        ],
+        "search_aliases": [],
+        "mesh_terms": [],
+        "characteristics": [
+          "multi-informant",
+          "German-version-available",
+          "school-relevant",
+          "metadata-reference"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 25,
+      "source_reported_dimensions": [
+        "emotional symptoms",
+        "conduct problems",
+        "hyperactivity",
+        "peer problems",
+        "prosocial behavior"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    },
+    {
+      "version_id": "sdq_self_de_v1",
+      "language": "de",
+      "display_name": "SDQ Selbstbericht Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "adolescents",
+          "minimum_age_years": 11.0,
+          "maximum_age_years": 17.0,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2001,
+      "source_citation": "Goodman (2001). Psychometric properties of the strengths and difficulties questionnaire.",
+      "source_doi": "10.1037/1040-3590.13.3.367",
+      "source_documents": [
+        {
+          "title": "Strengths and Difficulties Questionnaire official forms and German versions",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.sdqinfo.org/py/sdqinfo/b0.py",
+          "local_path": null,
+          "license_name": "Official forms available; copyright and version-specific use terms apply",
+          "license_url": "https://www.sdqinfo.org/py/sdqinfo/c0.py",
+          "redistribution_permitted": false,
+          "permission_basis": "Only bibliographic and discovery metadata is stored. Questionnaire wording and forms are not included until exact edition, language, and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Twenty-five-item behavioral screening questionnaire with five strengths and difficulties domains.",
+        "intended_use": "Child and adolescent mental-health, school, pediatric, and social-work screening with multiple informants.",
+        "name_origin": "Strengths and Difficulties Questionnaire, abbreviated SDQ.",
+        "development_history": "Developed as a brief multi-informant behavioral screening family with parent, teacher, and self-report forms.",
+        "measurement_rationale": "Combining difficulty domains with prosocial behavior gives a balanced profile of emotional, behavioral, attentional, peer, and strength-related functioning.",
+        "interpretation_notes": "Screening bands are not diagnoses; compare the informant, age band, language version, and local manual. Impact supplements are separate from the 25 core items.",
+        "keywords": [
+          "SDQ",
+          "Strengths and Difficulties Questionnaire",
+          "Verhaltensscreening",
+          "Kinder",
+          "Jugendliche"
+        ],
+        "search_aliases": [],
+        "mesh_terms": [],
+        "characteristics": [
+          "multi-informant",
+          "German-version-available",
+          "school-relevant",
+          "metadata-reference"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 25,
+      "source_reported_dimensions": [
+        "emotional symptoms",
+        "conduct problems",
+        "hyperactivity",
+        "peer problems",
+        "prosocial behavior"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

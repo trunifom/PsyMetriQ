@@ -1,0 +1,98 @@
+{
+  "instrument_id": "psq",
+  "name_full": "Perceived Stress Questionnaire",
+  "construct_ontology": [
+    "perceived stress"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Thirty-item self-report measure of perceived stress and related positive and negative experiences.",
+    "intended_use": "Research and health-related assessment of perceived stress, including clinical and non-clinical samples.",
+    "name_origin": "Perceived Stress Questionnaire, abbreviated PSQ.",
+    "development_history": "The PSQ was introduced as a multidimensional stress measure and later evaluated in German samples with reference values.",
+    "measurement_rationale": "Separating worries, tension, demands, and joy captures subjective stress appraisal more broadly than an event count.",
+    "interpretation_notes": "Use the exact German form and scoring instructions; scores describe perceived stress and are not diagnostic cutoffs.",
+    "keywords": [
+      "PSQ",
+      "perceived stress",
+      "wahrgenommener Stress",
+      "Belastung"
+    ],
+    "search_aliases": [],
+    "mesh_terms": [],
+    "characteristics": [
+      "self-report",
+      "multidimensional-stress",
+      "German-validation",
+      "metadata-reference"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "psq_de_v1",
+      "language": "de",
+      "display_name": "Perceived Stress Questionnaire Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2005,
+      "source_citation": "Fliege et al. (2005). The Perceived Stress Questionnaire (PSQ) reconsidered: validation and reference values from different clinical and healthy populations.",
+      "source_doi": "10.1097/01.psy.0000151491.80157.07",
+      "source_documents": [
+        {
+          "title": "German psychometric evidence for the Perceived Stress Questionnaire",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://doi.org/10.1097/01.psy.0000151491.80157.07",
+          "local_path": null,
+          "license_name": "Metadata reference; exact reuse terms require source review",
+          "license_url": null,
+          "redistribution_permitted": false,
+          "permission_basis": "Only bibliographic and discovery metadata is stored. Questionnaire wording and forms are not included until exact edition, language, and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Thirty-item self-report measure of perceived stress and related positive and negative experiences.",
+        "intended_use": "Research and health-related assessment of perceived stress, including clinical and non-clinical samples.",
+        "name_origin": "Perceived Stress Questionnaire, abbreviated PSQ.",
+        "development_history": "The PSQ was introduced as a multidimensional stress measure and later evaluated in German samples with reference values.",
+        "measurement_rationale": "Separating worries, tension, demands, and joy captures subjective stress appraisal more broadly than an event count.",
+        "interpretation_notes": "Use the exact German form and scoring instructions; scores describe perceived stress and are not diagnostic cutoffs.",
+        "keywords": [
+          "PSQ",
+          "perceived stress",
+          "wahrgenommener Stress",
+          "Belastung"
+        ],
+        "search_aliases": [],
+        "mesh_terms": [],
+        "characteristics": [
+          "self-report",
+          "multidimensional-stress",
+          "German-validation",
+          "metadata-reference"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 30,
+      "source_reported_dimensions": [
+        "worries",
+        "tension",
+        "demands",
+        "joy"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

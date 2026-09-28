@@ -1,0 +1,95 @@
+{
+  "instrument_id": "isap",
+  "name_full": "Inventar zur Erfassung von Schulabsentismus",
+  "construct_ontology": [
+    "school attendance problems"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "German instrument for assessing school-attendance problems and related functional patterns.",
+    "intended_use": "Clinical and research assessment of school absenteeism and school-refusal-related problems in young people.",
+    "name_origin": "ISAP is the German acronym for Inventar zur Erfassung von Schulabsentismus.",
+    "development_history": "Developed and evaluated in German child and adolescent clinical research; the parent form ISAP-P is a distinct version.",
+    "measurement_rationale": "Differentiating attendance problems and their maintaining contexts supports assessment alongside objective attendance records.",
+    "interpretation_notes": "The instrument should not replace attendance records or clinical assessment; parent-form evidence has documented limitations and must be interpreted separately.",
+    "keywords": [
+      "ISAP",
+      "Schulabsentismus",
+      "school attendance",
+      "school refusal"
+    ],
+    "search_aliases": [],
+    "mesh_terms": [],
+    "characteristics": [
+      "German-development",
+      "clinical-youth-evidence",
+      "metadata-reference"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "isap_de_v1",
+      "language": "de",
+      "display_name": "Inventar zur Erfassung von Schulabsentismus Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": null,
+      "source_citation": "Knollmann et al. (2019). School absenteeism and the ISAP instrument.",
+      "source_doi": "10.1007/s00787-018-1204-2",
+      "source_documents": [
+        {
+          "title": "German ISAP school attendance problems validation",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://doi.org/10.1007/s00787-018-1204-2",
+          "local_path": null,
+          "license_name": "Metadata reference; exact reuse terms require source review",
+          "license_url": null,
+          "redistribution_permitted": false,
+          "permission_basis": "Only bibliographic and discovery metadata is stored. Questionnaire wording and forms are not included until exact edition, language, and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "German instrument for assessing school-attendance problems and related functional patterns.",
+        "intended_use": "Clinical and research assessment of school absenteeism and school-refusal-related problems in young people.",
+        "name_origin": "ISAP is the German acronym for Inventar zur Erfassung von Schulabsentismus.",
+        "development_history": "Developed and evaluated in German child and adolescent clinical research; the parent form ISAP-P is a distinct version.",
+        "measurement_rationale": "Differentiating attendance problems and their maintaining contexts supports assessment alongside objective attendance records.",
+        "interpretation_notes": "The instrument should not replace attendance records or clinical assessment; parent-form evidence has documented limitations and must be interpreted separately.",
+        "keywords": [
+          "ISAP",
+          "Schulabsentismus",
+          "school attendance",
+          "school refusal"
+        ],
+        "search_aliases": [],
+        "mesh_terms": [],
+        "characteristics": [
+          "German-development",
+          "clinical-youth-evidence",
+          "metadata-reference"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": null,
+      "source_reported_dimensions": [
+        "school attendance problems",
+        "school refusal",
+        "school-related distress"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

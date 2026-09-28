@@ -50,7 +50,7 @@ def test_gui_starts_with_validated_catalog_and_renders_each_workspace_view(
 
     app = PsyMetriQApplication(page)  # type: ignore[arg-type]
 
-    assert len(app.catalog_records) == 10
+    assert len(app.catalog_records) == 19
     assert app.search_field.label == "Suche"
     assert len(page.controls) == 1
     for view in ("project", "exchange", "intake", "settings", "catalog"):
@@ -454,7 +454,7 @@ def test_link_only_wellbeing_records_are_discoverable_and_selectable_as_referenc
         version.version_id
         for _family, version in app._visible_versions()
         if _family.instrument_id == "perceived_stress_scale"
-    ] == ["pss4_en_v1"]
+    ] == ["pss10_en_v1", "pss4_en_v1"]
 
 
 def test_version_details_expose_instrument_profile_information(
@@ -498,6 +498,25 @@ def test_catalogue_search_includes_instrument_profile_metadata(
     app.search_query = "searchable profile phrase"
 
     assert app._visible_versions()
+
+
+def test_every_catalog_family_has_a_research_profile(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(application, "SETTINGS_PATH", tmp_path / "settings.json")
+    app = PsyMetriQApplication(FakePage())  # type: ignore[arg-type]
+    profile_fields = (
+        "description",
+        "intended_use",
+        "name_origin",
+        "development_history",
+        "measurement_rationale",
+        "interpretation_notes",
+    )
+
+    assert len(app.catalog_records) == 19
+    for family, _path in app.catalog_records:
+        assert all(getattr(family.metadata, field) for field in profile_fields)
 
 
 def test_metadata_reference_can_be_included_in_project_and_exported_without_item_text(

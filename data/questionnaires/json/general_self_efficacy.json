@@ -7,6 +7,12 @@
   "is_commercial": null,
   "contributors": [],
   "metadata": {
+    "description": "Ten-item self-report measure of generalized confidence in initiating and managing actions across different situations.",
+    "intended_use": "Research assessment of general self-efficacy in adolescents and adults; this reference record does not include item wording.",
+    "name_origin": "General Self-Efficacy Scale, often abbreviated GSE; generalized refers to cross-situational rather than task-specific efficacy.",
+    "development_history": "The English source record cites Schwarzer and Jerusalem's 1995 measurement chapter and provides language-version resources.",
+    "measurement_rationale": "General self-efficacy concerns perceived capability to cope with a broad range of demands, rather than ability in one task.",
+    "interpretation_notes": "The source guidance excludes children below age 12; use the source scoring and language-specific evidence and do not treat the score as competence proof.",
     "keywords": [
       "GSE",
       "general self-efficacy",
@@ -55,6 +61,12 @@
         }
       ],
       "metadata": {
+        "description": null,
+        "intended_use": null,
+        "name_origin": null,
+        "development_history": null,
+        "measurement_rationale": null,
+        "interpretation_notes": null,
         "keywords": [
           "GSE",
           "10 items",

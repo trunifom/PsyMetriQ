@@ -7,6 +7,12 @@
   "is_commercial": null,
   "contributors": [],
   "metadata": {
+    "description": "Self-report measure of perceived stress, especially the extent to which life situations are appraised as unpredictable, uncontrollable, or overloaded.",
+    "intended_use": "Research and survey assessment of perceived stress; PSS-10 and PSS-4 are separate forms and the record contains no item wording.",
+    "name_origin": "Perceived Stress Scale, abbreviated PSS; the suffix identifies the item-count form such as PSS-10 or PSS-4.",
+    "development_history": "Developed by Cohen, Kamarck, and Mermelstein and published in 1983 as a global measure of perceived stress.",
+    "measurement_rationale": "The construct concerns appraisal of stressfulness and perceived control, not a diagnosis or a direct count of external events.",
+    "interpretation_notes": "The source record notes that there are no diagnostic cutoffs; compare scores in the appropriate sample and follow the exact form's permissions and guidance.",
     "keywords": [
       "PSS",
       "Cohen Perceived Stress Scale",
@@ -47,6 +53,12 @@
         }
       ],
       "metadata": {
+        "description": null,
+        "intended_use": null,
+        "name_origin": null,
+        "development_history": null,
+        "measurement_rationale": null,
+        "interpretation_notes": null,
         "keywords": [
           "PSS-10",
           "perceived stress",
@@ -96,6 +108,12 @@
         }
       ],
       "metadata": {
+        "description": null,
+        "intended_use": null,
+        "name_origin": null,
+        "development_history": null,
+        "measurement_rationale": null,
+        "interpretation_notes": null,
         "keywords": [
           "PSS-4",
           "short perceived stress scale",

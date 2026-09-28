@@ -7,6 +7,12 @@
   "is_commercial": true,
   "contributors": [],
   "metadata": {
+    "description": "Fourteen-item measure of positive mental wellbeing developed for population and health research.",
+    "intended_use": "Research and wellbeing monitoring under the applicable Warwick licence; it is not a diagnostic instrument.",
+    "name_origin": "Warwick-Edinburgh Mental Wellbeing Scale, abbreviated WEMWBS; the short form is SWEMWBS.",
+    "development_history": "WEMWBS development and UK validation were published in 2007; SWEMWBS is the seven-item short form represented as a separate version.",
+    "measurement_rationale": "The scale focuses on positive mental wellbeing rather than only symptoms or mental illness.",
+    "interpretation_notes": "Use the appropriate form, scoring guidance, licence, and validation evidence; WEMWBS and SWEMWBS scores are not automatically interchangeable.",
     "keywords": [
       "WEMWBS",
       "wellbeing",
@@ -48,6 +54,12 @@
         }
       ],
       "metadata": {
+        "description": null,
+        "intended_use": null,
+        "name_origin": null,
+        "development_history": null,
+        "measurement_rationale": null,
+        "interpretation_notes": null,
         "keywords": [
           "WEMWBS",
           "Warwick Edinburgh wellbeing"
@@ -96,6 +108,12 @@
         }
       ],
       "metadata": {
+        "description": null,
+        "intended_use": null,
+        "name_origin": null,
+        "development_history": null,
+        "measurement_rationale": null,
+        "interpretation_notes": null,
         "keywords": [
           "SWEMWBS",
           "short Warwick Edinburgh wellbeing"

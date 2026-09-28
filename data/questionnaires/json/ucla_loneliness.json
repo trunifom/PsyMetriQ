@@ -1,0 +1,96 @@
+{
+  "instrument_id": "ucla_loneliness",
+  "name_full": "UCLA Loneliness Scale",
+  "construct_ontology": [
+    "loneliness"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Three-item short measure of subjective loneliness suitable for large surveys.",
+    "intended_use": "Population research and social-work screening for perceived loneliness; German translation evidence must be checked for the selected wording.",
+    "name_origin": "UCLA Loneliness Scale, developed at the University of California, Los Angeles; this record represents the three-item short form.",
+    "development_history": "The three-item version was developed for large population surveys from the longer UCLA loneliness scale family.",
+    "measurement_rationale": "Subjective loneliness reflects perceived lack of meaningful connection and is distinct from the number of social contacts.",
+    "interpretation_notes": "A short score is not a clinical diagnosis; German-language use does not by itself establish translation equivalence or permission to reproduce items.",
+    "keywords": [
+      "UCLA Loneliness",
+      "Einsamkeit",
+      "social isolation",
+      "soziale Isolation"
+    ],
+    "search_aliases": [],
+    "mesh_terms": [],
+    "characteristics": [
+      "self-report",
+      "short-form",
+      "German-use-reference",
+      "metadata-reference"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "ucla_loneliness_3_de_v1",
+      "language": "de",
+      "display_name": "UCLA Loneliness Scale Kurzform Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2004,
+      "source_citation": "Hughes et al. (2004). A short scale for measuring loneliness in large surveys.",
+      "source_doi": "10.1177/0164027504268574",
+      "source_documents": [
+        {
+          "title": "UCLA Loneliness Scale short-form source and German-use reference",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://doi.org/10.1177/0164027504268574",
+          "local_path": null,
+          "license_name": "Metadata reference; exact reuse terms require source review",
+          "license_url": null,
+          "redistribution_permitted": false,
+          "permission_basis": "Only bibliographic and discovery metadata is stored. Questionnaire wording and forms are not included until exact edition, language, and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Three-item short measure of subjective loneliness suitable for large surveys.",
+        "intended_use": "Population research and social-work screening for perceived loneliness; German translation evidence must be checked for the selected wording.",
+        "name_origin": "UCLA Loneliness Scale, developed at the University of California, Los Angeles; this record represents the three-item short form.",
+        "development_history": "The three-item version was developed for large population surveys from the longer UCLA loneliness scale family.",
+        "measurement_rationale": "Subjective loneliness reflects perceived lack of meaningful connection and is distinct from the number of social contacts.",
+        "interpretation_notes": "A short score is not a clinical diagnosis; German-language use does not by itself establish translation equivalence or permission to reproduce items.",
+        "keywords": [
+          "UCLA Loneliness",
+          "Einsamkeit",
+          "social isolation",
+          "soziale Isolation"
+        ],
+        "search_aliases": [],
+        "mesh_terms": [],
+        "characteristics": [
+          "self-report",
+          "short-form",
+          "German-use-reference",
+          "metadata-reference"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 3,
+      "source_reported_dimensions": [
+        "loneliness",
+        "social isolation"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

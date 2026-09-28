@@ -384,6 +384,41 @@ def _make_version(
             )
         ],
         metadata=QuestionnaireMetadata(
+            description=(
+                "21-item self-report measure of three related negative emotional states: "
+                "depression, anxiety, and stress."
+                if not youth
+                else "Youth self-report measure of depression, anxiety, and stress symptoms "
+                "for the documented 8-17 age range."
+            ),
+            intended_use=(
+                "Dimensional assessment of recent negative emotional states in research and "
+                "screening contexts; it is not a diagnostic instrument."
+                if not youth
+                else "Dimensional assessment of recent negative emotional states in young people; "
+                "it is not a diagnosis and is not interchangeable with adult DASS-21 scores."
+            ),
+            name_origin=(
+                "Depression Anxiety Stress Scales; the suffix 21 denotes the adult 21-item form."
+                if not youth
+                else "Depression Anxiety Stress Scales - Youth Version, abbreviated DASS-Y."
+            ),
+            development_history=(
+                "The adult short form contains three seven-item dimensions derived from the "
+                "Lovibond and Lovibond scale family."
+                if not youth
+                else "The youth form is maintained as a distinct age-specific version and was "
+                "not treated as an adult DASS-21 translation."
+            ),
+            measurement_rationale=(
+                "Separate depression, anxiety, and stress dimensions are intended to distinguish "
+                "related but non-identical negative emotional states."
+            ),
+            interpretation_notes=(
+                "Scores are dimensional, not diagnostic. Translation quality and validation "
+                "evidence must be checked for each language; DASS-Y scores are not directly "
+                "comparable with adult DASS/DASS-21 scores."
+            ),
             keywords=(
                 ["depression", "anxiety", "stress", "psychological distress"]
                 if language == "en"
@@ -514,6 +549,28 @@ def build_dass_catalog(pdf_directory: Path = PDF_DIRECTORY) -> list[Questionnair
                 QuestionnaireContributor(name="P. F. Lovibond", role="author"),
             ],
             metadata=QuestionnaireMetadata(
+                description=(
+                    "21-item self-report measure of depression, anxiety, and stress symptoms."
+                ),
+                intended_use=(
+                    "Dimensional assessment of recent negative emotional states; not a diagnostic "
+                    "instrument."
+                ),
+                name_origin=(
+                    "Depression Anxiety Stress Scales-21, where 21 identifies the adult short form."
+                ),
+                development_history=(
+                    "Adult DASS-21 contains three seven-item dimensions from the Lovibond scale "
+                    "family; German translation evidence is recorded separately."
+                ),
+                measurement_rationale=(
+                    "The three subscales distinguish depression, anxiety, and stress rather than "
+                    "collapsing them into one distress score."
+                ),
+                interpretation_notes=(
+                    "Interpret dimension scores with the official manual and version-specific "
+                    "evidence; dimensional scores do not establish a diagnosis."
+                ),
                 keywords=["depression", "anxiety", "stress", "distress"],
                 search_aliases=["DASS-21", "DASS21", "Depression Anxiety Stress Scales"],
             ),
@@ -529,6 +586,27 @@ def build_dass_catalog(pdf_directory: Path = PDF_DIRECTORY) -> list[Questionnair
                 QuestionnaireContributor(name="P. F. Lovibond", role="author"),
             ],
             metadata=QuestionnaireMetadata(
+                description=(
+                    "Youth self-report measure of depression, anxiety, and stress symptoms for "
+                    "the documented 8-17 age range."
+                ),
+                intended_use=(
+                    "Dimensional assessment in young people; not a diagnostic instrument and not "
+                    "interchangeable with adult DASS-21 scores."
+                ),
+                name_origin="Depression Anxiety Stress Scales - Youth Version, abbreviated DASS-Y.",
+                development_history=(
+                    "Maintained as a distinct youth form with its own age guidance and translation "
+                    "considerations."
+                ),
+                measurement_rationale=(
+                    "Separate depression, anxiety, and stress dimensions describe related but "
+                    "non-identical negative emotional states."
+                ),
+                interpretation_notes=(
+                    "Use the youth guidance and validation evidence for the selected language; "
+                    "do not transfer adult DASS-21 cutoffs or score interpretations."
+                ),
                 keywords=["youth mental health", "depression", "anxiety", "stress"],
                 search_aliases=["DASS-Y", "DASSY", "DASS Youth"],
             ),

@@ -1,0 +1,254 @@
+{
+  "instrument_id": "kidscreen",
+  "name_full": "KIDSCREEN Health-Related Quality of Life",
+  "construct_ontology": [
+    "child and adolescent health-related quality of life"
+  ],
+  "is_commercial": null,
+  "contributors": [
+    {
+      "name": "KIDSCREEN Group",
+      "role": "author",
+      "affiliation": null,
+      "orcid": null
+    }
+  ],
+  "metadata": {
+    "description": "European family of health-related quality-of-life questionnaires for children and adolescents.",
+    "intended_use": "Cross-cultural health and wellbeing assessment in children and adolescents.",
+    "name_origin": "KIDSCREEN names the European child and adolescent quality-of-life project.",
+    "development_history": "Developed collaboratively across 13 European countries.",
+    "measurement_rationale": "A multidimensional profile captures subjective physical, psychological, and social wellbeing.",
+    "interpretation_notes": "KIDSCREEN-52, KIDSCREEN-27, and KIDSCREEN-10 are different forms and must use their own scoring and norms.",
+    "keywords": [
+      "KIDSCREEN",
+      "children",
+      "adolescents",
+      "quality of life",
+      "Lebensqualität"
+    ],
+    "search_aliases": [
+      "KIDSCREEN-52",
+      "KIDSCREEN-27",
+      "KIDSCREEN-10"
+    ],
+    "mesh_terms": [],
+    "characteristics": [],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "kidscreen_52_de_v1",
+      "language": "de",
+      "display_name": "KIDSCREEN-52 Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "children and adolescents",
+          "minimum_age_years": 8.0,
+          "maximum_age_years": 18.0,
+          "notes": "Official KIDSCREEN population; self-report and parent proxy versions exist."
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2008,
+      "source_citation": "Ravens-Sieberer U et al. The KIDSCREEN-52 quality of life measure for children and adolescents: psychometric results from a cross-cultural survey in 13 European countries. Value in Health. 2008;11(4):645-658.",
+      "source_doi": "10.1111/j.1524-4733.2007.00291.x",
+      "source_documents": [
+        {
+          "title": "KIDSCREEN official questionnaire information",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.kidscreen.org/english/questionnaires/",
+          "local_path": null,
+          "license_name": "Official site states fully open access; verify exact download terms",
+          "license_url": "https://www.kidscreen.org/english/questionnaires/",
+          "redistribution_permitted": false,
+          "permission_basis": "Only bibliographic and discovery metadata is stored. Questionnaire wording and forms are not included until exact edition, language, and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Health-related quality-of-life assessment for children and adolescents aged 8-18.",
+        "intended_use": "Screening, monitoring, evaluation, and health-survey research in school or health settings.",
+        "name_origin": "KIDSCREEN is the name of the European child and adolescent health-related quality-of-life project.",
+        "development_history": "Developed simultaneously in 13 European countries with cross-cultural translation and adaptation.",
+        "measurement_rationale": "Separate physical, psychological, social, and school-related wellbeing dimensions describe subjective health-related quality of life.",
+        "interpretation_notes": "The official site reports version-specific internal consistency and norm information; use the selected version and country guidance.",
+        "keywords": [
+          "KIDSCREEN",
+          "quality of life",
+          "children",
+          "adolescents",
+          "HRQoL"
+        ],
+        "search_aliases": [],
+        "mesh_terms": [],
+        "characteristics": [
+          "self-report",
+          "parent-proxy-available",
+          "German-version-available",
+          "metadata-reference"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 52,
+      "source_reported_dimensions": [
+        "health-related quality of life",
+        "psychological wellbeing",
+        "social wellbeing"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    },
+    {
+      "version_id": "kidscreen_27_de_v1",
+      "language": "de",
+      "display_name": "KIDSCREEN-27 Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "short",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "children and adolescents",
+          "minimum_age_years": 8.0,
+          "maximum_age_years": 18.0,
+          "notes": "Official KIDSCREEN population; self-report and parent proxy versions exist."
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2008,
+      "source_citation": "Ravens-Sieberer U et al. The KIDSCREEN-52 quality of life measure for children and adolescents: psychometric results from a cross-cultural survey in 13 European countries. Value in Health. 2008;11(4):645-658.",
+      "source_doi": "10.1111/j.1524-4733.2007.00291.x",
+      "source_documents": [
+        {
+          "title": "KIDSCREEN official questionnaire information",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.kidscreen.org/english/questionnaires/",
+          "local_path": null,
+          "license_name": "Official site states fully open access; verify exact download terms",
+          "license_url": "https://www.kidscreen.org/english/questionnaires/",
+          "redistribution_permitted": false,
+          "permission_basis": "Only bibliographic and discovery metadata is stored. Questionnaire wording and forms are not included until exact edition, language, and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Health-related quality-of-life assessment for children and adolescents aged 8-18.",
+        "intended_use": "Screening, monitoring, evaluation, and health-survey research in school or health settings.",
+        "name_origin": "KIDSCREEN is the name of the European child and adolescent health-related quality-of-life project.",
+        "development_history": "Developed simultaneously in 13 European countries with cross-cultural translation and adaptation.",
+        "measurement_rationale": "Separate physical, psychological, social, and school-related wellbeing dimensions describe subjective health-related quality of life.",
+        "interpretation_notes": "The official site reports version-specific internal consistency and norm information; use the selected version and country guidance.",
+        "keywords": [
+          "KIDSCREEN",
+          "quality of life",
+          "children",
+          "adolescents",
+          "HRQoL"
+        ],
+        "search_aliases": [],
+        "mesh_terms": [],
+        "characteristics": [
+          "self-report",
+          "parent-proxy-available",
+          "German-version-available",
+          "metadata-reference"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 27,
+      "source_reported_dimensions": [
+        "health-related quality of life",
+        "psychological wellbeing",
+        "social wellbeing"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    },
+    {
+      "version_id": "kidscreen_10_de_v1",
+      "language": "de",
+      "display_name": "KIDSCREEN-10 Index Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "short",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "children and adolescents",
+          "minimum_age_years": 8.0,
+          "maximum_age_years": 18.0,
+          "notes": "Official KIDSCREEN population; self-report and parent proxy versions exist."
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": 2008,
+      "source_citation": "Ravens-Sieberer U et al. The KIDSCREEN-52 quality of life measure for children and adolescents: psychometric results from a cross-cultural survey in 13 European countries. Value in Health. 2008;11(4):645-658.",
+      "source_doi": "10.1111/j.1524-4733.2007.00291.x",
+      "source_documents": [
+        {
+          "title": "KIDSCREEN official questionnaire information",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://www.kidscreen.org/english/questionnaires/",
+          "local_path": null,
+          "license_name": "Official site states fully open access; verify exact download terms",
+          "license_url": "https://www.kidscreen.org/english/questionnaires/",
+          "redistribution_permitted": false,
+          "permission_basis": "Only bibliographic and discovery metadata is stored. Questionnaire wording and forms are not included until exact edition, language, and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Health-related quality-of-life assessment for children and adolescents aged 8-18.",
+        "intended_use": "Screening, monitoring, evaluation, and health-survey research in school or health settings.",
+        "name_origin": "KIDSCREEN is the name of the European child and adolescent health-related quality-of-life project.",
+        "development_history": "Developed simultaneously in 13 European countries with cross-cultural translation and adaptation.",
+        "measurement_rationale": "Separate physical, psychological, social, and school-related wellbeing dimensions describe subjective health-related quality of life.",
+        "interpretation_notes": "The official site reports version-specific internal consistency and norm information; use the selected version and country guidance.",
+        "keywords": [
+          "KIDSCREEN",
+          "quality of life",
+          "children",
+          "adolescents",
+          "HRQoL"
+        ],
+        "search_aliases": [],
+        "mesh_terms": [],
+        "characteristics": [
+          "self-report",
+          "parent-proxy-available",
+          "German-version-available",
+          "metadata-reference"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 10,
+      "source_reported_dimensions": [
+        "health-related quality of life",
+        "psychological wellbeing",
+        "social wellbeing"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

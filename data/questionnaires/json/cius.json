@@ -1,0 +1,93 @@
+{
+  "instrument_id": "cius",
+  "name_full": "Compulsive Internet Use Scale",
+  "construct_ontology": [
+    "problematic internet use"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "Fourteen-item measure of problematic or compulsive internet use.",
+    "intended_use": "Research screening and behavioral-health studies of problematic internet use.",
+    "name_origin": "Compulsive Internet Use Scale, abbreviated CIUS.",
+    "development_history": "The German adolescent version was evaluated in a validation study; adult language-invariance evidence is documented separately in the literature.",
+    "measurement_rationale": "Items cover loss of control, preoccupation, withdrawal-like experiences, conflict, and negative consequences.",
+    "interpretation_notes": "A screening score is not a diagnosis; do not transfer adolescent cutoffs or translation evidence automatically to adults.",
+    "keywords": [
+      "CIUS",
+      "problematic internet use",
+      "Internetnutzung"
+    ],
+    "search_aliases": [],
+    "mesh_terms": [],
+    "characteristics": [
+      "self-report",
+      "German-adolescent-validation",
+      "metadata-reference"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "cius_de_v1",
+      "language": "de",
+      "display_name": "Compulsive Internet Use Scale Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": null,
+      "source_citation": "Meerkerk et al. (2009). The Compulsive Internet Use Scale.",
+      "source_doi": "10.1089/cpb.2008.0181",
+      "source_documents": [
+        {
+          "title": "German adolescent CIUS validation",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://doi.org/10.1089/cyber.2012.0689",
+          "local_path": null,
+          "license_name": "Metadata reference; exact reuse terms require source review",
+          "license_url": null,
+          "redistribution_permitted": false,
+          "permission_basis": "Only bibliographic and discovery metadata is stored. Questionnaire wording and forms are not included until exact edition, language, and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "Fourteen-item measure of problematic or compulsive internet use.",
+        "intended_use": "Research screening and behavioral-health studies of problematic internet use.",
+        "name_origin": "Compulsive Internet Use Scale, abbreviated CIUS.",
+        "development_history": "The German adolescent version was evaluated in a validation study; adult language-invariance evidence is documented separately in the literature.",
+        "measurement_rationale": "Items cover loss of control, preoccupation, withdrawal-like experiences, conflict, and negative consequences.",
+        "interpretation_notes": "A screening score is not a diagnosis; do not transfer adolescent cutoffs or translation evidence automatically to adults.",
+        "keywords": [
+          "CIUS",
+          "problematic internet use",
+          "Internetnutzung"
+        ],
+        "search_aliases": [],
+        "mesh_terms": [],
+        "characteristics": [
+          "self-report",
+          "German-adolescent-validation",
+          "metadata-reference"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": 14,
+      "source_reported_dimensions": [
+        "compulsive internet use",
+        "loss of control",
+        "negative consequences"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

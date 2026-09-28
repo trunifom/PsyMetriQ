@@ -1,0 +1,104 @@
+{
+  "instrument_id": "gadis_a",
+  "name_full": "Gaming Disorder Scale for Adolescents",
+  "construct_ontology": [
+    "gaming disorder"
+  ],
+  "is_commercial": null,
+  "contributors": [],
+  "metadata": {
+    "description": "German adolescent screening instrument for gaming-disorder symptoms based on ICD-11 concepts.",
+    "intended_use": "Research screening among adolescents with frequent gaming; not a standalone clinical diagnosis.",
+    "name_origin": "Gaming Disorder Scale for Adolescents, abbreviated GADIS-A.",
+    "development_history": "Validated in German frequent-gamer samples aged 10-17 in an ICD-11-oriented study.",
+    "measurement_rationale": "The instrument targets impaired control and clinically relevant functional impairment associated with gaming.",
+    "interpretation_notes": "ICD-11 gaming disorder concepts are not interchangeable with DSM-5 internet-gaming-disorder criteria; use the exact manual and population evidence.",
+    "keywords": [
+      "GADIS-A",
+      "gaming disorder",
+      "gaming",
+      "Jugendliche"
+    ],
+    "search_aliases": [],
+    "mesh_terms": [],
+    "characteristics": [
+      "self-report",
+      "adolescent-form",
+      "German-validation",
+      "metadata-reference"
+    ],
+    "notes": null
+  },
+  "versions": [
+    {
+      "version_id": "gadis_a_de_v1",
+      "language": "de",
+      "display_name": "Gaming Disorder Scale for Adolescents Deutsch (link-only)",
+      "locale": "de-DE",
+      "form_type": "full",
+      "variant_types": [],
+      "target_populations": [
+        {
+          "group_name": "adolescents and frequent gamers",
+          "minimum_age_years": 10.0,
+          "maximum_age_years": 17.0,
+          "notes": null
+        }
+      ],
+      "contributors": [],
+      "based_on": [],
+      "publication_year": null,
+      "source_citation": "Paschke et al. (2020). Psychometric properties of the Gaming Disorder Scale for Adolescents.",
+      "source_doi": "10.3390/jcm9040993",
+      "source_documents": [
+        {
+          "title": "German Gaming Disorder Scale for Adolescents validation",
+          "document_type": "validation_study",
+          "language": "de",
+          "source_url": "https://doi.org/10.3390/jcm9040993",
+          "local_path": null,
+          "license_name": "Metadata reference; exact reuse terms require source review",
+          "license_url": null,
+          "redistribution_permitted": false,
+          "permission_basis": "Only bibliographic and discovery metadata is stored. Questionnaire wording and forms are not included until exact edition, language, and reuse terms are verified.",
+          "accessed_on": "2026-09-28",
+          "sha256": null
+        }
+      ],
+      "metadata": {
+        "description": "German adolescent screening instrument for gaming-disorder symptoms based on ICD-11 concepts.",
+        "intended_use": "Research screening among adolescents with frequent gaming; not a standalone clinical diagnosis.",
+        "name_origin": "Gaming Disorder Scale for Adolescents, abbreviated GADIS-A.",
+        "development_history": "Validated in German frequent-gamer samples aged 10-17 in an ICD-11-oriented study.",
+        "measurement_rationale": "The instrument targets impaired control and clinically relevant functional impairment associated with gaming.",
+        "interpretation_notes": "ICD-11 gaming disorder concepts are not interchangeable with DSM-5 internet-gaming-disorder criteria; use the exact manual and population evidence.",
+        "keywords": [
+          "GADIS-A",
+          "gaming disorder",
+          "gaming",
+          "Jugendliche"
+        ],
+        "search_aliases": [],
+        "mesh_terms": [],
+        "characteristics": [
+          "self-report",
+          "adolescent-form",
+          "German-validation",
+          "metadata-reference"
+        ],
+        "notes": null
+      },
+      "cosmin_metrics": {},
+      "response_sets": {},
+      "item_text_included": false,
+      "source_reported_item_count": null,
+      "source_reported_dimensions": [
+        "gaming disorder symptoms",
+        "impaired control",
+        "functional impairment"
+      ],
+      "items": [],
+      "scoring_algorithms": []
+    }
+  ]
+}

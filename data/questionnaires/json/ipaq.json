@@ -5,6 +5,12 @@
   "is_commercial": false,
   "contributors": [],
   "metadata": {
+    "description": "Short self-administered questionnaire about physical activity during the last seven days, including activity intensity, days, and duration.",
+    "intended_use": "Population surveillance and research description of physical activity; the standard short form and IPAQ-E are distinct forms.",
+    "name_origin": "International Physical Activity Questionnaire, abbreviated IPAQ; IPAQ-E is the elderly-form designation.",
+    "development_history": "The international questionnaire was evaluated in a 12-country reliability and validity study published in 2003; translation evidence remains version-specific.",
+    "measurement_rationale": "A seven-day recall period and separate frequency/duration fields make recent walking, moderate, and vigorous activity describable across populations.",
+    "interpretation_notes": "Do not infer a MET score or equivalence between translated forms without the official scoring guidance and population-specific evidence.",
     "keywords": [
       "physical activity",
       "movement",
@@ -55,6 +61,12 @@
         }
       ],
       "metadata": {
+        "description": null,
+        "intended_use": null,
+        "name_origin": null,
+        "development_history": null,
+        "measurement_rationale": null,
+        "interpretation_notes": null,
         "keywords": [
           "physical activity",
           "exercise",
@@ -77,6 +89,9 @@
       },
       "cosmin_metrics": {},
       "response_sets": {},
+      "item_text_included": true,
+      "source_reported_item_count": null,
+      "source_reported_dimensions": [],
       "items": [
         {
           "item_id": "ipaq_en_vigorous_days",
@@ -89,9 +104,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 7.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "vigorous"
@@ -117,9 +139,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 24.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "vigorous"
@@ -145,9 +174,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 59.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "vigorous"
@@ -173,9 +209,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 7.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "moderate"
@@ -201,9 +244,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 24.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "moderate"
@@ -229,9 +279,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 59.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "moderate"
@@ -257,9 +314,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 7.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "walking"
@@ -285,9 +349,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 24.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "walking"
@@ -313,9 +384,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 59.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "walking"
@@ -341,9 +419,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 24.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "sitting weekday"
@@ -369,9 +454,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 59.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "sitting weekday"
@@ -432,6 +524,12 @@
         }
       ],
       "metadata": {
+        "description": null,
+        "intended_use": null,
+        "name_origin": null,
+        "development_history": null,
+        "measurement_rationale": null,
+        "interpretation_notes": null,
         "keywords": [
           "körperliche Aktivität",
           "Bewegung",
@@ -453,6 +551,9 @@
       },
       "cosmin_metrics": {},
       "response_sets": {},
+      "item_text_included": true,
+      "source_reported_item_count": null,
+      "source_reported_dimensions": [],
       "items": [
         {
           "item_id": "ipaq_de_de_vigorous_days",
@@ -465,9 +566,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 7.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "vigorous"
@@ -493,9 +601,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 24.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "vigorous"
@@ -521,9 +636,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 59.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "vigorous"
@@ -549,9 +671,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 7.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "moderate"
@@ -577,9 +706,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 24.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "moderate"
@@ -605,9 +741,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 59.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "moderate"
@@ -633,9 +776,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 7.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "walking"
@@ -661,9 +811,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 24.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "walking"
@@ -689,9 +846,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 59.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "walking"
@@ -717,9 +881,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 24.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "sitting weekday"
@@ -745,9 +916,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 59.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "sitting weekday"
@@ -808,6 +986,12 @@
         }
       ],
       "metadata": {
+        "description": null,
+        "intended_use": null,
+        "name_origin": null,
+        "development_history": null,
+        "measurement_rationale": null,
+        "interpretation_notes": null,
         "keywords": [
           "physical activity",
           "older adults",
@@ -829,6 +1013,9 @@
       },
       "cosmin_metrics": {},
       "response_sets": {},
+      "item_text_included": true,
+      "source_reported_item_count": null,
+      "source_reported_dimensions": [],
       "items": [
         {
           "item_id": "ipaq_e_en_sitting_weekday_hours",
@@ -841,9 +1028,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 24.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "sitting weekday"
@@ -869,9 +1063,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 59.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "sitting weekday"
@@ -897,9 +1098,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 7.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "walking"
@@ -925,9 +1133,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 24.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "walking"
@@ -953,9 +1168,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 59.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "walking"
@@ -981,9 +1203,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 7.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "moderate"
@@ -1009,9 +1238,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 24.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "moderate"
@@ -1037,9 +1273,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 59.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "moderate"
@@ -1065,9 +1308,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 7.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "vigorous"
@@ -1093,9 +1343,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 24.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "vigorous"
@@ -1121,9 +1378,16 @@
           "numeric_minimum": 0.0,
           "numeric_maximum": 59.0,
           "is_reverse_scored": false,
+          "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
           "metadata": {
+            "description": null,
+            "intended_use": null,
+            "name_origin": null,
+            "development_history": null,
+            "measurement_rationale": null,
+            "interpretation_notes": null,
             "keywords": [
               "physical activity",
               "vigorous"

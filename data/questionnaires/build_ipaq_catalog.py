@@ -430,6 +430,30 @@ def build_ipaq_catalog() -> QuestionnaireParent:
         construct_ontology=[],
         is_commercial=False,
         metadata=QuestionnaireMetadata(
+            description=(
+                "Short self-administered questionnaire about physical activity during the "
+                "last seven days, including activity intensity, days, and duration."
+            ),
+            intended_use=(
+                "Population surveillance and research description of physical activity; the "
+                "standard short form and IPAQ-E are distinct forms."
+            ),
+            name_origin=(
+                "International Physical Activity Questionnaire, abbreviated IPAQ; IPAQ-E is "
+                "the elderly-form designation."
+            ),
+            development_history=(
+                "The international questionnaire was evaluated in a 12-country reliability and "
+                "validity study published in 2003; translation evidence remains version-specific."
+            ),
+            measurement_rationale=(
+                "A seven-day recall period and separate frequency/duration fields make recent "
+                "walking, moderate, and vigorous activity describable across populations."
+            ),
+            interpretation_notes=(
+                "Do not infer a MET score or equivalence between translated forms without the "
+                "official scoring guidance and population-specific evidence."
+            ),
             keywords=["physical activity", "movement", "health behavior"],
             search_aliases=["IPAQ", "International Physical Activity Questionnaire"],
         ),
