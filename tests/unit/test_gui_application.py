@@ -138,6 +138,36 @@ def test_gui_version_selection_generates_interoperable_export_preview(
     assert "Antwortoptionen" in app.export_preview.value
 
 
+def test_project_selections_can_be_reordered_and_show_items_in_expansion_tiles(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(application, "SETTINGS_PATH", tmp_path / "settings.json")
+    app = PsyMetriQApplication(FakePage())  # type: ignore[arg-type]
+    phq9 = app._find_family("phq9")
+    gad7 = app._find_family("gad7")
+    assert phq9 is not None and gad7 is not None
+    app._toggle_version(phq9, phq9.versions[0], True)
+    app._toggle_version(gad7, gad7.versions[0], True)
+
+    first = app.project.selections[0]
+    app._move_selection(first, 1)
+
+    assert app.project.selections[0].instrument_id == "gad7"
+    assert app.project.selections[1].instrument_id == "phq9"
+    assert app.project.workflow_steps[-1].action == "selection_reordered"
+
+    app._navigate("project")
+    project_controls = app.content_host.controls
+    expansion_tiles = [
+        control
+        for control in project_controls
+        if isinstance(control, application.ft.Row)
+        for child in control.controls
+        if isinstance(child, application.ft.Container)
+    ]
+    assert expansion_tiles
+
+
 def test_settings_form_exposes_intake_limits_and_ocr_preferences(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
@@ -235,6 +265,7 @@ def test_catalogue_filters_limit_versions_by_locale_commercial_and_license_statu
 ) -> None:
     monkeypatch.setattr(application, "SETTINGS_PATH", tmp_path / "settings.json")
     app = PsyMetriQApplication(FakePage())  # type: ignore[arg-type]
+    app.item_content_filter = "all"
     all_versions = app._visible_versions()
     locale = next(
         version.locale
@@ -326,6 +357,7 @@ def test_population_filter_uses_broad_source_age_bands(
 ) -> None:
     monkeypatch.setattr(application, "SETTINGS_PATH", tmp_path / "settings.json")
     app = PsyMetriQApplication(FakePage())  # type: ignore[arg-type]
+    app.item_content_filter = "all"
     youth_family = app._find_family("dass_y")
     assert youth_family is not None
     youth_version = youth_family.versions[0]
@@ -389,6 +421,7 @@ def test_link_only_wellbeing_records_are_discoverable_and_selectable_as_referenc
 ) -> None:
     monkeypatch.setattr(application, "SETTINGS_PATH", tmp_path / "settings.json")
     app = PsyMetriQApplication(FakePage())  # type: ignore[arg-type]
+    app.item_content_filter = "all"
 
     rosenberg = app._find_family("rosenberg_self_esteem")
     assert rosenberg is not None
@@ -411,20 +444,38 @@ def test_link_only_wellbeing_records_are_discoverable_and_selectable_as_referenc
             app.active_version_key = (family.instrument_id, version.version_id)
             details = app._version_detail()
             detail_controls = details.content.controls[1].controls
-            source_texts = [
-                control.value
+            source_tile = next(
+                control
                 for control in detail_controls
-                if isinstance(control, application.ft.Text)
+                if isinstance(control, application.ft.ExpansionTile)
+                and control.title == "Rechte und Quellen"
+            )
+            source_texts = [
+                child.value
+                for column in source_tile.controls
+                if isinstance(column, application.ft.Column)
+                for child in column.controls
+                if isinstance(child, application.ft.Text)
             ]
             source_url = str(version.source_documents[0].source_url)
             assert any(source_url in value for value in source_texts)
-            metadata_line = next(value for value in source_texts if value.startswith("ID "))
+            metadata_line = next(
+                control.value
+                for control in detail_controls
+                if isinstance(control, application.ft.Text) and control.value.startswith("ID ")
+            )
             assert f"{version.source_reported_item_count} Items laut Quelle" in metadata_line
+            dimension_tile = next(
+                control
+                for control in detail_controls
+                if isinstance(control, application.ft.ExpansionTile)
+                and control.title == "Instrumentprofil"
+            )
             source_dimensions = [
                 child.value
-                for control in detail_controls
-                if isinstance(control, application.ft.Column)
-                for child in control.controls
+                for column in dimension_tile.controls
+                if isinstance(column, application.ft.Column)
+                for child in column.controls
                 if isinstance(child, application.ft.Text)
             ]
             for dimension in version.source_reported_dimensions:
@@ -474,11 +525,52 @@ def test_version_details_expose_instrument_profile_information(
         return [value for child in children if child is not None for value in text_values(child)]
 
     values = text_values(details)
+    section_titles = [
+        control.title
+        for control in details.content.controls[1].controls
+        if isinstance(control, application.ft.ExpansionTile)
+    ]
 
-    assert "Instrumentprofil" in values
+    assert "Instrumentprofil" in section_titles
     assert any(value.startswith("Worum geht es:") for value in values)
     assert any(value.startswith("Erstellungs-/Publikationsjahr: 2001") for value in values)
     assert any(value.startswith("Gütekriterien / COSMIN-Metriken:") for value in values)
+
+
+def test_catalogue_supports_small_multi_select_filter_groups(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(application, "SETTINGS_PATH", tmp_path / "settings.json")
+    app = PsyMetriQApplication(FakePage())  # type: ignore[arg-type]
+
+    app.form_type_filters = {"short", "screening"}
+    form_matches = app._visible_versions()
+    assert form_matches
+    assert all(version.form_type in {"short", "screening"} for _family, version in form_matches)
+
+    app.form_type_filters = set()
+    app.commercial_filters = {"unknown", "noncommercial"}
+    rights_matches = app._visible_versions()
+    assert rights_matches
+    assert all(
+        family.is_commercial in {False, None} for family, _version in rights_matches
+    )
+
+
+def test_catalogue_defaults_to_complete_questionnaires_with_item_text(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(application, "SETTINGS_PATH", tmp_path / "settings.json")
+    app = PsyMetriQApplication(FakePage())  # type: ignore[arg-type]
+
+    visible = app._visible_versions()
+
+    assert visible
+    assert all(version.item_text_included for _family, version in visible)
+    assert not any(family.instrument_id == "who5" for family, _version in visible)
+
+    app.item_content_filter = "all"
+    assert any(family.instrument_id == "who5" for family, _version in app._visible_versions())
 
 
 def test_catalogue_search_includes_instrument_profile_metadata(
@@ -486,6 +578,7 @@ def test_catalogue_search_includes_instrument_profile_metadata(
 ) -> None:
     monkeypatch.setattr(application, "SETTINGS_PATH", tmp_path / "settings.json")
     app = PsyMetriQApplication(FakePage())  # type: ignore[arg-type]
+    app.item_content_filter = "all"
     family, path = app.catalog_records[0]
     enriched = family.model_copy(
         update={
@@ -609,12 +702,13 @@ def test_single_item_dimension_is_visible_as_a_group(
 
     details = app._version_detail()
     body_controls = details.content.controls[1].controls
-    dimension_index = next(
-        index
-        for index, control in enumerate(body_controls)
-        if isinstance(control, application.ft.Text) and control.value == "Itemdimensionen"
+    dimension_tile = next(
+        control
+        for control in body_controls
+        if isinstance(control, application.ft.ExpansionTile)
+        and control.title == "Itemdimensionen"
     )
-    dimension_group = body_controls[dimension_index + 1].controls[0]
+    dimension_group = dimension_tile.controls[0].controls[0]
 
     assert dimension_group.controls[0].label == "self_esteem"
 

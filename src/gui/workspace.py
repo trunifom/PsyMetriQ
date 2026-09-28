@@ -24,6 +24,7 @@ WorkflowAction = Literal[
     "catalog_reload",
     "version_selected",
     "version_removed",
+    "selection_reordered",
     "items_updated",
     "scale_selected",
     "scale_removed",

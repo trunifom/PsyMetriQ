@@ -169,10 +169,13 @@ class PsyMetriQApplication:
         self.language_filter = "all"
         self.locale_filter = "all"
         self.form_type_filter = "all"
+        self.form_type_filters: set[str] = set()
         self.population_filter = "all"
         self.population_filters: set[str] = set()
         self.commercial_filter = "all"
+        self.commercial_filters: set[str] = set()
         self.license_filter = "all"
+        self.item_content_filter = "with_items"
         self.export_format = self.settings.default_export_format
         self.available_models: list[str] = []
         self.active_provider = self.settings.llm_provider
@@ -719,15 +722,47 @@ class PsyMetriQApplication:
         self.population_filter = "all"
         self._render()
 
+    def _selected_form_type_filters(self) -> set[str]:
+        selected = getattr(self, "form_type_filters", set())
+        if selected:
+            return set(selected)
+        legacy = getattr(self, "form_type_filter", "all")
+        return set() if legacy == "all" else {legacy}
+
+    def _selected_commercial_filters(self) -> set[str]:
+        selected = getattr(self, "commercial_filters", set())
+        if selected:
+            return set(selected)
+        legacy = getattr(self, "commercial_filter", "all")
+        return set() if legacy == "all" else {legacy}
+
+    def _set_multi_catalog_filter(self, filter_name: str, value: str, selected: bool) -> None:
+        attributes = {
+            "form_type": ("form_type_filters", "form_type_filter"),
+            "commercial": ("commercial_filters", "commercial_filter"),
+        }
+        selected_attribute, legacy_attribute = attributes[filter_name]
+        selected_values = set(getattr(self, selected_attribute))
+        if selected:
+            selected_values.add(value)
+        else:
+            selected_values.discard(value)
+        setattr(self, selected_attribute, selected_values)
+        setattr(self, legacy_attribute, "all")
+        self._render()
+
     def _reset_catalog_filters(self, _event: Any = None) -> None:
         self.search_query = ""
         self.language_filter = "all"
         self.locale_filter = "all"
         self.form_type_filter = "all"
+        self.form_type_filters = set()
         self.population_filter = "all"
         self.population_filters = set()
         self.commercial_filter = "all"
+        self.commercial_filters = set()
         self.license_filter = "all"
+        self.item_content_filter = "with_items"
         self._render()
 
     def _active_catalog_filter_summary(self) -> str:
@@ -738,8 +773,9 @@ class PsyMetriQApplication:
             active.append(f"Sprache: {self.language_filter}")
         if self.locale_filter != "all":
             active.append(f"Locale: {self.locale_filter}")
-        if self.form_type_filter != "all":
-            active.append(f"Form: {self.form_type_filter}")
+        form_type_filters = self._selected_form_type_filters()
+        if form_type_filters:
+            active.append("Form: " + ", ".join(sorted(form_type_filters)))
         population_filters = self._selected_population_filters()
         if population_filters:
             active.append(
@@ -750,10 +786,13 @@ class PsyMetriQApplication:
                     if group in population_filters
                 )
             )
-        if self.commercial_filter != "all":
-            active.append(f"Rechte: {self.commercial_filter}")
+        commercial_filters = self._selected_commercial_filters()
+        if commercial_filters:
+            active.append("Rechte: " + ", ".join(sorted(commercial_filters)))
         if self.license_filter != "all":
             active.append(f"Lizenz: {self.license_filter}")
+        if self.item_content_filter != "with_items":
+            active.append(f"Inhalt: {self.item_content_filter}")
         return " · ".join(active) if active else "Keine Filter aktiv"
 
     def _visible_versions(self) -> list[tuple[QuestionnaireParent, QuestionnaireVersion]]:
@@ -761,6 +800,10 @@ class PsyMetriQApplication:
         matches: list[tuple[QuestionnaireParent, QuestionnaireVersion]] = []
         for family, _path in self.catalog_records:
             for version in family.versions:
+                if self.item_content_filter == "with_items" and not version.item_text_included:
+                    continue
+                if self.item_content_filter == "references" and version.item_text_included:
+                    continue
                 if self.language_filter != "all" and not self._matches_language_filter(
                     version, self.language_filter
                 ):
@@ -770,10 +813,8 @@ class PsyMetriQApplication:
                     and (version.locale or "").casefold() != self.locale_filter
                 ):
                     continue
-                if (
-                    self.form_type_filter != "all"
-                    and version.form_type != self.form_type_filter
-                ):
+                form_type_filters = self._selected_form_type_filters()
+                if form_type_filters and version.form_type not in form_type_filters:
                     continue
                 population_filters = self._selected_population_filters()
                 if population_filters and not any(
@@ -781,15 +822,17 @@ class PsyMetriQApplication:
                     for selected in population_filters
                 ):
                     continue
-                if self.commercial_filter == "commercial" and family.is_commercial is not True:
-                    continue
-                if (
-                    self.commercial_filter == "noncommercial"
-                    and family.is_commercial is not False
-                ):
-                    continue
-                if self.commercial_filter == "unknown" and family.is_commercial is not None:
-                    continue
+                commercial_filters = self._selected_commercial_filters()
+                if commercial_filters:
+                    commercial_status = (
+                        "commercial"
+                        if family.is_commercial is True
+                        else "noncommercial"
+                        if family.is_commercial is False
+                        else "unknown"
+                    )
+                    if commercial_status not in commercial_filters:
+                        continue
                 source_licenses = {
                     source.license_name.casefold() for source in version.source_documents
                 }
@@ -1157,28 +1200,43 @@ class PsyMetriQApplication:
             on_select=lambda event: self._set_catalog_filter("locale", event.control.value),
             width=180,
         )
-        form_type_dropdown = ft.Dropdown(
-            value=self.form_type_filter,
-            options=[ft.DropdownOption(key="all", text="Alle Formtypen")]
-            + [
-                ft.DropdownOption(key=value, text=value.title())
-                for value in ("full", "short", "long", "screening", "custom")
-            ],
-            on_select=lambda event: self._set_catalog_filter("form_type", event.control.value),
-            width=180,
-        )
-        rights_dropdown = ft.Dropdown(
-            value=self.commercial_filter,
-            options=[
-                ft.DropdownOption(key="all", text="Alle Rechte-Status"),
-                ft.DropdownOption(key="noncommercial", text="Nicht-kommerziell"),
-                ft.DropdownOption(key="commercial", text="Kommerziell eingeschränkt"),
-                ft.DropdownOption(key="unknown", text="Unbekannt / ungeprüft"),
-            ],
-            on_select=lambda event: self._set_catalog_filter(
-                "commercial", event.control.value
+        form_type_filter_panel = self._panel(
+            "Formtyp",
+            ft.Column(
+                spacing=2,
+                controls=[
+                    ft.Checkbox(
+                        label=value.title(),
+                        value=value in self._selected_form_type_filters(),
+                        on_change=lambda event, form_type=value: self._set_multi_catalog_filter(
+                            "form_type", form_type, bool(event.control.value)
+                        ),
+                    )
+                    for value in ("full", "short", "long", "screening", "custom")
+                ],
             ),
-            width=230,
+            "Mehrere Formtypen können gleichzeitig gewählt werden; die Auswahl verbindet sie mit ODER.",
+        )
+        rights_filter_panel = self._panel(
+            "Nutzungsstatus",
+            ft.Column(
+                spacing=2,
+                controls=[
+                    ft.Checkbox(
+                        label=label,
+                        value=value in self._selected_commercial_filters(),
+                        on_change=lambda event, status=value: self._set_multi_catalog_filter(
+                            "commercial", status, bool(event.control.value)
+                        ),
+                    )
+                    for value, label in (
+                        ("noncommercial", "Nicht-kommerziell"),
+                        ("commercial", "Kommerziell eingeschränkt"),
+                        ("unknown", "Unbekannt / ungeprüft"),
+                    )
+                ],
+            ),
+            "Mehrere Rechte-Status können gleichzeitig gewählt werden; unbekannt ist keine Nutzungserlaubnis.",
         )
         license_dropdown = ft.Dropdown(
             value=self.license_filter,
@@ -1192,6 +1250,16 @@ class PsyMetriQApplication:
             ],
             on_select=lambda event: self._set_catalog_filter("license", event.control.value),
             width=280,
+        )
+        content_dropdown = ft.Dropdown(
+            value=self.item_content_filter,
+            options=[
+                ft.DropdownOption(key="with_items", text="Nur vollständige Fragebogen"),
+                ft.DropdownOption(key="all", text="Alle inkl. Referenzen"),
+                ft.DropdownOption(key="references", text="Nur Referenzrecords"),
+            ],
+            on_select=lambda event: self._set_catalog_filter("content", event.control.value),
+            width=270,
         )
         self.search_field = ft.TextField(
             value=self.search_query,
@@ -1252,12 +1320,7 @@ class PsyMetriQApplication:
                 ),
                 ft.Container(
                     width=230,
-                    content=self._field(
-                        "Formtyp",
-                        form_type_dropdown,
-                        "Filtert vollständige, kurze, lange, Screening- oder benutzerdefinierte Formulare.",
-                        "Eine Kurzform ist nicht automatisch mit der Langform austauschbar.",
-                    ),
+                    content=form_type_filter_panel,
                 ),
                 ft.Container(
                     width=300,
@@ -1281,12 +1344,7 @@ class PsyMetriQApplication:
                 ),
                 ft.Container(
                     width=270,
-                    content=self._field(
-                        "Nutzungsstatus",
-                        rights_dropdown,
-                        "Filtert anhand der dokumentierten kommerziellen Nutzungsangabe. 'Unbekannt' ist keine Nutzungserlaubnis.",
-                        "Prüfe für jede Version zusätzlich Quelldokumente und Lizenztext.",
-                    ),
+                    content=rights_filter_panel,
                 ),
                 ft.Container(
                     width=320,
@@ -1295,6 +1353,15 @@ class PsyMetriQApplication:
                         license_dropdown,
                         "Filtert nach dem im Quelldatensatz dokumentierten Lizenznamen. Ein Filter oder eine Erlaubnisangabe ist keine Nutzungssperre und kein Rechtsgutachten.",
                         "Beispiele: Public domain, CC BY 4.0, Registrierung erforderlich.",
+                    ),
+                ),
+                ft.Container(
+                    width=300,
+                    content=self._field(
+                        "Iteminhalt",
+                        content_dropdown,
+                        "Standardmäßig werden nur vollständige Fragebogen mit lokal vorhandenem Itemtext gezeigt. Referenzrecords enthalten nur Metadaten und Quellenlinks.",
+                        "Alle inkl. Referenzen zeigt zusätzlich link-only Instrumente.",
                     ),
                 ),
             ],
@@ -1773,6 +1840,49 @@ class PsyMetriQApplication:
                 selectable=True,
             )
         )
+        profile_tile = ft.ExpansionTile(
+            title="Instrumentprofil",
+            subtitle="Zweck, Zielgruppe, Durchführung, Auswertung und psychometrische Evidenz",
+            expanded=False,
+            maintain_state=True,
+            controls=[ft.Column(spacing=4, controls=self._instrument_profile_controls(family, version))],
+            bgcolor="#F7F9F8",
+            collapsed_bgcolor="#EEF3F1",
+        )
+        sources_tile = ft.ExpansionTile(
+            title="Rechte und Quellen",
+            subtitle=f"{len(source_rows)} Quelldatensatz/-sätze",
+            expanded=False,
+            maintain_state=True,
+            controls=[ft.Column(spacing=4, controls=source_rows)],
+            bgcolor="#F7F9F8",
+            collapsed_bgcolor="#EEF3F1",
+        )
+        scoring_tiles: list[ft.Control] = []
+        if scale_controls:
+            scoring_tiles.append(
+                ft.ExpansionTile(
+                    title="Skalen / Scoring",
+                    subtitle=f"{len(scale_controls)} auswählbare Scoregruppe(n)",
+                    expanded=False,
+                    maintain_state=True,
+                    controls=[ft.Column(spacing=4, controls=scale_controls)],
+                    bgcolor="#F7F9F8",
+                    collapsed_bgcolor="#EEF3F1",
+                )
+            )
+        if dimension_controls:
+            scoring_tiles.append(
+                ft.ExpansionTile(
+                    title="Itemdimensionen",
+                    subtitle="Auswahl nach Dimension oder Quellstruktur",
+                    expanded=False,
+                    maintain_state=True,
+                    controls=[ft.Column(spacing=4, controls=dimension_controls)],
+                    bgcolor="#F7F9F8",
+                    collapsed_bgcolor="#EEF3F1",
+                )
+            )
         return self._panel(
             "Versionsdetails",
             ft.Column(
@@ -1783,38 +1893,19 @@ class PsyMetriQApplication:
                         size=17,
                         weight=ft.FontWeight.BOLD,
                         color="#173D36",
+                        selectable=True,
                     ),
+                    ft.Text(family.name_full, size=13, color="#55716A", selectable=True),
                     ft.Text(metadata_text, size=12, color="#55716A", selectable=True),
                     ft.Text(
                         "Konstrukte: "
                         + (", ".join(family.construct_ontology) or "nicht angegeben"),
                         size=12,
+                        selectable=True,
                     ),
-                    ft.Text("Instrumentprofil", weight=ft.FontWeight.BOLD, size=13),
-                    ft.Column(
-                        spacing=4,
-                        controls=self._instrument_profile_controls(family, version),
-                    ),
-                    ft.Divider(height=1),
-                    ft.Text("Rechte und Quellen", weight=ft.FontWeight.BOLD, size=13),
-                    *source_rows,
-                    ft.Divider(height=1),
-                    *(
-                        [
-                            ft.Text("Skalen / Scoring", weight=ft.FontWeight.BOLD, size=13),
-                            ft.Column(spacing=4, controls=scale_controls),
-                        ]
-                        if scale_controls
-                        else []
-                    ),
-                    *(
-                        [
-                            ft.Text("Itemdimensionen", weight=ft.FontWeight.BOLD, size=13),
-                            ft.Column(spacing=4, controls=dimension_controls),
-                        ]
-                        if dimension_controls
-                        else []
-                    ),
+                    profile_tile,
+                    sources_tile,
+                    *scoring_tiles,
                     ft.Divider(height=1),
                     ft.Row(
                         controls=[
@@ -1871,13 +1962,21 @@ class PsyMetriQApplication:
             ],
         )
         selected_rows: list[ft.Control] = []
-        for selection in self.project.selections:
+        total_selections = len(self.project.selections)
+        for selection_index, selection in enumerate(self.project.selections):
             found = self._find_version(selection.instrument_id, selection.version_id)
             if found is None:
                 label = f"Nicht aufgelöst: {selection.instrument_id}/{selection.version_id}"
                 selection_summary = (
                     f"{len(selection.item_ids)} ausgewählte Items · Katalogversion nicht aufgelöst"
                 )
+                item_rows = [
+                    ft.Text(
+                        "Diese Katalogversion ist aktuell nicht verfügbar.",
+                        size=12,
+                        color="#9B3E35",
+                    )
+                ]
             else:
                 family, version = found
                 label = f"{family.name_full} · {version.display_name or version.version_id}"
@@ -1898,22 +1997,50 @@ class PsyMetriQApplication:
                         selection_summary += (
                             f" · Lizenz: {version.source_documents[0].license_name}"
                         )
+                item_rows = self._project_item_rows(family, version, selection)
             adaptation_count = len(selection.item_adaptations)
+            item_tile = ft.ExpansionTile(
+                title=label,
+                subtitle=(
+                    f"Position {selection_index + 1} von {total_selections} · "
+                    f"{selection_summary} · {adaptation_count} Studienanpassung(en)"
+                ),
+                expanded=False,
+                maintain_state=True,
+                controls=[ft.Column(spacing=6, controls=item_rows)],
+                bgcolor="#F7F9F8",
+                collapsed_bgcolor="#EEF3F1",
+            )
             selected_rows.append(
                 ft.Row(
-                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                    vertical_alignment=ft.CrossAxisAlignment.START,
                     controls=[
                         ft.Column(
-                            spacing=2,
+                            expand=True,
+                            spacing=4,
                             controls=[
-                                ft.Text(label, size=13, weight=ft.FontWeight.W_600),
+                                item_tile,
                                 ft.Text(
-                                    f"{selection_summary} · {selection.version_id} · "
-                                    f"{adaptation_count} Studienanpassung(en)",
-                                    size=11,
+                                    f"Versions-ID: {selection.version_id}",
+                                    size=10,
                                     color="#55716A",
+                                    selectable=True,
                                 ),
                             ],
+                        ),
+                        self._action_button(
+                            "Nach oben",
+                            "ARROW_UPWARD",
+                            lambda _event, s=selection: self._move_selection(s, -1),
+                            "Verschiebt dieses Instrument in der Projektzusammenstellung nach oben.",
+                            disabled=selection_index == 0,
+                        ),
+                        self._action_button(
+                            "Nach unten",
+                            "ARROW_DOWNWARD",
+                            lambda _event, s=selection: self._move_selection(s, 1),
+                            "Verschiebt dieses Instrument in der Projektzusammenstellung nach unten.",
+                            disabled=selection_index == total_selections - 1,
                         ),
                         self._action_button(
                             "Entfernen",
@@ -2522,6 +2649,7 @@ class PsyMetriQApplication:
             "population": "population_filter",
             "commercial": "commercial_filter",
             "license": "license_filter",
+            "content": "item_content_filter",
         }
         attribute = filter_attributes.get(filter_name)
         if attribute is None:
@@ -2554,6 +2682,69 @@ class PsyMetriQApplication:
             f"{selection.instrument_id}/{selection.version_id}",
         )
         self._render()
+
+    def _move_selection(self, selection: VersionSelection, direction: int) -> None:
+        selections = list(self.project.selections)
+        try:
+            index = selections.index(selection)
+        except ValueError:
+            return
+        target_index = index + direction
+        if target_index < 0 or target_index >= len(selections):
+            return
+        selections[index], selections[target_index] = selections[target_index], selections[index]
+        self.project = self.project.model_copy(update={"selections": selections}).record_step(
+            "selection_reordered",
+            "Reihenfolge der Instrumente geändert",
+            f"{selection.instrument_id}/{selection.version_id}",
+        )
+        self._render()
+
+    def _project_item_rows(
+        self, family: QuestionnaireParent, version: QuestionnaireVersion, selection: VersionSelection
+    ) -> list[ft.Control]:
+        selected_ids = self._selected_item_ids(family.instrument_id, version)
+        if not version.item_text_included:
+            return [
+                ft.Text(
+                    "Metadatenreferenz ohne Itemtexte. Dimensionen: "
+                    + (", ".join(version.source_reported_dimensions) or "nicht dokumentiert"),
+                    size=12,
+                    color="#8A4A2E",
+                    selectable=True,
+                )
+            ]
+        item_rows: list[ft.Control] = []
+        for item in version.items:
+            if item.item_id not in selected_ids:
+                continue
+            adaptation = self._item_adaptation(family, version, item.item_id)
+            item_rows.append(
+                ft.Container(
+                    bgcolor="#F7F9F8",
+                    padding=8,
+                    border_radius=6,
+                    content=ft.Column(
+                        spacing=3,
+                        controls=[
+                            ft.Text(
+                                adaptation.adapted_prompt_text if adaptation else item.prompt_text,
+                                size=12,
+                                selectable=True,
+                                color="#8A4A2E" if adaptation else "#203F39",
+                            ),
+                            ft.Text(
+                                f"{item.item_id} · {item.dimension} · "
+                                f"{item.response_mode} · {item.variable_name}",
+                                size=10,
+                                color="#55716A",
+                                selectable=True,
+                            ),
+                        ],
+                    ),
+                )
+            )
+        return item_rows or [ft.Text("Keine Items ausgewählt.", size=12, color="#55716A")]
 
     def _reload_and_render(self) -> None:
         self._reload_catalog()
