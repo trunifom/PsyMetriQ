@@ -93,6 +93,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 10 Minuten",
+      "recall_period": "letzte Woche bzw. aktueller Gesundheitszustand je Item",
+      "response_format": "4-stufige Antwortskalen plus globale 7-stufige Gesundheits-/Lebensqualitätsskala",
+      "item_structure": "30 Items; Dimensionen: global health, physical functioning, role functioning, emotional functioning, cognitive functioning, social functioning, symptoms.",
+      "scoring_notes": "Funktions- und Symptomskalen werden nach EORTC-Scoring Manual linear transformiert; höhere Werte haben je Skala unterschiedliche Bedeutung.",
+      "psychometric_summary": "QLQ-C30 ist international in Onkologie und klinischen Studien umfangreich validiert; Sprachversion und Module sind getrennt zu prüfen.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": 30,

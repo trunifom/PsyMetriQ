@@ -82,6 +82,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 5 Minuten",
+      "recall_period": "kein einheitlicher Recall-Zeitraum",
+      "response_format": "mehrstufige Zustimmungsskala",
+      "item_structure": "14 Items; Dimensionen: emotional support, practical support, social integration.",
+      "scoring_notes": "Subskalen und Gesamtscore richten sich nach der konkreten F-SozU-Kurzform und dem Manual.",
+      "psychometric_summary": "Deutschsprachige psychometrische Evidenz ist vorhanden; Form und Zielgruppe müssen vor Vergleich ausgewiesen werden.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": 14,

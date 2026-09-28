@@ -82,6 +82,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 10-15 Minuten",
+      "recall_period": "chronisches aktuelles Belastungserleben",
+      "response_format": "mehrstufige Zustimmungsskala",
+      "item_structure": "57 Items; Dimensionen: chronic stress, work overload, social overload, worry, lack of social recognition.",
+      "scoring_notes": "TICS-Subskalen werden getrennt ausgewertet; Form, Normen und Kurzformen müssen angegeben werden.",
+      "psychometric_summary": "TICS ist ein deutschsprachiges, multidimensionales Verfahren mit Skalen zu chronischem Stress und Arbeitsbelastung.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": 57,

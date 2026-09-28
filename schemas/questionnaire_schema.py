@@ -335,6 +335,34 @@ class QuestionnaireVersion(BaseModel):
 		default_factory=dict,
 		description="Psychometric quality metrics associated with this version.",
 	)
+	administration_time: str | None = Field(
+		default=None,
+		description="Source-reported or clearly labelled estimated completion time.",
+	)
+	recall_period: str | None = Field(
+		default=None,
+		description="Reference period respondents are asked to consider, if applicable.",
+	)
+	response_format: str | None = Field(
+		default=None,
+		description="Human-readable response mode and scale structure.",
+	)
+	item_structure: str | None = Field(
+		default=None,
+		description="Human-readable item count, subscale, or form structure summary.",
+	)
+	scoring_notes: str | None = Field(
+		default=None,
+		description=(
+			"Source-grounded scoring and interpretation workflow; not a calculation engine."
+		),
+	)
+	psychometric_summary: str | None = Field(
+		default=None,
+		description=(
+			"Short source-grounded summary of reliability, validity, norms, or evidence limits."
+		),
+	)
 	response_sets: dict[str, list[ResponseOption]] = Field(
 		default_factory=dict,
 		description="Named categorical response scales; numeric forms may define none.",

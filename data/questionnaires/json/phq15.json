@@ -93,6 +93,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 3-5 Minuten",
+      "recall_period": "letzte 4 Wochen",
+      "response_format": "3-stufige Belastungsskala",
+      "item_structure": "15 Items; Dimensionen: somatic symptom burden.",
+      "scoring_notes": "Somatische Symptome werden gemäß PHQ-15-Syntax summiert; medizinische Abklärung bleibt erforderlich.",
+      "psychometric_summary": "PHQ-15 ist für somatische Symptomlast gut untersucht, aber nicht als Erklärung ungeklärter Symptome allein ausreichend.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": 15,

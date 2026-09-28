@@ -91,6 +91,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 10 Minuten",
+      "recall_period": "typisches Verhalten im Schulalter",
+      "response_format": "3-stufige Eltern-/Lehrkraft-Rating-Skala",
+      "item_structure": "27 Items; Dimensionen: social interaction, communication, restricted behavior.",
+      "scoring_notes": "Items werden zum ASSQ-Screeningscore summiert; Schwellenwerte sind populationsspezifisch.",
+      "psychometric_summary": "ASSQ wurde für schulaltrige Autismusmerkmale entwickelt; deutsche Evidenz und Informantenversion sind zu beachten.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": 27,

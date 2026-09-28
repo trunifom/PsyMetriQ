@@ -80,6 +80,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "formabhängig; Quelle konsultieren",
+      "recall_period": "schulbezogener aktueller Zeitraum",
+      "response_format": "formabhängige Rating-Skala",
+      "item_structure": "Itemanzahl nicht dokumentiert; Dimensionen: school attendance problems, school refusal, school-related distress.",
+      "scoring_notes": "Subskalen und Auswertung müssen aus der jeweiligen ISAP-/ISAP-P-Version übernommen werden; Anwesenheitsdaten ergänzen.",
+      "psychometric_summary": "Deutsche klinische Jugendstichproben liegen vor; Elternform und Selbst-/Fremdbericht sind nicht austauschbar.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": null,

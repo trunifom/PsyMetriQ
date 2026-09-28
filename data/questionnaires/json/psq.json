@@ -82,6 +82,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 5-10 Minuten",
+      "recall_period": "aktuelles subjektives Belastungserleben",
+      "response_format": "4-stufige Zustimmungsskala",
+      "item_structure": "30 Items; Dimensionen: worries, tension, demands, joy.",
+      "scoring_notes": "Worries, Tension, Demands und Joy werden nach der offiziellen PSQ-Syntax ausgewertet.",
+      "psychometric_summary": "Deutsche Referenzwerte und psychometrische Untersuchungen liegen für verschiedene klinische und gesunde Populationen vor.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": 30,

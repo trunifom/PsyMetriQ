@@ -94,6 +94,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 5-10 Minuten",
+      "recall_period": "aktuelle Arbeitssituation",
+      "response_format": "mehrstufige Zustimmungsskala",
+      "item_structure": "Itemanzahl nicht dokumentiert; Dimensionen: effort, reward, overcommitment.",
+      "scoring_notes": "Effort-Reward-Ratio und Overcommitment werden nach der offiziellen ERI-Syntax berechnet.",
+      "psychometric_summary": "Das ERI-Modell ist in der Arbeitsstressforschung umfangreich untersucht; deutsche Form und Ratio-Variante müssen dokumentiert werden.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": null,

@@ -89,6 +89,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 5-10 Minuten",
+      "recall_period": "aktuelles und typisches Verhalten",
+      "response_format": "4-stufige Eltern-/Lehrkraft-Rating-Skala",
+      "item_structure": "26 Items; Dimensionen: inattention, hyperactivity/impulsivity, oppositional behavior.",
+      "scoring_notes": "ADHS- und oppositionelle Symptomcluster werden nach der gewählten SNAP-IV-Syntax ausgewertet.",
+      "psychometric_summary": "SNAP-IV ist häufig in Forschung und Screening eingesetzt; deutsche Form, Normen und Cutoffs müssen belegt werden.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": 26,

@@ -89,6 +89,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 5-10 Minuten",
+      "recall_period": "aktuelle Schulerfahrung",
+      "response_format": "mehrstufige Schüler-Zustimmungsskala",
+      "item_structure": "16 Items; Dimensionen: school belonging, positive affect, academic efficacy.",
+      "scoring_notes": "SSWQ-Dimensionen werden nach der Original- und versionsspezifischen Syntax ausgewertet.",
+      "psychometric_summary": "Die publizierte Evidenz stammt zunächst aus Schulstufen 6-8; deutsche Übertragung und Normen sind separat zu prüfen.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": 16,

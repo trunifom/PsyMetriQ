@@ -93,6 +93,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 5-10 Minuten",
+      "recall_period": "typisches aktuelles Verhalten",
+      "response_format": "4-stufige Zustimmungsskala",
+      "item_structure": "50 Items; Dimensionen: social skills, attention switching, attention to detail, communication, imagination.",
+      "scoring_notes": "Domänen- und Gesamtscore folgen der AQ-Syntax; Cutoffs sind Screeninghilfen und nicht diagnostisch.",
+      "psychometric_summary": "AQ ist ein verbreitetes Trait-Screening; Sensitivität und Spezifität variieren nach Population und klinischem Kontext.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": 50,

@@ -91,6 +91,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 15-20 Minuten",
+      "recall_period": "letzte 7 Tage",
+      "response_format": "5-stufige Belastungsskala",
+      "item_structure": "90 Items; Dimensionen: somatization, obsessive-compulsive symptoms, interpersonal sensitivity, depression, anxiety, hostility, phobic anxiety, paranoid ideation, psychoticism.",
+      "scoring_notes": "Neun Symptomdimensionen und globale Kennwerte werden gemäß deutscher Normierung ausgewertet.",
+      "psychometric_summary": "SCL-90-R ist breit eingesetzt, aber Profilwerte sind kontext- und response-stilabhängig; keine eigenständige Diagnose.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": 90,

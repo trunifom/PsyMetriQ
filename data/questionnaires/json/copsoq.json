@@ -91,6 +91,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "formabhängig; ca. 10-20 Minuten",
+      "recall_period": "aktuelle Arbeitsbedingungen",
+      "response_format": "mehrstufige Arbeits- und Zustimmungsskalen",
+      "item_structure": "Itemanzahl nicht dokumentiert; Dimensionen: work demands, influence, social relations, leadership, health and wellbeing.",
+      "scoring_notes": "Skalenwerte werden dimensionsweise berichtet und mit geeigneten Referenzwerten verglichen.",
+      "psychometric_summary": "COPSOQ ist ein etabliertes multidimensionales Instrument für psychosoziale Arbeitsbedingungen; Version und Benchmark sind auszuweisen.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": null,

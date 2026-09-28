@@ -97,6 +97,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 3-5 Minuten",
+      "recall_period": "letzte 6 Monate",
+      "response_format": "5-stufige Häufigkeitsskala",
+      "item_structure": "18 Items; Dimensionen: inattention, hyperactivity/impulsivity.",
+      "scoring_notes": "Kurz- oder Vollform werden nach offizieller ASRS-Syntax ausgewertet; positives Screening verlangt Diagnostik.",
+      "psychometric_summary": "ASRS ist international als Erwachsenenscreening gut untersucht; es ersetzt keine Entwicklungs- und Funktionsanamnese.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": 18,

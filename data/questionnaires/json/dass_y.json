@@ -116,6 +116,12 @@
         "notes": "Official source warns that the DASS is dimensional and is not a diagnosis."
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 5-10 Minuten",
+      "recall_period": "letzte 7 Tage",
+      "response_format": "4-stufige Häufigkeitsskala",
+      "item_structure": "21 Items; Dimensionen: keine Dimensionen im Katalog dokumentiert.",
+      "scoring_notes": "Depressions-, Angst- und Stressdimensionen werden getrennt ausgewertet; keine Übertragung von Erwachsenen-Cutoffs.",
+      "psychometric_summary": "DASS-Y ist eine eigenständige Jugendform; Scores sind nicht direkt mit DASS-21 vergleichbar.",
       "response_sets": {
         "frequency_4": [
           {
@@ -940,6 +946,12 @@
         "notes": "Official DASS-Y translation page identifies Lina Neuhoff and Maria Noorani-Yazdanabad; the source does not certify translation validity."
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 5-10 Minuten",
+      "recall_period": "letzte 7 Tage",
+      "response_format": "4-stufige Häufigkeitsskala",
+      "item_structure": "21 Items; Dimensionen: keine Dimensionen im Katalog dokumentiert.",
+      "scoring_notes": "Depressions-, Angst- und Stressdimensionen werden getrennt ausgewertet; keine Übertragung von Erwachsenen-Cutoffs.",
+      "psychometric_summary": "DASS-Y ist eine eigenständige Jugendform; Scores sind nicht direkt mit DASS-21 vergleichbar.",
       "response_sets": {
         "frequency_4": [
           {

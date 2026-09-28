@@ -132,6 +132,12 @@
         "notes": "This screening measure is not by itself a clinical diagnosis."
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 2-5 Minuten",
+      "recall_period": "letzte 2 Wochen",
+      "response_format": "4-stufige Häufigkeitsskala",
+      "item_structure": "10 Items; Dimensionen: keine Dimensionen im Katalog dokumentiert.",
+      "scoring_notes": "Itemwerte werden zum PHQ-9-Gesamtscore summiert; offizielle Cutoffs und klinische Abklärung gelten versions- und populationsspezifisch.",
+      "psychometric_summary": "Der PHQ-9 ist umfangreich validiert; konkrete Sensitivität, Spezifität und Cutoffs sind für die jeweilige deutsche Version und Population zu prüfen.",
       "response_sets": {
         "frequency_4_en": [
           {
@@ -586,6 +592,12 @@
         "notes": "Deutschland-Fassung; nicht mit Schweizer/österreichischen Varianten gleichsetzen."
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 2-5 Minuten",
+      "recall_period": "letzte 2 Wochen",
+      "response_format": "4-stufige Häufigkeitsskala",
+      "item_structure": "10 Items; Dimensionen: keine Dimensionen im Katalog dokumentiert.",
+      "scoring_notes": "Itemwerte werden zum PHQ-9-Gesamtscore summiert; offizielle Cutoffs und klinische Abklärung gelten versions- und populationsspezifisch.",
+      "psychometric_summary": "Der PHQ-9 ist umfangreich validiert; konkrete Sensitivität, Spezifität und Cutoffs sind für die jeweilige deutsche Version und Population zu prüfen.",
       "response_sets": {
         "frequency_4_de": [
           {

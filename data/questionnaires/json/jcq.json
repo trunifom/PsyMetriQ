@@ -92,6 +92,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 10-15 Minuten",
+      "recall_period": "aktuelle Arbeitsbedingungen",
+      "response_format": "mehrstufige Arbeits- und Zustimmungsskalen",
+      "item_structure": "Itemanzahl nicht dokumentiert; Dimensionen: psychological demands, decision latitude, social support.",
+      "scoring_notes": "Demand-, Control- und Support-Skalen werden getrennt nach JCQ-Syntax ausgewertet.",
+      "psychometric_summary": "JCQ ist international etabliert; deutsche Übersetzung, Kurzform und Benchmark müssen dokumentiert werden.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": null,

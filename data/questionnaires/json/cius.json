@@ -78,6 +78,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 5 Minuten",
+      "recall_period": "kein einheitlicher Recall-Zeitraum",
+      "response_format": "5-stufige Häufigkeitsskala",
+      "item_structure": "14 Items; Dimensionen: compulsive internet use, loss of control, negative consequences.",
+      "scoring_notes": "Itemwerte werden gemäß offizieller Form zum CIUS-Score zusammengeführt; Screening ist keine Diagnose.",
+      "psychometric_summary": "Deutsche Jugend- und erwachsene Sprachinvarianzstudien sind vorhanden, aber nicht automatisch auf jede Population übertragbar.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": 14,

@@ -78,6 +78,12 @@
         "notes": "The source reports 10 items, a four-point response scale, and a total range of 10-40. Population guidance: intended for adults/adolescents; do not administer below age 12 without source review."
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 3-5 Minuten",
+      "recall_period": "kein einheitlicher Recall-Zeitraum",
+      "response_format": "4-stufige Zustimmungsskala",
+      "item_structure": "10 Items; Dimensionen: general self-efficacy.",
+      "scoring_notes": "Die zehn Antwortwerte werden zum Gesamtscore addiert; offizielle Bereichs- und Sprachhinweise gelten.",
+      "psychometric_summary": "Die GSE ist international breit untersucht; deutsche Norm- und Übersetzungsevidenz ist versionsspezifisch.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": 10,

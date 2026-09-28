@@ -97,6 +97,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "formabhängig; ca. 10-20 Minuten",
+      "recall_period": "aktuelles und typisches Verhalten",
+      "response_format": "mehrstufige Fremdbeurteilungsskala",
+      "item_structure": "Itemanzahl nicht dokumentiert; Dimensionen: inattention, hyperactivity, impulsivity.",
+      "scoring_notes": "FBB-ADHS-Subskalen werden nach DISYPS-III-Normen und Informantenform ausgewertet.",
+      "psychometric_summary": "DISYPS-III bietet deutschsprachige entwicklungs- und störungsspezifische Normierung; Edition und Informant sind entscheidend.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": null,

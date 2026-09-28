@@ -91,6 +91,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 10 Minuten",
+      "recall_period": "aktuelle Arbeitserfahrung",
+      "response_format": "mehrstufige Häufigkeits- oder Intensitätsskala",
+      "item_structure": "22 Items; Dimensionen: emotional exhaustion, depersonalization/cynicism, professional efficacy.",
+      "scoring_notes": "Exhaustion, Depersonalisation/Cynicism und Professional Efficacy werden getrennt nach MBI-Form ausgewertet.",
+      "psychometric_summary": "MBI ist die am häufigsten zitierte Burnout-Instrumentfamilie, aber kommerzielle Form und Subskalen müssen exakt angegeben werden.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": 22,

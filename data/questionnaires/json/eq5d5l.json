@@ -83,6 +83,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 3-5 Minuten",
+      "recall_period": "aktueller Gesundheitszustand",
+      "response_format": "5 Dimensionen mit je 5 Stufen plus EQ-VAS",
+      "item_structure": "6 Items; Dimensionen: mobility, self-care, usual activities, pain/discomfort, anxiety/depression, health thermometer.",
+      "scoring_notes": "Deskriptives Profil, VAS und präferenzbasierter Index sind getrennte Auswertungselemente; deutscher Value Set erforderlich.",
+      "psychometric_summary": "EuroQol stellt versions-, sprach- und Value-Set-spezifische Evidenz und Nutzungsbedingungen bereit.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": 6,

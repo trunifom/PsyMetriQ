@@ -69,6 +69,12 @@
         "notes": "Reverse-score items 3, 5, 8, 9, and 10 (3 minus the response score) before summing; the source describes a 0-30 total. Scoring is metadata, not a validated calculation engine."
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 3-5 Minuten",
+      "recall_period": "kein einheitlicher Recall-Zeitraum",
+      "response_format": "4-stufige Zustimmungsskala",
+      "item_structure": "10 Items; Dimensionen: keine Dimensionen im Katalog dokumentiert.",
+      "scoring_notes": "Reverse-keyed Items müssen vor der Summierung umgepolt werden; die konkrete Auswertung folgt der Quelle.",
+      "psychometric_summary": "Die Skala ist international sehr häufig eingesetzt; Sprach- und populationsspezifische Evidenz bleibt relevant.",
       "response_sets": {
         "rosenberg_four_point_agreement": [
           {

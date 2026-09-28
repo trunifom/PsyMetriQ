@@ -1526,6 +1526,11 @@ class PsyMetriQApplication:
             self._profile_text("Namensvarianten / Suchbegriffe", aliases or keywords),
             self._profile_text("Zielgruppe", "; ".join(populations)),
             self._profile_text("Merkmale der Durchführung", characteristics),
+            self._profile_text("Bearbeitungszeit", version.administration_time),
+            self._profile_text("Recall-/Bezugszeitraum", version.recall_period),
+            self._profile_text("Antwortformat", version.response_format),
+            self._profile_text("Itemaufbau", version.item_structure),
+            self._profile_text("Auswertung", version.scoring_notes),
             self._profile_text("Entwicklung / Autorenschaft", contributors),
             self._profile_text("Versionsbeitrag", version_contributors),
             self._profile_text(
@@ -1534,7 +1539,9 @@ class PsyMetriQApplication:
             ),
             self._profile_text(
                 "Gütekriterien / COSMIN-Metriken",
-                metrics or "Keine strukturierten Gütekriterien im Katalog hinterlegt",
+                version.psychometric_summary
+                or metrics
+                or "Keine strukturierten Gütekriterien im Katalog hinterlegt",
             ),
             self._profile_text(
                 "Interpretation und Grenzen",

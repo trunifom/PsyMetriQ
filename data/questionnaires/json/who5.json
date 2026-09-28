@@ -70,6 +70,12 @@
         "notes": "Open the official source and verify terms for the exact form/version. Topp et al. (2015) review: DOI 10.1159/000376585; this is not the underlying WHO form publication."
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 1-2 Minuten",
+      "recall_period": "letzte 2 Wochen",
+      "response_format": "6-stufige Häufigkeitsskala",
+      "item_structure": "5 Items; Dimensionen: positive wellbeing.",
+      "scoring_notes": "Quelle konsultieren; genaue Transformation und mögliche Schwellenwerte sind editionsspezifisch.",
+      "psychometric_summary": "Der WHO-5 ist breit untersucht, die konkrete Publikation und Übersetzung müssen für die Anwendung geprüft werden.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": 5,

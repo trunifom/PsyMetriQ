@@ -82,6 +82,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "unter 2 Minuten",
+      "recall_period": "kein einheitlicher Recall-Zeitraum",
+      "response_format": "kurze ordinale Häufigkeitsskala",
+      "item_structure": "3 Items; Dimensionen: loneliness, social isolation.",
+      "scoring_notes": "Die Kurzform wird nach der Originalsyntax summiert; es gibt keinen universellen diagnostischen Cutoff.",
+      "psychometric_summary": "Die Drei-Item-Form ist für große Surveys entwickelt; deutsche Übersetzungsevidenz ist separat zu prüfen.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": 3,

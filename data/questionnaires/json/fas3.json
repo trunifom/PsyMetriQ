@@ -93,6 +93,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 3 Minuten",
+      "recall_period": "aktuelle materielle Lebensbedingungen",
+      "response_format": "konkrete Haushalts- und Besitzangaben",
+      "item_structure": "6 Items; Dimensionen: family material affluence.",
+      "scoring_notes": "Antworten werden zum FAS-Score zusammengeführt; der Score ist kein vollständiger SES-Index.",
+      "psychometric_summary": "FAS III ist für internationale Schulgesundheitsstudien entwickelt; Länder- und Zeitvergleiche erfordern Vorsicht.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": 6,

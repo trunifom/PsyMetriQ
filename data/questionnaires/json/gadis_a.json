@@ -89,6 +89,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 5 Minuten",
+      "recall_period": "kein einheitlicher Recall-Zeitraum",
+      "response_format": "ordinales Selbstberichtformat",
+      "item_structure": "Itemanzahl nicht dokumentiert; Dimensionen: gaming disorder symptoms, impaired control, functional impairment.",
+      "scoring_notes": "Auswertung und Schwellenwerte folgen der ICD-11-orientierten Originalstudie; keine Übertragung auf DSM-5-Kriterien.",
+      "psychometric_summary": "Die deutsche Validierung bezieht sich auf häufig spielende Jugendliche und ist populationsspezifisch.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": null,

@@ -91,6 +91,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 5-10 Minuten",
+      "recall_period": "aktuelles schulisches Selbstbild",
+      "response_format": "mehrstufige Schüler-Zustimmungsskala",
+      "item_structure": "Itemanzahl nicht dokumentiert; Dimensionen: ability self-concept, social comparison, individual comparison.",
+      "scoring_notes": "Dimensionen des schulischen Selbstkonzepts werden getrennt nach SESSKO-Form ausgewertet.",
+      "psychometric_summary": "SESSKO ist für deutsche Schulstufen entwickelt; Normen und Bezugsgruppen sind für die Interpretation wesentlich.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": null,

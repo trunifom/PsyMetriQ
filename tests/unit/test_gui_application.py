@@ -519,6 +519,26 @@ def test_every_catalog_family_has_a_research_profile(
         assert all(getattr(family.metadata, field) for field in profile_fields)
 
 
+def test_every_catalog_version_has_structured_administration_and_scoring_metadata(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(application, "SETTINGS_PATH", tmp_path / "settings.json")
+    app = PsyMetriQApplication(FakePage())  # type: ignore[arg-type]
+    required_fields = (
+        "administration_time",
+        "recall_period",
+        "response_format",
+        "item_structure",
+        "scoring_notes",
+        "psychometric_summary",
+    )
+
+    versions = [version for family, _path in app.catalog_records for version in family.versions]
+    assert len(versions) == 63
+    for version in versions:
+        assert all(getattr(version, field) for field in required_fields), version.version_id
+
+
 def test_metadata_reference_can_be_included_in_project_and_exported_without_item_text(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:

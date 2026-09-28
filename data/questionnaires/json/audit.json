@@ -82,6 +82,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 2-5 Minuten",
+      "recall_period": "üblicherweise letzter Jahreszeitraum",
+      "response_format": "mehrstufige Häufigkeits- und Mengenangaben",
+      "item_structure": "10 Items; Dimensionen: alcohol consumption, dependence symptoms, alcohol-related harm.",
+      "scoring_notes": "Konsum-, Abhängigkeits- und Schadensbereiche werden zum AUDIT-Score zusammengeführt; Cutoffs folgen WHO- und Kontextleitlinien.",
+      "psychometric_summary": "AUDIT ist international und in der Primärversorgung umfangreich validiert; deutsche Version und Setting bleiben maßgeblich.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": 10,

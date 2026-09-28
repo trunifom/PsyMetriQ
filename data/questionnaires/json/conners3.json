@@ -93,6 +93,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "formabhängig; ca. 10-20 Minuten",
+      "recall_period": "aktuelles und typisches Verhalten",
+      "response_format": "mehrstufige Rating-Skala",
+      "item_structure": "Itemanzahl nicht dokumentiert; Dimensionen: inattention, hyperactivity/impulsivity, executive functioning, behavioral problems.",
+      "scoring_notes": "Conners-Subskalen und Indexwerte werden mit den kommerziellen Normen der jeweiligen Form ausgewertet.",
+      "psychometric_summary": "Multi-Informanten-Evidenz ist ein Kern der Conners-Familie; kommerzielle deutsche Normen und Versionen gelten.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": null,

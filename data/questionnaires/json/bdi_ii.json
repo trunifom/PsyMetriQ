@@ -91,6 +91,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 5-10 Minuten",
+      "recall_period": "letzte 2 Wochen",
+      "response_format": "4-stufige Schweregradskala",
+      "item_structure": "21 Items; Dimensionen: depressive symptoms.",
+      "scoring_notes": "21 Items werden zum Gesamtscore summiert; Auswertung und Cutoffs folgen der lizenzierten deutschen Anleitung.",
+      "psychometric_summary": "BDI-II ist international umfangreich validiert; deutsche Normen und klinische Anwendung sind versionsabhängig.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": 21,

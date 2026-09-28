@@ -93,6 +93,12 @@
         "notes": null
       },
       "cosmin_metrics": {},
+      "administration_time": "ca. 5 Minuten",
+      "recall_period": "aktuelles und typisches Verhalten",
+      "response_format": "4-stufige Eltern-/Lehrkraft-Rating-Skala",
+      "item_structure": "18 Items; Dimensionen: inattention, hyperactivity/impulsivity.",
+      "scoring_notes": "Inattention und Hyperaktivität/Impulsivität werden getrennt und als Gesamtwert nach Normen ausgewertet.",
+      "psychometric_summary": "ADHD-RS-IV ist ein etabliertes Fremdbeurteilungsinstrument; es ersetzt keine umfassende ADHS-Diagnostik.",
       "response_sets": {},
       "item_text_included": false,
       "source_reported_item_count": 18,
