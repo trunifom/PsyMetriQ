@@ -131,7 +131,7 @@ The library uses a bounded version-list viewport with independent scrolling. If 
 ## Changes documented in this manual
 
 - The Flet workspace supports faceted instrument search, detailed version/item/response/scoring inspection, item and whole-scale selection, saved projects, and study-specific wording adaptations separated from source records.
-- Exchange supports PsyMetriQ JSON, FHIR R4, XLSX review workbooks, item CSV, and REDCap Data Dictionary CSV. Unipark and live REDCap API upload remain unsupported.
+- Exchange supports PsyMetriQ JSON, FHIR R4, XLSX review workbooks, item CSV, and REDCap Data Dictionary CSV, plus a live REDCap project connection (Section "REDCap: file export/import and the live API" below). Unipark and LimeSurvey remain unsupported.
 - The catalog contains item-bearing Rosenberg Self-Esteem Scale data and selectable reference profiles for WHO-5, WEMWBS/SWEMWBS, GSE, and PSS. Reference profiles record source-reported length/dimensions and license status but do not contain item wording. They are usable for discovery, meta-analysis planning, and project references; they do not grant item reproduction or administration permission.
 - Search accepts regional language tags such as `de-AT` even when the version language is stored as `de`; a `de` filter includes the documented regional German variants. Age facets consolidate source population labels into broad overlapping bands: 0-11, 12-17, 18-64, 65+, and unknown.
 - The library supports combined age-group selection, visible active-filter summaries, one-click filter reset, and an instrument profile with source-grounded purpose, construct, name, development, population, publication, psychometric, interpretation, and citation information where the catalog documents it.
@@ -275,6 +275,33 @@ matches = search_engine.search_items("focus", filters)
 Within one filter field, selected values are alternatives; separate fields are combined. For example, a match must be German, in one of the selected locales, a short form, for adolescents, and satisfy each selected metadata category. `keywords`, MeSH terms, and characteristics match stored values exactly and case-insensitively; free text also searches aliases and notes.
 
 For team use, point the service at an access-controlled synchronized folder or share reviewed JSON files through a private repository. The repository's `data/02_extracted_jsons/` folder is configured to include only the two synthetic demos; real extracted material is ignored by default.
+
+## REDCap: file export/import and the live API
+
+### File-based exchange
+
+Export a selected version as a REDCap Data Dictionary CSV from **Import & Export** (choose `redcap_csv` as the export format), then upload it in REDCap's own Online Designer under **Data Dictionary > Upload Data Dictionary**. To bring an existing REDCap project's Data Dictionary CSV into PsyMetriQ, use **Dateien importieren** and pick the `.csv` file directly; no live connection is required for either direction.
+
+The exporter (`build_redcap_metadata_records` / `export_redcap_data_dictionary` in `src/exporters/data_exchange.py`) supports:
+
+- `radio`/`dropdown`/`checkbox` for categorical items, with choices formatted as REDCap expects (`code, label | code, label`).
+- `text` with `number` validation and min/max for numeric items, unless an item's `redcap_field_type` is `slider` (see below).
+- `slider`, for a numeric item explicitly marked `redcap_field_type: "slider"`, with `numeric_minimum`/`numeric_maximum` rendered as the three-part REDCap slider label convention (`min, , max`).
+- `calc` fields, one per `ScoringAlgorithm`, appended after the item fields. Each score's REDCap calc expression recodes reverse-scored or otherwise non-identity-coded items explicitly (nested `if([var]=code,score,...)`), so the calc field always reflects `ResponseOption.score`, never a raw REDCap choice code that happens to differ from it. A `sum`/`weighted` algorithm's `multiplier` is applied as `*multiplier`; a `mean` algorithm divides by the item count first.
+
+The importer (`import_redcap_data_dictionary`) accepts `radio`/`dropdown`/`checkbox`/`text`/`notes`/`yesno`/`truefalse`/`slider` fields as respondent items (`yesno`/`truefalse` synthesize a two-option Yes/No or True/False response set; `slider` becomes a numeric item, defaulting to a 0-100 range when the dictionary specifies no min/max). Field types PsyMetriQ cannot represent as a respondent item -- `calc`, `descriptive`, `file`, `sql`, or anything unrecognized -- are **never silently dropped**: each is listed by field name and type in the imported instrument's `metadata.notes`, so you always know what didn't come across and why.
+
+### Live REDCap API connection
+
+Configure, in **Einstellungen > REDCap (Live-API)**: the project's API URL and the name of an environment variable (in your local `.env`, e.g. `REDCAP_API_TOKEN`) holding that project's API token. PsyMetriQ never stores the token itself in settings, projects, or exports -- only the environment variable's name, exactly like the LLM provider key settings.
+
+In **Import & Export**:
+
+1. **Mit REDCap verbinden** opens the connection and confirms the project's title/ID, so you know you are pointed at the right project before doing anything else.
+2. **Erste ausgewählte Version pushen** takes the first version selected in your current project (the same one shown in the export preview), builds its REDCap fields, and pushes them -- but only after you confirm a dialog explaining exactly what will happen. This is deliberately careful: REDCap's Metadata Import API call replaces a project's **entire** data dictionary, not just the fields being sent. Before pushing, PsyMetriQ always fetches the project's current metadata and checks every new field name against it (case-insensitively); if anything would collide with an existing field, the push is refused outright and nothing is written. Only when there is no collision does it import (existing fields + new fields) together, so a push can only add to a project's data dictionary, never silently overwrite or remove something already there.
+3. **Data Dictionary importieren** reads the connected project's entire data dictionary and adds it to the local catalogue as a new instrument, using the exact same parser as the file-based CSV import above (including the same "skipped fields go into the notes" behavior).
+
+A REDCap API token grants full read/write access to its project; treat it like a password and never commit a real `.env` file.
 
 ## Validate the schema changes
 

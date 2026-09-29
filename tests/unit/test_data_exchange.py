@@ -7,9 +7,16 @@ import pytest
 from openpyxl import load_workbook
 
 from data.generate_mock_data import generate_mock_data
-from schemas.questionnaire_schema import QuestionnaireParent
+from schemas.questionnaire_schema import (
+    ItemSchema,
+    QuestionnaireParent,
+    QuestionnaireVersion,
+    ResponseOption,
+    ScoringAlgorithm,
+)
 from src.exporters.data_exchange import (
     DataExchangeError,
+    build_redcap_metadata_records,
     export_fhir_questionnaire,
     export_item_csv,
     export_psymetriq_json,
@@ -197,6 +204,219 @@ def test_export_rejects_unknown_version(synthetic_questionnaire: QuestionnairePa
         from src.exporters.data_exchange import export_questionnaire
 
         export_questionnaire(synthetic_questionnaire, "missing", "fhir_json")
+
+
+def _reverse_scored_family() -> QuestionnaireParent:
+    """A synthetic instrument whose response codes differ from their scores.
+
+    ``low`` (code 0) is worth 3 points and ``high`` (code 3) is worth 0
+    points, so a naive REDCap calc field that summed the raw stored values
+    would compute the wrong total; only recoding via score can be correct.
+    """
+    version = QuestionnaireVersion(
+        version_id="v1",
+        language="en",
+        response_sets={
+            "reverse_4": [
+                ResponseOption(code=0, label="low", score=3),
+                ResponseOption(code=1, label="mid-low", score=2),
+                ResponseOption(code=2, label="mid-high", score=1),
+                ResponseOption(code=3, label="high", score=0),
+            ],
+            "direct_4": [
+                ResponseOption(code=0, label="never", score=0),
+                ResponseOption(code=1, label="always", score=1),
+            ],
+        },
+        items=[
+            ItemSchema(
+                item_id="rev_01",
+                variable_name="rev_01",
+                dimension="core",
+                prompt_text="Reverse-scored item.",
+                response_set_ref="reverse_4",
+                is_reverse_scored=True,
+            ),
+            ItemSchema(
+                item_id="direct_01",
+                variable_name="direct_01",
+                dimension="core",
+                prompt_text="Directly-scored item.",
+                response_set_ref="direct_4",
+            ),
+            ItemSchema(
+                item_id="slider_01",
+                variable_name="slider_01",
+                dimension="core",
+                prompt_text="How much pain right now?",
+                response_mode="numeric",
+                numeric_minimum=0,
+                numeric_maximum=100,
+                redcap_field_type="slider",
+                is_scored=False,
+            ),
+        ],
+        scoring_algorithms=[
+            ScoringAlgorithm(
+                output_variable="core_total",
+                method="sum",
+                target_items=["rev_01", "direct_01"],
+                multiplier=2,
+            )
+        ],
+    )
+    return QuestionnaireParent(
+        instrument_id="reverse_demo",
+        name_full="Reverse Scoring Demonstration Instrument",
+        is_commercial=False,
+        versions=[version],
+    )
+
+
+def test_redcap_export_recodes_reverse_scored_items_in_the_calc_field() -> None:
+    family = _reverse_scored_family()
+    version = family.versions[0]
+
+    records = build_redcap_metadata_records(family, version)
+
+    calc_records = [record for record in records if record["field_type"] == "calc"]
+    assert len(calc_records) == 1
+    calc_expression = calc_records[0]["select_choices_or_calculations"]
+    assert "if([rev_01]=0,3" in calc_expression
+    assert "if([rev_01]=3,0" in calc_expression
+    assert "[direct_01]" in calc_expression
+    assert calc_expression.endswith("*2)")
+    assert calc_records[0]["field_name"] != "rev_01"
+    assert calc_records[0]["field_name"] != "direct_01"
+
+
+def test_redcap_export_honors_slider_field_type_with_min_max_labels() -> None:
+    family = _reverse_scored_family()
+    version = family.versions[0]
+
+    records = build_redcap_metadata_records(family, version)
+
+    slider_record = next(record for record in records if record["field_name"] == "slider_01")
+    assert slider_record["field_type"] == "slider"
+    assert slider_record["select_choices_or_calculations"] == "0, , 100"
+
+
+def test_redcap_csv_export_includes_calc_and_slider_rows() -> None:
+    family = _reverse_scored_family()
+    version = family.versions[0]
+
+    csv_text = export_redcap_data_dictionary(family, version)
+    rows = list(csv.DictReader(io.StringIO(csv_text)))
+
+    field_types = {row["Variable / Field Name"]: row["Field Type"] for row in rows}
+    assert field_types["slider_01"] == "slider"
+    calc_rows = [row for row in rows if row["Field Type"] == "calc"]
+    assert len(calc_rows) == 1
+    assert calc_rows[0]["Variable / Field Name"] not in {"rev_01", "direct_01", "slider_01"}
+
+
+def _write_redcap_csv(rows: list[dict[str, str]]) -> str:
+    """Build a real, correctly quoted REDCap Data Dictionary CSV for a test fixture."""
+    headers = [
+        "Variable / Field Name",
+        "Form Name",
+        "Section Header",
+        "Field Type",
+        "Field Label",
+        "Choices, Calculations, OR Slider Labels",
+        "Field Note",
+        "Text Validation Type OR Show Slider Number",
+        "Text Validation Min",
+        "Text Validation Max",
+        "Required Field?",
+    ]
+    output = io.StringIO(newline="")
+    writer = csv.DictWriter(output, fieldnames=headers, lineterminator="\n")
+    writer.writeheader()
+    for row in rows:
+        writer.writerow({header: row.get(header, "") for header in headers})
+    return output.getvalue()
+
+
+def test_redcap_import_recognizes_yesno_truefalse_and_slider_fields() -> None:
+    csv_text = _write_redcap_csv(
+        [
+            {
+                "Variable / Field Name": "q_yn",
+                "Form Name": "demo",
+                "Section Header": "core",
+                "Field Type": "yesno",
+                "Field Label": "Do you smoke?",
+            },
+            {
+                "Variable / Field Name": "q_tf",
+                "Form Name": "demo",
+                "Section Header": "core",
+                "Field Type": "truefalse",
+                "Field Label": "I feel anxious.",
+            },
+            {
+                "Variable / Field Name": "q_slider",
+                "Form Name": "demo",
+                "Section Header": "core",
+                "Field Type": "slider",
+                "Field Label": "Rate your mood",
+                "Choices, Calculations, OR Slider Labels": "0, , 100",
+            },
+        ]
+    )
+
+    imported = import_redcap_data_dictionary(csv_text, language="en")
+
+    items_by_id = {item.item_id: item for item in imported.versions[0].items}
+    yesno_item = items_by_id["q_yn"]
+    assert yesno_item.response_mode == "categorical"
+    yesno_options = imported.versions[0].response_sets[yesno_item.response_set_ref]
+    assert {option.label for option in yesno_options} == {"Yes", "No"}
+
+    truefalse_item = items_by_id["q_tf"]
+    truefalse_options = imported.versions[0].response_sets[truefalse_item.response_set_ref]
+    assert {option.label for option in truefalse_options} == {"True", "False"}
+
+    slider_item = items_by_id["q_slider"]
+    assert slider_item.response_mode == "numeric"
+    assert slider_item.redcap_field_type == "slider"
+
+
+def test_redcap_import_notes_skipped_non_respondent_field_types() -> None:
+    csv_text = _write_redcap_csv(
+        [
+            {
+                "Variable / Field Name": "q_text",
+                "Form Name": "demo",
+                "Section Header": "core",
+                "Field Type": "text",
+                "Field Label": "A normal question",
+            },
+            {
+                "Variable / Field Name": "q_total",
+                "Form Name": "demo",
+                "Section Header": "core",
+                "Field Type": "calc",
+                "Field Label": "Total score",
+                "Choices, Calculations, OR Slider Labels": "[q_text]",
+            },
+            {
+                "Variable / Field Name": "q_intro",
+                "Form Name": "demo",
+                "Section Header": "core",
+                "Field Type": "descriptive",
+                "Field Label": "Please read the instructions carefully",
+            },
+        ]
+    )
+
+    imported = import_redcap_data_dictionary(csv_text, language="en")
+
+    assert len(imported.versions[0].items) == 1
+    assert imported.metadata.notes is not None
+    assert "q_total (calc)" in imported.metadata.notes
+    assert "q_intro (descriptive)" in imported.metadata.notes
 
 
 def test_item_subset_keeps_valid_scoring_only_when_all_targets_are_selected(

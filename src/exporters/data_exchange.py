@@ -57,6 +57,36 @@ REDCAP_HEADERS = [
     "Field Annotation",
 ]
 
+# One source of truth mapping REDCap's Data Dictionary CSV header row to the
+# snake_case keys the REDCap API's metadata import/export JSON uses for the
+# same columns, so the CSV writer/reader and the live-API path (see
+# src/exporters/redcap_api.py) can never silently drift apart.
+REDCAP_HEADER_TO_KEY: dict[str, str] = {
+    "Variable / Field Name": "field_name",
+    "Form Name": "form_name",
+    "Section Header": "section_header",
+    "Field Type": "field_type",
+    "Field Label": "field_label",
+    "Choices, Calculations, OR Slider Labels": "select_choices_or_calculations",
+    "Field Note": "field_note",
+    "Text Validation Type OR Show Slider Number": "text_validation_type_or_show_slider_number",
+    "Text Validation Min": "text_validation_min",
+    "Text Validation Max": "text_validation_max",
+    "Identifier?": "identifier",
+    "Branching Logic (Show field only if...)": "branching_logic",
+    "Required Field?": "required_field",
+    "Custom Alignment": "custom_alignment",
+    "Question Number (surveys only)": "question_number",
+    "Matrix Group Name": "matrix_group_name",
+    "Matrix Ranking?": "matrix_ranking",
+    "Field Annotation": "field_annotation",
+}
+REDCAP_KEY_TO_HEADER: dict[str, str] = {key: header for header, key in REDCAP_HEADER_TO_KEY.items()}
+REDCAP_RESPONDENT_FIELD_TYPES = frozenset(
+    {"radio", "dropdown", "checkbox", "text", "notes", "yesno", "truefalse", "slider"}
+)
+REDCAP_NON_RESPONDENT_FIELD_TYPES = frozenset({"calc", "descriptive", "file", "sql"})
+
 
 class DataExchangeError(ValueError):
     """Raised when external questionnaire data is malformed or unsupported."""
@@ -417,14 +447,68 @@ def export_item_csv(
     return output.getvalue()
 
 
-def export_redcap_data_dictionary(
-    questionnaire: QuestionnaireParent, version: QuestionnaireVersion
+def _format_redcap_number(value: float) -> str:
+    """Render a numeric bound without a spurious trailing ``.0`` for whole numbers."""
+    return str(int(value)) if float(value).is_integer() else f"{value:g}"
+
+
+def _format_redcap_code_literal(code: str | int) -> str:
+    """Render a response code as a REDCap calc-syntax literal (numeric or quoted string)."""
+    if isinstance(code, bool):
+        return "1" if code else "0"
+    if isinstance(code, int):
+        return str(code)
+    try:
+        numeric = float(code)
+    except (TypeError, ValueError):
+        return "'" + str(code).replace("'", "\\'") + "'"
+    return _format_redcap_number(numeric)
+
+
+def _redcap_score_expression(
+    item: ItemSchema, response_sets: dict[str, list[ResponseOption]]
 ) -> str:
-    """Export one version to REDCap's Data Dictionary CSV column convention."""
-    output = io.StringIO(newline="")
-    writer = csv.DictWriter(output, fieldnames=REDCAP_HEADERS, lineterminator="\n")
-    writer.writeheader()
-    form_name = _safe_identifier(questionnaire.instrument_id, "instrument")[:26]
+    """Return the REDCap calc-syntax expression for one item's scored contribution.
+
+    When every response option's stored code already equals its score (the
+    common case), the raw field value can be summed directly. Otherwise the
+    option scores are recoded explicitly with nested ``if()`` calls, so a
+    scoring calc field always reflects ``ResponseOption.score`` -- including
+    reverse-scored items, whose scores already encode the reversal -- rather
+    than REDCap's raw stored choice code.
+    """
+    variable = item.variable_name
+    if item.response_mode != "categorical" or not item.response_set_ref:
+        return f"[{variable}]"
+    options = response_sets.get(item.response_set_ref, [])
+    scored_options = [option for option in options if option.score is not None]
+    if not scored_options:
+        return f"[{variable}]"
+
+    def _code_matches_score(option: ResponseOption) -> bool:
+        try:
+            return float(option.code) == option.score
+        except (TypeError, ValueError):
+            return False
+
+    if len(scored_options) == len(options) and all(
+        _code_matches_score(option) for option in scored_options
+    ):
+        return f"[{variable}]"
+
+    expression = "0"
+    for option in reversed(scored_options):
+        code_literal = _format_redcap_code_literal(option.code)
+        score_literal = _format_redcap_number(option.score)
+        expression = f"if([{variable}]={code_literal},{score_literal},{expression})"
+    return expression
+
+
+def _build_redcap_item_records(
+    questionnaire: QuestionnaireParent, version: QuestionnaireVersion, *, form_name: str
+) -> list[dict[str, str]]:
+    """Build one REDCap metadata record per item, in the REDCap API's JSON key shape."""
+    records: list[dict[str, str]] = []
     for item in version.items:
         field_type = item.redcap_field_type
         validation_type = ""
@@ -438,36 +522,170 @@ def export_redcap_data_dictionary(
                 for option in version.response_sets[item.response_set_ref]
             )
         elif item.response_mode == "numeric":
-            field_type = "text"
-            validation_type = "number"
-            minimum = "" if item.numeric_minimum is None else str(item.numeric_minimum)
-            maximum = "" if item.numeric_maximum is None else str(item.numeric_maximum)
+            minimum = (
+                "" if item.numeric_minimum is None else _format_redcap_number(item.numeric_minimum)
+            )
+            maximum = (
+                "" if item.numeric_maximum is None else _format_redcap_number(item.numeric_maximum)
+            )
+            if field_type == "slider":
+                slider_minimum = item.numeric_minimum if item.numeric_minimum is not None else 0
+                slider_maximum = item.numeric_maximum if item.numeric_maximum is not None else 100
+                choices = (
+                    f"{_format_redcap_number(slider_minimum)}, , "
+                    f"{_format_redcap_number(slider_maximum)}"
+                )
+            else:
+                field_type = "text"
+                validation_type = "number"
         else:
-            field_type = "text"
-        writer.writerow(
+            field_type = "notes" if field_type == "slider" else "text"
+        records.append(
             {
-                "Variable / Field Name": item.variable_name,
-                "Form Name": form_name,
-                "Section Header": item.dimension,
-                "Field Type": field_type,
-                "Field Label": item.prompt_text,
-                "Required Field?": "y" if item.is_required else "",
-                "Choices, Calculations, OR Slider Labels": choices,
-                "Field Note": item.measurement_unit or "",
-                "Text Validation Type OR Show Slider Number": validation_type,
-                "Text Validation Min": minimum,
-                "Text Validation Max": maximum,
-                "Field Annotation": (
+                "field_name": item.variable_name,
+                "form_name": form_name,
+                "section_header": item.dimension,
+                "field_type": field_type,
+                "field_label": item.prompt_text,
+                "select_choices_or_calculations": choices,
+                "field_note": item.measurement_unit or "",
+                "text_validation_type_or_show_slider_number": validation_type,
+                "text_validation_min": minimum,
+                "text_validation_max": maximum,
+                "identifier": "",
+                "branching_logic": "",
+                "required_field": "y" if item.is_required else "",
+                "custom_alignment": "",
+                "question_number": "",
+                "matrix_group_name": "",
+                "matrix_ranking": "",
+                "field_annotation": (
                     f"item_id={item.item_id}; scored={str(item.is_scored).lower()}"
                     + (f"; {item.metadata.notes}" if item.metadata.notes else "")
                 ),
             }
         )
+    return records
+
+
+def _build_redcap_calc_records(
+    version: QuestionnaireVersion, *, form_name: str, used_field_names: set[str]
+) -> list[dict[str, str]]:
+    """Build one REDCap ``calc`` field per scoring algorithm, deriving true scores.
+
+    ``used_field_names`` (case-insensitive) is extended in place so a calc
+    field's name never collides with an item's ``variable_name`` or an
+    earlier calc field from the same version.
+    """
+    records: list[dict[str, str]] = []
+    items_by_id = {item.item_id: item for item in version.items}
+    for index, algorithm in enumerate(version.scoring_algorithms, start=1):
+        ordered_items = [
+            items_by_id[item_id] for item_id in algorithm.target_items if item_id in items_by_id
+        ]
+        if not ordered_items:
+            continue
+        expressions = [
+            _redcap_score_expression(item, version.response_sets) for item in ordered_items
+        ]
+        total = "(" + "+".join(expressions) + ")"
+        if algorithm.method == "mean":
+            total = f"({total}/{len(expressions)})"
+        if algorithm.multiplier != 1:
+            total = f"({total}*{_format_redcap_number(algorithm.multiplier)})"
+
+        base_name = _safe_variable_name(algorithm.output_variable, 900 + index)
+        field_name = base_name
+        suffix = 1
+        while field_name.casefold() in used_field_names:
+            suffix += 1
+            field_name = _safe_variable_name(f"{base_name}_{suffix}", 900 + index)
+        used_field_names.add(field_name.casefold())
+
+        records.append(
+            {
+                "field_name": field_name,
+                "form_name": form_name,
+                "section_header": "Berechnete Scores",
+                "field_type": "calc",
+                "field_label": (
+                    f"{algorithm.output_variable} "
+                    f"(berechnet: {algorithm.method}, Faktor {algorithm.multiplier:g})"
+                ),
+                "select_choices_or_calculations": total,
+                "field_note": algorithm.missing_data_rules or "",
+                "text_validation_type_or_show_slider_number": "",
+                "text_validation_min": "",
+                "text_validation_max": "",
+                "identifier": "",
+                "branching_logic": "",
+                "required_field": "",
+                "custom_alignment": "",
+                "question_number": "",
+                "matrix_group_name": "",
+                "matrix_ranking": "",
+                "field_annotation": (
+                    f"scoring_algorithm={algorithm.output_variable}; "
+                    f"target_items={','.join(algorithm.target_items)}"
+                ),
+            }
+        )
+    return records
+
+
+def build_redcap_metadata_records(
+    questionnaire: QuestionnaireParent, version: QuestionnaireVersion
+) -> list[dict[str, str]]:
+    """Build the full REDCap metadata (item + calc-score fields) for one version.
+
+    This is the single source of truth for REDCap export: both the Data
+    Dictionary CSV (``export_redcap_data_dictionary``) and the live-API push
+    (``src/exporters/redcap_api.py``) are built from these same records, so
+    the file you can preview/export locally is exactly what would be pushed.
+    """
+    form_name = _safe_identifier(questionnaire.instrument_id, "instrument")[:26]
+    records = _build_redcap_item_records(questionnaire, version, form_name=form_name)
+    used_field_names = {str(record["field_name"]).casefold() for record in records}
+    records.extend(
+        _build_redcap_calc_records(version, form_name=form_name, used_field_names=used_field_names)
+    )
+    return records
+
+
+def export_redcap_data_dictionary(
+    questionnaire: QuestionnaireParent, version: QuestionnaireVersion
+) -> str:
+    """Export one version to REDCap's Data Dictionary CSV column convention."""
+    output = io.StringIO(newline="")
+    writer = csv.DictWriter(output, fieldnames=REDCAP_HEADERS, lineterminator="\n")
+    writer.writeheader()
+    for record in build_redcap_metadata_records(questionnaire, version):
+        writer.writerow(
+            {header: record.get(key, "") for header, key in REDCAP_HEADER_TO_KEY.items()}
+        )
     return output.getvalue()
 
 
+_REDCAP_YESNO_OPTIONS = [
+    ResponseOption(code=1, label="Yes", score=None),
+    ResponseOption(code=0, label="No", score=None),
+]
+_REDCAP_TRUEFALSE_OPTIONS = [
+    ResponseOption(code=1, label="True", score=None),
+    ResponseOption(code=0, label="False", score=None),
+]
+
+
 def import_redcap_data_dictionary(content: str, language: str) -> QuestionnaireParent:
-    """Import a REDCap Data Dictionary CSV without inferring reuse permissions."""
+    """Import a REDCap Data Dictionary CSV without inferring reuse permissions.
+
+    ``radio``/``dropdown``/``checkbox``/``text``/``notes``/``yesno``/
+    ``truefalse``/``slider`` fields become respondent items. ``calc``,
+    ``descriptive``, ``file``, and ``sql`` fields (and any other type this
+    importer does not recognize) are never silently dropped: each one is
+    listed by field name and type in the imported family's metadata notes,
+    so nothing disappears from the dictionary without a visible trace.
+    """
     try:
         reader = csv.DictReader(io.StringIO(content.lstrip("\ufeff")))
         rows = list(reader)
@@ -477,19 +695,26 @@ def import_redcap_data_dictionary(content: str, language: str) -> QuestionnaireP
     if not reader.fieldnames or not required_headers.issubset(reader.fieldnames):
         raise DataExchangeError("CSV is missing required REDCap Data Dictionary columns")
 
-    rows = [
-        row
-        for row in rows
-        if (row.get("Field Type") or "").casefold() in {"radio", "dropdown", "checkbox", "text"}
-        and (row.get("Field Label") or "").strip()
-    ]
+    rows = [row for row in rows if (row.get("Field Label") or "").strip()]
     if not rows:
+        raise DataExchangeError("REDCap Data Dictionary contains no importable fields")
+
+    skipped_fields: list[str] = []
+    importable_rows: list[dict[str, str]] = []
+    for row in rows:
+        field_type = (row.get("Field Type") or "text").casefold()
+        field_name = (row.get("Variable / Field Name") or "").strip() or "(unnamed)"
+        if field_type in REDCAP_RESPONDENT_FIELD_TYPES:
+            importable_rows.append(row)
+        else:
+            skipped_fields.append(f"{field_name} ({field_type or 'unknown type'})")
+    if not importable_rows:
         raise DataExchangeError("REDCap Data Dictionary contains no importable fields")
 
     response_sets: dict[str, list[ResponseOption]] = {}
     items: list[ItemSchema] = []
     used_variable_names: set[str] = set()
-    for index, row in enumerate(rows, start=1):
+    for index, row in enumerate(importable_rows, start=1):
         field_type = (row.get("Field Type") or "text").casefold()
         source_name = (row.get("Variable / Field Name") or "").strip()
         variable_name = _safe_variable_name(source_name, index)
@@ -505,17 +730,23 @@ def import_redcap_data_dictionary(content: str, language: str) -> QuestionnaireP
             or validation_type.startswith("number_")
         )
         mode: Literal["categorical", "numeric", "text"] = (
-            "categorical" if field_type in {"radio", "dropdown", "checkbox"}
-            else "numeric" if is_numeric
+            "categorical" if field_type in {"radio", "dropdown", "checkbox", "yesno", "truefalse"}
+            else "numeric" if is_numeric or field_type == "slider"
             else "text"
         )
         response_ref: str | None = None
-        if mode == "categorical":
+        if field_type == "yesno":
+            response_ref = f"redcap_scale_{index:03d}"
+            response_sets[response_ref] = _REDCAP_YESNO_OPTIONS
+        elif field_type == "truefalse":
+            response_ref = f"redcap_scale_{index:03d}"
+            response_sets[response_ref] = _REDCAP_TRUEFALSE_OPTIONS
+        elif mode == "categorical":
             response_ref = f"redcap_scale_{index:03d}"
             options: list[ResponseOption] = []
-            for option_index, raw_option in enumerate(
-                (row.get("Choices, Calculations, OR Slider Labels") or "").split("|")
-            ):
+            for raw_option in (
+                row.get("Choices, Calculations, OR Slider Labels") or ""
+            ).split("|"):
                 code, separator, label = raw_option.strip().partition(",")
                 if not separator:
                     continue
@@ -539,6 +770,8 @@ def import_redcap_data_dictionary(content: str, language: str) -> QuestionnaireP
 
         minimum = _number(row.get("Text Validation Min")) if mode == "numeric" else None
         maximum = _number(row.get("Text Validation Max")) if mode == "numeric" else None
+        if field_type == "slider" and minimum is None and maximum is None:
+            minimum, maximum = 0.0, 100.0
         item_id = _safe_identifier(source_name or f"item_{index:03d}", "item")
         items.append(
             ItemSchema(
@@ -553,12 +786,16 @@ def import_redcap_data_dictionary(content: str, language: str) -> QuestionnaireP
                 measurement_unit=(row.get("Field Note") or None),
                 numeric_minimum=minimum,
                 numeric_maximum=maximum,
-                redcap_field_type=(field_type if field_type in {"radio", "checkbox"} else "text"),
+                redcap_field_type=(
+                    "slider" if field_type == "slider"
+                    else field_type if field_type in {"radio", "checkbox"}
+                    else "text"
+                ),
             )
         )
 
     form_names = sorted(
-        {(row.get("Form Name") or "").strip() for row in rows if row.get("Form Name")}
+        {(row.get("Form Name") or "").strip() for row in importable_rows if row.get("Form Name")}
     )
     instrument_name = (
         form_names[0].replace("_", " ").title()
@@ -566,10 +803,20 @@ def import_redcap_data_dictionary(content: str, language: str) -> QuestionnaireP
         else "Imported REDCap Instrument"
     )
     source_id = Path(form_names[0] if len(form_names) == 1 else "redcap_import").stem
+    notes = (
+        (
+            "Fields present in the REDCap Data Dictionary but not imported as "
+            "respondent items (unsupported field type, e.g. calc/descriptive/"
+            f"file/sql): {'; '.join(skipped_fields)}"
+        )
+        if skipped_fields
+        else None
+    )
     return QuestionnaireParent(
         instrument_id=_safe_identifier(source_id),
         name_full=instrument_name,
         is_commercial=None,
+        metadata=QuestionnaireMetadata(notes=notes),
         versions=[
             QuestionnaireVersion(
                 version_id="redcap_import_v1",

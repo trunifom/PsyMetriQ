@@ -21,11 +21,20 @@ from pydantic import ValidationError
 from schemas.questionnaire_schema import QuestionnaireParent, QuestionnaireVersion
 from src.exporters.data_exchange import (
     DataExchangeError,
+    build_redcap_metadata_records,
     export_questionnaire,
     import_questionnaire_content,
     import_questionnaire_file,
     select_questionnaire_items,
 )
+from src.exporters.redcap_api import (
+    RedcapApiError,
+    RedcapProjectSummary,
+    pull_questionnaire_from_project,
+    push_questionnaire_to_project,
+)
+from src.exporters.redcap_api import connect as redcap_connect
+from src.exporters.redcap_api import describe_project as redcap_describe_project
 from src.gui.admin_config import AdminConfig, AdminConfigError, AdminConfigStore
 from src.gui.catalog_store import CatalogStoreError, QuestionnaireCatalogStore
 from src.gui.workspace import (
@@ -198,6 +207,9 @@ class PsyMetriQApplication:
         self.license_filter = "all"
         self.item_content_filter = "with_items"
         self.export_format = self.settings.default_export_format
+        self.redcap_project: Any = None
+        self.redcap_project_summary: RedcapProjectSummary | None = None
+        self.redcap_status_message = "Nicht verbunden."
         self.available_models: list[str] = []
         self.active_provider = self.settings.llm_provider
         self.status_message = self.startup_warning or self._catalog_status()
@@ -2405,6 +2417,44 @@ class PsyMetriQApplication:
                 "Die Vorschau wird aus der Projektselektion erstellt und übernimmt nur ausgewählte Items.",
             ),
             self._panel(
+                "REDCap (Live-API)",
+                ft.Column(
+                    spacing=10,
+                    controls=[
+                        ft.Text(self.redcap_status_message, size=12, color="#55716A", selectable=True),
+                        ft.Row(
+                            wrap=True,
+                            controls=[
+                                self._action_button(
+                                    "Mit REDCap verbinden",
+                                    "LINK",
+                                    self._redcap_connect,
+                                    "Öffnet eine Verbindung mit dem in Einstellungen konfigurierten REDCap-Projekt (URL + Token aus .env) und bestätigt Projekttitel/-ID.",
+                                    "Erfordert REDCAP_API_URL/Token-Variable in Einstellungen und einen gültigen Wert in der lokalen .env-Datei.",
+                                ),
+                                self._action_button(
+                                    "Erste ausgewählte Version pushen",
+                                    "UPLOAD",
+                                    self._redcap_push,
+                                    "Fügt die Felder der ersten im Projekt ausgewählten Version zum verbundenen REDCap-Projekt hinzu. Bricht bei Namenskonflikten ohne Änderung ab.",
+                                    "Ein Metadata-Push ersetzt das gesamte Data Dictionary des Projekts; bestehende Felder bleiben nur erhalten, weil sie vorher mit übernommen werden.",
+                                    disabled=self.redcap_project is None or not self._selected_versions(),
+                                ),
+                                self._action_button(
+                                    "Data Dictionary importieren",
+                                    "DOWNLOAD",
+                                    self._redcap_pull,
+                                    "Liest das komplette Data Dictionary des verbundenen REDCap-Projekts und fügt es als neues Instrument zum lokalen Katalog hinzu.",
+                                    "Nicht unterstützte Feldtypen (z.B. calc, descriptive) werden nicht als Item importiert, sondern in den Instrument-Notizen aufgelistet.",
+                                    disabled=self.redcap_project is None,
+                                ),
+                            ],
+                        ),
+                    ],
+                ),
+                "Ein REDCap-API-Token gewährt vollen Zugriff auf das jeweilige Projekt; Push-Aktionen werden zusätzlich bestätigt.",
+            ),
+            self._panel(
                 "Importierte Standardformate",
                 ft.Column(
                     spacing=5,
@@ -2523,6 +2573,10 @@ class PsyMetriQApplication:
             value=self.settings.remote_processing_enabled,
             label="Remote-PDF-Extraktion erlauben",
             disabled=not self.admin_config.remote_processing_allowed,
+        )
+        self.redcap_url_field = ft.TextField(value=self.settings.redcap_api_url)
+        self.redcap_key_environment_field = ft.TextField(
+            value=self.settings.redcap_api_key_environment
         )
         self.dark_mode_switch = ft.Switch(
             value=self.dark_mode,
@@ -2665,6 +2719,27 @@ class PsyMetriQApplication:
                         ),
                     ),
                 ],
+            ),
+            self._panel(
+                "REDCap (Live-API)",
+                ft.Column(
+                    spacing=12,
+                    controls=[
+                        self._field(
+                            "REDCap API-URL",
+                            self.redcap_url_field,
+                            "Die API-Adresse deiner REDCap-Instanz, z. B. https://redcap.deine-uni.de/api/.",
+                            "Zu finden im REDCap-Projekt unter API > API-Dokumentation.",
+                        ),
+                        self._field(
+                            "API-Token-Variablenname",
+                            self.redcap_key_environment_field,
+                            "Name einer Umgebungsvariablen (in .env), deren Wert das projektspezifische REDCap-API-Token enthält. Das GUI speichert niemals den Token selbst.",
+                            "REDCAP_API_TOKEN",
+                        ),
+                    ],
+                ),
+                "Ein REDCap-API-Token gewährt vollen Lese-/Schreibzugriff auf das jeweilige Projekt; behandle es wie ein Passwort.",
             ),
             self._panel(
                 "PDF-Import und OCR",
@@ -3303,6 +3378,10 @@ class PsyMetriQApplication:
             llm_base_url=(self.base_url_field.value or "").strip() or None,
             llm_api_key_environment=(self.key_environment_field.value or "").strip(),
             remote_processing_enabled=bool(self.remote_processing_switch.value),
+            redcap_api_url=(self.redcap_url_field.value or "").strip(),
+            redcap_api_key_environment=(
+                self.redcap_key_environment_field.value or ""
+            ).strip(),
         )
 
     def _apply_settings(self, settings: WorkspaceSettings) -> None:
@@ -3416,6 +3495,144 @@ class PsyMetriQApplication:
             self.intake_output.value = f"Verarbeitung fehlgeschlagen: {error}"
             self._set_status(f"PDF-Import fehlgeschlagen: {error}", error=True)
             self._render()
+
+    def _redcap_token(self) -> str:
+        return os.environ.get(self.settings.redcap_api_key_environment, "")
+
+    async def _redcap_connect(self, _event: Any) -> None:
+        token = self._redcap_token()
+        if not self.settings.redcap_api_url or not token:
+            self._set_status(
+                "REDCap-URL und Token-Umgebungsvariable (.env) sind erforderlich.", error=True
+            )
+            return
+        try:
+            project = await asyncio.to_thread(
+                redcap_connect, self.settings.redcap_api_url, token
+            )
+            summary = await asyncio.to_thread(redcap_describe_project, project)
+        except RedcapApiError as error:
+            self.redcap_project = None
+            self.redcap_project_summary = None
+            self.redcap_status_message = f"Verbindung fehlgeschlagen: {error}"
+            self._render()
+            return
+        self.redcap_project = project
+        self.redcap_project_summary = summary
+        self.redcap_status_message = (
+            f"Verbunden: {summary.project_title} (Projekt-ID {summary.project_id})"
+        )
+        self._render()
+
+    async def _confirm_redcap_push(self, form_name: str, field_count: int) -> bool:
+        result: asyncio.Future[bool] = asyncio.get_running_loop().create_future()
+
+        def finish(value: bool) -> None:
+            if not result.done():
+                result.set_result(value)
+            self.page.pop_dialog()
+
+        self._show_dialog(
+            ft.AlertDialog(
+                modal=True,
+                title=ft.Text("Data Dictionary nach REDCap pushen?"),
+                content=ft.Text(
+                    f"{field_count} Feld(er) für Formular '{form_name}' werden zu den "
+                    f"bestehenden Feldern von {self.redcap_project_summary.project_title if self.redcap_project_summary else 'diesem Projekt'} "
+                    "hinzugefügt. REDCaps Metadata-Import ersetzt das gesamte Data Dictionary "
+                    "des Projekts; bei einem Namenskonflikt wird nichts geschrieben. Fortfahren?"
+                ),
+                actions=[
+                    ft.Button(content="Abbrechen", on_click=lambda _event: finish(False)),
+                    ft.Button(
+                        content="Bestätigen und pushen",
+                        bgcolor="#9B3E35",
+                        color="#FFFFFF",
+                        on_click=lambda _event: finish(True),
+                    ),
+                ],
+            )
+        )
+        return await result
+
+    async def _redcap_push(self, _event: Any) -> None:
+        if self.redcap_project is None:
+            self._set_status("Zuerst mit einem REDCap-Projekt verbinden.", error=True)
+            return
+        selected = self._selected_versions()
+        if not selected:
+            self._set_status("Es ist keine Version im Projekt ausgewählt.", error=True)
+            return
+        family, version, item_ids = selected[0]
+        if not version.item_text_included:
+            self._set_status(
+                "Diese Version enthält keinen Itemtext und kann nicht nach REDCap gepusht werden.",
+                error=True,
+            )
+            return
+        try:
+            subset = select_questionnaire_items(
+                family,
+                version.version_id,
+                item_ids,
+                adaptations=self._adaptations_for_selection(
+                    family.instrument_id, version.version_id
+                ),
+            )
+            preview_records = await asyncio.to_thread(
+                build_redcap_metadata_records, subset, subset.versions[0]
+            )
+        except DataExchangeError as error:
+            self._set_status(f"Export für REDCap fehlgeschlagen: {error}", error=True)
+            return
+        form_name = preview_records[0]["form_name"] if preview_records else family.instrument_id
+        confirmed = await self._confirm_redcap_push(form_name, len(preview_records))
+        if not confirmed:
+            return
+        try:
+            push_result = await asyncio.to_thread(
+                push_questionnaire_to_project, self.redcap_project, subset, subset.versions[0]
+            )
+        except RedcapApiError as error:
+            self.redcap_status_message = f"Push fehlgeschlagen: {error}"
+            self._render()
+            return
+        self.redcap_status_message = (
+            f"Gepusht: {push_result.pushed_field_count} Feld(er) in Formular "
+            f"'{push_result.form_name}' ({push_result.total_field_count} Felder insgesamt im Projekt)."
+        )
+        self._render()
+
+    async def _redcap_pull(self, _event: Any) -> None:
+        if self.redcap_project is None:
+            self._set_status("Zuerst mit einem REDCap-Projekt verbinden.", error=True)
+            return
+        try:
+            imported = await asyncio.to_thread(
+                pull_questionnaire_from_project,
+                self.redcap_project,
+                language=self.settings.default_language,
+            )
+            saved = await asyncio.to_thread(self.catalog_store.import_families, [imported])
+        except RedcapApiError as error:
+            self.redcap_status_message = f"Import fehlgeschlagen: {error}"
+            self._render()
+            return
+        except CatalogStoreError as error:
+            self.redcap_status_message = f"Import fehlgeschlagen: {error}"
+            self._render()
+            return
+        self._reload_catalog(silent=True)
+        self.project = self.project.record_step(
+            "catalog_import",
+            f"REDCap-Import: {imported.instrument_id} ({len(saved)} Datei(en) aktualisiert)",
+            imported.instrument_id,
+        )
+        self.redcap_status_message = (
+            f"Aus REDCap importiert: {imported.instrument_id} "
+            f"({len(imported.versions[0].items)} Item(s)). Details siehe Instrumentprofil/Notizen."
+        )
+        self._render()
 
     async def _confirm_remote_intake(self) -> bool:
         result: asyncio.Future[bool] = asyncio.get_running_loop().create_future()

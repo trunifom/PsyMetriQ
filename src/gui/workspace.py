@@ -60,6 +60,8 @@ class WorkspaceSettings(BaseModel):
     llm_base_url: str | None = None
     llm_api_key_environment: str = "OPENAI_API_KEY"
     remote_processing_enabled: bool = False
+    redcap_api_url: str = ""
+    redcap_api_key_environment: str = "REDCAP_API_TOKEN"
     acknowledged_licenses: dict[str, str] = Field(
         default_factory=dict,
         description=(
@@ -69,7 +71,7 @@ class WorkspaceSettings(BaseModel):
         ),
     )
 
-    @field_validator("llm_api_key_environment")
+    @field_validator("llm_api_key_environment", "redcap_api_key_environment")
     @classmethod
     def validate_environment_variable_name(cls, value: str) -> str:
         """Permit only a variable name, never a value that could contain a secret."""
