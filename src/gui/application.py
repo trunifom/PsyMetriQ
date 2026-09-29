@@ -98,6 +98,52 @@ LIGHT_DARK_COLORS = {
     "#146B5A": "#278471",
 }
 FONT_SIZE_SCALE = {"small": 0.88, "normal": 1.0, "large": 1.18}
+# (view, sidebar label, icon, one-line purpose, sidebar section heading)
+NAV_DESTINATIONS: list[tuple[str, str, str, str, str]] = [
+    (
+        "catalog",
+        "Bibliothek",
+        "LIBRARY_BOOKS",
+        "Katalog durchsuchen und Items auswählen.",
+        "Arbeiten",
+    ),
+    (
+        "research",
+        "Recherche",
+        "TRAVEL_EXPLORE",
+        "Passende Instrumente zu einer Fragestellung oder einem Konstrukt finden.",
+        "Arbeiten",
+    ),
+    (
+        "project",
+        "Projekt",
+        "WORKSPACES_OUTLINED",
+        "Ausgewählte Versionen und Item-Schritte speichern oder laden.",
+        "Arbeiten",
+    ),
+    (
+        "exchange",
+        "Import & Export",
+        "IMPORT_EXPORT",
+        "JSON, FHIR, REDCap oder CSV einlesen und exportieren.",
+        "Daten",
+    ),
+    (
+        "intake",
+        "PDF-Posteingang",
+        "PICTURE_AS_PDF_OUTLINED",
+        "Lokale PDF-Dateien prüfen und bei expliziter Freigabe optional LLM-Extraktion starten.",
+        "Daten",
+    ),
+    (
+        "settings",
+        "Einstellungen",
+        "TUNE",
+        "Katalogpfade, Exportstandard und optionale LLM-Konfiguration verwalten.",
+        "System",
+    ),
+]
+NAV_DESCRIPTIONS = {view: description for view, _label, _icon, description, _section in NAV_DESTINATIONS}
 
 
 def _icon(name: str) -> Any:
@@ -228,12 +274,15 @@ class PsyMetriQApplication:
         self.redcap_status_message = "Nicht verbunden."
         self.similarity_matches: list[Any] | None = None
         self.similarity_status = "Noch nicht ausgeführt."
+        self.similarity_busy = False
         self.research_query = ""
         self.research_matches: list[Any] | None = None
         self.research_status = "Noch keine Recherche durchgeführt."
+        self.research_catalog_busy = False
         self.research_external_candidates: list[Any] | None = None
         self.research_external_evidence: list[Any] | None = None
         self.research_external_status = "Noch keine externe Recherche durchgeführt."
+        self.research_external_busy = False
         self.available_models: list[str] = []
         self.active_provider = self.settings.llm_provider
         self.status_message = self.startup_warning or self._catalog_status()
@@ -243,6 +292,7 @@ class PsyMetriQApplication:
         self.page.services.append(self.file_picker)
         self.content_host = ft.Column(expand=True, spacing=0, scroll=ft.ScrollMode.AUTO)
         self.status_text = ft.Text(size=12, color="#36554E")
+        self.status_icon = ft.Icon(icon=_icon("CHECK_CIRCLE_OUTLINE"), size=16, color="#28685D")
         self.nav_buttons: dict[str, ft.Button] = {}
         self._build_shell()
         self._render()
@@ -272,7 +322,10 @@ class PsyMetriQApplication:
                             ),
                             ft.Container(
                                 padding=ft.Padding(left=24, top=8, right=24, bottom=12),
-                                content=self.status_text,
+                                content=ft.Row(
+                                    spacing=8,
+                                    controls=[self.status_icon, self.status_text],
+                                ),
                                 bgcolor="#E8EFEC",
                             ),
                         ],
@@ -282,79 +335,58 @@ class PsyMetriQApplication:
         )
 
     def _build_sidebar(self) -> ft.Control:
-        destinations = [
-            ("catalog", "Bibliothek", "LIBRARY_BOOKS", "Katalog durchsuchen und Items auswählen."),
-            (
-                "research",
-                "Recherche",
-                "TRAVEL_EXPLORE",
-                "Passende Instrumente zu einer Fragestellung oder einem Konstrukt finden.",
-            ),
-            (
-                "project",
-                "Projekt",
-                "WORKSPACES_OUTLINED",
-                "Ausgewählte Versionen und Item-Schritte speichern oder laden.",
-            ),
-            (
-                "exchange",
-                "Import & Export",
-                "IMPORT_EXPORT",
-                "JSON, FHIR, REDCap oder CSV einlesen und exportieren.",
-            ),
-            (
-                "intake",
-                "PDF-Posteingang",
-                "PICTURE_AS_PDF_OUTLINED",
-                "Lokale PDF-Dateien prüfen und bei expliziter Freigabe optional LLM-Extraktion starten.",
-            ),
-            (
-                "settings",
-                "Einstellungen",
-                "TUNE",
-                "Katalogpfade, Exportstandard und optionale LLM-Konfiguration verwalten.",
-            ),
-        ]
         rows: list[ft.Control] = [
             ft.Text("PsyMetriQ", size=24, weight=ft.FontWeight.BOLD, color="#FFFFFF"),
             ft.Text("Questionnaire workspace", size=12, color="#C4D8D2"),
             ft.Container(height=16),
         ]
-        for view, label, icon_name, description in destinations:
+        current_section: str | None = None
+        for view, label, icon_name, description, section in NAV_DESTINATIONS:
             if view in self.admin_config.hidden_views:
                 continue
+            if section != current_section:
+                if current_section is not None:
+                    rows.append(ft.Container(height=10))
+                rows.append(
+                    ft.Text(
+                        section.upper(),
+                        size=10,
+                        weight=ft.FontWeight.BOLD,
+                        color="#C4D8D2",
+                    )
+                )
+                current_section = section
             rows.append(self._nav_button(view, label, icon_name, description))
+        self.sidebar_catalog_summary_text = ft.Text(size=11, color="#C4D8D2")
+        self.sidebar_project_summary_text = ft.Text(size=11, color="#C4D8D2")
         rows.extend(
             [
                 ft.Container(expand=True),
-                ft.Text("Lokale Arbeitsumgebung", size=11, color="#C4D8D2"),
-                ft.Text("Keine Datenbank erforderlich", size=11, color="#C4D8D2"),
+                self.sidebar_catalog_summary_text,
+                self.sidebar_project_summary_text,
             ]
         )
-        return ft.Column(expand=True, spacing=8, controls=rows)
+        return ft.Column(expand=True, spacing=6, controls=rows)
 
     def _nav_button(self, view: str, label: str, icon_name: str, explanation: str) -> ft.Control:
         selected = self.active_view == view
         button = ft.Button(
             expand=True,
-            content=ft.Text(label, color="#FFFFFF"),
+            content=ft.Text(
+                label, color="#FFFFFF", weight=ft.FontWeight.BOLD if selected else None
+            ),
             icon=_icon(icon_name),
-            icon_color="#D7E8E3",
+            icon_color="#FFFFFF" if selected else "#D7E8E3",
             bgcolor="#28685D" if selected else "#1B4941",
             on_click=lambda _event, target=view: self._navigate(target),
-            tooltip=label,
+            tooltip=f"{label}\n{explanation}",
         )
         self.nav_buttons[view] = button
-        return ft.Row(
-            spacing=2,
-            controls=[
-                button,
-                self._help_button(label, explanation),
-            ],
-        )
+        return button
 
     def _build_header(self) -> ft.Control:
         self.header_title = ft.Text(size=22, weight=ft.FontWeight.BOLD, color="#173D36")
+        self.header_description = ft.Text(size=13, color="#28685D")
         self.header_summary = ft.Text(size=12, color="#55716A")
         return ft.Container(
             bgcolor="#FFFFFF",
@@ -366,6 +398,7 @@ class PsyMetriQApplication:
                         spacing=2,
                         controls=[
                             self.header_title,
+                            self.header_description,
                             self.header_summary,
                         ],
                     ),
@@ -631,12 +664,21 @@ class PsyMetriQApplication:
             "settings": "Einstellungen",
         }
         self.header_title.value = titles[self.active_view]
+        self.header_description.value = NAV_DESCRIPTIONS.get(self.active_view, "")
         self.header_summary.value = (
             f"{len(self.catalog_records)} Instrumentfamilien · "
             f"{len(self.project.selections)} Versionen im Projekt"
         )
+        self.sidebar_catalog_summary_text.value = f"{len(self.catalog_records)} Instrumente geladen"
+        self.sidebar_project_summary_text.value = (
+            f"{len(self.project.selections)} in Projektauswahl"
+        )
         for view, button in self.nav_buttons.items():
-            button.bgcolor = "#28685D" if self.active_view == view else "#1B4941"
+            selected = self.active_view == view
+            button.bgcolor = "#28685D" if selected else "#1B4941"
+            button.icon_color = "#FFFFFF" if selected else "#D7E8E3"
+            if isinstance(button.content, ft.Text):
+                button.content.weight = ft.FontWeight.BOLD if selected else None
         try:
             view_controls = {
                 "catalog": self._catalog_view,
@@ -652,6 +694,10 @@ class PsyMetriQApplication:
         self.content_host.controls = view_controls
         self.status_text.value = self.status_message
         self.status_text.color = "#9B3E35" if self.status_is_error else "#36554E"
+        self.status_icon.icon = _icon(
+            "ERROR_OUTLINE" if self.status_is_error else "CHECK_CIRCLE_OUTLINE"
+        )
+        self.status_icon.color = "#9B3E35" if self.status_is_error else "#28685D"
         self._apply_appearance()
         try:
             self.page.update()
@@ -711,16 +757,34 @@ class PsyMetriQApplication:
         *,
         primary: bool = False,
         disabled: bool = False,
+        busy: bool = False,
     ) -> ft.Control:
+        button_content: Any = (
+            ft.Row(
+                spacing=6,
+                tight=True,
+                controls=[
+                    ft.ProgressRing(
+                        width=14,
+                        height=14,
+                        stroke_width=2,
+                        color="#FFFFFF" if primary else "#28685D",
+                    ),
+                    ft.Text(label, color="#FFFFFF" if primary else "#173D36"),
+                ],
+            )
+            if busy
+            else label
+        )
         return ft.Row(
             spacing=2,
             controls=[
                 ft.Button(
-                    content=label,
-                    icon=_icon(icon_name),
+                    content=button_content,
+                    icon=None if busy else _icon(icon_name),
                     bgcolor="#146B5A" if primary else "#FFFFFF",
                     color="#FFFFFF" if primary else "#173D36",
-                    disabled=disabled,
+                    disabled=disabled or busy,
                     on_click=on_click,
                     tooltip=label,
                 ),
@@ -1413,6 +1477,7 @@ class PsyMetriQApplication:
                 "Vergleicht Name, Konstrukte, Beschreibung und Keywords aller Instrumente semantisch (sentence-transformers) und listet Kandidatenpaare mit hoher Ähnlichkeit auf.",
                 "Findet mögliche 'Jingle-Jangle'-Fälle: unterschiedlich benannte Instrumente, die vermutlich dasselbe Konstrukt messen. Kein automatischer Befund, sondern ein Hinweis zur manuellen Prüfung.",
                 primary=True,
+                busy=self.similarity_busy,
             )
         )
         return ft.ExpansionTile(
@@ -1426,6 +1491,7 @@ class PsyMetriQApplication:
         )
 
     async def _check_construct_similarity(self, _event: Any) -> None:
+        self.similarity_busy = True
         self.similarity_status = (
             "Berechne Ähnlichkeiten... (lädt beim ersten Mal ggf. ein Modell "
             "herunter; erfordert dann Internetzugang)"
@@ -1434,10 +1500,12 @@ class PsyMetriQApplication:
         try:
             matches = await asyncio.to_thread(find_similar_constructs, self.catalog_records)
         except NLPEngineError as error:
+            self.similarity_busy = False
             self.similarity_matches = None
             self.similarity_status = f"Fehlgeschlagen: {error}"
             self._render()
             return
+        self.similarity_busy = False
         self.similarity_matches = matches
         self.similarity_status = (
             f"{len(matches)} Kandidatenpaar(e) mit Ähnlichkeit ≥ 0.75 gefunden."
@@ -1507,6 +1575,7 @@ class PsyMetriQApplication:
                 "wird dabei nie verwendet.",
                 "Läuft vollständig lokal; beim allerersten Aufruf wird das Modell (~90 MB) einmalig heruntergeladen.",
                 primary=True,
+                busy=self.research_catalog_busy,
             )
         )
 
@@ -1554,6 +1623,7 @@ class PsyMetriQApplication:
                 "sind unkatalogisierte Vorschläge zur Prüfung, keine freigegebenen "
                 "Katalogeinträge und keine automatische Nutzungsberechtigung.",
                 "Sendet nur deinen Suchtext an die jeweilige öffentliche API, keine Katalog- oder Projektdaten.",
+                busy=self.research_external_busy,
             )
         )
 
@@ -1589,6 +1659,7 @@ class PsyMetriQApplication:
             self.research_status = "Bitte zuerst eine Fragestellung oder ein Konstrukt eingeben."
             self._render()
             return
+        self.research_catalog_busy = True
         self.research_status = (
             "Durchsuche Katalog semantisch... (lädt beim ersten Mal ggf. ein Modell "
             "herunter; erfordert dann Internetzugang)"
@@ -1599,10 +1670,12 @@ class PsyMetriQApplication:
                 find_matching_instruments, query, self.catalog_records
             )
         except NLPEngineError as error:
+            self.research_catalog_busy = False
             self.research_matches = None
             self.research_status = f"Fehlgeschlagen: {error}"
             self._render()
             return
+        self.research_catalog_busy = False
         self.research_matches = matches
         self.research_status = (
             f"{len(matches)} Treffer für „{query}“." if matches else f"Keine Treffer für „{query}“."
@@ -1623,17 +1696,20 @@ class PsyMetriQApplication:
             )
             self._render()
             return
+        self.research_external_busy = True
         self.research_external_status = "Frage öffentliche APIs ab..."
         self._render()
         try:
             candidates = await NIHCDEClient().search_data_elements(query, limit=8)
             evidence = await PubMedClient().search(query, limit=5)
         except ExternalSourceError as error:
+            self.research_external_busy = False
             self.research_external_candidates = None
             self.research_external_evidence = None
             self.research_external_status = f"Fehlgeschlagen: {error}"
             self._render()
             return
+        self.research_external_busy = False
         self.research_external_candidates = candidates
         self.research_external_evidence = evidence
         self.research_external_status = (
