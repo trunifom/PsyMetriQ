@@ -30,7 +30,7 @@ def _icon(name: str) -> Any:
 
 def stat_tile(label: str, value: int, icon_name: str) -> ft.Control:
     return ft.Container(
-        expand=1,
+        width=170,
         bgcolor="#F7F9F8",
         border_radius=10,
         padding=14,
