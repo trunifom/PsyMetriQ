@@ -460,13 +460,22 @@ class PsyMetriQApplication:
         An administrator can disable this gate deployment-wide (test/debug, or a
         trusted single-admin deployment) via ``admin_config.json``; that never
         changes what the intake pipeline treats as a rights-approved document.
+        Listing an instrument_id under ``institutionally_licensed_instruments``
+        skips the per-user click-through for exactly that instrument, for every
+        user -- e.g. once a librarian has confirmed a valid institutional
+        license -- while every other commercial instrument still gates normally.
         """
         if not self.admin_config.license_acknowledgment_enabled:
+            return False
+        if family.instrument_id in self.admin_config.institutionally_licensed_instruments:
             return False
         return family.is_commercial is True
 
     def _is_license_acknowledged(self, family: QuestionnaireParent) -> bool:
         return family.instrument_id in self.settings.acknowledged_licenses
+
+    def _is_institutionally_licensed(self, family: QuestionnaireParent) -> bool:
+        return family.instrument_id in self.admin_config.institutionally_licensed_instruments
 
     def _remote_processing_enabled(self) -> bool:
         """Combine the per-installation preference with the admin's kill switch."""
@@ -1728,6 +1737,13 @@ class PsyMetriQApplication:
                     )
                 ),
                 "Lizenzpflichtig · Bestätigung erforderlich" if license_locked else "",
+                (
+                    "Institutionell lizenziert"
+                    if version.item_text_included
+                    and family.is_commercial is True
+                    and self._is_institutionally_licensed(family)
+                    else ""
+                ),
             )
             if value
         )

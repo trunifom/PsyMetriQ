@@ -3,5 +3,6 @@
   "license_acknowledgment_enabled": true,
   "remote_processing_allowed": true,
   "hidden_views": [],
+  "institutionally_licensed_instruments": [],
   "feature_flags": {}
 }

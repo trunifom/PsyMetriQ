@@ -60,6 +60,20 @@ class AdminConfig(BaseModel):
         default_factory=list,
         description="Sidebar navigation entries to hide from every user.",
     )
+    institutionally_licensed_instruments: list[str] = Field(
+        default_factory=list,
+        description=(
+            "instrument_id values the institution (e.g. its library/licensing office) "
+            "has confirmed hold a valid license. The per-user, per-instrument license "
+            "acknowledgment dialog is skipped entirely for every user for exactly these "
+            "instruments; every other commercial instrument still requires each user's "
+            "own one-time click-through. This is an operator-only allowlist: no in-app "
+            "action by a regular user can add to it. It still does not affect what the "
+            "PDF intake pipeline is willing to publish -- an instrument only ever reaches "
+            "this list because item text for it was already legitimately catalogued "
+            "through that rights-gated pipeline."
+        ),
+    )
     feature_flags: dict[str, bool] = Field(
         default_factory=dict,
         description="Free-form named toggles reserved for future ad-hoc feature gating.",

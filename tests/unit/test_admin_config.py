@@ -165,3 +165,52 @@ def test_admin_config_store_load_rejects_unknown_view_names(tmp_path: Path) -> N
 
     with pytest.raises(AdminConfigError):
         AdminConfigStore(path).load()
+
+
+def test_institutionally_licensed_instrument_skips_the_gate_without_user_acknowledgment(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    app = _app(
+        monkeypatch,
+        tmp_path,
+        admin_config={"institutionally_licensed_instruments": ["licensed_demo"]},
+    )
+    family, version = app._find_version("licensed_demo", "v1")
+
+    app._toggle_version(family, version, True)
+
+    assert app._project_selection("licensed_demo", "v1") is not None
+    assert app.page.dialogs == []
+    assert app._is_license_acknowledged(family) is False  # unlocked institutionally, not per-user
+
+
+def test_only_the_listed_instrument_is_institutionally_unlocked(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    app = _app(
+        monkeypatch,
+        tmp_path,
+        admin_config={"institutionally_licensed_instruments": ["some_other_instrument"]},
+    )
+    family, version = app._find_version("licensed_demo", "v1")
+
+    app._toggle_version(family, version, True)
+
+    assert app._project_selection("licensed_demo", "v1") is None
+    assert len(app.page.dialogs) == 1
+
+
+def test_version_card_shows_institutional_license_status(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    app = _app(
+        monkeypatch,
+        tmp_path,
+        admin_config={"institutionally_licensed_instruments": ["licensed_demo"]},
+    )
+    family, version = app._find_version("licensed_demo", "v1")
+
+    card = app._version_card(family, version)
+    subtitle = card.content.controls[1].content.controls[2].value
+
+    assert "Institutionell lizenziert" in subtitle

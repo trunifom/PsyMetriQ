@@ -290,6 +290,7 @@ Copy `data/admin_config.example.json` to `data/admin_config.json`
   "license_acknowledgment_enabled": true,
   "remote_processing_allowed": true,
   "hidden_views": [],
+  "institutionally_licensed_instruments": [],
   "feature_flags": {}
 }
 ```
@@ -323,6 +324,21 @@ Copy `data/admin_config.example.json` to `data/admin_config.json`
   falls back to `catalog` regardless (so the app never fails to render a
   view; hiding every entry is not a supported "kiosk lock" and would leave a
   visible-but-unreachable state).
+- **`institutionally_licensed_instruments`** (list of `instrument_id` strings,
+  default `[]`). Once someone with server/file access to `admin_config.json`
+  (for example a librarian or licensing office, after confirming your
+  institution's actual agreement) adds an `instrument_id` here, the Section 4
+  acknowledgment dialog is skipped entirely for that instrument, for every
+  user — no individual click-through is asked for, ever. Every other
+  commercial instrument keeps requiring each user's own one-time
+  acknowledgment. This only controls *visibility of already-catalogued item
+  text*: adding an `instrument_id` here does not, and cannot, make item text
+  appear for an instrument that was never legitimately catalogued through the
+  rights-gated PDF intake pipeline in the first place (Sections 1–3). No
+  in-app action by a regular user can add to this list; it is edited the same
+  way as every other admin-only setting, directly on the server. The version
+  card subtitle shows "Institutionell lizenziert" for an instrument listed
+  here, so it stays visibly distinct from a merely free/unclear-rights one.
 - **`feature_flags`** (`dict[str, bool]`, default `{}`). Reserved namespace
   for future ad-hoc toggles that do not yet warrant their own named field.
   Nothing in the current codebase reads it yet; it exists so a future flag

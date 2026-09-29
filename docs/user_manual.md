@@ -242,6 +242,7 @@ Copy `data/admin_config.example.json` to `data/admin_config.json` (git-ignored, 
   "license_acknowledgment_enabled": true,
   "remote_processing_allowed": true,
   "hidden_views": [],
+  "institutionally_licensed_instruments": [],
   "feature_flags": {}
 }
 ```
@@ -249,6 +250,7 @@ Copy `data/admin_config.example.json` to `data/admin_config.json` (git-ignored, 
 - `license_acknowledgment_enabled`: set to `false` to skip the license-acknowledgment dialog entirely, for example while testing/debugging or for a small, trusted team. This does not change what the PDF intake pipeline treats as a rights-approved, redistributable document; that still requires the per-file rights sidecar described above.
 - `remote_processing_allowed`: a deployment-wide kill switch for remote LLM PDF extraction. When `false`, remote extraction is unavailable for everyone regardless of each user's own settings, and the switch in **Einstellungen** is shown disabled.
 - `hidden_views`: a list drawn from `catalog`, `project`, `exchange`, `intake`, `settings`. Any view named here disappears from the sidebar and cannot be navigated to, for every user. Use this to hide a menu item or an entire function (for example `intake`) from research colleagues on a shared deployment.
+- `institutionally_licensed_instruments`: a list of `instrument_id` values (e.g. `["bdi_ii"]`) for which your institution has confirmed an actual license. Once listed here, every user sees that instrument's item text with no individual click-through -- only an operator with file access to this deployment can add to the list, never a regular user from within the app. It only controls who has to click an acknowledgment for item text that is *already* in the catalogue; it cannot make item text appear for an instrument that was never legitimately catalogued through the rights-gated PDF intake pipeline (see [Licensing workflow, Zotero sync, and admin configuration](admin_and_licensing.md)).
 - `feature_flags`: a free-form `{"name": true/false}` map reserved for future ad-hoc toggles without needing a schema change.
 
 Invalid admin config JSON falls back to all-enabled defaults and surfaces a startup warning; it never blocks the application from starting.
