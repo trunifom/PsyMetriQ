@@ -80,6 +80,32 @@ Configuration (`.env`, see `.env.example`): `ZOTERO_API_KEY`,
 `ZOTERO_LIBRARY_TYPE` (`user` or `group`, default `user`),
 `ZOTERO_COLLECTION_KEY` (optional).
 
+### 2.1 The other direction: pushing an export back to Zotero
+
+The GUI's **Import & Export** screen has a "Zotero" panel with one button:
+"Erste ausgewählte Version nach Zotero exportieren". It takes the first
+version selected in your current project (the same one the export preview
+shows), exports it in your currently chosen export format, and:
+
+1. Creates a new Zotero item (`document` type) titled
+   `<instrument name> (<version_id>) -- PsyMetriQ export`, with an `extra`
+   field recording the PsyMetriQ `instrument_id`/`version_id`/language and,
+   when documented, the version's `source_citation`/`source_doi`, and the
+   tag `psymetriq-export`.
+2. Attaches the exported file to that new item, so the export travels with
+   your Zotero library.
+
+This is a **citation/reference record of what you exported**, not a
+substitute for the original instrument's own publication record, and it
+never changes or infers anything about redistribution rights: creating the
+item and attaching the file both happen entirely independently of the
+version's own rights sidecar/license metadata. If the attachment step fails
+(for example a transient network error), the Zotero item is still created;
+the status message says so, and you can attach the file to it manually in
+Zotero afterward. Uses the same `ZOTERO_*` environment variables as the sync
+above; `python -m src.ingestion.zotero_source` (the sync direction) and this
+push are independent operations against the same configured library.
+
 ## 3. License profiles: fast, still human-confirmed rights sidecars
 
 `src/ingestion/license_profiles.py` lets you save an institution's recurring

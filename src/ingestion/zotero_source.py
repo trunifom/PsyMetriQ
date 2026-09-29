@@ -25,6 +25,8 @@ from typing import Any, Protocol
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field, ValidationError
 
+from schemas.questionnaire_schema import QuestionnaireParent, QuestionnaireVersion
+
 LOGGER = logging.getLogger(__name__)
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_INBOX = PROJECT_ROOT / "data" / "questionnaires" / "inbox"
@@ -50,6 +52,12 @@ class ZoteroClientProtocol(Protocol):
     def file(self, item: str, **kwargs: Any) -> bytes: ...
 
     def last_modified_version(self) -> int: ...
+
+    def item_template(self, itemtype: str) -> dict[str, Any]: ...
+
+    def create_items(self, payload: list[dict[str, Any]]) -> Any: ...
+
+    def attachment_simple(self, files: list[str], parentid: str | None = None) -> Any: ...
 
 
 class SyncedAttachment(BaseModel):
@@ -118,6 +126,110 @@ class ZoteroSyncConfig:
         self.collection_key = collection_key
         self.inbox_directory = inbox_directory
         self.state_path = state_path
+
+
+class ZoteroPushResult(BaseModel):
+    """What was created in Zotero for one exported questionnaire version."""
+
+    item_key: str
+    attached_file: str | None = None
+
+
+def _extract_created_item_key(response: Any) -> str | None:
+    """Read the new item's key from either Zotero API response shape."""
+    if not isinstance(response, dict):
+        return None
+    successful = response.get("successful")
+    if not isinstance(successful, dict):
+        successful = response.get("success")
+    if not isinstance(successful, dict) or not successful:
+        return None
+    first = next(iter(successful.values()))
+    if isinstance(first, str):
+        return first
+    if isinstance(first, dict):
+        key = first.get("key")
+        if key is None and isinstance(first.get("data"), dict):
+            key = first["data"].get("key")
+        return key
+    return None
+
+
+def push_questionnaire_to_zotero(
+    config: ZoteroSyncConfig,
+    *,
+    questionnaire: QuestionnaireParent,
+    version: QuestionnaireVersion,
+    export_file_path: Path | None = None,
+    client: ZoteroClientProtocol | None = None,
+) -> ZoteroPushResult:
+    """Create a Zotero reference item for one exported questionnaire version.
+
+    This records that you exported this instrument/version from PsyMetriQ --
+    a citation/reference item, not a substitute for the source publication.
+    If ``export_file_path`` is given (an already-exported file already on
+    disk), it is attached to the new item so the export travels with your
+    Zotero library. Nothing about redistribution rights is inferred or
+    changed by creating this item or attaching this file; that remains
+    governed entirely by the source's own recorded rights sidecar.
+    """
+    if client is None:
+        from pyzotero import zotero as pyzotero_zotero
+
+        client = pyzotero_zotero.Zotero(config.library_id, config.library_type, config.api_key)
+
+    try:
+        template = client.item_template("document")
+    except Exception as error:
+        raise ZoteroSourceError(
+            f"Could not fetch a Zotero item template ({type(error).__name__})"
+        ) from None
+
+    template["title"] = f"{questionnaire.name_full} ({version.version_id}) -- PsyMetriQ export"
+    extra_lines = [
+        f"psymetriq_instrument_id: {questionnaire.instrument_id}",
+        f"psymetriq_version_id: {version.version_id}",
+        f"psymetriq_language: {version.language}",
+    ]
+    if version.source_citation:
+        extra_lines.append(f"source_citation: {version.source_citation}")
+    if version.source_doi:
+        extra_lines.append(f"source_doi: {version.source_doi}")
+    template["extra"] = "\n".join(extra_lines)
+    if "abstractNote" in template:
+        template["abstractNote"] = (
+            f"Exported from PsyMetriQ: instrument {questionnaire.instrument_id!r}, "
+            f"version {version.version_id!r}."
+        )
+    if "tags" in template:
+        template["tags"] = [{"tag": "psymetriq-export"}]
+    if config.collection_key and "collections" in template:
+        template["collections"] = [config.collection_key]
+
+    try:
+        response = client.create_items([template])
+    except Exception as error:
+        raise ZoteroSourceError(
+            f"Could not create the Zotero item ({type(error).__name__})"
+        ) from None
+    item_key = _extract_created_item_key(response)
+    if item_key is None:
+        raise ZoteroSourceError("Zotero did not report a created item key")
+
+    attached_file: str | None = None
+    if export_file_path is not None:
+        try:
+            client.attachment_simple([str(export_file_path)], item_key)
+        except Exception as error:
+            LOGGER.warning(
+                "Could not attach export file to Zotero item %s (%s)",
+                item_key,
+                type(error).__name__,
+            )
+        else:
+            attached_file = export_file_path.name
+
+    return ZoteroPushResult(item_key=item_key, attached_file=attached_file)
 
 
 def _load_state(state_path: Path) -> ZoteroSyncState:

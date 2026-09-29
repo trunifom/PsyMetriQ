@@ -9,6 +9,7 @@ import json
 import logging
 import os
 import re
+import tempfile
 import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
@@ -46,6 +47,11 @@ from src.gui.workspace import (
     WorkspaceStore,
 )
 from src.ingestion.provider_models import ModelDiscoveryError, list_available_models
+from src.ingestion.zotero_source import (
+    ZoteroSourceError,
+    ZoteroSyncConfig,
+    push_questionnaire_to_zotero,
+)
 
 LOGGER = logging.getLogger(__name__)
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -2673,6 +2679,18 @@ class PsyMetriQApplication:
                 "Ein REDCap-API-Token gewährt vollen Zugriff auf das jeweilige Projekt; Push-Aktionen werden zusätzlich bestätigt.",
             ),
             self._panel(
+                "Zotero",
+                self._action_button(
+                    "Erste ausgewählte Version nach Zotero exportieren",
+                    "UPLOAD",
+                    self._push_to_zotero,
+                    "Legt ein neues Zotero-Element mit Instrument-/Versionsangaben an und hängt die exportierte Datei (aktuelles Exportformat) daran an.",
+                    "Erfordert ZOTERO_API_KEY und ZOTERO_USER_ID (oder ZOTERO_LIBRARY_ID) in der lokalen .env; optional ZOTERO_LIBRARY_TYPE/ZOTERO_COLLECTION_KEY.",
+                    disabled=not selected_versions,
+                ),
+                "Legt einen Referenz-/Zitations-Eintrag für den Export an; ändert nichts an Weitergaberechten des Quellinstruments.",
+            ),
+            self._panel(
                 "Importierte Standardformate",
                 ft.Column(
                     spacing=5,
@@ -3877,6 +3895,81 @@ class PsyMetriQApplication:
             f"({len(imported.versions[0].items)} Item(s)). Details siehe Instrumentprofil/Notizen."
         )
         self._render()
+
+    def _zotero_config_from_environment(self) -> ZoteroSyncConfig | None:
+        library_id = os.environ.get("ZOTERO_LIBRARY_ID") or os.environ.get("ZOTERO_USER_ID")
+        api_key = os.environ.get("ZOTERO_API_KEY")
+        if not library_id or not api_key:
+            return None
+        return ZoteroSyncConfig(
+            library_id=library_id,
+            library_type=os.environ.get("ZOTERO_LIBRARY_TYPE", "user"),
+            api_key=api_key,
+            collection_key=os.environ.get("ZOTERO_COLLECTION_KEY"),
+        )
+
+    async def _push_to_zotero(self, _event: Any) -> None:
+        zotero_config = self._zotero_config_from_environment()
+        if zotero_config is None:
+            self._set_status(
+                "ZOTERO_API_KEY und ZOTERO_USER_ID/ZOTERO_LIBRARY_ID müssen in der lokalen "
+                ".env gesetzt sein.",
+                error=True,
+            )
+            return
+        selected = self._selected_versions()
+        if not selected:
+            self._set_status("Es ist keine Version im Projekt ausgewählt.", error=True)
+            return
+        family, version, item_ids = selected[0]
+        temporary_path: Path | None = None
+        try:
+            if version.item_text_included:
+                subset = select_questionnaire_items(
+                    family,
+                    version.version_id,
+                    item_ids,
+                    adaptations=self._adaptations_for_selection(
+                        family.instrument_id, version.version_id
+                    ),
+                )
+                extension, content = export_questionnaire(
+                    subset, version.version_id, self.export_format
+                )
+            else:
+                subset = family
+                extension, content = ".json", json.dumps(
+                    self._metadata_reference_payload(family, version), ensure_ascii=False, indent=2
+                )
+            with tempfile.NamedTemporaryFile(
+                mode="wb" if isinstance(content, bytes) else "w",
+                suffix=extension,
+                delete=False,
+                **({} if isinstance(content, bytes) else {"encoding": "utf-8"}),
+            ) as temporary_file:
+                temporary_file.write(content)
+                temporary_path = Path(temporary_file.name)
+            push_result = await asyncio.to_thread(
+                push_questionnaire_to_zotero,
+                zotero_config,
+                questionnaire=subset,
+                version=subset.versions[0],
+                export_file_path=temporary_path,
+            )
+        except (DataExchangeError, ZoteroSourceError) as error:
+            self._set_status(f"Export nach Zotero fehlgeschlagen: {error}", error=True)
+            return
+        finally:
+            if temporary_path is not None:
+                temporary_path.unlink(missing_ok=True)
+        attachment_note = (
+            f"; Datei {push_result.attached_file} angehängt"
+            if push_result.attached_file
+            else "; Datei-Anhang fehlgeschlagen (Item wurde trotzdem angelegt)"
+        )
+        self._set_status(
+            f"Nach Zotero exportiert: Item {push_result.item_key}{attachment_note}."
+        )
 
     async def _confirm_remote_intake(self) -> bool:
         result: asyncio.Future[bool] = asyncio.get_running_loop().create_future()

@@ -4,9 +4,16 @@ from typing import Any
 
 import pytest
 
+from schemas.questionnaire_schema import (
+    ItemSchema,
+    QuestionnaireParent,
+    QuestionnaireVersion,
+    ResponseOption,
+)
 from src.ingestion.zotero_source import (
     ZoteroSourceError,
     ZoteroSyncConfig,
+    push_questionnaire_to_zotero,
     sync_zotero_library,
 )
 
@@ -200,4 +207,168 @@ def test_invalid_library_type_is_rejected(tmp_path: Path) -> None:
             api_key="key",
             inbox_directory=tmp_path / "inbox",
             state_path=tmp_path / "state.json",
+        )
+
+
+class FakeZoteroPushClient:
+    """In-memory stand-in for the item-creation side of pyzotero's Zotero client."""
+
+    def __init__(
+        self,
+        *,
+        template: dict[str, Any] | None = None,
+        create_response: dict[str, Any] | None = None,
+        raise_on: str | None = None,
+    ) -> None:
+        self._template = template if template is not None else {
+            "itemType": "document",
+            "title": "",
+            "abstractNote": "",
+            "extra": "",
+            "tags": [],
+            "collections": [],
+        }
+        self._create_response = create_response if create_response is not None else {
+            "successful": {"0": {"key": "NEWITEM1", "data": {"key": "NEWITEM1"}}},
+            "unchanged": {},
+            "failed": {},
+        }
+        self.raise_on = raise_on
+        self.created_payload: list[dict[str, Any]] | None = None
+        self.attached_files: list[str] | None = None
+        self.attached_parent: str | None = None
+
+    def item_template(self, itemtype: str) -> dict[str, Any]:
+        if self.raise_on == "item_template":
+            raise RuntimeError("boom")
+        return dict(self._template)
+
+    def create_items(self, payload: list[dict[str, Any]]) -> Any:
+        if self.raise_on == "create_items":
+            raise RuntimeError("boom")
+        self.created_payload = payload
+        return self._create_response
+
+    def attachment_simple(self, files: list[str], parentid: str | None = None) -> Any:
+        if self.raise_on == "attachment_simple":
+            raise RuntimeError("boom")
+        self.attached_files = files
+        self.attached_parent = parentid
+        return {"success": files}
+
+
+def _demo_family() -> QuestionnaireParent:
+    version = QuestionnaireVersion(
+        version_id="v1",
+        language="en",
+        response_sets={
+            "s": [
+                ResponseOption(code=0, label="No", score=0),
+                ResponseOption(code=1, label="Yes", score=1),
+            ]
+        },
+        items=[
+            ItemSchema(
+                item_id="q1",
+                variable_name="q1",
+                dimension="core",
+                prompt_text="Demo item",
+                response_set_ref="s",
+            )
+        ],
+        source_citation="Author, A. (2026). Demo Instrument. Journal of Testing.",
+        source_doi="10.1234/demo",
+    )
+    return QuestionnaireParent(
+        instrument_id="demo", name_full="Demo Instrument", is_commercial=False, versions=[version]
+    )
+
+
+def test_push_creates_a_zotero_item_with_psymetriq_metadata(tmp_path: Path) -> None:
+    client = FakeZoteroPushClient()
+    config = _config(tmp_path)
+    family = _demo_family()
+
+    result = push_questionnaire_to_zotero(
+        config, questionnaire=family, version=family.versions[0], client=client
+    )
+
+    assert result.item_key == "NEWITEM1"
+    assert result.attached_file is None
+    assert client.created_payload is not None
+    created = client.created_payload[0]
+    assert "Demo Instrument" in created["title"]
+    assert "psymetriq_instrument_id: demo" in created["extra"]
+    assert "10.1234/demo" in created["extra"]
+    assert created["tags"] == [{"tag": "psymetriq-export"}]
+
+
+def test_push_attaches_the_export_file_when_given(tmp_path: Path) -> None:
+    client = FakeZoteroPushClient()
+    config = _config(tmp_path)
+    family = _demo_family()
+    export_path = tmp_path / "demo_v1.json"
+    export_path.write_text("{}", encoding="utf-8")
+
+    result = push_questionnaire_to_zotero(
+        config,
+        questionnaire=family,
+        version=family.versions[0],
+        client=client,
+        export_file_path=export_path,
+    )
+
+    assert result.attached_file == "demo_v1.json"
+    assert client.attached_files == [str(export_path)]
+    assert client.attached_parent == "NEWITEM1"
+
+
+def test_push_succeeds_even_when_attaching_the_export_file_fails(tmp_path: Path) -> None:
+    client = FakeZoteroPushClient(raise_on="attachment_simple")
+    config = _config(tmp_path)
+    family = _demo_family()
+    export_path = tmp_path / "demo_v1.json"
+    export_path.write_text("{}", encoding="utf-8")
+
+    result = push_questionnaire_to_zotero(
+        config,
+        questionnaire=family,
+        version=family.versions[0],
+        client=client,
+        export_file_path=export_path,
+    )
+
+    assert result.item_key == "NEWITEM1"
+    assert result.attached_file is None
+
+
+def test_push_wraps_item_creation_failures() -> None:
+    client = FakeZoteroPushClient(raise_on="create_items")
+    config = ZoteroSyncConfig(
+        library_id="1",
+        api_key="key",
+        inbox_directory=Path("unused_inbox"),
+        state_path=Path("unused_state.json"),
+    )
+    family = _demo_family()
+
+    with pytest.raises(ZoteroSourceError):
+        push_questionnaire_to_zotero(
+            config, questionnaire=family, version=family.versions[0], client=client
+        )
+
+
+def test_push_raises_when_zotero_reports_no_created_item_key() -> None:
+    client = FakeZoteroPushClient(create_response={"successful": {}, "failed": {}})
+    config = ZoteroSyncConfig(
+        library_id="1",
+        api_key="key",
+        inbox_directory=Path("unused_inbox"),
+        state_path=Path("unused_state.json"),
+    )
+    family = _demo_family()
+
+    with pytest.raises(ZoteroSourceError):
+        push_questionnaire_to_zotero(
+            config, questionnaire=family, version=family.versions[0], client=client
         )
