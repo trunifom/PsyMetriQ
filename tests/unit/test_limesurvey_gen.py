@@ -222,3 +222,22 @@ def test_import_limesurvey_tsv_rejects_content_with_no_questions() -> None:
         pass
     else:
         raise AssertionError("expected LimeSurveyImportError")
+
+
+def test_import_limesurvey_tsv_disambiguates_names_sharing_a_long_common_prefix() -> None:
+    """Regression test: a numeric disambiguation suffix must not itself be
+    truncated away by the same length cap that created the collision."""
+    long_prefix = "a" * 25  # longer than the 20-character variable_name/40-character item_id caps
+    tsv = (
+        "class\tname\ttext\ttype/scale\tlanguage\n"
+        "S\tlanguage\t\t\ten\n"
+        f"Q\t{long_prefix}_one\tQ1\tS\ten\n"
+        f"Q\t{long_prefix}_two\tQ2\tS\ten\n"
+    )
+
+    imported = import_limesurvey_tsv(tsv, default_language="en")
+
+    variable_names = [item.variable_name for item in imported.versions[0].items]
+    item_ids = [item.item_id for item in imported.versions[0].items]
+    assert len(set(variable_names)) == 2
+    assert len(set(item_ids)) == 2

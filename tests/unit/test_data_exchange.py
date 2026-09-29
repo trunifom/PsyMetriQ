@@ -25,9 +25,12 @@ from src.exporters.data_exchange import (
     export_redcap_data_dictionary,
     import_fhir_questionnaire,
     import_psymetriq_json,
+    import_questionnaire_content,
     import_redcap_data_dictionary,
     select_questionnaire_items,
 )
+from src.exporters.limesurvey_gen import export_limesurvey_tsv
+from src.exporters.unipark_gen import export_unipark_text
 
 
 @pytest.fixture
@@ -713,3 +716,58 @@ def test_redcap_import_reads_matrix_group_and_ranking_columns() -> None:
     item = imported.versions[0].items[0]
     assert item.matrix_group_name == "grid_a"
     assert item.matrix_ranking is True
+
+
+def test_import_questionnaire_content_routes_txt_to_limesurvey_by_header_sniff(
+    synthetic_questionnaire: QuestionnaireParent,
+) -> None:
+    version = synthetic_questionnaire.versions[0]
+    tsv = export_limesurvey_tsv(synthetic_questionnaire, version)
+
+    imported = import_questionnaire_content(tsv, file_name="export.txt")
+
+    assert imported[0].versions[0].display_name == "Imported from LimeSurvey TSV"
+
+
+def test_import_questionnaire_content_routes_txt_to_unipark_when_not_limesurvey_shaped(
+    synthetic_questionnaire: QuestionnaireParent,
+) -> None:
+    version = synthetic_questionnaire.versions[0]
+    unipark_text = export_unipark_text(synthetic_questionnaire, version)
+
+    imported = import_questionnaire_content(unipark_text, file_name="export.unipark.txt")
+
+    assert imported[0].versions[0].display_name == "Imported from Unipark paste text"
+
+
+def test_redcap_import_disambiguates_field_names_sharing_a_long_common_prefix() -> None:
+    """Regression test: a numeric disambiguation suffix must not itself be
+    truncated away by the same length cap that created the collision."""
+    long_prefix = "a" * 30  # longer than the 26-character variable_name/64-character item_id caps
+    headers = ["Variable / Field Name", "Form Name", "Section Header", "Field Type", "Field Label"]
+    csv_text = _redcap_csv_with_headers(
+        headers,
+        [
+            {
+                "Variable / Field Name": f"{long_prefix}_one",
+                "Form Name": "demo",
+                "Section Header": "core",
+                "Field Type": "text",
+                "Field Label": "Q1",
+            },
+            {
+                "Variable / Field Name": f"{long_prefix}_two",
+                "Form Name": "demo",
+                "Section Header": "core",
+                "Field Type": "text",
+                "Field Label": "Q2",
+            },
+        ],
+    )
+
+    imported = import_redcap_data_dictionary(csv_text, language="en")
+
+    variable_names = [item.variable_name for item in imported.versions[0].items]
+    item_ids = [item.item_id for item in imported.versions[0].items]
+    assert len(set(variable_names)) == 2
+    assert len(set(item_ids)) == 2

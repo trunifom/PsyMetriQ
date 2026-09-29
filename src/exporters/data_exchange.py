@@ -29,6 +29,12 @@ from src.exporters.limesurvey_gen import (
     import_limesurvey_tsv,
 )
 from src.exporters.r_syntax_gen import export_r_syntax
+from src.exporters.unipark_gen import (
+    UniparkExportError,
+    UniparkImportError,
+    export_unipark_text,
+    import_unipark_text,
+)
 
 FHIR_QUESTIONNAIRE_R4 = "http://hl7.org/fhir/StructureDefinition/Questionnaire"
 FHIR_DIMENSION_EXTENSION = "https://psymetriq.org/fhir/StructureDefinition/item-dimension"
@@ -841,13 +847,15 @@ def import_redcap_data_dictionary(content: str, language: str) -> QuestionnaireP
     response_sets: dict[str, list[ResponseOption]] = {}
     items: list[ItemSchema] = []
     used_variable_names: set[str] = set()
+    used_item_ids: set[str] = set()
     raw_branching_logic: dict[str, str] = {}
     for index, row in enumerate(importable_rows, start=1):
         field_type = (row.get("Field Type") or "text").casefold()
         source_name = (row.get("Variable / Field Name") or "").strip()
         variable_name = _safe_variable_name(source_name, index)
         if variable_name.casefold() in used_variable_names:
-            variable_name = _safe_variable_name(f"{variable_name}_{index}", index)
+            suffix = f"_{index}"
+            variable_name = variable_name[: max(1, 26 - len(suffix))].rstrip("_") + suffix
         used_variable_names.add(variable_name.casefold())
 
         validation_type = (row.get("Text Validation Type OR Show Slider Number") or "").casefold()
@@ -897,6 +905,10 @@ def import_redcap_data_dictionary(content: str, language: str) -> QuestionnaireP
         if field_type == "slider" and minimum is None and maximum is None:
             minimum, maximum = 0.0, 100.0
         item_id = _safe_identifier(source_name or f"item_{index:03d}", "item")
+        if item_id in used_item_ids:
+            suffix = f"_{index}"
+            item_id = item_id[: max(1, 64 - len(suffix))].rstrip("_") + suffix
+        used_item_ids.add(item_id)
         raw_branching_logic[item_id] = (
             row.get("Branching Logic (Show field only if...)") or ""
         ).strip()
@@ -979,6 +991,17 @@ def import_questionnaire_file(
     )
 
 
+def _looks_like_limesurvey_tsv(content: str) -> bool:
+    """Sniff a .txt upload: a LimeSurvey TSV header names class/name/text.
+
+    Unipark paste text never has a header row at all, so this reliably
+    tells the two apart before choosing which importer to run.
+    """
+    first_line = content.lstrip("﻿").splitlines()[0] if content.strip() else ""
+    headers = {header.strip().casefold() for header in first_line.split("\t")}
+    return {"class", "name", "text"}.issubset(headers)
+
+
 def import_questionnaire_content(
     content: str,
     *,
@@ -989,13 +1012,25 @@ def import_questionnaire_content(
     if Path(file_name).suffix.casefold() == ".csv":
         return [import_redcap_data_dictionary(content, redcap_language)]
     if Path(file_name).suffix.casefold() == ".txt":
+        if _looks_like_limesurvey_tsv(content):
+            try:
+                return [import_limesurvey_tsv(content, default_language=redcap_language)]
+            except LimeSurveyImportError as error:
+                raise DataExchangeError(str(error)) from None
         try:
-            return [import_limesurvey_tsv(content, default_language=redcap_language)]
-        except LimeSurveyImportError as error:
+            return [
+                import_unipark_text(
+                    content,
+                    language=redcap_language,
+                    instrument_id=Path(file_name).stem,
+                )
+            ]
+        except UniparkImportError as error:
             raise DataExchangeError(str(error)) from None
     if Path(file_name).suffix.casefold() != ".json":
         raise DataExchangeError(
-            "Supported import formats are JSON, REDCap CSV, and LimeSurvey TSV (.txt)"
+            "Supported import formats are JSON, REDCap CSV, LimeSurvey TSV, and "
+            "Unipark paste text (both .txt)"
         )
     try:
         payload = json.loads(content)
@@ -1142,6 +1177,7 @@ def export_questionnaire(
         "xlsx",
         "r_syntax",
         "limesurvey_tsv",
+        "unipark_txt",
     ],
 ) -> tuple[str, str | bytes]:
     """Export a concrete version and return its recommended extension and content."""
@@ -1169,6 +1205,11 @@ def export_questionnaire(
         try:
             return ".txt", export_limesurvey_tsv(questionnaire, version)
         except LimeSurveyExportError as error:
+            raise DataExchangeError(str(error)) from None
+    if export_format == "unipark_txt":
+        try:
+            return ".unipark.txt", export_unipark_text(questionnaire, version)
+        except UniparkExportError as error:
             raise DataExchangeError(str(error)) from None
     raise DataExchangeError(f"Unsupported export format: {export_format}")
 

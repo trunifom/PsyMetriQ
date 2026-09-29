@@ -71,6 +71,7 @@ EXPORT_FORMATS = {
     "REDCap Data Dictionary CSV": "redcap_csv",
     "R-Scoring-Syntax": "r_syntax",
     "LimeSurvey TSV (Best-Effort, unverifiziert)": "limesurvey_tsv",
+    "Unipark Paste-Text (Best-Effort, nur Text/Auswahl)": "unipark_txt",
 }
 LIGHT_DARK_COLORS = {
     "#F3F6F5": "#111B19",
@@ -1656,7 +1657,7 @@ class PsyMetriQApplication:
                                     "Dateien importieren",
                                     "UPLOAD_FILE",
                                     self._choose_import_files,
-                                    "Importiert PsyMetriQ JSON, HL7 FHIR Questionnaire JSON, REDCap Data Dictionary CSV oder LimeSurvey TSV (.txt, Best-Effort). Versionskonflikte werden nicht überschrieben.",
+                                    "Importiert PsyMetriQ JSON, HL7 FHIR Questionnaire JSON, REDCap Data Dictionary CSV, LimeSurvey TSV oder Unipark Paste-Text (beide .txt, Best-Effort, automatisch erkannt). Versionskonflikte werden nicht überschrieben.",
                                     "Eine REDCap CSV benötigt ein Sprach-Tag, das unter Einstellungen festgelegt wird.",
                                     primary=True,
                                 ),
@@ -2513,7 +2514,7 @@ class PsyMetriQApplication:
                         "Dateien importieren",
                         "UPLOAD_FILE",
                         self._choose_import_files,
-                        "Unterstützt PsyMetriQ-Familien JSON, FHIR R4 Questionnaire JSON, REDCap Data Dictionary CSV und LimeSurvey TSV (.txt).",
+                        "Unterstützt PsyMetriQ-Familien JSON, FHIR R4 Questionnaire JSON, REDCap Data Dictionary CSV, LimeSurvey TSV und Unipark Paste-Text (die letzten beiden als .txt, automatisch erkannt).",
                         "Ein FHIR-Questionnaire wird in eine rights-unassessed PsyMetriQ-Version umgewandelt.",
                         primary=True,
                     ),

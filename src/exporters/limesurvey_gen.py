@@ -259,6 +259,7 @@ def import_limesurvey_tsv(content: str, *, default_language: str = "en") -> Ques
     raw_relevance: dict[str, str] = {}
     skipped_questions: list[str] = []
     used_variable_names: set[str] = set()
+    used_item_ids: set[str] = set()
 
     for index, row in enumerate(rows, start=1):
         row_class = (row.get("class") or "").strip()
@@ -287,9 +288,14 @@ def import_limesurvey_tsv(content: str, *, default_language: str = "en") -> Ques
                 continue
             variable_name = _safe_variable_name(source_name, index)
             if variable_name.casefold() in used_variable_names:
-                variable_name = _safe_variable_name(f"{variable_name}_{index}", index)
+                suffix = f"_{index}"
+                variable_name = variable_name[: max(1, 20 - len(suffix))].rstrip("_") + suffix
             used_variable_names.add(variable_name.casefold())
             item_id = _safe_identifier(source_name or f"item_{index:03d}", "item")
+            if item_id in used_item_ids:
+                suffix = f"_{index}"
+                item_id = item_id[: max(1, 40 - len(suffix))].rstrip("_") + suffix
+            used_item_ids.add(item_id)
             mode = (
                 "categorical"
                 if field_type in ("L", "M")
