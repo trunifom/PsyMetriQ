@@ -298,6 +298,14 @@ The exporter (`build_redcap_metadata_records` / `export_redcap_data_dictionary` 
 
 The importer (`import_redcap_data_dictionary`) accepts `radio`/`dropdown`/`checkbox`/`text`/`notes`/`yesno`/`truefalse`/`slider` fields as respondent items (`yesno`/`truefalse` synthesize a two-option Yes/No or True/False response set; `slider` becomes a numeric item, defaulting to a 0-100 range when the dictionary specifies no min/max). Field types PsyMetriQ cannot represent as a respondent item -- `calc`, `descriptive`, `file`, `sql`, or anything unrecognized -- are **never silently dropped**: each is listed by field name and type in the imported instrument's `metadata.notes`, so you always know what didn't come across and why.
 
+### Branching logic and matrix grouping
+
+`ItemSchema` has three fields for these: `show_if` (a list of `BranchingCondition`, each an equality/inequality check against an earlier item's response, combined with AND -- empty means always shown), `matrix_group_name`, and `matrix_ranking`. This is intentionally a simple model: `show_if` can express `[field]='value' and [field2]<>'value2'`-style AND-chains, not arbitrary boolean logic (no OR, no nested groups).
+
+- **Export** (`build_redcap_metadata_records`/`export_redcap_data_dictionary`): a `show_if` list renders as REDCap's branching-logic string, resolving each condition's `source_item_id` to that item's `variable_name`; `matrix_group_name`/`matrix_ranking` fill the corresponding Data Dictionary columns directly.
+- **Import** (`import_redcap_data_dictionary`): a REDCap "Branching Logic" cell is parsed back into structured `show_if` conditions only when it is a plain AND-chain of `[field]='value'`/`[field]<>'value'` conditions referencing fields present in the same dictionary. Anything more complex (`or`, parentheses, an unresolvable field reference) is **not guessed at** -- the original text is preserved verbatim in that item's `metadata.notes` (prefixed "Original REDCap branching logic (not structurally parsed)") instead of being silently dropped or misrepresented. Matrix Group Name/Matrix Ranking columns are read directly.
+- The GUI shows both, read-only, under each item in the version detail view ("Nur sichtbar, wenn ..." / "Matrixgruppe: ...") -- there is no branching-logic editor yet, only display of what a catalog entry (or REDCap import) already documents.
+
 ### Live REDCap API connection
 
 Configure, in **Einstellungen > REDCap (Live-API)**: the project's API URL and the name of an environment variable (in your local `.env`, e.g. `REDCAP_API_TOKEN`) holding that project's API token. PsyMetriQ never stores the token itself in settings, projects, or exports -- only the environment variable's name, exactly like the LLM provider key settings.

@@ -1939,6 +1939,7 @@ class PsyMetriQApplication:
                 for dimension, item_ids in dimension_groups.items()
             ]
         item_controls: list[ft.Control] = []
+        items_by_id = {sibling.item_id: sibling for sibling in version.items}
         for item in [] if license_locked else version.items:
             options = (
                 version.response_sets[item.response_set_ref]
@@ -1992,6 +1993,38 @@ class PsyMetriQApplication:
                                         size=11,
                                         color="#55716A",
                                         selectable=True,
+                                    ),
+                                    *(
+                                        [
+                                            ft.Text(
+                                                "Nur sichtbar, wenn "
+                                                + " und ".join(
+                                                    f"{items_by_id[condition.source_item_id].variable_name} "
+                                                    f"{'=' if condition.operator == 'equals' else '≠'} "
+                                                    f"{condition.value}"
+                                                    for condition in item.show_if
+                                                    if condition.source_item_id in items_by_id
+                                                ),
+                                                size=10,
+                                                color="#55716A",
+                                                italic=True,
+                                            )
+                                        ]
+                                        if item.show_if
+                                        else []
+                                    ),
+                                    *(
+                                        [
+                                            ft.Text(
+                                                f"Matrixgruppe: {item.matrix_group_name}"
+                                                + (" (Ranking)" if item.matrix_ranking else ""),
+                                                size=10,
+                                                color="#55716A",
+                                                italic=True,
+                                            )
+                                        ]
+                                        if item.matrix_group_name
+                                        else []
                                     ),
                                 ],
                             ),

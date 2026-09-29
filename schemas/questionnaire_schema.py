@@ -88,6 +88,27 @@ class QuestionnaireMetadata(BaseModel):
 	)
 
 
+class BranchingCondition(BaseModel):
+	"""One equality condition on a prior item's response, for conditional display.
+
+	This models simple ``field = value`` (or ``!=``) branching only, combined
+	with AND across a list. It is not a general boolean-logic engine: it
+	cannot express OR, nested groups, or comparisons against another item's
+	value rather than a fixed one. A REDCap branching-logic string that needs
+	more than this is preserved as text (see ``data_exchange.py``) rather than
+	forced into this structure.
+	"""
+
+	source_item_id: str = Field(
+		min_length=1, description="item_id of the controlling item within the same version."
+	)
+	operator: Literal["equals", "not_equals"] = Field(default="equals")
+	value: str = Field(
+		min_length=1,
+		description="The controlling item's response code this condition compares against.",
+	)
+
+
 class ItemSchema(BaseModel):
 	"""A single questionnaire item using a REDCap-compatible field name."""
 
@@ -133,6 +154,21 @@ class ItemSchema(BaseModel):
 	)
 	redcap_field_type: Literal["radio", "checkbox", "slider", "text"] = Field(
 		default="radio", description="REDCap field type used when exporting this item."
+	)
+	show_if: list[BranchingCondition] = Field(
+		default_factory=list,
+		description=(
+			"Conditions (combined with AND) that must hold for this item to be shown; "
+			"empty means always shown."
+		),
+	)
+	matrix_group_name: str | None = Field(
+		default=None,
+		description="Groups items into one visual matrix/grid when exported (e.g. to REDCap).",
+	)
+	matrix_ranking: bool = Field(
+		default=False,
+		description="Whether matrix responses must be unique per row (a ranking matrix).",
 	)
 	metadata: QuestionnaireMetadata = Field(
 		default_factory=QuestionnaireMetadata,
@@ -452,6 +488,19 @@ class QuestionnaireVersion(BaseModel):
 					f"Scoring algorithm {algorithm.output_variable!r} references "
 					f"unscored items: {sorted(unscored_targets)}"
 				)
+
+		item_id_set = set(item_ids)
+		for item in self.items:
+			for condition in item.show_if:
+				if condition.source_item_id == item.item_id:
+					raise ValueError(
+						f"Item {item.item_id!r} cannot have a show_if condition on itself"
+					)
+				if condition.source_item_id not in item_id_set:
+					raise ValueError(
+						f"Item {item.item_id!r} has a show_if condition referencing "
+						f"unknown item {condition.source_item_id!r}"
+					)
 
 		return self
 

@@ -7,6 +7,7 @@ from pydantic import ValidationError
 
 from data.generate_mock_data import generate_mock_data
 from schemas.questionnaire_schema import (
+    BranchingCondition,
     ItemSchema,
     QuestionnaireContributor,
     QuestionnaireParent,
@@ -138,6 +139,72 @@ def test_questionnaire_version_rejects_unknown_scoring_item() -> None:
                 )
             ],
         )
+
+
+def test_item_show_if_accepts_a_condition_on_an_earlier_item() -> None:
+    version = make_version()
+    gated_item = make_item("gated_item", item_id="gated_01")
+    gated_item = gated_item.model_copy(
+        update={
+            "show_if": [
+                BranchingCondition(source_item_id="demo_01", operator="equals", value="1")
+            ]
+        }
+    )
+
+    result = QuestionnaireVersion(
+        version_id=version.version_id,
+        language=version.language,
+        response_sets=version.response_sets,
+        items=[*version.items, gated_item],
+    )
+
+    assert result.items[-1].show_if[0].source_item_id == "demo_01"
+
+
+def test_item_show_if_rejects_a_reference_to_an_unknown_item() -> None:
+    version = make_version()
+    gated_item = version.items[0].model_copy(
+        update={
+            "show_if": [
+                BranchingCondition(source_item_id="does_not_exist", operator="equals", value="1")
+            ]
+        }
+    )
+
+    with pytest.raises(ValidationError, match="unknown item"):
+        QuestionnaireVersion(
+            version_id=version.version_id,
+            language=version.language,
+            response_sets=version.response_sets,
+            items=[gated_item],
+        )
+
+
+def test_item_show_if_rejects_a_self_reference() -> None:
+    gated_item = make_item()
+    gated_item = gated_item.model_copy(
+        update={
+            "show_if": [
+                BranchingCondition(source_item_id=gated_item.item_id, operator="equals", value="1")
+            ]
+        }
+    )
+
+    with pytest.raises(ValidationError, match="cannot have a show_if condition on itself"):
+        QuestionnaireVersion(
+            version_id="v1",
+            language="en",
+            response_sets={"frequency_5": [ResponseOption(code=0, label="Never", score=0)]},
+            items=[gated_item],
+        )
+
+
+def test_item_matrix_fields_default_to_ungrouped() -> None:
+    item = make_item()
+
+    assert item.matrix_group_name is None
+    assert item.matrix_ranking is False
 
 
 def test_questionnaire_version_allows_an_explicit_link_only_record() -> None:

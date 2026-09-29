@@ -8,6 +8,7 @@ from openpyxl import load_workbook
 
 from data.generate_mock_data import generate_mock_data
 from schemas.questionnaire_schema import (
+    BranchingCondition,
     ItemSchema,
     QuestionnaireParent,
     QuestionnaireVersion,
@@ -514,3 +515,201 @@ def test_study_adaptation_changes_only_derived_export_and_drops_affected_scores(
     assert adapted.versions[0].items[0].prompt_text == "Study-specific wording"
     assert "not been psychometrically validated" in adapted.versions[0].items[0].metadata.notes
     assert adapted.versions[0].scoring_algorithms == []
+
+
+def _branching_family() -> QuestionnaireParent:
+    version = QuestionnaireVersion(
+        version_id="v1",
+        language="en",
+        response_sets={
+            "yesno": [
+                ResponseOption(code=1, label="Yes", score=None),
+                ResponseOption(code=0, label="No", score=None),
+            ]
+        },
+        items=[
+            ItemSchema(
+                item_id="gate_01",
+                variable_name="gate_01",
+                dimension="core",
+                prompt_text="Have you ever smoked?",
+                response_set_ref="yesno",
+            ),
+            ItemSchema(
+                item_id="follow_01",
+                variable_name="follow_01",
+                dimension="core",
+                prompt_text="How many cigarettes per day?",
+                response_mode="numeric",
+                is_scored=False,
+                show_if=[BranchingCondition(source_item_id="gate_01", value="1")],
+                matrix_group_name="smoking_matrix",
+                matrix_ranking=True,
+            ),
+        ],
+    )
+    return QuestionnaireParent(
+        instrument_id="branching_demo",
+        name_full="Branching Logic Demonstration Instrument",
+        is_commercial=False,
+        versions=[version],
+    )
+
+
+def test_redcap_export_renders_branching_logic_and_matrix_fields() -> None:
+    family = _branching_family()
+    version = family.versions[0]
+
+    records = build_redcap_metadata_records(family, version)
+
+    follow_up = next(record for record in records if record["field_name"] == "follow_01")
+    assert follow_up["branching_logic"] == "[gate_01]='1'"
+    assert follow_up["matrix_group_name"] == "smoking_matrix"
+    assert follow_up["matrix_ranking"] == "y"
+    gate = next(record for record in records if record["field_name"] == "gate_01")
+    assert gate["branching_logic"] == ""
+
+
+def test_redcap_export_renders_not_equals_and_multiple_conditions() -> None:
+    version = QuestionnaireVersion(
+        version_id="v1",
+        language="en",
+        response_sets={
+            "s": [
+                ResponseOption(code=1, label="A", score=None),
+                ResponseOption(code=2, label="B", score=None),
+            ]
+        },
+        items=[
+            ItemSchema(
+                item_id="q1",
+                variable_name="q1",
+                dimension="core",
+                prompt_text="Q1",
+                response_set_ref="s",
+            ),
+            ItemSchema(
+                item_id="q2",
+                variable_name="q2",
+                dimension="core",
+                prompt_text="Q2",
+                response_set_ref="s",
+            ),
+            ItemSchema(
+                item_id="q3",
+                variable_name="q3",
+                dimension="core",
+                prompt_text="Q3",
+                response_set_ref="s",
+                show_if=[
+                    BranchingCondition(source_item_id="q1", operator="not_equals", value="2"),
+                    BranchingCondition(source_item_id="q2", operator="equals", value="1"),
+                ],
+            ),
+        ],
+    )
+    family = QuestionnaireParent(
+        instrument_id="demo", name_full="Demo", is_commercial=False, versions=[version]
+    )
+
+    records = build_redcap_metadata_records(family, version)
+
+    q3 = next(record for record in records if record["field_name"] == "q3")
+    assert q3["branching_logic"] == "[q1]<>'2' and [q2]='1'"
+
+
+def _redcap_csv_with_headers(headers: list[str], rows: list[dict[str, str]]) -> str:
+    output = io.StringIO(newline="")
+    writer = csv.DictWriter(output, fieldnames=headers, lineterminator="\n")
+    writer.writeheader()
+    for row in rows:
+        writer.writerow({header: row.get(header, "") for header in headers})
+    return output.getvalue()
+
+
+def test_redcap_import_parses_a_simple_branching_logic_chain() -> None:
+    headers = [
+        "Variable / Field Name", "Form Name", "Section Header", "Field Type", "Field Label",
+        "Branching Logic (Show field only if...)",
+    ]
+    csv_text = _redcap_csv_with_headers(
+        headers,
+        [
+            {
+                "Variable / Field Name": "gate_01",
+                "Form Name": "demo",
+                "Section Header": "core",
+                "Field Type": "yesno",
+                "Field Label": "Have you ever smoked?",
+            },
+            {
+                "Variable / Field Name": "follow_01",
+                "Form Name": "demo",
+                "Section Header": "core",
+                "Field Type": "text",
+                "Field Label": "How many cigarettes per day?",
+                "Branching Logic (Show field only if...)": "[gate_01]='1'",
+            },
+        ],
+    )
+
+    imported = import_redcap_data_dictionary(csv_text, language="en")
+
+    items_by_id = {item.item_id: item for item in imported.versions[0].items}
+    follow_up = items_by_id["follow_01"]
+    assert len(follow_up.show_if) == 1
+    assert follow_up.show_if[0].operator == "equals"
+    assert follow_up.show_if[0].value == "1"
+    assert follow_up.show_if[0].source_item_id == items_by_id["gate_01"].item_id
+
+
+def test_redcap_import_preserves_unparseable_branching_logic_as_a_note() -> None:
+    headers = [
+        "Variable / Field Name", "Form Name", "Section Header", "Field Type", "Field Label",
+        "Branching Logic (Show field only if...)",
+    ]
+    csv_text = _redcap_csv_with_headers(
+        headers,
+        [
+            {
+                "Variable / Field Name": "q1", "Form Name": "demo", "Section Header": "core",
+                "Field Type": "text", "Field Label": "Q1",
+            },
+            {
+                "Variable / Field Name": "q2", "Form Name": "demo", "Section Header": "core",
+                "Field Type": "text", "Field Label": "Q2",
+                "Branching Logic (Show field only if...)": "([q1]='1' or [q1]='2')",
+            },
+        ],
+    )
+
+    imported = import_redcap_data_dictionary(csv_text, language="en")
+
+    items_by_id = {item.item_id: item for item in imported.versions[0].items}
+    q2 = items_by_id["q2"]
+    assert q2.show_if == []
+    assert "not structurally parsed" in (q2.metadata.notes or "")
+    assert "[q1]='1' or [q1]='2'" in q2.metadata.notes
+
+
+def test_redcap_import_reads_matrix_group_and_ranking_columns() -> None:
+    headers = [
+        "Variable / Field Name", "Form Name", "Section Header", "Field Type", "Field Label",
+        "Matrix Group Name", "Matrix Ranking?",
+    ]
+    csv_text = _redcap_csv_with_headers(
+        headers,
+        [
+            {
+                "Variable / Field Name": "q1", "Form Name": "demo", "Section Header": "core",
+                "Field Type": "text", "Field Label": "Q1",
+                "Matrix Group Name": "grid_a", "Matrix Ranking?": "y",
+            }
+        ],
+    )
+
+    imported = import_redcap_data_dictionary(csv_text, language="en")
+
+    item = imported.versions[0].items[0]
+    assert item.matrix_group_name == "grid_a"
+    assert item.matrix_ranking is True

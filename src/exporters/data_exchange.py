@@ -15,6 +15,7 @@ from openpyxl.utils import get_column_letter
 from pydantic import ValidationError
 
 from schemas.questionnaire_schema import (
+    BranchingCondition,
     ItemSchema,
     QuestionnaireMetadata,
     QuestionnaireParent,
@@ -514,11 +515,29 @@ def _redcap_score_expression(
     return expression
 
 
+def _redcap_branching_logic(item: ItemSchema, items_by_id: dict[str, ItemSchema]) -> str:
+    """Render an item's ``show_if`` conditions as a REDCap branching-logic string.
+
+    Conditions are combined with ``and``; this only ever produces the simple
+    ``[field]='value'``/``[field]<>'value'`` shape ``show_if`` can express.
+    """
+    parts: list[str] = []
+    for condition in item.show_if:
+        source_item = items_by_id.get(condition.source_item_id)
+        if source_item is None:
+            continue
+        operator = "=" if condition.operator == "equals" else "<>"
+        value = condition.value.replace("'", "\\'")
+        parts.append(f"[{source_item.variable_name}]{operator}'{value}'")
+    return " and ".join(parts)
+
+
 def _build_redcap_item_records(
     questionnaire: QuestionnaireParent, version: QuestionnaireVersion, *, form_name: str
 ) -> list[dict[str, str]]:
     """Build one REDCap metadata record per item, in the REDCap API's JSON key shape."""
     records: list[dict[str, str]] = []
+    items_by_id = {item.item_id: item for item in version.items}
     for item in version.items:
         field_type = item.redcap_field_type
         validation_type = ""
@@ -563,12 +582,12 @@ def _build_redcap_item_records(
                 "text_validation_min": minimum,
                 "text_validation_max": maximum,
                 "identifier": "",
-                "branching_logic": "",
+                "branching_logic": _redcap_branching_logic(item, items_by_id),
                 "required_field": "y" if item.is_required else "",
                 "custom_alignment": "",
                 "question_number": "",
-                "matrix_group_name": "",
-                "matrix_ranking": "",
+                "matrix_group_name": item.matrix_group_name or "",
+                "matrix_ranking": "y" if item.matrix_ranking else "",
                 "field_annotation": (
                     f"item_id={item.item_id}; scored={str(item.is_scored).lower()}"
                     + (f"; {item.metadata.notes}" if item.metadata.notes else "")
@@ -684,6 +703,67 @@ _REDCAP_TRUEFALSE_OPTIONS = [
     ResponseOption(code=1, label="True", score=None),
     ResponseOption(code=0, label="False", score=None),
 ]
+_REDCAP_BRANCHING_CONDITION_RE = re.compile(
+    r"^\[(?P<field>[A-Za-z][A-Za-z0-9_]*)\]\s*(?P<operator><>|=)\s*'(?P<value>(?:[^'\\]|\\.)*)'$"
+)
+
+
+def _parse_redcap_branching_logic(
+    raw: str, variable_to_item_id: dict[str, str], *, own_item_id: str
+) -> list[BranchingCondition] | None:
+    """Parse a simple AND-chain of ``[field]='value'``/``[field]<>'value'`` conditions.
+
+    Returns ``None`` (never raises) for anything this cannot confidently
+    represent structurally: OR, parentheses, a reference to a field outside
+    this dictionary, or a self-reference. The caller preserves the raw text
+    instead in that case, rather than silently dropping or misinterpreting it.
+    """
+    lowered = raw.casefold()
+    if " or " in lowered or "(" in raw or ")" in raw:
+        return None
+    conditions: list[BranchingCondition] = []
+    for part in re.split(r"\s+and\s+", raw, flags=re.IGNORECASE):
+        match = _REDCAP_BRANCHING_CONDITION_RE.match(part.strip())
+        if match is None:
+            return None
+        source_item_id = variable_to_item_id.get(match.group("field"))
+        if source_item_id is None or source_item_id == own_item_id:
+            return None
+        conditions.append(
+            BranchingCondition(
+                source_item_id=source_item_id,
+                operator="equals" if match.group("operator") == "=" else "not_equals",
+                value=match.group("value").replace("\\'", "'"),
+            )
+        )
+    return conditions
+
+
+def _resolve_redcap_branching_logic(
+    items: list[ItemSchema], raw_branching_logic: dict[str, str]
+) -> list[ItemSchema]:
+    """Attach structured show_if conditions where parseable; keep raw text otherwise."""
+    variable_to_item_id = {item.variable_name: item.item_id for item in items}
+    resolved: list[ItemSchema] = []
+    for item in items:
+        raw = raw_branching_logic.get(item.item_id, "")
+        if not raw:
+            resolved.append(item)
+            continue
+        conditions = _parse_redcap_branching_logic(
+            raw, variable_to_item_id, own_item_id=item.item_id
+        )
+        if conditions is not None:
+            resolved.append(item.model_copy(update={"show_if": conditions}))
+            continue
+        note = f"Original REDCap branching logic (not structurally parsed): {raw}"
+        combined_notes = "\n".join(value for value in (item.metadata.notes, note) if value)
+        resolved.append(
+            item.model_copy(
+                update={"metadata": item.metadata.model_copy(update={"notes": combined_notes})}
+            )
+        )
+    return resolved
 
 
 def import_redcap_data_dictionary(content: str, language: str) -> QuestionnaireParent:
@@ -724,6 +804,7 @@ def import_redcap_data_dictionary(content: str, language: str) -> QuestionnaireP
     response_sets: dict[str, list[ResponseOption]] = {}
     items: list[ItemSchema] = []
     used_variable_names: set[str] = set()
+    raw_branching_logic: dict[str, str] = {}
     for index, row in enumerate(importable_rows, start=1):
         field_type = (row.get("Field Type") or "text").casefold()
         source_name = (row.get("Variable / Field Name") or "").strip()
@@ -783,6 +864,9 @@ def import_redcap_data_dictionary(content: str, language: str) -> QuestionnaireP
         if field_type == "slider" and minimum is None and maximum is None:
             minimum, maximum = 0.0, 100.0
         item_id = _safe_identifier(source_name or f"item_{index:03d}", "item")
+        raw_branching_logic[item_id] = (
+            row.get("Branching Logic (Show field only if...)") or ""
+        ).strip()
         items.append(
             ItemSchema(
                 item_id=item_id,
@@ -801,8 +885,13 @@ def import_redcap_data_dictionary(content: str, language: str) -> QuestionnaireP
                     else field_type if field_type in {"radio", "checkbox"}
                     else "text"
                 ),
+                matrix_group_name=(row.get("Matrix Group Name") or "").strip() or None,
+                matrix_ranking=(row.get("Matrix Ranking?") or "").strip().casefold()
+                in {"y", "yes", "1", "true"},
             )
         )
+
+    items = _resolve_redcap_branching_logic(items, raw_branching_logic)
 
     form_names = sorted(
         {(row.get("Form Name") or "").strip() for row in importable_rows if row.get("Form Name")}
