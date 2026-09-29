@@ -61,6 +61,7 @@ EXPORT_FORMATS = {
     "XLSX Arbeitsmappe": "xlsx",
     "Item CSV": "item_csv",
     "REDCap Data Dictionary CSV": "redcap_csv",
+    "R-Scoring-Syntax": "r_syntax",
 }
 LIGHT_DARK_COLORS = {
     "#F3F6F5": "#111B19",

@@ -207,23 +207,28 @@ def test_export_rejects_unknown_version(synthetic_questionnaire: QuestionnairePa
 
 
 def _reverse_scored_family() -> QuestionnaireParent:
-    """A synthetic instrument whose response codes differ from their scores.
+    """A synthetic instrument modeled on the real Rosenberg Self-Esteem catalog entry.
 
-    ``low`` (code 0) is worth 3 points and ``high`` (code 3) is worth 0
-    points, so a naive REDCap calc field that summed the raw stored values
-    would compute the wrong total; only recoding via score can be correct.
+    Reverse- and forward-keyed items share the *same* response set, which
+    records each option's forward-direction score once (a 0-3 agreement
+    scale in two equivalent codings). Reversal must therefore come from
+    ``item.is_reverse_scored`` applied on top of that shared score, via the
+    standard ``(min + max) - value`` formula -- the score field alone does
+    not already encode it. ``rev_01`` uses non-identity (string) codes to
+    also exercise the recode path together with reversal; ``direct_01``
+    uses identity-coded (numeric) codes to exercise the fast path alone.
     """
     version = QuestionnaireVersion(
         version_id="v1",
         language="en",
         response_sets={
-            "reverse_4": [
-                ResponseOption(code=0, label="low", score=3),
-                ResponseOption(code=1, label="mid-low", score=2),
-                ResponseOption(code=2, label="mid-high", score=1),
-                ResponseOption(code=3, label="high", score=0),
+            "agree_letters_4": [
+                ResponseOption(code="SA", label="strongly agree", score=3),
+                ResponseOption(code="A", label="agree", score=2),
+                ResponseOption(code="D", label="disagree", score=1),
+                ResponseOption(code="SD", label="strongly disagree", score=0),
             ],
-            "direct_4": [
+            "agree_numeric_4": [
                 ResponseOption(code=0, label="never", score=0),
                 ResponseOption(code=1, label="always", score=1),
             ],
@@ -234,7 +239,7 @@ def _reverse_scored_family() -> QuestionnaireParent:
                 variable_name="rev_01",
                 dimension="core",
                 prompt_text="Reverse-scored item.",
-                response_set_ref="reverse_4",
+                response_set_ref="agree_letters_4",
                 is_reverse_scored=True,
             ),
             ItemSchema(
@@ -242,7 +247,7 @@ def _reverse_scored_family() -> QuestionnaireParent:
                 variable_name="direct_01",
                 dimension="core",
                 prompt_text="Directly-scored item.",
-                response_set_ref="direct_4",
+                response_set_ref="agree_numeric_4",
             ),
             ItemSchema(
                 item_id="slider_01",
@@ -282,12 +287,58 @@ def test_redcap_export_recodes_reverse_scored_items_in_the_calc_field() -> None:
     calc_records = [record for record in records if record["field_type"] == "calc"]
     assert len(calc_records) == 1
     calc_expression = calc_records[0]["select_choices_or_calculations"]
-    assert "if([rev_01]=0,3" in calc_expression
-    assert "if([rev_01]=3,0" in calc_expression
+    # rev_01 is recoded via its string codes, then reversed over its 0-3 range.
+    assert "if([rev_01]='SA',3" in calc_expression
+    assert "if([rev_01]='SD',0" in calc_expression
+    assert "(3-(" in calc_expression
+    # direct_01 is identity-coded and never reversed: used as-is.
     assert "[direct_01]" in calc_expression
+    assert "(3-([direct_01]" not in calc_expression
     assert calc_expression.endswith("*2)")
     assert calc_records[0]["field_name"] != "rev_01"
     assert calc_records[0]["field_name"] != "direct_01"
+
+
+def test_redcap_export_reverses_an_identity_coded_item_on_the_fast_path() -> None:
+    """The (min+max)-value reversal must also apply when code == score (fast path)."""
+    version = QuestionnaireVersion(
+        version_id="v1",
+        language="en",
+        response_sets={
+            "agree_numeric_4": [
+                ResponseOption(code=0, label="never", score=0),
+                ResponseOption(code=1, label="rarely", score=1),
+                ResponseOption(code=2, label="often", score=2),
+                ResponseOption(code=3, label="always", score=3),
+            ]
+        },
+        items=[
+            ItemSchema(
+                item_id="rev_02",
+                variable_name="rev_02",
+                dimension="core",
+                prompt_text="Reverse-scored, identity-coded item.",
+                response_set_ref="agree_numeric_4",
+                is_reverse_scored=True,
+            )
+        ],
+        scoring_algorithms=[
+            ScoringAlgorithm(output_variable="total", method="sum", target_items=["rev_02"])
+        ],
+    )
+    family = QuestionnaireParent(
+        instrument_id="reverse_fast_path_demo",
+        name_full="Reverse Fast-Path Demonstration Instrument",
+        is_commercial=False,
+        versions=[version],
+    )
+
+    records = build_redcap_metadata_records(family, version)
+
+    calc_expression = next(r for r in records if r["field_type"] == "calc")[
+        "select_choices_or_calculations"
+    ]
+    assert calc_expression == "((3-([rev_02])))"
 
 
 def test_redcap_export_honors_slider_field_type_with_min_max_labels() -> None:

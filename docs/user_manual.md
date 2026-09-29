@@ -198,6 +198,12 @@ python -m src.ingestion.document_pipeline --approve-draft data/questionnaires/re
 
 The importer refuses unknown rights, hash mismatches, low confidence, incomplete forms, scanned pages without usable OCR, or version conflicts. See the [full intake guide](pdf_intake.md) for stages, limits, manual review, and file-placement rules.
 
+### R scoring syntax export
+
+Choose `r_syntax` as the export format to get a base-R script (`.R`) implementing the version's documented scoring workflow: variable labels for every item, plus one score column per `ScoringAlgorithm`, assuming a data.frame named `df` with one column per item `variable_name` (for example imported from a REDCap/Qualtrics/CSV export using those exact names). It uses only base R, no `dplyr`/`sjlabelled`/`car` dependency.
+
+Reverse-scored items (`is_reverse_scored: true`) are recoded automatically using the standard `(min + max) - value` reversal over that response set's own score range -- catalog response sets record each option's forward-direction score once and are shared by both forward- and reverse-keyed items (see the Rosenberg Self-Esteem Scale), so `ResponseOption.score` alone does not already encode reversal. The REDCap `calc`-field export (above) applies the identical reversal logic, so the two exporters cannot silently disagree on the same instrument's total. As with every other export, this is a translation of documented data, not a validated clinical scoring engine; verify results against the source publisher's manual before use in analysis.
+
 ### Reusable license profiles for institutionally licensed instruments
 
 If your institution already holds a license for an instrument (for example through a physical or negotiated test library), save its recurring license details once as a named profile instead of retyping them for every PDF. Copy `data/questionnaires/license_profiles.example.json` to `data/questionnaires/review/license_profiles.json` (git-ignored) and fill in your institution's real agreements. Then generate a rights sidecar for one exact reviewed PDF:

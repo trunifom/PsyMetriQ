@@ -21,6 +21,7 @@ from schemas.questionnaire_schema import (
     QuestionnaireVersion,
     ResponseOption,
 )
+from src.exporters.r_syntax_gen import export_r_syntax
 
 FHIR_QUESTIONNAIRE_R4 = "http://hl7.org/fhir/StructureDefinition/Questionnaire"
 FHIR_DIMENSION_EXTENSION = "https://psymetriq.org/fhir/StructureDefinition/item-dimension"
@@ -471,11 +472,15 @@ def _redcap_score_expression(
     """Return the REDCap calc-syntax expression for one item's scored contribution.
 
     When every response option's stored code already equals its score (the
-    common case), the raw field value can be summed directly. Otherwise the
-    option scores are recoded explicitly with nested ``if()`` calls, so a
-    scoring calc field always reflects ``ResponseOption.score`` -- including
-    reverse-scored items, whose scores already encode the reversal -- rather
-    than REDCap's raw stored choice code.
+    common case), the raw field value is used directly; otherwise the option
+    scores are recoded explicitly with nested ``if()`` calls, so this always
+    reflects ``ResponseOption.score`` rather than REDCap's raw stored choice
+    code. ``item.is_reverse_scored`` is applied afterwards, on top of either
+    path, using the standard ``(min + max) - value`` reversal over that
+    response set's own score range: catalog response sets record each
+    option's forward-direction score once and are shared by both
+    forward-keyed and reverse-keyed items (see the Rosenberg Self-Esteem
+    Scale), so the score field alone does not already encode reversal.
     """
     variable = item.variable_name
     if item.response_mode != "categorical" or not item.response_set_ref:
@@ -494,13 +499,18 @@ def _redcap_score_expression(
     if len(scored_options) == len(options) and all(
         _code_matches_score(option) for option in scored_options
     ):
-        return f"[{variable}]"
+        expression = f"[{variable}]"
+    else:
+        expression = "0"
+        for option in reversed(scored_options):
+            code_literal = _format_redcap_code_literal(option.code)
+            score_literal = _format_redcap_number(option.score)
+            expression = f"if([{variable}]={code_literal},{score_literal},{expression})"
 
-    expression = "0"
-    for option in reversed(scored_options):
-        code_literal = _format_redcap_code_literal(option.code)
-        score_literal = _format_redcap_number(option.score)
-        expression = f"if([{variable}]={code_literal},{score_literal},{expression})"
+    if item.is_reverse_scored:
+        score_values = [option.score for option in scored_options]
+        reversal_sum = _format_redcap_number(min(score_values) + max(score_values))
+        expression = f"({reversal_sum}-({expression}))"
     return expression
 
 
@@ -958,7 +968,9 @@ def export_questionnaire_xlsx(
 def export_questionnaire(
     questionnaire: QuestionnaireParent,
     version_id: str,
-    export_format: Literal["psymetriq_json", "fhir_json", "item_csv", "redcap_csv", "xlsx"],
+    export_format: Literal[
+        "psymetriq_json", "fhir_json", "item_csv", "redcap_csv", "xlsx", "r_syntax"
+    ],
 ) -> tuple[str, str | bytes]:
     """Export a concrete version and return its recommended extension and content."""
     version = next(
@@ -979,6 +991,8 @@ def export_questionnaire(
         return ".csv", export_redcap_data_dictionary(questionnaire, version)
     if export_format == "xlsx":
         return ".xlsx", export_questionnaire_xlsx(questionnaire, version)
+    if export_format == "r_syntax":
+        return ".R", export_r_syntax(questionnaire, version)
     raise DataExchangeError(f"Unsupported export format: {export_format}")
 
 
