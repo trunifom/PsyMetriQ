@@ -87,7 +87,10 @@
         ],
         "notes": "Official form recommends no changes to question order or wording."
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Test-Retest-Reliabilität (Spearman) meist ca. .8 über 12 Länder; Kriteriumsvalidität gegen Akzelerometer moderat (ca. .30).",
+        "source": "Craig CL, Marshall AL, Sjöström M, et al. (2003). International physical activity questionnaire: 12-country reliability and validity. Med Sci Sports Exerc, 35(8), 1381-1395."
+      },
       "administration_time": "ca. 5-10 Minuten",
       "recall_period": "letzte 7 Tage",
       "response_format": "Tage- und Dauerangaben für körperliche Aktivität",
@@ -113,6 +116,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -148,6 +154,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -183,6 +192,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -218,6 +230,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -253,6 +268,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -288,6 +306,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -323,6 +344,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -358,6 +382,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -393,6 +420,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -428,6 +458,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -463,6 +496,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -511,9 +547,9 @@
           "version_id": "ipaq_short_en_v1"
         }
       ],
-      "publication_year": null,
-      "source_citation": null,
-      "source_doi": null,
+      "publication_year": 2003,
+      "source_citation": "Craig CL et al. International physical activity questionnaire: 12-country reliability and validity. Med Sci Sports Exerc. 2003;35(8):1381-1395. doi:10.1249/01.MSS.0000078924.61453.FB.",
+      "source_doi": "10.1249/01.MSS.0000078924.61453.FB",
       "source_documents": [
         {
           "title": "IPAQ short self-administered German form (revised June 2016)",
@@ -555,7 +591,10 @@
         ],
         "notes": "The official IPAQ download page says researcher-submitted translations are provided as-is and their accuracy has not been checked."
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Test-Retest-Reliabilität (Spearman) meist ca. .8 über 12 Länder; Kriteriumsvalidität gegen Akzelerometer moderat (ca. .30).",
+        "source": "Craig CL, Marshall AL, Sjöström M, et al. (2003). International physical activity questionnaire: 12-country reliability and validity. Med Sci Sports Exerc, 35(8), 1381-1395."
+      },
       "administration_time": "ca. 5-10 Minuten",
       "recall_period": "letzte 7 Tage",
       "response_format": "Tage- und Dauerangaben für körperliche Aktivität",
@@ -581,6 +620,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -616,6 +658,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -651,6 +696,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -686,6 +734,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -721,6 +772,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -756,6 +810,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -791,6 +848,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -826,6 +886,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -861,6 +924,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -896,6 +962,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -931,6 +1000,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -979,9 +1051,9 @@
           "version_id": "ipaq_short_en_v1"
         }
       ],
-      "publication_year": null,
-      "source_citation": null,
-      "source_doi": null,
+      "publication_year": 2003,
+      "source_citation": "Craig CL et al. International physical activity questionnaire: 12-country reliability and validity. Med Sci Sports Exerc. 2003;35(8):1381-1395. doi:10.1249/01.MSS.0000078924.61453.FB.",
+      "source_doi": "10.1249/01.MSS.0000078924.61453.FB",
       "source_documents": [
         {
           "title": "IPAQ-E English form",
@@ -1023,7 +1095,10 @@
         ],
         "notes": "IPAQ-E is maintained as a distinct form and must not be treated as the standard adult short form."
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Test-Retest-Reliabilität (Spearman) meist ca. .8 über 12 Länder; Kriteriumsvalidität gegen Akzelerometer moderat (ca. .30).",
+        "source": "Craig CL, Marshall AL, Sjöström M, et al. (2003). International physical activity questionnaire: 12-country reliability and validity. Med Sci Sports Exerc, 35(8), 1381-1395."
+      },
       "administration_time": "ca. 5-10 Minuten",
       "recall_period": "letzte 7 Tage",
       "response_format": "Tage- und Dauerangaben für körperliche Aktivität",
@@ -1049,6 +1124,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1084,6 +1162,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1119,6 +1200,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1154,6 +1238,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1189,6 +1276,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1224,6 +1314,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1259,6 +1352,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1294,6 +1390,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1329,6 +1428,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1364,6 +1466,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1399,6 +1504,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "text",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,

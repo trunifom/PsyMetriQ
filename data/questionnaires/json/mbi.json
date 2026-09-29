@@ -90,7 +90,10 @@
         ],
         "notes": null
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Cronbach's alpha ca. .90 (Emotional Exhaustion), .79 (Depersonalization/Cynicism), .71 (Personal/Professional Accomplishment) in der Originalnormierung.",
+        "source": "Maslach C, Jackson SE (1981). The measurement of experienced burnout. J Organ Behav, 2(2), 99-113."
+      },
       "administration_time": "ca. 10 Minuten",
       "recall_period": "aktuelle Arbeitserfahrung",
       "response_format": "mehrstufige Häufigkeits- oder Intensitätsskala",

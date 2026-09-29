@@ -90,7 +90,10 @@
         ],
         "notes": null
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Cronbach's alpha je Symptomdimension meist ca. .77-.90 über verschiedene Normierungsstudien.",
+        "source": "Derogatis LR (1994). SCL-90-R: Administration, Scoring, and Procedures Manual (3rd ed.). National Computer Systems."
+      },
       "administration_time": "ca. 15-20 Minuten",
       "recall_period": "letzte 7 Tage",
       "response_format": "5-stufige Belastungsskala",

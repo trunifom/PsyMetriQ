@@ -81,7 +81,10 @@
         ],
         "notes": null
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Cronbach's alpha ca. .80-.94 über die internationale WHO-Validierungsstudie an sechs Ländern; Sensitivität/Spezifität sind settingabhängig.",
+        "source": "Saunders JB, Aasland OG, Babor TF, de la Fuente JR, Grant M (1993). Development of the AUDIT. Addiction, 88(6), 791-804."
+      },
       "administration_time": "ca. 2-5 Minuten",
       "recall_period": "üblicherweise letzter Jahreszeitraum",
       "response_format": "mehrstufige Häufigkeits- und Mengenangaben",

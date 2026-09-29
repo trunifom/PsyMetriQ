@@ -57,8 +57,8 @@
       ],
       "contributors": [],
       "based_on": [],
-      "publication_year": null,
-      "source_citation": null,
+      "publication_year": 2015,
+      "source_citation": "Nilges P, Essau C. German translation and evaluation of the DASS-21. Schmerz. 2015.",
       "source_doi": null,
       "source_documents": [
         {
@@ -115,7 +115,10 @@
         ],
         "notes": "Official source warns that the DASS is dimensional and is not a diagnosis."
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Cronbach's alpha ca. .88 (Depression), .82 (Angst), .90 (Stress) in Normstichproben; deutsche und klinische Stichproben können abweichen.",
+        "source": "Lovibond SH, Lovibond PF (1995). Manual for the Depression Anxiety Stress Scales (2nd ed.). Psychology Foundation of Australia; Henry JD, Crawford JR (2005). Br J Clin Psychol, 44(2), 227-239."
+      },
       "administration_time": "ca. 5-10 Minuten",
       "recall_period": "letzte 7 Tage",
       "response_format": "4-stufige Häufigkeitsskala",
@@ -164,6 +167,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -195,6 +201,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -226,6 +235,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -257,6 +269,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -288,6 +303,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -319,6 +337,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -350,6 +371,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -381,6 +405,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -412,6 +439,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -443,6 +473,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -474,6 +507,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -505,6 +541,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -536,6 +575,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -567,6 +609,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -598,6 +643,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -629,6 +677,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -660,6 +711,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -691,6 +745,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -722,6 +779,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -753,6 +813,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -784,6 +847,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -990,7 +1056,10 @@
         ],
         "notes": "Official DASS translation page lists the German form and identifies Paul Nilges and Cecilia Essau; the source does not certify translation validity."
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Cronbach's alpha ca. .88 (Depression), .82 (Angst), .90 (Stress) in Normstichproben; deutsche und klinische Stichproben können abweichen.",
+        "source": "Lovibond SH, Lovibond PF (1995). Manual for the Depression Anxiety Stress Scales (2nd ed.). Psychology Foundation of Australia; Henry JD, Crawford JR (2005). Br J Clin Psychol, 44(2), 227-239."
+      },
       "administration_time": "ca. 5-10 Minuten",
       "recall_period": "letzte 7 Tage",
       "response_format": "4-stufige Häufigkeitsskala",
@@ -1039,6 +1108,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1070,6 +1142,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1101,6 +1176,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1132,6 +1210,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1163,6 +1244,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1194,6 +1278,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1225,6 +1312,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1256,6 +1346,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1287,6 +1380,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1318,6 +1414,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1349,6 +1448,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1380,6 +1482,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1411,6 +1516,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1442,6 +1550,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1473,6 +1584,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1504,6 +1618,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1535,6 +1652,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1566,6 +1686,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1597,6 +1720,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1628,6 +1754,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1659,6 +1788,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,

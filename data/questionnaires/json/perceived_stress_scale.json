@@ -69,7 +69,10 @@
         "characteristics": [],
         "notes": "The source says the scale has no diagnostic cut-offs; compare within samples."
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Cronbach's alpha ca. .78 (14-Item-Originalform) bzw. ca. .89 (PSS-10) in Normstichproben.",
+        "source": "Cohen S, Kamarck T, Mermelstein R (1983). A global measure of perceived stress. J Health Soc Behav, 24(4), 385-396."
+      },
       "administration_time": "ca. 5-10 Minuten",
       "recall_period": "üblicherweise letzter Monat",
       "response_format": "5-stufige Häufigkeitsskala",
@@ -95,8 +98,8 @@
       "target_populations": [],
       "contributors": [],
       "based_on": [],
-      "publication_year": null,
-      "source_citation": null,
+      "publication_year": 1983,
+      "source_citation": "Cohen, S., Kamarck, T., & Mermelstein, R. (1983). A global measure of perceived stress. Journal of Health and Social Behavior, 24(4), 385-396.",
       "source_doi": null,
       "source_documents": [
         {
@@ -130,7 +133,10 @@
         "characteristics": [],
         "notes": "Short form indexed separately; exact permission and psychometrics still apply."
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Cronbach's alpha ca. .78 (14-Item-Originalform) bzw. ca. .89 (PSS-10) in Normstichproben.",
+        "source": "Cohen S, Kamarck T, Mermelstein R (1983). A global measure of perceived stress. J Health Soc Behav, 24(4), 385-396."
+      },
       "administration_time": "ca. 5-10 Minuten",
       "recall_period": "üblicherweise letzter Monat",
       "response_format": "5-stufige Häufigkeitsskala",

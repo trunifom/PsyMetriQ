@@ -91,7 +91,10 @@
         ],
         "notes": null
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Cronbach's alpha ca. .74-.85 (Exhaustion) und ca. .75-.84 (Disengagement) über mehrere Stichproben und Sprachversionen.",
+        "source": "Demerouti E, Bakker AB, Vardakou I, Kantas A (2003). The convergent validity of two burnout instruments. Eur J Psychol Assess, 19(1), 12-23."
+      },
       "administration_time": "ca. 5 Minuten",
       "recall_period": "aktuelle Arbeitssituation",
       "response_format": "4-stufige Zustimmungsskala",

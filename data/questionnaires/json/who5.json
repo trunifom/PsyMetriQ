@@ -69,7 +69,10 @@
         "characteristics": [],
         "notes": "Open the official source and verify terms for the exact form/version. Topp et al. (2015) review: DOI 10.1159/000376585; this is not the underlying WHO form publication."
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Cronbach's alpha ca. .82-.95 über eine systematische Übersichtsarbeit von >200 Studien; Werte variieren stark nach Population und Sprache.",
+        "source": "Topp CW, Østergaard SD, Søndergaard S, Bech P (2015). The WHO-5 Well-Being Index: a systematic review of the literature. Psychother Psychosom, 84(3), 167-176."
+      },
       "administration_time": "ca. 1-2 Minuten",
       "recall_period": "letzte 2 Wochen",
       "response_format": "6-stufige Häufigkeitsskala",

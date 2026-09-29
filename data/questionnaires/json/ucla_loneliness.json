@@ -81,7 +81,10 @@
         ],
         "notes": null
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Cronbach's alpha ca. .72-.82 für die 3-Item-Kurzform über mehrere bevölkerungsbasierte Surveys (u.a. Health and Retirement Study).",
+        "source": "Hughes ME, Waite LJ, Hawkley LC, Cacioppo JT (2004). A short scale for measuring loneliness. Res Aging, 26(6), 655-672."
+      },
       "administration_time": "unter 2 Minuten",
       "recall_period": "kein einheitlicher Recall-Zeitraum",
       "response_format": "kurze ordinale Häufigkeitsskala",

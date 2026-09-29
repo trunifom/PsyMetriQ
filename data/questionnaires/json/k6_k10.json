@@ -94,7 +94,10 @@
         ],
         "notes": null
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Cronbach's alpha ca. .89 (K6) in der US-Normierungsstichprobe (National Health Interview Survey); K10-Werte liegen meist ähnlich hoch.",
+        "source": "Kessler RC, Andrews G, Colpe LJ, et al. (2002). Short screening scales to monitor population prevalences and trends in non-specific psychological distress. Psychol Med, 32(6), 959-976."
+      },
       "administration_time": "ca. 2-5 Minuten",
       "recall_period": "letzte 30 Tage",
       "response_format": "5-stufige Häufigkeitsskala",
@@ -171,7 +174,10 @@
         ],
         "notes": null
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Cronbach's alpha ca. .89 (K6) in der US-Normierungsstichprobe (National Health Interview Survey); K10-Werte liegen meist ähnlich hoch.",
+        "source": "Kessler RC, Andrews G, Colpe LJ, et al. (2002). Short screening scales to monitor population prevalences and trends in non-specific psychological distress. Psychol Med, 32(6), 959-976."
+      },
       "administration_time": "ca. 2-5 Minuten",
       "recall_period": "letzte 30 Tage",
       "response_format": "5-stufige Häufigkeitsskala",

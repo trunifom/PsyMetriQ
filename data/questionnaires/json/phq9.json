@@ -131,7 +131,10 @@
         ],
         "notes": "This screening measure is not by itself a clinical diagnosis."
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Cronbach's alpha ca. .86-.89 in der US-Primärversorgungs-Originalstudie; Werte variieren je nach Population, Sprache und Setting.",
+        "source": "Kroenke K, Spitzer RL, Williams JBW (2001). The PHQ-9: validity of a brief depression severity measure. J Gen Intern Med, 16(9), 606-613."
+      },
       "administration_time": "ca. 2-5 Minuten",
       "recall_period": "letzte 2 Wochen",
       "response_format": "4-stufige Häufigkeitsskala",
@@ -202,6 +205,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -233,6 +239,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -264,6 +273,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -295,6 +307,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -326,6 +341,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -357,6 +375,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -388,6 +409,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -419,6 +443,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -450,6 +477,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -482,6 +512,9 @@
           "is_required": false,
           "is_scored": false,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -537,9 +570,9 @@
           "version_id": "phq9_en_v1"
         }
       ],
-      "publication_year": null,
+      "publication_year": 2001,
       "source_citation": "Kroenke K, Spitzer RL, Williams JBW. The PHQ-9: Validity of a Brief Depression Severity Measure. J Gen Intern Med. 2001;16:606-613.",
-      "source_doi": null,
+      "source_doi": "10.1046/j.1525-1497.2001.016009606.x",
       "source_documents": [
         {
           "title": "PHQ-9 German for Germany form",
@@ -591,7 +624,10 @@
         ],
         "notes": "Deutschland-Fassung; nicht mit Schweizer/österreichischen Varianten gleichsetzen."
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Cronbach's alpha ca. .86-.89 in der US-Primärversorgungs-Originalstudie; Werte variieren je nach Population, Sprache und Setting.",
+        "source": "Kroenke K, Spitzer RL, Williams JBW (2001). The PHQ-9: validity of a brief depression severity measure. J Gen Intern Med, 16(9), 606-613."
+      },
       "administration_time": "ca. 2-5 Minuten",
       "recall_period": "letzte 2 Wochen",
       "response_format": "4-stufige Häufigkeitsskala",
@@ -662,6 +698,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -693,6 +732,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -724,6 +766,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -755,6 +800,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -786,6 +834,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -817,6 +868,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -848,6 +902,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -879,6 +936,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -910,6 +970,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -942,6 +1005,9 @@
           "is_required": false,
           "is_scored": false,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,

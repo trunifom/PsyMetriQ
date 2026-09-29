@@ -132,7 +132,10 @@
         ],
         "notes": "Official source form for locale en-US; wording is kept variant-specific."
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Cronbach's alpha ca. .92 in der Originalstudie an Primärversorgungspatient*innen; internationale Replikationen berichten meist Werte über .80.",
+        "source": "Spitzer RL, Kroenke K, Williams JBW, Löwe B (2006). A brief measure for assessing generalized anxiety disorder: the GAD-7. Arch Intern Med, 166(10), 1092-1097."
+      },
       "administration_time": "ca. 2-5 Minuten",
       "recall_period": "letzte 2 Wochen",
       "response_format": "4-stufige Häufigkeitsskala",
@@ -181,6 +184,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -212,6 +218,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -243,6 +252,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -274,6 +286,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -305,6 +320,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -336,6 +354,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -367,6 +388,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -420,9 +444,9 @@
           "version_id": "gad7_en_v1"
         }
       ],
-      "publication_year": null,
-      "source_citation": null,
-      "source_doi": null,
+      "publication_year": 2006,
+      "source_citation": "Spitzer RL, Kroenke K, Williams JBW, Löwe B. A brief measure for assessing generalized anxiety disorder: the GAD-7. Arch Intern Med. 2006;166:1092-1097.",
+      "source_doi": "10.1001/archinte.166.10.1092",
       "source_documents": [
         {
           "title": "GAD-7 form: GAD-7 Deutsch (Österreich)",
@@ -475,7 +499,10 @@
         ],
         "notes": "Official source form for locale de-AT; wording is kept variant-specific."
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Cronbach's alpha ca. .92 in der Originalstudie an Primärversorgungspatient*innen; internationale Replikationen berichten meist Werte über .80.",
+        "source": "Spitzer RL, Kroenke K, Williams JBW, Löwe B (2006). A brief measure for assessing generalized anxiety disorder: the GAD-7. Arch Intern Med, 166(10), 1092-1097."
+      },
       "administration_time": "ca. 2-5 Minuten",
       "recall_period": "letzte 2 Wochen",
       "response_format": "4-stufige Häufigkeitsskala",
@@ -524,6 +551,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -555,6 +585,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -586,6 +619,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -617,6 +653,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -648,6 +687,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -679,6 +721,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -710,6 +755,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -763,9 +811,9 @@
           "version_id": "gad7_en_v1"
         }
       ],
-      "publication_year": null,
-      "source_citation": null,
-      "source_doi": null,
+      "publication_year": 2006,
+      "source_citation": "Spitzer RL, Kroenke K, Williams JBW, Löwe B. A brief measure for assessing generalized anxiety disorder: the GAD-7. Arch Intern Med. 2006;166:1092-1097.",
+      "source_doi": "10.1001/archinte.166.10.1092",
       "source_documents": [
         {
           "title": "GAD-7 form: GAD-7 Deutsch (Schweiz)",
@@ -818,7 +866,10 @@
         ],
         "notes": "Official source form for locale de-CH; wording is kept variant-specific."
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Cronbach's alpha ca. .92 in der Originalstudie an Primärversorgungspatient*innen; internationale Replikationen berichten meist Werte über .80.",
+        "source": "Spitzer RL, Kroenke K, Williams JBW, Löwe B (2006). A brief measure for assessing generalized anxiety disorder: the GAD-7. Arch Intern Med, 166(10), 1092-1097."
+      },
       "administration_time": "ca. 2-5 Minuten",
       "recall_period": "letzte 2 Wochen",
       "response_format": "4-stufige Häufigkeitsskala",
@@ -867,6 +918,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -898,6 +952,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -929,6 +986,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -960,6 +1020,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -991,6 +1054,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1022,6 +1088,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,
@@ -1053,6 +1122,9 @@
           "is_required": false,
           "is_scored": true,
           "redcap_field_type": "radio",
+          "show_if": [],
+          "matrix_group_name": null,
+          "matrix_ranking": false,
           "metadata": {
             "description": null,
             "intended_use": null,

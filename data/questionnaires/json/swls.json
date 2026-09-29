@@ -92,7 +92,10 @@
         ],
         "notes": null
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Cronbach's alpha ca. .87, Test-Retest-Reliabilität (2 Monate) ca. .82 in der Originalstudie.",
+        "source": "Diener E, Emmons RA, Larsen RJ, Griffin S (1985). The Satisfaction with Life Scale. J Pers Assess, 49(1), 71-75."
+      },
       "administration_time": "ca. 2 Minuten",
       "recall_period": "globales aktuelles Urteil",
       "response_format": "7-stufige Zustimmungsskala",

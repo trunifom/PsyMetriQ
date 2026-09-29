@@ -81,7 +81,10 @@
         ],
         "notes": null
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Cronbach's alpha je Domäne meist ca. .66-.84 in der internationalen Feldstudie; Werte variieren nach Domäne, Sprache und Population.",
+        "source": "WHOQOL Group (1998). Development of the World Health Organization WHOQOL-BREF quality of life assessment. Psychol Med, 28(3), 551-558."
+      },
       "administration_time": "ca. 5-10 Minuten",
       "recall_period": "üblicherweise letzte 2 Wochen",
       "response_format": "5-stufige Intensitäts- oder Häufigkeitsskala",

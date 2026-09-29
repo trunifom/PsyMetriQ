@@ -90,7 +90,10 @@
         ],
         "notes": null
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Cronbach's alpha ca. .92 in nichtklinischen und ca. .92-.93 in klinischen Stichproben der Originalvalidierung.",
+        "source": "Beck AT, Steer RA, Brown GK (1996). Manual for the Beck Depression Inventory-II. Psychological Corporation."
+      },
       "administration_time": "ca. 5-10 Minuten",
       "recall_period": "letzte 2 Wochen",
       "response_format": "4-stufige Schweregradskala",

@@ -92,7 +92,10 @@
         ],
         "notes": null
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Cronbach's alpha für die meisten Funktions-/Symptomskalen ca. >.70 in der internationalen Validierungsstudie; einzelne Skalen (z.B. Kognition) liegen teils niedriger.",
+        "source": "Aaronson NK, Ahmedzai S, Bergman B, et al. (1993). The European Organization for Research and Treatment of Cancer QLQ-C30. J Natl Cancer Inst, 85(5), 365-376."
+      },
       "administration_time": "ca. 10 Minuten",
       "recall_period": "letzte Woche bzw. aktueller Gesundheitszustand je Item",
       "response_format": "4-stufige Antwortskalen plus globale 7-stufige Gesundheits-/Lebensqualitätsskala",

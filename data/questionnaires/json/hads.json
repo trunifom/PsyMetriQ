@@ -82,7 +82,10 @@
         ],
         "notes": null
       },
-      "cosmin_metrics": {},
+      "cosmin_metrics": {
+        "internal_consistency": "Cronbach's alpha meist ca. .80-.93 (Angst-Subskala) bzw. .81-.90 (Depressions-Subskala) über eine Übersichtsarbeit von >70 Studien.",
+        "source": "Zigmond AS, Snaith RP (1983). The Hospital Anxiety and Depression Scale. Acta Psychiatr Scand, 67(6), 361-370; Bjelland I et al. (2002). J Psychosom Res, 52(2), 69-77."
+      },
       "administration_time": "ca. 2-5 Minuten",
       "recall_period": "aktuelle letzte Woche",
       "response_format": "4-stufige Antwortskala",
