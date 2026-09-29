@@ -30,6 +30,7 @@ from src.exporters.data_exchange import (
     import_questionnaire_file,
     select_questionnaire_items,
 )
+from src.exporters.ethics_dossier_gen import EthicsDossierError, build_ethics_dossier
 from src.exporters.redcap_api import (
     RedcapApiError,
     RedcapProjectSummary,
@@ -2338,6 +2339,14 @@ class PsyMetriQApplication:
                     "Ein gespeichertes Projekt lässt sich später unabhängig vom Rechner wieder laden.",
                     primary=True,
                 ),
+                self._action_button(
+                    "Ethik-Dossier erstellen",
+                    "FACT_CHECK",
+                    self._export_ethics_dossier,
+                    "Fasst Lizenz-, Zitations-, Populations- und Zeitangaben der ausgewählten Batterie als Markdown-Dokument zusammen. Keine Rechts- oder Ethikberatung, sondern eine Planungshilfe aus bereits im Katalog hinterlegten Angaben.",
+                    "Jede Angabe muss vor Einreichung bei einer Ethikkommission gegen die aktuelle Quelle geprüft werden.",
+                    disabled=not self.project.selections,
+                ),
             ],
         )
         selected_rows: list[ft.Control] = []
@@ -3280,6 +3289,38 @@ class PsyMetriQApplication:
         self._set_status(
             f"Projektdatei bereit: {path or file_name}. "
             "Im Browser erscheint sie im Downloadbereich."
+        )
+        self._render()
+
+    async def _export_ethics_dossier(self, _event: Any) -> None:
+        selected = self._selected_versions()
+        if not selected:
+            self._set_status(
+                "Es sind keine Versionen ausgewählt; es gibt nichts für ein Dossier.", error=True
+            )
+            return
+        try:
+            dossier = build_ethics_dossier(
+                selected,
+                project_name=self.project.name,
+                project_description=self.project.description or None,
+            )
+        except EthicsDossierError as error:
+            self._set_status(str(error), error=True)
+            return
+        file_name = f"{_safe_filename(self.project.name)}.ethics-dossier.md"
+        path = await self.file_picker.save_file(
+            dialog_title="Ethik-Dossier speichern",
+            file_name=file_name,
+            initial_directory=str(PROJECT_ROOT / "data" / "workspaces"),
+            file_type=ft.FilePickerFileType.CUSTOM,
+            allowed_extensions=["md"],
+            src_bytes=dossier.encode("utf-8"),
+        )
+        self.project = self.project.record_step("exported", "Ethik-Dossier erstellt", file_name)
+        self._set_status(
+            f"Ethik-Dossier bereit: {path or file_name}. "
+            "Im Browser erscheint es im Downloadbereich. Vor Einreichung prüfen."
         )
         self._render()
 

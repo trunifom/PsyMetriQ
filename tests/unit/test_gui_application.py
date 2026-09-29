@@ -742,3 +742,36 @@ def test_item_adaptation_dialog_saves_reason_without_changing_source_catalog(
     assert selection.item_adaptations[0].adapted_prompt_text == prompt_field.value
     assert "Cognitive interviews" in selection.item_adaptations[0].reason
     assert family.versions[0].items[0].prompt_text == original_prompt
+
+
+def test_ethics_dossier_export_saves_a_markdown_summary_of_the_selected_battery(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(application, "SETTINGS_PATH", tmp_path / "settings.json")
+    app = PsyMetriQApplication(FakePage())  # type: ignore[arg-type]
+    family = app._find_family("phq9")
+    assert family is not None
+    picker = FakeSaveFilePicker()
+    app.file_picker = picker  # type: ignore[assignment]
+
+    app._toggle_version(family, family.versions[0], True)
+    asyncio.run(app._export_ethics_dossier(None))
+
+    assert picker.payload is not None
+    dossier = picker.payload.decode("utf-8")
+    assert "Fragebogenbatterie" in dossier
+    assert "phq9" in dossier
+    assert "Planungshilfe" in dossier
+    assert app.project.workflow_steps[-1].action == "exported"
+
+
+def test_ethics_dossier_export_reports_status_without_a_selection(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(application, "SETTINGS_PATH", tmp_path / "settings.json")
+    app = PsyMetriQApplication(FakePage())  # type: ignore[arg-type]
+
+    asyncio.run(app._export_ethics_dossier(None))
+
+    assert app.status_message is not None
+    assert "keine Versionen ausgewählt" in app.status_message
