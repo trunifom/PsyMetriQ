@@ -20,6 +20,7 @@ from dotenv import load_dotenv
 from pydantic import ValidationError
 
 from schemas.questionnaire_schema import QuestionnaireParent, QuestionnaireVersion
+from src.core.battery_time_estimator import estimate_battery_time
 from src.core.nlp_engine import NLPEngineError, find_similar_constructs
 from src.exporters.data_exchange import (
     DataExchangeError,
@@ -203,7 +204,8 @@ class PsyMetriQApplication:
         )
         self.project_path: Path | None = None
         default_visible_views = [
-            view for view in ("catalog", "project", "exchange", "intake", "settings")
+            view
+            for view in ("catalog", "project", "exchange", "intake", "settings")
             if view not in self.admin_config.hidden_views
         ]
         self.active_view = default_visible_views[0] if default_visible_views else "catalog"
@@ -381,7 +383,9 @@ class PsyMetriQApplication:
     def _appearance_theme_button(self) -> ft.IconButton:
         self.theme_button = ft.IconButton(
             icon=_icon("DARK_MODE" if not self.dark_mode else "LIGHT_MODE"),
-            tooltip="Dunkles Design aktivieren" if not self.dark_mode else "Helles Design aktivieren",
+            tooltip="Dunkles Design aktivieren"
+            if not self.dark_mode
+            else "Helles Design aktivieren",
             on_click=self._toggle_dark_mode,
         )
         return self.theme_button
@@ -422,9 +426,7 @@ class PsyMetriQApplication:
         )
         seen_font_controls: set[int] = set()
         appearance_root = (
-            (self.page.controls, getattr(self.page, "overlay", []))
-            if root is None
-            else root
+            (self.page.controls, getattr(self.page, "overlay", [])) if root is None else root
         )
         for control in self._iter_controls(appearance_root):
             for attribute in ("color", "bgcolor", "icon_color"):
@@ -437,7 +439,9 @@ class PsyMetriQApplication:
                 if isinstance(value, (int, float)):
                     control_id = id(control)
                     cached = self._font_size_bases.get(control_id)
-                    base_size = cached[1] if cached is not None and cached[0] is control else float(value)
+                    base_size = (
+                        cached[1] if cached is not None and cached[0] is control else float(value)
+                    )
                     self._font_size_bases[control_id] = (control, base_size)
                     seen_font_controls.add(control_id)
                     setattr(control, attribute, base_size * scale)
@@ -481,7 +485,9 @@ class PsyMetriQApplication:
 
     def _remote_processing_enabled(self) -> bool:
         """Combine the per-installation preference with the admin's kill switch."""
-        return self.settings.remote_processing_enabled and self.admin_config.remote_processing_allowed
+        return (
+            self.settings.remote_processing_enabled and self.admin_config.remote_processing_allowed
+        )
 
     @staticmethod
     def _primary_license_source(version: QuestionnaireVersion) -> Any:
@@ -500,9 +506,7 @@ class PsyMetriQApplication:
         try:
             await asyncio.to_thread(self.workspace_store.save_settings, self.settings)
         except WorkspacePersistenceError as error:
-            LOGGER.warning(
-                "Could not persist license acknowledgment (%s)", type(error).__name__
-            )
+            LOGGER.warning("Could not persist license acknowledgment (%s)", type(error).__name__)
 
     def _show_license_gate_dialog(
         self,
@@ -552,9 +556,7 @@ class PsyMetriQApplication:
             ft.Text(f"Lizenz/Status: {license_name}", size=12, weight=ft.FontWeight.BOLD),
         ]
         if permission_basis:
-            contents.append(
-                ft.Text(permission_basis, size=12, color="#55716A", selectable=True)
-            )
+            contents.append(ft.Text(permission_basis, size=12, color="#55716A", selectable=True))
         if license_url:
             contents.append(ft.Text(license_url, size=12, color="#28685D", selectable=True))
         contents.append(agree_checkbox)
@@ -1193,8 +1195,8 @@ class PsyMetriQApplication:
             self._show_license_gate_dialog(
                 family,
                 version,
-                lambda f=family, v=version, ids=item_ids, s=is_scale, lbl=label: self._toggle_item_group(
-                    f, v, ids, True, is_scale=s, label=lbl
+                lambda f=family, v=version, ids=item_ids, s=is_scale, lbl=label: (
+                    self._toggle_item_group(f, v, ids, True, is_scale=s, label=lbl)
                 ),
             )
             self._render()
@@ -1204,8 +1206,10 @@ class PsyMetriQApplication:
             selected_ids.update(item_ids)
         else:
             selected_ids.difference_update(item_ids)
-        action = "scale_selected" if is_scale and selected else (
-            "scale_removed" if is_scale else "items_updated"
+        action = (
+            "scale_selected"
+            if is_scale and selected
+            else ("scale_removed" if is_scale else "items_updated")
         )
         self._store_item_selection(
             family,
@@ -1257,7 +1261,11 @@ class PsyMetriQApplication:
         if selection is None:
             return None
         return next(
-            (adaptation for adaptation in selection.item_adaptations if adaptation.item_id == item_id),
+            (
+                adaptation
+                for adaptation in selection.item_adaptations
+                if adaptation.item_id == item_id
+            ),
             None,
         )
 
@@ -1312,7 +1320,9 @@ class PsyMetriQApplication:
                         reason=reason,
                     )
                 )
-            ordered_ids = [value.item_id for value in version.items if value.item_id in selected_ids]
+            ordered_ids = [
+                value.item_id for value in version.items if value.item_id in selected_ids
+            ]
             selection = VersionSelection(
                 instrument_id=family.instrument_id,
                 version_id=version.version_id,
@@ -1512,10 +1522,7 @@ class PsyMetriQApplication:
                 ft.DropdownOption(key="all", text="Alle Lizenzen"),
                 ft.DropdownOption(key="undocumented", text="Lizenz nicht dokumentiert"),
             ]
-            + [
-                ft.DropdownOption(key=value.casefold(), text=value)
-                for value in license_names
-            ],
+            + [ft.DropdownOption(key=value.casefold(), text=value) for value in license_names],
             on_select=lambda event: self._set_catalog_filter("license", event.control.value),
             width=280,
         )
@@ -1841,26 +1848,26 @@ class PsyMetriQApplication:
             f"{contributor.name} ({contributor.role})" for contributor in family.contributors
         )
         version_contributors = ", ".join(
-            f"{contributor.name} ({contributor.role})"
-            for contributor in version.contributors
+            f"{contributor.name} ({contributor.role})" for contributor in version.contributors
         )
         characteristics = ", ".join(
             dict.fromkeys(family_metadata.characteristics + version_metadata.characteristics)
         )
-        keywords = ", ".join(
-            dict.fromkeys(family_metadata.keywords + version_metadata.keywords)
-        )
+        keywords = ", ".join(dict.fromkeys(family_metadata.keywords + version_metadata.keywords))
         aliases = ", ".join(
             dict.fromkeys(family_metadata.search_aliases + version_metadata.search_aliases)
         )
-        metrics = ", ".join(
-            f"{key}: {value}" for key, value in version.cosmin_metrics.items()
-        )
+        metrics = ", ".join(f"{key}: {value}" for key, value in version.cosmin_metrics.items())
         dimensions = ", ".join(version.source_reported_dimensions)
         constructs = ", ".join(family.construct_ontology)
         profile_rows: list[ft.Control] = [
-            self._profile_text("Worum geht es", version_metadata.description or family_metadata.description),
-            self._profile_text("Dokumentierter Zweck", version_metadata.intended_use or family_metadata.intended_use),
+            self._profile_text(
+                "Worum geht es", version_metadata.description or family_metadata.description
+            ),
+            self._profile_text(
+                "Dokumentierter Zweck",
+                version_metadata.intended_use or family_metadata.intended_use,
+            ),
             self._profile_text(
                 "Was misst das Instrument",
                 constructs or dimensions or keywords,
@@ -1901,7 +1908,10 @@ class PsyMetriQApplication:
                 "Quellen-/Reviewhinweis",
                 version_metadata.notes or family_metadata.notes,
             ),
-            self._profile_text("Erstellungs-/Publikationsjahr", str(version.publication_year) if version.publication_year else None),
+            self._profile_text(
+                "Erstellungs-/Publikationsjahr",
+                str(version.publication_year) if version.publication_year else None,
+            ),
             self._profile_text("Primärquelle", version.source_citation),
             self._profile_text("DOI", version.source_doi),
         ]
@@ -1950,7 +1960,11 @@ class PsyMetriQApplication:
         scale_controls: list[ft.Control] = []
         selected_ids = self._selected_item_ids(family.instrument_id, version)
         for algorithm in [] if license_locked else version.scoring_algorithms:
-            targets = [item_id for item_id in algorithm.target_items if item_id in {item.item_id for item in version.items}]
+            targets = [
+                item_id
+                for item_id in algorithm.target_items
+                if item_id in {item.item_id for item in version.items}
+            ]
             if not targets:
                 continue
             scale_selected = set(targets).issubset(selected_ids)
@@ -1962,13 +1976,15 @@ class PsyMetriQApplication:
                             label=algorithm.output_variable,
                             value=scale_selected,
                             tooltip=f"Gesamte Score-Skala {algorithm.output_variable} auswählen",
-                            on_change=lambda event, f=family, v=version, ids=targets, name=algorithm.output_variable: self._toggle_item_group(
-                                f,
-                                v,
-                                ids,
-                                bool(event.control.value),
-                                is_scale=True,
-                                label=name,
+                            on_change=lambda event, f=family, v=version, ids=targets, name=algorithm.output_variable: (
+                                self._toggle_item_group(
+                                    f,
+                                    v,
+                                    ids,
+                                    bool(event.control.value),
+                                    is_scale=True,
+                                    label=name,
+                                )
                             ),
                         ),
                         ft.Text(
@@ -2005,13 +2021,15 @@ class PsyMetriQApplication:
                         ft.Checkbox(
                             label=dimension,
                             value=set(item_ids).issubset(selected_ids),
-                            on_change=lambda event, f=family, v=version, ids=item_ids, name=dimension: self._toggle_item_group(
-                                f,
-                                v,
-                                ids,
-                                bool(event.control.value),
-                                is_scale=False,
-                                label=name,
+                            on_change=lambda event, f=family, v=version, ids=item_ids, name=dimension: (
+                                self._toggle_item_group(
+                                    f,
+                                    v,
+                                    ids,
+                                    bool(event.control.value),
+                                    is_scale=False,
+                                    label=name,
+                                )
                             ),
                         ),
                         self._help_button(
@@ -2035,9 +2053,7 @@ class PsyMetriQApplication:
                 item.measurement_unit or item.response_mode
             )
             adaptation = self._item_adaptation(family, version, item.item_id)
-            displayed_prompt = (
-                adaptation.adapted_prompt_text if adaptation else item.prompt_text
-            )
+            displayed_prompt = adaptation.adapted_prompt_text if adaptation else item.prompt_text
             item_controls.append(
                 ft.Container(
                     bgcolor="#F7F9F8",
@@ -2121,8 +2137,8 @@ class PsyMetriQApplication:
                             self._action_button(
                                 "Anpassen",
                                 "EDIT",
-                                lambda _event, f=family, v=version, i=item.item_id: self._edit_item_prompt(
-                                    f, v, i
+                                lambda _event, f=family, v=version, i=item.item_id: (
+                                    self._edit_item_prompt(f, v, i)
                                 ),
                                 "Erstellt eine studienspezifische Formulierung im Projekt. Der Quellkatalog bleibt unverändert; die betroffene Scoring-Skala wird beim Export nicht als gültig übernommen.",
                                 "Begründe z.B. eine Änderung der Zielgruppenansprache. Prüfe vor Nutzung Lizenz und Validität.",
@@ -2173,8 +2189,8 @@ class PsyMetriQApplication:
                         ),
                         ft.Button(
                             content="Lizenzbestimmungen bestätigen",
-                            on_click=lambda _event, f=family, v=version: self._show_license_gate_dialog(
-                                f, v, lambda f2=f: self._render()
+                            on_click=lambda _event, f=family, v=version: (
+                                self._show_license_gate_dialog(f, v, lambda f2=f: self._render())
                             ),
                         ),
                     ],
@@ -2203,7 +2219,9 @@ class PsyMetriQApplication:
             subtitle="Zweck, Zielgruppe, Durchführung, Auswertung und psychometrische Evidenz",
             expanded=False,
             maintain_state=True,
-            controls=[ft.Column(spacing=4, controls=self._instrument_profile_controls(family, version))],
+            controls=[
+                ft.Column(spacing=4, controls=self._instrument_profile_controls(family, version))
+            ],
             bgcolor="#F7F9F8",
             collapsed_bgcolor="#EEF3F1",
         )
@@ -2268,7 +2286,9 @@ class PsyMetriQApplication:
                     ft.Row(
                         controls=[
                             ft.Text(
-                                "Items" if version.item_text_included else "Itemtext nicht enthalten",
+                                "Items"
+                                if version.item_text_included
+                                else "Itemtext nicht enthalten",
                                 weight=ft.FontWeight.BOLD,
                                 size=13,
                             ),
@@ -2344,13 +2364,10 @@ class PsyMetriQApplication:
                     selection_summary = f"{item_count} ausgewählte Items"
                 else:
                     item_count = version.source_reported_item_count or "Unbekannte Anzahl"
-                    selection_summary = (
-                        f"Metadatenreferenz · {item_count} Items laut Quelle · Itemtext nicht enthalten"
-                    )
+                    selection_summary = f"Metadatenreferenz · {item_count} Items laut Quelle · Itemtext nicht enthalten"
                     if version.source_reported_dimensions:
-                        selection_summary += (
-                            " · Dimensionen: "
-                            + ", ".join(version.source_reported_dimensions)
+                        selection_summary += " · Dimensionen: " + ", ".join(
+                            version.source_reported_dimensions
                         )
                     if version.source_documents:
                         selection_summary += (
@@ -2478,6 +2495,7 @@ class PsyMetriQApplication:
                     ),
                 ],
             ),
+            self._battery_time_panel(),
             self._panel(
                 "Letzte Arbeitsschritte",
                 ft.Column(spacing=5, controls=step_rows),
@@ -2551,7 +2569,9 @@ class PsyMetriQApplication:
                 ft.Column(
                     spacing=10,
                     controls=[
-                        ft.Text(self.redcap_status_message, size=12, color="#55716A", selectable=True),
+                        ft.Text(
+                            self.redcap_status_message, size=12, color="#55716A", selectable=True
+                        ),
                         ft.Row(
                             wrap=True,
                             controls=[
@@ -2568,7 +2588,8 @@ class PsyMetriQApplication:
                                     self._redcap_push,
                                     "Fügt die Felder der ersten im Projekt ausgewählten Version zum verbundenen REDCap-Projekt hinzu. Bricht bei Namenskonflikten ohne Änderung ab.",
                                     "Ein Metadata-Push ersetzt das gesamte Data Dictionary des Projekts; bestehende Felder bleiben nur erhalten, weil sie vorher mit übernommen werden.",
-                                    disabled=self.redcap_project is None or not self._selected_versions(),
+                                    disabled=self.redcap_project is None
+                                    or not self._selected_versions(),
                                 ),
                                 self._action_button(
                                     "Data Dictionary importieren",
@@ -3013,9 +3034,7 @@ class PsyMetriQApplication:
         self.key_environment_field.value = key_environment
         alpine_default_url = "https://api.prod.alpineai.ch/v1"
         if provider == "alpineai" and previous_provider != "alpineai":
-            self.base_url_field.value = os.environ.get(
-                "ALPINEAI_BASE_URL", alpine_default_url
-            )
+            self.base_url_field.value = os.environ.get("ALPINEAI_BASE_URL", alpine_default_url)
         elif (
             previous_provider == "alpineai"
             and provider == "openai-compatible"
@@ -3145,7 +3164,10 @@ class PsyMetriQApplication:
         self._render()
 
     def _project_item_rows(
-        self, family: QuestionnaireParent, version: QuestionnaireVersion, selection: VersionSelection
+        self,
+        family: QuestionnaireParent,
+        version: QuestionnaireVersion,
+        selection: VersionSelection,
     ) -> list[ft.Control]:
         selected_ids = self._selected_item_ids(family.instrument_id, version)
         if not version.item_text_included:
@@ -3278,13 +3300,9 @@ class PsyMetriQApplication:
                     selected_file.bytes.decode("utf-8-sig"), selected_file.name
                 )
             elif selected_file.path:
-                loaded = await asyncio.to_thread(
-                    WorkspaceStore.load_project, selected_file.path
-                )
+                loaded = await asyncio.to_thread(WorkspaceStore.load_project, selected_file.path)
             else:
-                raise WorkspacePersistenceError(
-                    "Der Projektdateiinhalt ist nicht verfügbar"
-                )
+                raise WorkspacePersistenceError("Der Projektdateiinhalt ist nicht verfügbar")
             self.project = loaded.record_step("project_loaded", "Projekt geladen", files[0].name)
             self.project_path = Path(selected_file.path) if selected_file.path else None
             self._set_status(f"Projekt geladen: {self.project.name}")
@@ -3304,6 +3322,50 @@ class PsyMetriQApplication:
             item_ids = reference.item_ids or [item.item_id for item in version.items]
             selected.append((family, version, item_ids))
         return selected
+
+    def _battery_time_summary(self) -> tuple[str, list[str]]:
+        """Summarize the selected battery's estimated completion time.
+
+        Prefers each version's source-reported ``administration_time``;
+        falls back to a labelled item-count heuristic; never silently drops
+        a version whose time could not be estimated either way.
+        """
+        selected = self._selected_versions()
+        if not selected:
+            return "Noch keine Versionen für eine Zeitschätzung ausgewählt.", []
+        battery = estimate_battery_time(selected)
+        low, high = battery.minimum_minutes, battery.maximum_minutes
+        if low is None:
+            headline = "Geschätzte Bearbeitungszeit unbekannt (keine Quellenangabe oder Itemanzahl vorhanden)."
+        else:
+            headline = f"Geschätzte Bearbeitungszeit der Batterie: ca. {low:.0f}–{high:.0f} Minuten"
+            if battery.has_unknown_entries:
+                headline += " (ohne die Version(en) mit unbekannter Zeit)"
+        lines = []
+        for entry in battery.entries:
+            if entry.minimum_minutes is None:
+                lines.append(f"{entry.label}: unbekannt")
+                continue
+            basis = "Quellenangabe" if entry.source == "source_reported" else "Schätzung"
+            lines.append(
+                f"{entry.label}: ca. {entry.minimum_minutes:.0f}–{entry.maximum_minutes:.0f} Min. ({basis})"
+            )
+        return headline, lines
+
+    def _battery_time_panel(self) -> ft.Control:
+        headline, lines = self._battery_time_summary()
+        return self._panel(
+            "Geschätzte Bearbeitungszeit der Batterie",
+            ft.Column(
+                spacing=4,
+                controls=[
+                    ft.Text(headline, size=13, weight=ft.FontWeight.BOLD),
+                    *[ft.Text(line, size=12, color="#55716A") for line in lines],
+                ],
+            ),
+            "Schätzwerte ohne Quellenangabe sind eine grobe Näherung aus Itemzahl/-format für Planung "
+            "und Ethikanträge, kein validierter Normwert für die tatsächliche Bearbeitungsdauer.",
+        )
 
     @staticmethod
     def _metadata_reference_payload(
@@ -3336,11 +3398,14 @@ class PsyMetriQApplication:
             f"{len(selected)} Version(en) im ZIP.\n\n"
         )
         if not version.item_text_included:
-            return note + json.dumps(
-                self._metadata_reference_payload(family, version),
-                ensure_ascii=False,
-                indent=2,
-            )[:12_000]
+            return (
+                note
+                + json.dumps(
+                    self._metadata_reference_payload(family, version),
+                    ensure_ascii=False,
+                    indent=2,
+                )[:12_000]
+            )
         try:
             subset = select_questionnaire_items(
                 family,
@@ -3505,15 +3570,9 @@ class PsyMetriQApplication:
             ocr_languages=(self.ocr_languages_field.value or "").strip(),
             maximum_pdf_size_mib=int(self.maximum_pdf_size_field.value or "40"),
             maximum_pdf_pages=int(self.maximum_pdf_pages_field.value or "500"),
-            maximum_extracted_characters=int(
-                self.maximum_text_characters_field.value or "120000"
-            ),
-            minimum_extracted_characters=int(
-                self.minimum_text_characters_field.value or "160"
-            ),
-            extraction_confidence_threshold=float(
-                self.confidence_threshold_field.value or "0.92"
-            ),
+            maximum_extracted_characters=int(self.maximum_text_characters_field.value or "120000"),
+            minimum_extracted_characters=int(self.minimum_text_characters_field.value or "160"),
+            extraction_confidence_threshold=float(self.confidence_threshold_field.value or "0.92"),
             watcher_poll_seconds=float(self.watcher_poll_field.value or "3"),
             llm_provider=self.provider_dropdown.value,
             llm_model=(self.model_field.value or "").strip(),
@@ -3521,9 +3580,7 @@ class PsyMetriQApplication:
             llm_api_key_environment=(self.key_environment_field.value or "").strip(),
             remote_processing_enabled=bool(self.remote_processing_switch.value),
             redcap_api_url=(self.redcap_url_field.value or "").strip(),
-            redcap_api_key_environment=(
-                self.redcap_key_environment_field.value or ""
-            ).strip(),
+            redcap_api_key_environment=(self.redcap_key_environment_field.value or "").strip(),
         )
 
     def _apply_settings(self, settings: WorkspaceSettings) -> None:
@@ -3554,13 +3611,9 @@ class PsyMetriQApplication:
                     selected_file.bytes.decode("utf-8-sig")
                 )
             elif selected_file.path:
-                settings = await asyncio.to_thread(
-                    WorkspaceStore(selected_file.path).load_settings
-                )
+                settings = await asyncio.to_thread(WorkspaceStore(selected_file.path).load_settings)
             else:
-                raise WorkspacePersistenceError(
-                    "Der Einstellungsdateiinhalt ist nicht verfügbar"
-                )
+                raise WorkspacePersistenceError("Der Einstellungsdateiinhalt ist nicht verfügbar")
             self._apply_settings(settings)
             self._set_status(
                 f"Einstellungen geladen: {selected_file.name}. "
@@ -3649,9 +3702,7 @@ class PsyMetriQApplication:
             )
             return
         try:
-            project = await asyncio.to_thread(
-                redcap_connect, self.settings.redcap_api_url, token
-            )
+            project = await asyncio.to_thread(redcap_connect, self.settings.redcap_api_url, token)
             summary = await asyncio.to_thread(redcap_describe_project, project)
         except RedcapApiError as error:
             self.redcap_project = None
@@ -3844,8 +3895,13 @@ class PsyMetriQApplication:
                 )
             else:
                 subset = family
-                extension, content = ".json", json.dumps(
-                    self._metadata_reference_payload(family, version), ensure_ascii=False, indent=2
+                extension, content = (
+                    ".json",
+                    json.dumps(
+                        self._metadata_reference_payload(family, version),
+                        ensure_ascii=False,
+                        indent=2,
+                    ),
                 )
             with tempfile.NamedTemporaryFile(
                 mode="wb" if isinstance(content, bytes) else "w",
@@ -3873,9 +3929,7 @@ class PsyMetriQApplication:
             if push_result.attached_file
             else "; Datei-Anhang fehlgeschlagen (Item wurde trotzdem angelegt)"
         )
-        self._set_status(
-            f"Nach Zotero exportiert: Item {push_result.item_key}{attachment_note}."
-        )
+        self._set_status(f"Nach Zotero exportiert: Item {push_result.item_key}{attachment_note}.")
 
     async def _confirm_remote_intake(self) -> bool:
         result: asyncio.Future[bool] = asyncio.get_running_loop().create_future()
@@ -3912,7 +3966,5 @@ class PsyMetriQApplication:
 def main(page: ft.Page) -> None:
     """Run the local Flet application."""
     load_dotenv(PROJECT_ROOT / ".env", override=False)
-    LOGGER.info(
-        "Flet page connected: platform=%s", getattr(page, "platform", "unknown")
-    )
+    LOGGER.info("Flet page connected: platform=%s", getattr(page, "platform", "unknown"))
     PsyMetriQApplication(page)
