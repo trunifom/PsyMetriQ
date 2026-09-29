@@ -13,6 +13,7 @@ from src.core import nlp_engine
 from src.core.nlp_engine import (
     NLPEngineError,
     build_construct_summaries,
+    find_matching_instruments,
     find_similar_constructs,
 )
 
@@ -168,6 +169,79 @@ def test_find_similar_constructs_raises_on_mismatched_vector_count() -> None:
         find_similar_constructs(
             [(family_a, Path("a.json")), (family_b, Path("b.json"))],
             embedding_function=broken_embedder,
+        )
+
+
+def test_find_matching_instruments_ranks_by_similarity_to_the_query() -> None:
+    depression = _link_only_family("dep", name_full="Depression Scale", constructs=["depression"])
+    activity = _link_only_family(
+        "act", name_full="Physical Activity Scale", constructs=["exercise"]
+    )
+    depression_text = build_construct_summaries([(depression, Path("dep.json"))])[0].text
+    activity_text = build_construct_summaries([(activity, Path("act.json"))])[0].text
+    embedder = _FakeEmbedder(
+        {
+            "feeling sad and hopeless": [1.0, 0.0],
+            depression_text: [0.95, 0.05],
+            activity_text: [0.0, 1.0],
+        }
+    )
+
+    matches = find_matching_instruments(
+        "feeling sad and hopeless",
+        [(depression, Path("dep.json")), (activity, Path("act.json"))],
+        embedding_function=embedder,
+    )
+
+    assert [match.instrument_id for match in matches] == ["dep", "act"]
+    assert matches[0].similarity > matches[1].similarity
+
+
+def test_find_matching_instruments_respects_max_results() -> None:
+    families = [
+        _link_only_family(f"f{i}", name_full=f"Scale {i}", constructs=["shared_construct"])
+        for i in range(4)
+    ]
+    records = [(family, Path(f"{family.instrument_id}.json")) for family in families]
+    texts = [build_construct_summaries([record])[0].text for record in records]
+    embedder = _FakeEmbedder({"query": [1.0, 0.0], **{text: [1.0, 0.0] for text in texts}})
+
+    matches = find_matching_instruments(
+        "query", records, embedding_function=embedder, max_results=2
+    )
+
+    assert len(matches) == 2
+
+
+def test_find_matching_instruments_returns_empty_for_blank_query() -> None:
+    family = _link_only_family("solo", name_full="Solo Scale", constructs=["x"])
+
+    matches = find_matching_instruments(
+        "   ", [(family, Path("solo.json"))], embedding_function=_FakeEmbedder({})
+    )
+
+    assert matches == []
+
+
+def test_find_matching_instruments_returns_empty_when_catalog_has_no_construct_text() -> None:
+    bare = _bare_family("bare")
+
+    matches = find_matching_instruments(
+        "anxiety", [(bare, Path("bare.json"))], embedding_function=_FakeEmbedder({})
+    )
+
+    assert matches == []
+
+
+def test_find_matching_instruments_raises_on_mismatched_vector_count() -> None:
+    family = _link_only_family("a", name_full="A", constructs=["x"])
+
+    def broken_embedder(texts: list[str]) -> list[list[float]]:
+        return [[1.0, 0.0]]  # one vector for query+text (two expected)
+
+    with pytest.raises(NLPEngineError):
+        find_matching_instruments(
+            "query", [(family, Path("a.json"))], embedding_function=broken_embedder
         )
 
 

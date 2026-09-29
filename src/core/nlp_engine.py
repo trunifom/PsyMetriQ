@@ -48,6 +48,15 @@ class InstrumentConstructSummary:
 
 
 @dataclass(frozen=True)
+class InstrumentMatch:
+    """One catalog instrument ranked against a free-text research query."""
+
+    instrument_id: str
+    name_full: str
+    similarity: float
+
+
+@dataclass(frozen=True)
 class ConstructSimilarityMatch:
     """One candidate construct overlap between two different instrument families."""
 
@@ -115,8 +124,7 @@ def _default_embedding_function(model_name: str = DEFAULT_MODEL_NAME) -> Embeddi
         from sentence_transformers import SentenceTransformer
     except ImportError as error:
         raise NLPEngineError(
-            "sentence-transformers is not installed; run "
-            "`pip install -r requirements.txt`"
+            "sentence-transformers is not installed; run `pip install -r requirements.txt`"
         ) from error
     try:
         model = SentenceTransformer(model_name)
@@ -130,6 +138,46 @@ def _default_embedding_function(model_name: str = DEFAULT_MODEL_NAME) -> Embeddi
         return model.encode(list(texts), normalize_embeddings=True).tolist()
 
     return embed
+
+
+def find_matching_instruments(
+    query: str,
+    catalog_records: list[tuple[QuestionnaireParent, Path]],
+    *,
+    embedding_function: EmbeddingFunction | None = None,
+    max_results: int = 15,
+) -> list[InstrumentMatch]:
+    """Rank catalog instruments by semantic similarity to a free-text research query.
+
+    Uses the same construct-level text and embedding model as
+    ``find_similar_constructs`` -- name, construct ontology, description,
+    keywords -- never item wording. Returns the top ``max_results`` matches
+    sorted by descending similarity regardless of score: this is a ranking
+    for a human to scan, not a redundancy threshold, so a caller decides how
+    to present a weak match rather than having it silently dropped.
+    """
+    normalized_query = query.strip()
+    if not normalized_query:
+        return []
+    summaries = build_construct_summaries(catalog_records)
+    if not summaries:
+        return []
+    embed = embedding_function or _default_embedding_function()
+    vectors = embed([normalized_query, *(summary.text for summary in summaries)])
+    if len(vectors) != len(summaries) + 1:
+        raise NLPEngineError("Embedding function returned a different number of vectors than texts")
+
+    query_vector = vectors[0]
+    matches = [
+        InstrumentMatch(
+            instrument_id=summary.instrument_id,
+            name_full=summary.name_full,
+            similarity=round(_cosine_similarity(query_vector, vector), 4),
+        )
+        for summary, vector in zip(summaries, vectors[1:], strict=True)
+    ]
+    matches.sort(key=lambda match: match.similarity, reverse=True)
+    return matches[:max_results]
 
 
 def find_similar_constructs(

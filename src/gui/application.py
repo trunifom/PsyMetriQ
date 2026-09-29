@@ -20,8 +20,9 @@ from dotenv import load_dotenv
 from pydantic import ValidationError
 
 from schemas.questionnaire_schema import QuestionnaireParent, QuestionnaireVersion
-from src.core.battery_time_estimator import estimate_battery_time
-from src.core.nlp_engine import NLPEngineError, find_similar_constructs
+from src.core.battery_time_estimator import estimate_battery_time, estimate_version_time
+from src.core.external_sources import ExternalSourceError, NIHCDEClient, PubMedClient
+from src.core.nlp_engine import NLPEngineError, find_matching_instruments, find_similar_constructs
 from src.exporters.data_exchange import (
     DataExchangeError,
     build_redcap_metadata_records,
@@ -206,7 +207,7 @@ class PsyMetriQApplication:
         self.project_path: Path | None = None
         default_visible_views = [
             view
-            for view in ("catalog", "project", "exchange", "intake", "settings")
+            for view in ("catalog", "research", "project", "exchange", "intake", "settings")
             if view not in self.admin_config.hidden_views
         ]
         self.active_view = default_visible_views[0] if default_visible_views else "catalog"
@@ -227,6 +228,12 @@ class PsyMetriQApplication:
         self.redcap_status_message = "Nicht verbunden."
         self.similarity_matches: list[Any] | None = None
         self.similarity_status = "Noch nicht ausgeführt."
+        self.research_query = ""
+        self.research_matches: list[Any] | None = None
+        self.research_status = "Noch keine Recherche durchgeführt."
+        self.research_external_candidates: list[Any] | None = None
+        self.research_external_evidence: list[Any] | None = None
+        self.research_external_status = "Noch keine externe Recherche durchgeführt."
         self.available_models: list[str] = []
         self.active_provider = self.settings.llm_provider
         self.status_message = self.startup_warning or self._catalog_status()
@@ -277,6 +284,12 @@ class PsyMetriQApplication:
     def _build_sidebar(self) -> ft.Control:
         destinations = [
             ("catalog", "Bibliothek", "LIBRARY_BOOKS", "Katalog durchsuchen und Items auswählen."),
+            (
+                "research",
+                "Recherche",
+                "TRAVEL_EXPLORE",
+                "Passende Instrumente zu einer Fragestellung oder einem Konstrukt finden.",
+            ),
             (
                 "project",
                 "Projekt",
@@ -611,6 +624,7 @@ class PsyMetriQApplication:
         )
         titles = {
             "catalog": "Instrumentenbibliothek",
+            "research": "Instrumentenrecherche",
             "project": "Projekt und Auswahl",
             "exchange": "Import und Export",
             "intake": "PDF-Posteingang",
@@ -626,6 +640,7 @@ class PsyMetriQApplication:
         try:
             view_controls = {
                 "catalog": self._catalog_view,
+                "research": self._research_view,
                 "project": self._project_view,
                 "exchange": self._exchange_view,
                 "intake": self._intake_view,
@@ -1428,6 +1443,201 @@ class PsyMetriQApplication:
             f"{len(matches)} Kandidatenpaar(e) mit Ähnlichkeit ≥ 0.75 gefunden."
             if matches
             else "Keine auffälligen Konstrukt-Überlappungen über der Schwelle gefunden."
+        )
+        self._render()
+
+    def _research_view(self) -> list[ft.Control]:
+        query_field = ft.TextField(
+            value=self.research_query,
+            hint_text='Konstrukt oder Fragestellung, z. B. "wahrgenommener Stress bei Studierenden"',
+            on_change=lambda event: setattr(self, "research_query", event.control.value),
+        )
+
+        catalog_rows: list[ft.Control] = [
+            ft.Text(self.research_status, size=12, color="#55716A", selectable=True),
+        ]
+        for match in self.research_matches or []:
+            family = self._find_family(match.instrument_id)
+            detail_parts = [f"Ähnlichkeit {match.similarity:.2f}"]
+            entry_controls: list[ft.Control] = []
+            if family is not None:
+                version = family.versions[0]
+                if family.is_commercial:
+                    detail_parts.append("kommerziell/lizenzpflichtig")
+                if not version.item_text_included:
+                    detail_parts.append("Metadatenreferenz, kein Itemtext")
+                time_estimate = estimate_version_time(family, version)
+                if time_estimate.minimum_minutes is not None:
+                    detail_parts.append(
+                        f"ca. {time_estimate.minimum_minutes:.0f}–"
+                        f"{time_estimate.maximum_minutes:.0f} Min."
+                    )
+                entry_controls.append(
+                    self._action_button(
+                        "Zur Batterie hinzufügen",
+                        "ADD_CIRCLE_OUTLINE",
+                        lambda _event, f=family, v=version: self._add_research_match_to_project(
+                            f, v
+                        ),
+                        f"Fügt {version.display_name or version.version_id} direkt zur Projektauswahl hinzu.",
+                    )
+                )
+            catalog_rows.append(
+                ft.Container(
+                    padding=8,
+                    bgcolor="#F7F9F8",
+                    border_radius=6,
+                    content=ft.Column(
+                        spacing=4,
+                        controls=[
+                            ft.Text(match.name_full, size=13, weight=ft.FontWeight.BOLD),
+                            ft.Text(" · ".join(detail_parts), size=11, color="#55716A"),
+                            *entry_controls,
+                        ],
+                    ),
+                )
+            )
+        catalog_rows.append(
+            self._action_button(
+                "Katalog durchsuchen",
+                "TRAVEL_EXPLORE",
+                self._search_catalog_instruments,
+                "Vergleicht deine Eingabe semantisch (lokales sentence-transformers-Modell) mit "
+                "Name, Konstrukten, Beschreibung und Keywords aller Katalog-Instrumente. Itemtext "
+                "wird dabei nie verwendet.",
+                "Läuft vollständig lokal; beim allerersten Aufruf wird das Modell (~90 MB) einmalig heruntergeladen.",
+                primary=True,
+            )
+        )
+
+        external_rows: list[ft.Control] = [
+            ft.Text(self.research_external_status, size=12, color="#55716A", selectable=True),
+        ]
+        for candidate in self.research_external_candidates or []:
+            external_rows.append(
+                ft.Container(
+                    padding=8,
+                    bgcolor="#FDF6EC",
+                    border_radius=6,
+                    content=ft.Column(
+                        spacing=2,
+                        controls=[
+                            ft.Text(candidate.title, size=13, weight=ft.FontWeight.BOLD),
+                            ft.Text(
+                                f"Quelle: {candidate.source} · Nicht im Katalog, Rechte ungeklärt",
+                                size=11,
+                                color="#9B3E35",
+                            ),
+                            ft.Text(
+                                candidate.source_url, size=11, selectable=True, color="#55716A"
+                            ),
+                        ],
+                    ),
+                )
+            )
+        for record in self.research_external_evidence or []:
+            external_rows.append(
+                ft.Text(
+                    f"{record.title} ({record.journal or 'unbekannte Zeitschrift'}, "
+                    f"{record.publication_date or 'o. J.'}) – {record.source_url}",
+                    size=11,
+                    selectable=True,
+                    color="#55716A",
+                )
+            )
+        external_rows.append(
+            self._action_button(
+                "Externe Quellen abfragen (NIH CDE / PubMed)",
+                "PUBLIC",
+                self._search_external_sources,
+                "Fragt öffentliche NIH-CDE- und PubMed-APIs mit deinem Suchtext ab. Ergebnisse "
+                "sind unkatalogisierte Vorschläge zur Prüfung, keine freigegebenen "
+                "Katalogeinträge und keine automatische Nutzungsberechtigung.",
+                "Sendet nur deinen Suchtext an die jeweilige öffentliche API, keine Katalog- oder Projektdaten.",
+            )
+        )
+
+        return [
+            ft.Text(
+                "Finde passende Instrumente zu einer Fragestellung oder einem Konstrukt.",
+                size=13,
+                color="#55716A",
+            ),
+            self._field(
+                "Fragestellung / Konstrukt",
+                query_field,
+                "Freitext, z. B. eine Forschungsfrage oder ein Konstruktname.",
+                "Beispiel: 'wahrgenommener Stress bei Studierenden' oder 'Depression'.",
+            ),
+            self._panel(
+                "Katalog (semantisch, lokal)",
+                ft.Column(spacing=8, controls=catalog_rows),
+                "Nutzt dasselbe lokale Embedding-Modell wie die Konstrukt-Ähnlichkeitsprüfung; "
+                "vergleicht nie Itemtext.",
+            ),
+            self._panel(
+                "Externe Quellen (öffentliche APIs, unkatalogisiert)",
+                ft.Column(spacing=8, controls=external_rows),
+                "NIH CDE und PubMed sind Vorschläge zur Prüfung, keine geprüften "
+                "Katalogeinträge; Sichtbarkeit in einer öffentlichen API ist keine Weitergabeerlaubnis.",
+            ),
+        ]
+
+    async def _search_catalog_instruments(self, _event: Any) -> None:
+        query = self.research_query.strip()
+        if not query:
+            self.research_status = "Bitte zuerst eine Fragestellung oder ein Konstrukt eingeben."
+            self._render()
+            return
+        self.research_status = (
+            "Durchsuche Katalog semantisch... (lädt beim ersten Mal ggf. ein Modell "
+            "herunter; erfordert dann Internetzugang)"
+        )
+        self._render()
+        try:
+            matches = await asyncio.to_thread(
+                find_matching_instruments, query, self.catalog_records
+            )
+        except NLPEngineError as error:
+            self.research_matches = None
+            self.research_status = f"Fehlgeschlagen: {error}"
+            self._render()
+            return
+        self.research_matches = matches
+        self.research_status = (
+            f"{len(matches)} Treffer für „{query}“." if matches else f"Keine Treffer für „{query}“."
+        )
+        self._render()
+
+    def _add_research_match_to_project(
+        self, family: QuestionnaireParent, version: QuestionnaireVersion
+    ) -> None:
+        self._toggle_version(family, version, True)
+        self._set_status(f"{family.name_full} zur Projektauswahl hinzugefügt.")
+
+    async def _search_external_sources(self, _event: Any) -> None:
+        query = self.research_query.strip()
+        if not query:
+            self.research_external_status = (
+                "Bitte zuerst eine Fragestellung oder ein Konstrukt eingeben."
+            )
+            self._render()
+            return
+        self.research_external_status = "Frage öffentliche APIs ab..."
+        self._render()
+        try:
+            candidates = await NIHCDEClient().search_data_elements(query, limit=8)
+            evidence = await PubMedClient().search(query, limit=5)
+        except ExternalSourceError as error:
+            self.research_external_candidates = None
+            self.research_external_evidence = None
+            self.research_external_status = f"Fehlgeschlagen: {error}"
+            self._render()
+            return
+        self.research_external_candidates = candidates
+        self.research_external_evidence = evidence
+        self.research_external_status = (
+            f"{len(candidates)} NIH-CDE-Kandidat(en), {len(evidence)} PubMed-Treffer für „{query}“."
         )
         self._render()
 
