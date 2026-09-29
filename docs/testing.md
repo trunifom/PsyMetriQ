@@ -18,6 +18,8 @@ The real-instrument catalog suite validates PHQ-9/GAD-7/DASS/DASS-Y/IPAQ item co
 
 The PDF intake suite uses generated local PDFs and fake extraction responses. It tests searchable text/metadata/checksum extraction, OCR-required routing, private review behavior, hash-bound human approval, safe questionnaire and study-reference promotion, sidecar mismatch rejection, symlink/out-of-inbox protection, LLM-license-claim stripping, batch continuation after failures, and that the closed Structured Outputs DTO maps into canonical domain models without making a network request.
 
+`tests/integration/test_pipeline_to_export.py` drives the real modules together end-to-end through one isolated temporary project root, reusing the PDF/approval/extractor fixtures from `test_document_pipeline.py` rather than re-deriving them: a synthetic PDF with a matching rights sidecar is ingested by the real `QuestionnaireDocumentPipeline` (only the LLM call is a fixed extractor; no network), promoted into a real catalogue JSON file, loaded back through the real `QuestionnaireCatalogStore` and `QuestionnaireSearchEngine`, and exported through every file-based format (PsyMetriQ JSON, FHIR, REDCap CSV, item CSV, XLSX) plus a fake, in-memory live REDCap push. A second test is a regression guard for the project's core safety property: a complete, high-confidence extraction with no rights sidecar must still be refused promotion and stay in local review, never reaching the shared catalogue.
+
 Run from the repository root:
 
 ```powershell
@@ -35,6 +37,7 @@ ruff check src/core/external_sources.py src/core/external_search_cli.py tests/un
 pytest tests/unit/test_data_exchange.py -q
 pytest tests/unit/test_gui_workspace.py tests/unit/test_catalog_store.py tests/unit/test_gui_application.py -q
 ruff check src/exporters/data_exchange.py src/gui/ tests/unit/test_data_exchange.py tests/unit/test_gui_workspace.py tests/unit/test_catalog_store.py tests/unit/test_gui_application.py
+pytest tests/integration/ -q
 ```
 
 ## Expectations for future features
