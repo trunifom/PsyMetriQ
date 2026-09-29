@@ -143,6 +143,7 @@ The library uses a bounded version-list viewport with independent scrolling. If 
 - Remote extraction offers OpenAI, Anthropic, AlpineAI SwissGPT, and generic OpenAI-compatible providers. Provider model lists can be queried without transmitting a PDF; remote PDF extraction remains opt-in and separately confirmed.
 - AlpineAI follows its documented basic Chat Completions API; extraction JSON is validated locally because Structured Outputs compatibility is not documented.
 - The library's **Katalog-Übersicht** dashboard summarizes the whole catalogue (instrument/item/language/topic counts) plus a per-language bar chart, a top-topics bar chart, and an item-text-coverage donut chart, all built from plain Flet controls with no charting dependency. See [gui_workspace.md](gui_workspace.md#catalog-overview-dashboard).
+- A **Konstrukt-Ähnlichkeitsprüfung (semantisch)** panel below it embeds every instrument's name/constructs/description/keywords with a local sentence-transformers model (`all-MiniLM-L6-v2`) and lists candidate pairs whose embeddings are highly similar -- the "jingle-jangle" check: different instruments that may measure the same underlying construct. It never merges or flags anything automatically; a high score is a prompt for human review, not a finding. The first run downloads the model (~90 MB) and needs network access once; afterward it runs fully locally. See `src/core/nlp_engine.py`.
 
 ## Generate development fixtures
 

@@ -20,6 +20,7 @@ from dotenv import load_dotenv
 from pydantic import ValidationError
 
 from schemas.questionnaire_schema import QuestionnaireParent, QuestionnaireVersion
+from src.core.nlp_engine import NLPEngineError, find_similar_constructs
 from src.exporters.data_exchange import (
     DataExchangeError,
     build_redcap_metadata_records,
@@ -218,6 +219,8 @@ class PsyMetriQApplication:
         self.redcap_project: Any = None
         self.redcap_project_summary: RedcapProjectSummary | None = None
         self.redcap_status_message = "Nicht verbunden."
+        self.similarity_matches: list[Any] | None = None
+        self.similarity_status = "Noch nicht ausgeführt."
         self.available_models: list[str] = []
         self.active_provider = self.settings.llm_provider
         self.status_message = self.startup_warning or self._catalog_status()
@@ -1343,6 +1346,68 @@ class PsyMetriQApplication:
     def _catalog_overview_panel(self) -> ft.Control:
         return dashboard_view.build_catalog_overview_panel(self.catalog_records)
 
+    def _construct_similarity_panel(self) -> ft.Control:
+        rows: list[ft.Control] = [
+            ft.Text(self.similarity_status, size=12, color="#55716A", selectable=True),
+        ]
+        if self.similarity_matches:
+            rows.append(
+                ft.Column(
+                    spacing=4,
+                    controls=[
+                        ft.Text(
+                            f"{match.name_a} ↔ {match.name_b} "
+                            f"({match.instrument_a}/{match.instrument_b}) · "
+                            f"Ähnlichkeit {match.similarity:.2f}",
+                            size=12,
+                            color="#173D36",
+                            selectable=True,
+                        )
+                        for match in self.similarity_matches[:20]
+                    ],
+                )
+            )
+        rows.append(
+            self._action_button(
+                "Konstruktähnlichkeit prüfen",
+                "PSYCHOLOGY",
+                self._check_construct_similarity,
+                "Vergleicht Name, Konstrukte, Beschreibung und Keywords aller Instrumente semantisch (sentence-transformers) und listet Kandidatenpaare mit hoher Ähnlichkeit auf.",
+                "Findet mögliche 'Jingle-Jangle'-Fälle: unterschiedlich benannte Instrumente, die vermutlich dasselbe Konstrukt messen. Kein automatischer Befund, sondern ein Hinweis zur manuellen Prüfung.",
+                primary=True,
+            )
+        )
+        return ft.ExpansionTile(
+            title="Konstrukt-Ähnlichkeitsprüfung (semantisch)",
+            subtitle="Findet Kandidaten für überlappende Konstrukte über Instrumentgrenzen hinweg.",
+            expanded=False,
+            maintain_state=True,
+            bgcolor="#F7F9F8",
+            collapsed_bgcolor="#EEF3F1",
+            controls=[ft.Column(spacing=10, controls=rows)],
+        )
+
+    async def _check_construct_similarity(self, _event: Any) -> None:
+        self.similarity_status = (
+            "Berechne Ähnlichkeiten... (lädt beim ersten Mal ggf. ein Modell "
+            "herunter; erfordert dann Internetzugang)"
+        )
+        self._render()
+        try:
+            matches = await asyncio.to_thread(find_similar_constructs, self.catalog_records)
+        except NLPEngineError as error:
+            self.similarity_matches = None
+            self.similarity_status = f"Fehlgeschlagen: {error}"
+            self._render()
+            return
+        self.similarity_matches = matches
+        self.similarity_status = (
+            f"{len(matches)} Kandidatenpaar(e) mit Ähnlichkeit ≥ 0.75 gefunden."
+            if matches
+            else "Keine auffälligen Konstrukt-Überlappungen über der Schwelle gefunden."
+        )
+        self._render()
+
     def _catalog_view(self) -> list[ft.Control]:
         LOGGER.debug(
             "Building catalog view: visible_versions=%d query_length=%d",
@@ -1618,6 +1683,7 @@ class PsyMetriQApplication:
                 color="#55716A",
             ),
             self._catalog_overview_panel(),
+            self._construct_similarity_panel(),
             toolbar,
             facets,
             ft.Container(height=4),
