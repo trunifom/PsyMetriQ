@@ -28,6 +28,8 @@ The PDF intake pipeline keeps new uploads and extraction drafts under Git-ignore
 
 The GUI's model-list action sends an authenticated metadata request only; it does not submit PDF/document content. Provider API keys stay in environment variables or an institutional secret manager, never in settings/projects. Remote extraction supports OpenAI, Anthropic, AlpineAI SwissGPT, and explicitly configured OpenAI-compatible endpoints; apply the same institutional review to all of them.
 
+For the full licensing/rights workflow — Zotero sync, reusable institutional license profiles, the GUI's per-instrument license acknowledgment gate, and the admin-only `data/admin_config.json` deployment toggles (including what "per installation" means on a shared/cloud deployment used by several colleagues) — see [Licensing workflow, Zotero sync, and admin configuration](admin_and_licensing.md). None of those mechanisms can substitute for the human, per-file rights sidecar described above.
+
 Synthetic fixture text must remain fabricated and must not be described as validated clinical content. Never use participant data in examples, test snapshots, or bug reports.
 
 ## API and logging controls

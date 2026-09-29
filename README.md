@@ -15,7 +15,7 @@ Implemented:
 - A local PDF inbox with text extraction/OCR, heuristic domain routing, optional opt-in OpenAI, Anthropic, AlpineAI SwissGPT, or OpenAI-compatible LLM extraction, private review drafts, and checksum-bound rights-gated promotion for questionnaire forms and validation-study references.
 - A Flet workspace for faceted catalogue search, detailed item/response/source inspection, whole-scale/item selection, reasoned study-only adaptations, saved projects/settings, PDF intake, and ZIP exchange containing PsyMetriQ JSON, FHIR R4, XLSX workbooks, item CSV, or REDCap Data Dictionary CSV. Public NIH CDE/LOINC/PubMed discovery is still available from Python/CLI, not yet embedded in the GUI.
 
-Planned: semantic redundancy review, Zotero sync, full REDCap API upload, and R syntax export. The existing REDCap Data Dictionary CSV exchange is a file export, not a live project integration.
+A Zotero attachment sync (`python -m src.ingestion.zotero_source`) stages PDFs from a Zotero library into the intake inbox; downloaded files still require the same human rights sidecar as any other inbox PDF. Planned: semantic redundancy review, full REDCap API upload, and R syntax export. The existing REDCap Data Dictionary CSV exchange is a file export, not a live project integration.
 XLSX is an export/review workbook, not an import format. Unipark is not yet supported pending a defined target import contract. See the [GUI guide](docs/gui_workspace.md) for format fidelity and workflow limits.
 
 ## Quick Start
@@ -108,6 +108,7 @@ Other well-known instruments are listed in the [instrument library and licensing
 - [User manual](docs/user_manual.md)
 - [Instrument library and licensing](docs/instrument_library.md)
 - [Security](docs/security.md)
+- [Licensing workflow, Zotero sync, and admin configuration](docs/admin_and_licensing.md)
 - [Coding guidelines](docs/coding_guidelines.md)
 - [Testing strategy](docs/testing.md)
 

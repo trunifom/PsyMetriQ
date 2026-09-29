@@ -1,0 +1,7 @@
+{
+  "admin_config_schema_version": 1,
+  "license_acknowledgment_enabled": true,
+  "remote_processing_allowed": true,
+  "hidden_views": [],
+  "feature_flags": {}
+}

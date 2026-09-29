@@ -12,6 +12,7 @@ This directory is the maintained home for project documentation. Start here, the
 - [PDF intake and extraction](pdf_intake.md): local inbox, OCR/LLM options, review drafts, and rights-gated promotion.
 - [External source search](external_sources.md): public NIH CDE, NLM LOINC, and PubMed connectors, previews, and rights boundaries.
 - [GUI workspace](gui_workspace.md): catalogue workflow, project/settings persistence, formats, help dialogs, and limitations.
+- [Licensing workflow, Zotero sync, and admin configuration](admin_and_licensing.md): the end-to-end path from a Zotero-synced PDF to a rights-approved catalogue entry, reusable license profiles, the GUI's per-instrument license acknowledgment gate, and deployment-wide admin toggles (`data/admin_config.json`).
 - [Coding guidelines](coding_guidelines.md): typing, documentation, validation, asynchronous work, logging, testing, and commit conventions.
 - [Security](security.md): credential handling, protected data, Git safeguards, and incident response.
 - [Testing](testing.md): test scope, local commands, and expectations for adding coverage.

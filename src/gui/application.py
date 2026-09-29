@@ -10,8 +10,9 @@ import logging
 import os
 import re
 import zipfile
+from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 import flet as ft
 from dotenv import load_dotenv
@@ -25,6 +26,7 @@ from src.exporters.data_exchange import (
     import_questionnaire_file,
     select_questionnaire_items,
 )
+from src.gui.admin_config import AdminConfig, AdminConfigError, AdminConfigStore
 from src.gui.catalog_store import CatalogStoreError, QuestionnaireCatalogStore
 from src.gui.workspace import (
     ItemAdaptation,
@@ -39,6 +41,9 @@ from src.ingestion.provider_models import ModelDiscoveryError, list_available_mo
 LOGGER = logging.getLogger(__name__)
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SETTINGS_PATH = PROJECT_ROOT / "data" / "psymetriq-settings.json"
+ADMIN_CONFIG_PATH = Path(
+    os.environ.get("PSYMETRIQ_ADMIN_CONFIG_PATH", str(PROJECT_ROOT / "data" / "admin_config.json"))
+)
 DEFAULT_INBOX = PROJECT_ROOT / "data" / "questionnaires" / "inbox"
 DEFAULT_REVIEW = PROJECT_ROOT / "data" / "questionnaires" / "review"
 EXPORT_FORMATS = {
@@ -142,6 +147,18 @@ class PsyMetriQApplication:
         except WorkspacePersistenceError as error:
             self.settings = WorkspaceSettings()
             self.startup_warning = str(error) + "; Standardwerte werden verwendet."
+
+        self.admin_config_store = AdminConfigStore(ADMIN_CONFIG_PATH)
+        try:
+            self.admin_config = self.admin_config_store.load()
+        except AdminConfigError as error:
+            self.admin_config = AdminConfig()
+            admin_warning = str(error) + "; Admin-Standardwerte werden verwendet."
+            self.startup_warning = (
+                f"{self.startup_warning}; {admin_warning}"
+                if self.startup_warning
+                else admin_warning
+            )
         self.dark_mode = self.settings.theme_mode == "dark"
         self.font_size = self.settings.font_size
         self._font_size_bases: dict[int, tuple[Any, float]] = {}
@@ -164,7 +181,11 @@ class PsyMetriQApplication:
             catalogue_directory=self.settings.catalogue_directory,
         )
         self.project_path: Path | None = None
-        self.active_view = "catalog"
+        default_visible_views = [
+            view for view in ("catalog", "project", "exchange", "intake", "settings")
+            if view not in self.admin_config.hidden_views
+        ]
+        self.active_view = default_visible_views[0] if default_visible_views else "catalog"
         self.search_query = ""
         self.language_filter = "all"
         self.locale_filter = "all"
@@ -258,6 +279,8 @@ class PsyMetriQApplication:
             ft.Container(height=16),
         ]
         for view, label, icon_name, description in destinations:
+            if view in self.admin_config.hidden_views:
+                continue
             rows.append(self._nav_button(view, label, icon_name, description))
         rows.extend(
             [
@@ -407,6 +430,111 @@ class PsyMetriQApplication:
         self._apply_appearance(dialog)
         self.page.update()
 
+    def _requires_license_acknowledgment(self, family: QuestionnaireParent) -> bool:
+        """Gate only definitely commercial instruments; unclear/free ones stay frictionless.
+
+        An administrator can disable this gate deployment-wide (test/debug, or a
+        trusted single-admin deployment) via ``admin_config.json``; that never
+        changes what the intake pipeline treats as a rights-approved document.
+        """
+        if not self.admin_config.license_acknowledgment_enabled:
+            return False
+        return family.is_commercial is True
+
+    def _is_license_acknowledged(self, family: QuestionnaireParent) -> bool:
+        return family.instrument_id in self.settings.acknowledged_licenses
+
+    def _remote_processing_enabled(self) -> bool:
+        """Combine the per-installation preference with the admin's kill switch."""
+        return self.settings.remote_processing_enabled and self.admin_config.remote_processing_allowed
+
+    @staticmethod
+    def _primary_license_source(version: QuestionnaireVersion) -> Any:
+        return version.source_documents[0] if version.source_documents else None
+
+    async def _acknowledge_license(self, family: QuestionnaireParent) -> None:
+        """Persist a local, one-time confirmation that license terms were read."""
+        self.settings = self.settings.model_copy(
+            update={
+                "acknowledged_licenses": {
+                    **self.settings.acknowledged_licenses,
+                    family.instrument_id: datetime.now(timezone.utc).isoformat(),
+                }
+            }
+        )
+        try:
+            await asyncio.to_thread(self.workspace_store.save_settings, self.settings)
+        except WorkspacePersistenceError as error:
+            LOGGER.warning(
+                "Could not persist license acknowledgment (%s)", type(error).__name__
+            )
+
+    def _show_license_gate_dialog(
+        self,
+        family: QuestionnaireParent,
+        version: QuestionnaireVersion,
+        on_confirmed: Callable[[], None],
+    ) -> None:
+        """Ask for a one-time, per-instrument license acknowledgment before use.
+
+        This does not grant redistribution rights: it records that the local
+        user has read and will follow the license terms for a commercially
+        restricted instrument they already have institutional/study access to
+        (for example through a licensed test library). It is asked once per
+        instrument per local installation, not on every view or selection.
+        """
+        source = self._primary_license_source(version)
+        license_name = source.license_name if source else "Lizenz nicht dokumentiert"
+        license_url = str(source.license_url) if source and source.license_url else None
+        permission_basis = source.permission_basis if source else None
+
+        confirm_button = ft.Button(content="Bestätigen und fortfahren", disabled=True)
+
+        def _on_agree_change(event: Any) -> None:
+            confirm_button.disabled = not bool(event.control.value)
+            self.page.update()
+
+        agree_checkbox = ft.Checkbox(
+            label="Ich habe die Lizenzbestimmungen gelesen und halte mich daran.",
+            value=False,
+            on_change=_on_agree_change,
+        )
+
+        async def _confirm(_event: Any) -> None:
+            await self._acknowledge_license(family)
+            self.page.pop_dialog()
+            on_confirmed()
+
+        confirm_button.on_click = _confirm
+
+        contents: list[ft.Control] = [
+            ft.Text(
+                f"{family.name_full} ist lizenzpflichtig. Bestätige, dass du Zugriff über eine "
+                "gültige Lizenz hast (z. B. eine institutionelle Testbibliothek oder einen für "
+                "diese Studie erworbenen Zugang) und dich an deren Bedingungen hältst.",
+                size=13,
+            ),
+            ft.Text(f"Lizenz/Status: {license_name}", size=12, weight=ft.FontWeight.BOLD),
+        ]
+        if permission_basis:
+            contents.append(
+                ft.Text(permission_basis, size=12, color="#55716A", selectable=True)
+            )
+        if license_url:
+            contents.append(ft.Text(license_url, size=12, color="#28685D", selectable=True))
+        contents.append(agree_checkbox)
+
+        dialog = ft.AlertDialog(
+            modal=True,
+            title=ft.Text("Lizenzbestimmungen bestätigen"),
+            content=ft.Column(tight=True, spacing=10, controls=contents),
+            actions=[
+                ft.Button(content="Abbrechen", on_click=lambda _event: self.page.pop_dialog()),
+                confirm_button,
+            ],
+        )
+        self._show_dialog(dialog)
+
     async def _persist_appearance_preferences(self) -> None:
         self.settings = self.settings.model_copy(
             update={
@@ -479,6 +607,9 @@ class PsyMetriQApplication:
             raise
 
     def _navigate(self, view: str) -> None:
+        if view in self.admin_config.hidden_views:
+            LOGGER.warning("Ignored navigation to admin-hidden view=%s", view)
+            return
         self.active_view = view
         self._render()
 
@@ -940,6 +1071,17 @@ class PsyMetriQApplication:
     def _toggle_version(
         self, family: QuestionnaireParent, version: QuestionnaireVersion, selected: bool
     ) -> None:
+        if (
+            selected
+            and version.item_text_included
+            and self._requires_license_acknowledgment(family)
+            and not self._is_license_acknowledged(family)
+        ):
+            self._show_license_gate_dialog(
+                family, version, lambda f=family, v=version: self._toggle_version(f, v, True)
+            )
+            self._render()
+            return
         current = self._project_selection(family.instrument_id, version.version_id)
         if selected:
             self._set_selection(
@@ -973,6 +1115,18 @@ class PsyMetriQApplication:
         item_id: str,
         selected: bool,
     ) -> None:
+        if (
+            selected
+            and self._requires_license_acknowledgment(family)
+            and not self._is_license_acknowledged(family)
+        ):
+            self._show_license_gate_dialog(
+                family,
+                version,
+                lambda f=family, v=version, i=item_id: self._toggle_item(f, v, i, True),
+            )
+            self._render()
+            return
         selected_ids = self._selected_item_ids(family.instrument_id, version)
         if selected:
             selected_ids.add(item_id)
@@ -996,6 +1150,20 @@ class PsyMetriQApplication:
         is_scale: bool,
         label: str,
     ) -> None:
+        if (
+            selected
+            and self._requires_license_acknowledgment(family)
+            and not self._is_license_acknowledged(family)
+        ):
+            self._show_license_gate_dialog(
+                family,
+                version,
+                lambda f=family, v=version, ids=item_ids, s=is_scale, lbl=label: self._toggle_item_group(
+                    f, v, ids, True, is_scale=s, label=lbl
+                ),
+            )
+            self._render()
+            return
         selected_ids = self._selected_item_ids(family.instrument_id, version)
         if selected:
             selected_ids.update(item_ids)
@@ -1449,6 +1617,11 @@ class PsyMetriQApplication:
             if rights_count == 0
             else f"{rights_count} Rechte-/Quelldatensätze"
         )
+        license_locked = (
+            version.item_text_included
+            and self._requires_license_acknowledgment(family)
+            and not self._is_license_acknowledged(family)
+        )
         subtitle = " · ".join(
             value
             for value in (
@@ -1463,6 +1636,7 @@ class PsyMetriQApplication:
                         f"{version.source_reported_item_count or 'Anzahl unbekannt'} Items laut Quelle"
                     )
                 ),
+                "Lizenzpflichtig · Bestätigung erforderlich" if license_locked else "",
             )
             if value
         )
@@ -1638,6 +1812,11 @@ class PsyMetriQApplication:
         if found is None:
             return ft.Text("Die gewählte Version ist nicht mehr im Katalog vorhanden.")
         family, version = found
+        license_locked = (
+            version.item_text_included
+            and self._requires_license_acknowledgment(family)
+            and not self._is_license_acknowledged(family)
+        )
         source_rows: list[ft.Control] = []
         for source in version.source_documents:
             source_rows.append(
@@ -1661,7 +1840,7 @@ class PsyMetriQApplication:
             )
         scale_controls: list[ft.Control] = []
         selected_ids = self._selected_item_ids(family.instrument_id, version)
-        for algorithm in version.scoring_algorithms:
+        for algorithm in [] if license_locked else version.scoring_algorithms:
             targets = [item_id for item_id in algorithm.target_items if item_id in {item.item_id for item in version.items}]
             if not targets:
                 continue
@@ -1697,10 +1876,10 @@ class PsyMetriQApplication:
                 )
             )
         dimension_groups: dict[str, list[str]] = {}
-        for item in version.items:
+        for item in [] if license_locked else version.items:
             dimension_groups.setdefault(item.dimension, []).append(item.item_id)
         dimension_controls: list[ft.Control] = []
-        if not version.item_text_included:
+        if not license_locked and not version.item_text_included:
             dimension_controls = [
                 ft.Text(
                     f"{dimension} · Metadaten der Quelle",
@@ -1736,7 +1915,7 @@ class PsyMetriQApplication:
                 for dimension, item_ids in dimension_groups.items()
             ]
         item_controls: list[ft.Control] = []
-        for item in version.items:
+        for item in [] if license_locked else version.items:
             options = (
                 version.response_sets[item.response_set_ref]
                 if item.response_set_ref is not None
@@ -1826,15 +2005,52 @@ class PsyMetriQApplication:
             )
             if value
         )
+        license_gate_panel: ft.Control | None = None
+        if license_locked and version.item_text_included:
+            source = self._primary_license_source(version)
+            license_gate_panel = ft.Container(
+                bgcolor="#FBF1E8",
+                border_radius=6,
+                padding=12,
+                content=ft.Column(
+                    spacing=8,
+                    controls=[
+                        ft.Text(
+                            f"{family.name_full} ist lizenzpflichtig. Bestätige einmalig, dass du "
+                            "über eine gültige Lizenz verfügst (z. B. institutionelle "
+                            "Testbibliothek oder erworbener Studienzugang) und dich an deren "
+                            "Bedingungen hältst, um Itemtext anzuzeigen und auszuwählen.",
+                            size=12,
+                            color="#8A4A2E",
+                        ),
+                        ft.Text(
+                            f"Lizenz/Status: {source.license_name if source else 'nicht dokumentiert'}",
+                            size=12,
+                            weight=ft.FontWeight.BOLD,
+                            color="#8A4A2E",
+                        ),
+                        ft.Button(
+                            content="Lizenzbestimmungen bestätigen",
+                            on_click=lambda _event, f=family, v=version: self._show_license_gate_dialog(
+                                f, v, lambda f2=f: self._render()
+                            ),
+                        ),
+                    ],
+                ),
+            )
         item_help: ft.Control = (
             self._help_button(
                 "Itemauswahl",
                 "Markiere einzelne Items links. Beim Export werden nur markierte Items dieser Version aufgenommen. Rechtebedingungen bleiben pro Quellversion zu prüfen.",
                 "PHQ-9: einzelne Items plus Antwortskala 'Not at all' bis 'Nearly every day'.",
             )
-            if version.item_text_included
+            if version.item_text_included and not license_locked
             else ft.Text(
-                "Metadatenreferenz: Itemtext ist nicht in dieser Software gespeichert oder exportiert. Nutze den offiziellen Quellenlink, prüfe dortige Nutzungs-/Adaptionsbedingungen und beschaffe eine Nutzungserlaubnis für Feldanwendung, Lehre oder geteilte Materialien, falls erforderlich. Die Auswahl hier dient Literatur-/Meta-Analysen und Projektplanung und ist keine Erlaubnis zur Itemnutzung.",
+                (
+                    "Lizenz noch nicht bestätigt: Itemtext wird erst nach Bestätigung oben angezeigt."
+                    if version.item_text_included and license_locked
+                    else "Metadatenreferenz: Itemtext ist nicht in dieser Software gespeichert oder exportiert. Nutze den offiziellen Quellenlink, prüfe dortige Nutzungs-/Adaptionsbedingungen und beschaffe eine Nutzungserlaubnis für Feldanwendung, Lehre oder geteilte Materialien, falls erforderlich. Die Auswahl hier dient Literatur-/Meta-Analysen und Projektplanung und ist keine Erlaubnis zur Itemnutzung."
+                ),
                 size=12,
                 color="#8A4A2E",
                 selectable=True,
@@ -1917,9 +2133,10 @@ class PsyMetriQApplication:
                             item_help,
                         ]
                     ),
+                    *([license_gate_panel] if license_gate_panel else []),
                     *(
                         [ft.Column(spacing=6, controls=item_controls)]
-                        if version.item_text_included
+                        if version.item_text_included and not license_locked
                         else []
                     ),
                 ],
@@ -2210,7 +2427,7 @@ class PsyMetriQApplication:
         ]
 
     def _intake_view(self) -> list[ft.Control]:
-        remote = self.settings.remote_processing_enabled
+        remote = self._remote_processing_enabled()
         inbox_directory = _resolve_path(self.settings.pdf_inbox_directory)
         inbox_files = sorted(inbox_directory.glob("*.pdf")) if inbox_directory.exists() else []
         self.intake_output = ft.TextField(
@@ -2305,6 +2522,7 @@ class PsyMetriQApplication:
         self.remote_processing_switch = ft.Switch(
             value=self.settings.remote_processing_enabled,
             label="Remote-PDF-Extraktion erlauben",
+            disabled=not self.admin_config.remote_processing_allowed,
         )
         self.dark_mode_switch = ft.Switch(
             value=self.dark_mode,
@@ -2433,7 +2651,12 @@ class PsyMetriQApplication:
                                     self._field(
                                         "Remote-Opt-in",
                                         self.remote_processing_switch,
-                                        "Wenn aktiviert, kann der PDF-Posteingang extrahierten Volltext an den gewählten Provider senden. Prüfe vorher Hochschulregeln, Verträge und Quellenrechte.",
+                                        "Wenn aktiviert, kann der PDF-Posteingang extrahierten Volltext an den gewählten Provider senden. Prüfe vorher Hochschulregeln, Verträge und Quellenrechte."
+                                        + (
+                                            ""
+                                            if self.admin_config.remote_processing_allowed
+                                            else " Von der Administration deployment-weit deaktiviert."
+                                        ),
                                         "Die Checkbox ist standardmäßig aus; jeder Remote-Lauf wird zusätzlich bestätigt.",
                                     ),
                                 ],
@@ -3147,7 +3370,8 @@ class PsyMetriQApplication:
             self._set_status(f"Einstellungen exportiert: {path}")
 
     async def _run_intake(self, _event: Any) -> None:
-        if self.settings.remote_processing_enabled:
+        remote_enabled = self._remote_processing_enabled()
+        if remote_enabled:
             confirmed = await self._confirm_remote_intake()
             if not confirmed:
                 return
@@ -3169,7 +3393,7 @@ class PsyMetriQApplication:
         try:
             results = await process_inbox(
                 config=config,
-                allow_remote_processing=self.settings.remote_processing_enabled,
+                allow_remote_processing=remote_enabled,
                 provider=self.settings.llm_provider,
                 model=self.settings.llm_model or None,
                 base_url=self.settings.llm_base_url,

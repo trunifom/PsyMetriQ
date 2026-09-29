@@ -2,7 +2,7 @@
 
 ## Scope
 
-The current runnable workflow covers the data model, synthetic fixture generation, local file-backed search, and a Flet workspace for questionnaire assembly, projects, settings, format exchange, and PDF intake. XLSX review workbooks and reasoned study-specific item adaptations are supported. Similarity warnings, Zotero sync, live REDCap upload, Unipark interchange, and R syntax export remain planned.
+The current runnable workflow covers the data model, synthetic fixture generation, local file-backed search, and a Flet workspace for questionnaire assembly, projects, settings, format exchange, and PDF intake. XLSX review workbooks and reasoned study-specific item adaptations are supported. A Zotero attachment sync (`src/ingestion/zotero_source.py`) can stage PDFs from a Zotero library into the inbox. Similarity warnings, live REDCap upload, Unipark interchange, and R syntax export remain planned.
 
 ## Prerequisites
 
@@ -168,9 +168,19 @@ python data/questionnaires/build_wellbeing_catalog.py
 
 The form-builder commands read only PDFs already present under `data/questionnaires/forms/`; they do not download or overwrite source documents. They write five form-bearing families. The wellbeing builder adds the public-domain Rosenberg record and metadata-only WHO-5/WEMWBS profiles. Review the [instrument data and rights notes](../data/questionnaires/README.md) before adding or sharing any other instrument.
 
+## Sync PDFs from Zotero
+
+Set `ZOTERO_API_KEY` and `ZOTERO_USER_ID` (or `ZOTERO_LIBRARY_ID` for a group library) in the ignored local `.env`, optionally with `ZOTERO_LIBRARY_TYPE=group` and `ZOTERO_COLLECTION_KEY` to restrict the sync to one collection. Then run:
+
+```powershell
+python -m src.ingestion.zotero_source
+```
+
+This downloads new or changed `application/pdf` attachments into `data/questionnaires/inbox/`, tracking already-synced attachment versions in `data/questionnaires/review/zotero_sync_state.json` so repeat runs only fetch what changed. Each PDF gets a `<filename>.pdf.zotero-metadata.json` note with the source title, authors, DOI, and Zotero link, to speed up writing the rights sidecar below. Zotero metadata is never treated as a rights approval: a synced PDF still needs its own `<filename>.pdf.source.json` sidecar before `document_pipeline` will catalogue it, exactly as for a manually dropped PDF.
+
 ## Import New PDFs
 
-Drop a PDF into `data/questionnaires/inbox/`, then process once or run the local watcher:
+Drop a PDF into `data/questionnaires/inbox/` (directly, or via the Zotero sync above), then process once or run the local watcher:
 
 ```powershell
 python -m src.ingestion.document_pipeline
@@ -186,6 +196,41 @@ python -m src.ingestion.document_pipeline --approve-draft data/questionnaires/re
 ```
 
 The importer refuses unknown rights, hash mismatches, low confidence, incomplete forms, scanned pages without usable OCR, or version conflicts. See the [full intake guide](pdf_intake.md) for stages, limits, manual review, and file-placement rules.
+
+### Reusable license profiles for institutionally licensed instruments
+
+If your institution already holds a license for an instrument (for example through a physical or negotiated test library), save its recurring license details once as a named profile instead of retyping them for every PDF. Copy `data/questionnaires/license_profiles.example.json` to `data/questionnaires/review/license_profiles.json` (git-ignored) and fill in your institution's real agreements. Then generate a rights sidecar for one exact reviewed PDF:
+
+```powershell
+python -m src.ingestion.license_profiles --profile acme_library --pdf data/questionnaires/review/forms/mental_health/acme/<hash>_form.pdf --reviewed-by "Name, Testbibliothek" --content-reviewed
+```
+
+This fills in the license name/URL and permission basis from the profile and hashes the exact PDF, but it never sets `--content-reviewed`/`--study-metadata-reviewed` on your behalf: you still confirm those explicitly, per file, after checking the extracted content. The resulting sidecar is then approved exactly like a manually written one, with `--approve-draft`.
+
+### License acknowledgment in the GUI
+
+Instruments marked commercial (`is_commercial: true`) show a one-time confirmation dialog before their item wording is displayed or selected: name/URL of the license, and a checkbox confirming you have read and will follow its terms. This is a local, per-installation acknowledgment recorded in `data/psymetriq-settings.json`, not a redistribution approval; it is asked once per instrument, not on every view. Free, public-domain, or rights-unclear instruments are never gated. Metadata-only reference records (no item text stored) are also never gated, since there is no item wording to protect.
+
+## Admin-only deployment configuration
+
+Copy `data/admin_config.example.json` to `data/admin_config.json` (git-ignored, not exposed anywhere in the GUI) to control deployment-wide behavior for every user of a shared/cloud instance. It is read once at startup from disk; only whoever has server/file access to the deployment can change it.
+
+```json
+{
+  "admin_config_schema_version": 1,
+  "license_acknowledgment_enabled": true,
+  "remote_processing_allowed": true,
+  "hidden_views": [],
+  "feature_flags": {}
+}
+```
+
+- `license_acknowledgment_enabled`: set to `false` to skip the license-acknowledgment dialog entirely, for example while testing/debugging or for a small, trusted team. This does not change what the PDF intake pipeline treats as a rights-approved, redistributable document; that still requires the per-file rights sidecar described above.
+- `remote_processing_allowed`: a deployment-wide kill switch for remote LLM PDF extraction. When `false`, remote extraction is unavailable for everyone regardless of each user's own settings, and the switch in **Einstellungen** is shown disabled.
+- `hidden_views`: a list drawn from `catalog`, `project`, `exchange`, `intake`, `settings`. Any view named here disappears from the sidebar and cannot be navigated to, for every user. Use this to hide a menu item or an entire function (for example `intake`) from research colleagues on a shared deployment.
+- `feature_flags`: a free-form `{"name": true/false}` map reserved for future ad-hoc toggles without needing a schema change.
+
+Invalid admin config JSON falls back to all-enabled defaults and surfaces a startup warning; it never blocks the application from starting.
 
 ## Search a shared folder
 

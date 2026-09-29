@@ -1,0 +1,11 @@
+[
+  {
+    "profile_id": "example_institutional_library",
+    "license_name": "Name of the exact license or institutional agreement",
+    "license_url": "https://publisher.example.org/terms",
+    "permission_basis_template": "Licensed via [institution] test library for use in [study/course]; describe the exact agreement here.",
+    "default_reviewed_by": "Name or institutional role, e.g. Test library staff",
+    "document_type": "questionnaire_form",
+    "notes": "Copy this file to data/questionnaires/review/license_profiles.json (git-ignored) and fill in your institution's real agreements."
+  }
+]

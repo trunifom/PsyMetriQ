@@ -60,6 +60,14 @@ class WorkspaceSettings(BaseModel):
     llm_base_url: str | None = None
     llm_api_key_environment: str = "OPENAI_API_KEY"
     remote_processing_enabled: bool = False
+    acknowledged_licenses: dict[str, str] = Field(
+        default_factory=dict,
+        description=(
+            "instrument_id -> ISO 8601 timestamp of a local, one-time confirmation that "
+            "this installation's user has read and will follow that instrument's license "
+            "terms. This is a local usage acknowledgment, not a redistribution approval."
+        ),
+    )
 
     @field_validator("llm_api_key_environment")
     @classmethod
