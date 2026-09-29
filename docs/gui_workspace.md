@@ -71,7 +71,7 @@ Supported exports for selected versions/items:
 
 Multi-version project exports are packaged as a ZIP with a `manifest.json`. Export previews show the first selected version. Reference-only selections create `*.reference.json` metadata entries with a clear no-item-text notice; item-bearing selections use the chosen exchange format. The app does not upload a project to REDCap, administer a questionnaire, collect responses, export R syntax, or generate CDISC ODM/DDI yet.
 
-XLSX is an export/review workbook, not an import format. Unipark is not yet supported because a stable, versioned vendor import contract has not been specified; do not assume a generic CSV is directly importable there.
+XLSX is an export/review workbook, not an import format. LimeSurvey TSV, Unipark paste-text, and Qualtrics QSF export/import are all best-effort and not verified against a live instance of the respective tool (see the [user manual](user_manual.md) for exact scope and caveats per format); do not assume a generic CSV is directly importable into any of them.
 
 REDCap choice codes are not treated as psychometric scores. FHIR/REDCap imports set rights to unknown unless a separately reviewed rights record is provided. Check instrument licenses, translations, response options, and scoring before field use.
 

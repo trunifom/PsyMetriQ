@@ -24,7 +24,7 @@ The file-backed search service, guarded PDF intake/review pipeline, and Flet wor
 - **Provider/model selection:** fetches account-visible OpenAI, Anthropic, AlpineAI, or compatible model IDs from provider model-list APIs; model IDs remain editable, and API-key values are not saved. AlpineAI uses documented Chat Completions and locally validates prompted JSON rather than assuming Structured Outputs support.
 - **Provider model service:** `src/ingestion/provider_models.py` lists account-available models through OpenAI-compatible `/models` routes and Anthropic's native `/v1/models` API. It performs metadata-only requests; model IDs can also be entered manually.
 - **Redundancy analysis (planned):** calculate semantic similarity between candidate items and items already selected, and surface review warnings rather than making clinical decisions.
-- **Export and ingestion:** file exchange supports PsyMetriQ JSON, FHIR R4 Questionnaire JSON, XLSX review workbooks, REDCap Data Dictionary CSV, and item CSV. XLSX is export-only; Unipark import/export, full REDCap API upload, R syntax, CDISC ODM, DDI, and GUI federated-source search remain planned.
+- **Export and ingestion:** file exchange supports PsyMetriQ JSON, FHIR R4 Questionnaire JSON, XLSX review workbooks, REDCap Data Dictionary CSV, item CSV, R scoring syntax, and best-effort LimeSurvey TSV, Unipark paste-text, and Qualtrics QSF export/import. XLSX is export-only. A live REDCap API connection is also available; CDISC ODM, DDI, and GUI federated-source search remain planned.
 
 ## Phase-1 public model and function reference
 

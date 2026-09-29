@@ -131,7 +131,7 @@ The library uses a bounded version-list viewport with independent scrolling. If 
 ## Changes documented in this manual
 
 - The Flet workspace supports faceted instrument search, detailed version/item/response/scoring inspection, item and whole-scale selection, saved projects, and study-specific wording adaptations separated from source records.
-- Exchange supports PsyMetriQ JSON, FHIR R4, XLSX review workbooks, item CSV, REDCap Data Dictionary CSV (plus a live REDCap project connection, Section "REDCap: file export/import and the live API" below), and a best-effort LimeSurvey TSV export/import (Section "LimeSurvey TSV export/import" below). Unipark remains unsupported.
+- Exchange supports PsyMetriQ JSON, FHIR R4, XLSX review workbooks, item CSV, REDCap Data Dictionary CSV (plus a live REDCap project connection, Section "REDCap: file export/import and the live API" below), and best-effort LimeSurvey TSV, Unipark paste-text, and Qualtrics QSF export/import (see the matching sections below).
 - The catalog contains item-bearing Rosenberg Self-Esteem Scale data and selectable reference profiles for WHO-5, WEMWBS/SWEMWBS, GSE, and PSS. Reference profiles record source-reported length/dimensions and license status but do not contain item wording. They are usable for discovery, meta-analysis planning, and project references; they do not grant item reproduction or administration permission.
 - Search accepts regional language tags such as `de-AT` even when the version language is stored as `de`; a `de` filter includes the documented regional German variants. Age facets consolidate source population labels into broad overlapping bands: 0-11, 12-17, 18-64, 65+, and unknown.
 - The library supports combined age-group selection, visible active-filter summaries, one-click filter reset, and an instrument profile with source-grounded purpose, construct, name, development, population, publication, psychometric, interpretation, and citation information where the catalog documents it.
@@ -225,6 +225,19 @@ Choose `unipark_txt` as the export format to get a plain-text file (`.unipark.tx
 Unipark does not publish its internal project export format (`.gpx`) at all -- it is closed-source, and unlike LimeSurvey there is no public source code to verify a full implementation against. Rather than guess at that undocumented format, this exporter/importer (`src/exporters/unipark_gen.py`) targets only the one Unipark import mechanism Tivian's own support documentation describes with a concrete, quotable example: pasting structured plain text to create several questions at once. Per that documentation (fetched 2026-09-29): each question is one text block separated by a blank line; each following line becomes one answer option, optionally with an explicit code using a semicolon (`1;Software`); a question with no answer lines becomes free text.
 
 **This intentionally covers less than the LimeSurvey/REDCap exports**: no matrix/scale questions, no branching/filter logic, no Unipark internal question-type codes -- none of these are documented in enough verifiable detail to implement with confidence, and Tivian's own docs state the paste feature "cannot be used for all question types" without listing which. Always check the pasted result in Unipark's own editor before relying on it for a real study.
+
+### Qualtrics QSF export/import (best-effort, not verified against a live Qualtrics import)
+
+Choose `qualtrics_qsf` as the export format to get a Qualtrics-importable QSF file (`.qsf`, plain JSON). Import a QSF export the same way as a REDCap CSV, via **Dateien importieren**; the `.qsf` extension is unambiguous, so no content sniffing is needed.
+
+Qualtrics does not publish a formal QSF schema. Rather than guess at its shape from memory, this exporter/importer (`src/exporters/qualtrics_gen.py`) was built and cross-checked against a real, publicly available `.qsf` file (the `egor` R package's Qualtrics template, fetched 2026-09-29): the `SurveyEntry`/`SurveyElements` split, the `"SQ"` question element shape (`PrimaryAttribute` as the question ID, `Payload` with `QuestionText`/`DataExportTag`/`QuestionType`/`Selector`/`Choices`/`ChoiceOrder`/`Validation`), and the `"BL"` block element shape all match that real file.
+
+**This has not been verified against a live Qualtrics import** — like LimeSurvey (and unlike REDCap, which was checked against PyCap's real API). Test-import a generated file into a real or trial Qualtrics account before relying on it for an actual study.
+
+- Supported Qualtrics question types: `MC` (Selector `SAVR` single choice, `MAVR` multiple choice) for categorical items, `TE` (Selector `SL`) for text items, and `TE` with `Validation.Settings.ContentType: "ValidNumber"` for numeric items. Any other Qualtrics question type (Matrix, Slider, Rank Order, ...) is noted by question ID/type in the instrument's `metadata.notes` instead of silently dropped, exactly like the REDCap/LimeSurvey importers.
+- Each item's `dimension` becomes a Qualtrics block (`BL`).
+- Choice codes are preserved through Qualtrics' own `RecodeValues` mechanism (the "recorded value" behind each sequential choice number), not through Qualtrics' separate and far less documented built-in scoring feature -- `ScoringAlgorithm` definitions stay external to the exported survey, exactly as they do for the LimeSurvey/Unipark exports.
+- `show_if` branching is **not** translated into Qualtrics Display Logic: that JSON is deeply nested and not documented reliably enough to build with confidence. An exported question with branching conditions displays unconditionally.
 
 ### Reusable license profiles for institutionally licensed instruments
 

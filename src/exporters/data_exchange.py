@@ -28,6 +28,12 @@ from src.exporters.limesurvey_gen import (
     export_limesurvey_tsv,
     import_limesurvey_tsv,
 )
+from src.exporters.qualtrics_gen import (
+    QualtricsExportError,
+    QualtricsImportError,
+    export_qualtrics_qsf,
+    import_qualtrics_qsf,
+)
 from src.exporters.r_syntax_gen import export_r_syntax
 from src.exporters.unipark_gen import (
     UniparkExportError,
@@ -1011,6 +1017,17 @@ def import_questionnaire_content(
     """Import decoded uploaded content when a local filesystem path is unavailable."""
     if Path(file_name).suffix.casefold() == ".csv":
         return [import_redcap_data_dictionary(content, redcap_language)]
+    if Path(file_name).suffix.casefold() == ".qsf":
+        try:
+            return [
+                import_qualtrics_qsf(
+                    content,
+                    default_language=redcap_language,
+                    instrument_id=Path(file_name).stem,
+                )
+            ]
+        except QualtricsImportError as error:
+            raise DataExchangeError(str(error)) from None
     if Path(file_name).suffix.casefold() == ".txt":
         if _looks_like_limesurvey_tsv(content):
             try:
@@ -1029,8 +1046,8 @@ def import_questionnaire_content(
             raise DataExchangeError(str(error)) from None
     if Path(file_name).suffix.casefold() != ".json":
         raise DataExchangeError(
-            "Supported import formats are JSON, REDCap CSV, LimeSurvey TSV, and "
-            "Unipark paste text (both .txt)"
+            "Supported import formats are JSON, REDCap CSV, Qualtrics QSF, LimeSurvey "
+            "TSV, and Unipark paste text (LimeSurvey/Unipark share the .txt extension)"
         )
     try:
         payload = json.loads(content)
@@ -1178,6 +1195,7 @@ def export_questionnaire(
         "r_syntax",
         "limesurvey_tsv",
         "unipark_txt",
+        "qualtrics_qsf",
     ],
 ) -> tuple[str, str | bytes]:
     """Export a concrete version and return its recommended extension and content."""
@@ -1210,6 +1228,11 @@ def export_questionnaire(
         try:
             return ".unipark.txt", export_unipark_text(questionnaire, version)
         except UniparkExportError as error:
+            raise DataExchangeError(str(error)) from None
+    if export_format == "qualtrics_qsf":
+        try:
+            return ".qsf", export_qualtrics_qsf(questionnaire, version)
+        except QualtricsExportError as error:
             raise DataExchangeError(str(error)) from None
     raise DataExchangeError(f"Unsupported export format: {export_format}")
 
