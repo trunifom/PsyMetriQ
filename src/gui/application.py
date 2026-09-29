@@ -3741,23 +3741,39 @@ class PsyMetriQApplication:
         )
         self._render()
 
-    async def _confirm_redcap_push(self, form_name: str, field_count: int) -> bool:
-        result: asyncio.Future[bool] = asyncio.get_running_loop().create_future()
+    async def _confirm_redcap_push(self, form_name: str, field_count: int) -> tuple[bool, bool]:
+        """Ask for push confirmation; return (confirmed, allow_update)."""
+        result: asyncio.Future[tuple[bool, bool]] = asyncio.get_running_loop().create_future()
+        allow_update_checkbox = ft.Checkbox(
+            label=(
+                "Bestehende Felder mit gleichem Namen bewusst aktualisieren (z.B. nach einer "
+                "Korrektur), statt bei jedem Namenskonflikt komplett abzubrechen."
+            ),
+            value=False,
+        )
 
         def finish(value: bool) -> None:
             if not result.done():
-                result.set_result(value)
+                result.set_result((value, bool(allow_update_checkbox.value)))
             self.page.pop_dialog()
 
         self._show_dialog(
             ft.AlertDialog(
                 modal=True,
                 title=ft.Text("Data Dictionary nach REDCap pushen?"),
-                content=ft.Text(
-                    f"{field_count} Feld(er) für Formular '{form_name}' werden zu den "
-                    f"bestehenden Feldern von {self.redcap_project_summary.project_title if self.redcap_project_summary else 'diesem Projekt'} "
-                    "hinzugefügt. REDCaps Metadata-Import ersetzt das gesamte Data Dictionary "
-                    "des Projekts; bei einem Namenskonflikt wird nichts geschrieben. Fortfahren?"
+                content=ft.Column(
+                    tight=True,
+                    spacing=10,
+                    controls=[
+                        ft.Text(
+                            f"{field_count} Feld(er) für Formular '{form_name}' werden zu den "
+                            f"bestehenden Feldern von {self.redcap_project_summary.project_title if self.redcap_project_summary else 'diesem Projekt'} "
+                            "hinzugefügt. REDCaps Metadata-Import ersetzt das gesamte Data "
+                            "Dictionary des Projekts; ohne die Option unten wird bei einem "
+                            "Namenskonflikt nichts geschrieben. Fortfahren?"
+                        ),
+                        allow_update_checkbox,
+                    ],
                 ),
                 actions=[
                     ft.Button(content="Abbrechen", on_click=lambda _event: finish(False)),
@@ -3803,20 +3819,30 @@ class PsyMetriQApplication:
             self._set_status(f"Export für REDCap fehlgeschlagen: {error}", error=True)
             return
         form_name = preview_records[0]["form_name"] if preview_records else family.instrument_id
-        confirmed = await self._confirm_redcap_push(form_name, len(preview_records))
+        confirmed, allow_update = await self._confirm_redcap_push(form_name, len(preview_records))
         if not confirmed:
             return
         try:
             push_result = await asyncio.to_thread(
-                push_questionnaire_to_project, self.redcap_project, subset, subset.versions[0]
+                push_questionnaire_to_project,
+                self.redcap_project,
+                subset,
+                subset.versions[0],
+                allow_update=allow_update,
             )
         except RedcapApiError as error:
             self.redcap_status_message = f"Push fehlgeschlagen: {error}"
             self._render()
             return
+        updated_note = (
+            f", davon {push_result.updated_field_count} aktualisiert"
+            if push_result.updated_field_count
+            else ""
+        )
         self.redcap_status_message = (
             f"Gepusht: {push_result.pushed_field_count} Feld(er) in Formular "
-            f"'{push_result.form_name}' ({push_result.total_field_count} Felder insgesamt im Projekt)."
+            f"'{push_result.form_name}'{updated_note} "
+            f"({push_result.total_field_count} Felder insgesamt im Projekt)."
         )
         self._render()
 

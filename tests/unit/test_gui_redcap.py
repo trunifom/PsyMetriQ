@@ -110,9 +110,12 @@ def test_redcap_push_shows_a_confirmation_dialog_before_pushing(
     )
     pushed: dict[str, Any] = {}
 
-    def fake_push(project: Any, questionnaire: Any, version: Any) -> Any:
+    def fake_push(project: Any, questionnaire: Any, version: Any, *, allow_update: bool) -> Any:
         pushed["called"] = True
-        return SimpleNamespace(form_name="phq9", pushed_field_count=10, total_field_count=10)
+        pushed["allow_update"] = allow_update
+        return SimpleNamespace(
+            form_name="phq9", pushed_field_count=10, total_field_count=10, updated_field_count=0
+        )
 
     monkeypatch.setattr(application, "push_questionnaire_to_project", fake_push)
 
@@ -131,7 +134,47 @@ def test_redcap_push_shows_a_confirmation_dialog_before_pushing(
     asyncio.run(_run())
 
     assert pushed.get("called") is True
+    assert pushed.get("allow_update") is False
     assert "Gepusht" in app.redcap_status_message
+
+
+def test_redcap_push_can_opt_into_updating_existing_fields(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    app = _app(monkeypatch, tmp_path)
+    _select_free_version(app)
+    app.redcap_project = object()
+    app.redcap_project_summary = RedcapProjectSummary(
+        project_id="7", project_title="My Study", is_longitudinal=False
+    )
+    pushed: dict[str, Any] = {}
+
+    def fake_push(project: Any, questionnaire: Any, version: Any, *, allow_update: bool) -> Any:
+        pushed["allow_update"] = allow_update
+        return SimpleNamespace(
+            form_name="phq9", pushed_field_count=9, total_field_count=9, updated_field_count=9
+        )
+
+    monkeypatch.setattr(application, "push_questionnaire_to_project", fake_push)
+
+    async def _confirm_with_update_checked() -> None:
+        while not app.page.dialogs:
+            await asyncio.sleep(0)
+        dialog = app.page.dialogs[-1]
+        checkbox = dialog.content.controls[-1]
+        checkbox.value = True
+        confirm_button = dialog.actions[-1]
+        result = confirm_button.on_click(None)
+        if asyncio.iscoroutine(result):
+            await result
+
+    async def _run() -> None:
+        await asyncio.gather(app._redcap_push(None), _confirm_with_update_checked())
+
+    asyncio.run(_run())
+
+    assert pushed.get("allow_update") is True
+    assert "9 aktualisiert" in app.redcap_status_message
 
 
 def test_redcap_pull_imports_into_the_catalog(

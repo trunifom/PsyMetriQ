@@ -118,6 +118,43 @@ def test_push_refuses_when_a_field_name_already_exists() -> None:
     assert project.imported is None
 
 
+def test_push_with_allow_update_replaces_only_the_colliding_field() -> None:
+    project = FakeRedcapProject(
+        metadata=[
+            {"field_name": "record_id", "form_name": "demo"},
+            {"field_name": "q1", "form_name": "old_form", "field_label": "Old label"},
+        ]
+    )
+    questionnaire = _demo_questionnaire()
+
+    result = push_questionnaire_to_project(
+        project, questionnaire, questionnaire.versions[0], allow_update=True
+    )
+
+    assert result.updated_field_count == 1
+    assert result.total_field_count == 2
+    assert project.imported is not None
+    imported_by_name = {record["field_name"]: record for record in project.imported}
+    assert imported_by_name["q1"]["field_label"] == "Demo item"
+    # The unrelated existing field is kept untouched and in its original position.
+    assert [record["field_name"] for record in project.imported] == ["record_id", "q1"]
+
+
+def test_push_allow_update_does_not_touch_non_colliding_existing_fields() -> None:
+    project = FakeRedcapProject(
+        metadata=[{"field_name": "unrelated_field", "form_name": "other_form", "field_label": "x"}]
+    )
+    questionnaire = _demo_questionnaire()
+
+    result = push_questionnaire_to_project(
+        project, questionnaire, questionnaire.versions[0], allow_update=True
+    )
+
+    assert result.updated_field_count == 0
+    imported_by_name = {record["field_name"]: record for record in project.imported}
+    assert imported_by_name["unrelated_field"]["field_label"] == "x"
+
+
 def test_push_wraps_import_failures_without_leaking_raw_exception() -> None:
     project = FakeRedcapProject(raise_on="import_metadata")
     questionnaire = _demo_questionnaire()

@@ -66,6 +66,7 @@ class RedcapPushResult:
     form_name: str
     pushed_field_count: int
     total_field_count: int
+    updated_field_count: int = 0
 
 
 def connect(url: str, token: str) -> redcap.Project:
@@ -106,12 +107,20 @@ def push_questionnaire_to_project(
     project: RedcapProjectProtocol,
     questionnaire: QuestionnaireParent,
     version: QuestionnaireVersion,
+    *,
+    allow_update: bool = False,
 ) -> RedcapPushResult:
     """Merge one version's fields into the project's data dictionary and push it.
 
-    Always fetches the current metadata, checks every new field name against
-    it case-insensitively, and refuses (raising ``RedcapApiError``) if any
-    collide, before importing (existing + new) fields together.
+    Always fetches the current metadata first and checks every new field name
+    against it case-insensitively. By default (``allow_update=False``) any
+    collision refuses the whole push, raising ``RedcapApiError``, so a first
+    push can only ever add fields. Passing ``allow_update=True`` is an
+    explicit, opt-in way to instead replace exactly the colliding fields'
+    definitions with the newly built ones -- for example to correct or
+    re-export an instrument you already pushed -- while every other existing
+    field (including ones from other instruments/forms) is left untouched
+    and kept in its original position.
     """
     new_records = build_redcap_metadata_records(questionnaire, version)
     if not new_records:
@@ -133,14 +142,28 @@ def push_questionnaire_to_project(
     }
     new_names = [str(record["field_name"]) for record in new_records]
     collisions = sorted({name for name in new_names if name.casefold() in existing_names})
-    if collisions:
+    if collisions and not allow_update:
         raise RedcapApiError(
             "Refusing to push: these field names already exist in the REDCap project "
             "and a metadata push would replace the whole data dictionary, so it would "
-            f"overwrite them: {', '.join(collisions)}"
+            f"overwrite them: {', '.join(collisions)}. Pass allow_update=True to "
+            "deliberately replace exactly these fields."
         )
 
-    merged_records = [*existing_records, *new_records]
+    new_by_name = {str(record["field_name"]).casefold(): record for record in new_records}
+    merged_records: list[dict[str, Any]] = []
+    replaced_names: set[str] = set()
+    for record in existing_records:
+        name = str(record.get("field_name", "")).casefold() if isinstance(record, dict) else None
+        if name is not None and name in new_by_name:
+            merged_records.append(new_by_name[name])
+            replaced_names.add(name)
+        else:
+            merged_records.append(record)
+    for record in new_records:
+        if str(record["field_name"]).casefold() not in replaced_names:
+            merged_records.append(record)
+
     try:
         project.import_metadata(merged_records, import_format="json")
     except Exception as error:
@@ -153,6 +176,7 @@ def push_questionnaire_to_project(
         form_name=form_name,
         pushed_field_count=len(new_records),
         total_field_count=len(merged_records),
+        updated_field_count=len(replaced_names),
     )
 
 
