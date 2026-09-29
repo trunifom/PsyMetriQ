@@ -35,7 +35,7 @@ For version lineage, references to versions inside the same instrument family ar
 - `src/exporters/`: translations from domain objects to external formats and remote systems.
 - `src/gui/application.py`: Flet workspace for catalogue search, item/version assembly, import/export, PDF intake, and settings.
 - `src/gui/catalog_store.py` and `src/gui/workspace.py`: validated catalog updates, conflict handling, versioned user settings, project snapshots, and workflow steps.
-- `src/gui/views/` and `src/gui/viewmodels/`: reserved for further decomposition as the workspace grows.
+- `src/gui/views/` and `src/gui/viewmodels/`: reserved for further decomposition as the workspace grows. `src/gui/views/dashboard.py` is the first extracted piece: the catalog-overview dashboard (stat tiles, bar charts, the SweepGradient donut) as plain functions taking only the data they render (the loaded catalogue records), with no dependency on `PsyMetriQApplication` or Flet session state -- `PsyMetriQApplication._catalog_overview_panel()` is now a one-line delegation to it. Most of `src/gui/application.py`'s ~3,800 lines remain undecomposed; this establishes the pattern rather than completing the split.
 - `tests/unit/`: deterministic tests of model, service, and view-model behavior.
 - `tests/integration/`: tests spanning adapters, storage, or external-system boundaries with controlled fixtures.
 - `data/`: local working data. Only the explicitly named synthetic demo JSON fixtures are Git-allowlisted; real PDFs, extracted content, and exports are excluded by default.
