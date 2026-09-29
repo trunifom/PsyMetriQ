@@ -142,6 +142,7 @@ The library uses a bounded version-list viewport with independent scrolling. If 
 - The profile distinguishes documented facts from catalog gaps. `Nicht dokumentiert` means that this catalog record has not yet supplied a source-grounded statement. It does not mean that the instrument lacks a purpose, a name history, validation evidence, or interpretation guidance. Verify missing information in the cited manual, publication, or official source before use.
 - Remote extraction offers OpenAI, Anthropic, AlpineAI SwissGPT, and generic OpenAI-compatible providers. Provider model lists can be queried without transmitting a PDF; remote PDF extraction remains opt-in and separately confirmed.
 - AlpineAI follows its documented basic Chat Completions API; extraction JSON is validated locally because Structured Outputs compatibility is not documented.
+- The library's **Katalog-Übersicht** dashboard summarizes the whole catalogue (instrument/item/language/topic counts) plus a per-language bar chart, a top-topics bar chart, and an item-text-coverage donut chart, all built from plain Flet controls with no charting dependency. See [gui_workspace.md](gui_workspace.md#catalog-overview-dashboard).
 
 ## Generate development fixtures
 
