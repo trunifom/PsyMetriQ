@@ -22,6 +22,12 @@ from schemas.questionnaire_schema import (
     QuestionnaireVersion,
     ResponseOption,
 )
+from src.exporters.limesurvey_gen import (
+    LimeSurveyExportError,
+    LimeSurveyImportError,
+    export_limesurvey_tsv,
+    import_limesurvey_tsv,
+)
 from src.exporters.r_syntax_gen import export_r_syntax
 
 FHIR_QUESTIONNAIRE_R4 = "http://hl7.org/fhir/StructureDefinition/Questionnaire"
@@ -29,7 +35,9 @@ FHIR_DIMENSION_EXTENSION = "https://psymetriq.org/fhir/StructureDefinition/item-
 FHIR_VARIABLE_NAME_EXTENSION = "https://psymetriq.org/fhir/StructureDefinition/variable-name"
 FHIR_RESPONSE_MODE_EXTENSION = "https://psymetriq.org/fhir/StructureDefinition/response-mode"
 FHIR_RESPONSE_SET_EXTENSION = "https://psymetriq.org/fhir/StructureDefinition/response-set"
-FHIR_VERSION_DISPLAY_EXTENSION = "https://psymetriq.org/fhir/StructureDefinition/version-display-name"
+FHIR_VERSION_DISPLAY_EXTENSION = (
+    "https://psymetriq.org/fhir/StructureDefinition/version-display-name"
+)
 FHIR_NUMERIC_RESPONSE_CODE_EXTENSION = (
     "https://psymetriq.org/fhir/StructureDefinition/numeric-response-code"
 )
@@ -139,17 +147,20 @@ def import_psymetriq_json(content: str) -> list[QuestionnaireParent]:
 
 def export_psymetriq_json(questionnaires: list[QuestionnaireParent]) -> str:
     """Serialize validated instrument families in the canonical portable schema."""
-    return json.dumps(
-        {
-            "format": "psymetriq-questionnaire-catalog",
-            "schema_version": 1,
-            "questionnaires": [
-                questionnaire.model_dump(mode="json") for questionnaire in questionnaires
-            ],
-        },
-        ensure_ascii=False,
-        indent=2,
-    ) + "\n"
+    return (
+        json.dumps(
+            {
+                "format": "psymetriq-questionnaire-catalog",
+                "schema_version": 1,
+                "questionnaires": [
+                    questionnaire.model_dump(mode="json") for questionnaire in questionnaires
+                ],
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n"
+    )
 
 
 def _fhir_answer_option(option: ResponseOption) -> dict[str, Any]:
@@ -202,8 +213,10 @@ def export_fhir_questionnaire(
             ]
         if item.measurement_unit:
             fhir_item["extension"].append(
-                {"url": "https://psymetriq.org/fhir/StructureDefinition/measurement-unit",
-                 "valueString": item.measurement_unit}
+                {
+                    "url": "https://psymetriq.org/fhir/StructureDefinition/measurement-unit",
+                    "valueString": item.measurement_unit,
+                }
             )
         if item.metadata.notes:
             fhir_item["extension"].append(
@@ -219,8 +232,10 @@ def export_fhir_questionnaire(
         "id": _safe_identifier(f"{questionnaire.instrument_id}-{version.version_id}"),
         "meta": {"profile": [FHIR_QUESTIONNAIRE_R4]},
         "identifier": [
-            {"system": "https://psymetriq.org/identifier/instrument",
-             "value": questionnaire.instrument_id}
+            {
+                "system": "https://psymetriq.org/identifier/instrument",
+                "value": questionnaire.instrument_id,
+            }
         ],
         "url": f"https://psymetriq.org/questionnaires/{questionnaire.instrument_id}/{version.version_id}",
         "version": version.version_id,
@@ -298,8 +313,10 @@ def import_fhir_questionnaire(resource: dict[str, Any]) -> QuestionnaireParent:
         response_mode = extensions.get(FHIR_RESPONSE_MODE_EXTENSION, {}).get("valueCode")
         type_name = entry.get("type")
         if response_mode not in ("categorical", "numeric", "text"):
-            response_mode = "categorical" if type_name == "choice" else (
-                "numeric" if type_name in ("integer", "decimal", "quantity") else "text"
+            response_mode = (
+                "categorical"
+                if type_name == "choice"
+                else ("numeric" if type_name in ("integer", "decimal", "quantity") else "text")
             )
         response_ref: str | None = None
         if response_mode == "categorical":
@@ -316,13 +333,19 @@ def import_fhir_questionnaire(resource: dict[str, Any]) -> QuestionnaireParent:
                 if not coding:
                     continue
                 score_extension = next(
-                    (ext for ext in coding.get("extension", [])
-                     if ext.get("url", "").endswith("/response-score")),
+                    (
+                        ext
+                        for ext in coding.get("extension", [])
+                        if ext.get("url", "").endswith("/response-score")
+                    ),
                     {},
                 )
                 numeric_code_extension = next(
-                    (ext for ext in coding.get("extension", [])
-                     if ext.get("url") == FHIR_NUMERIC_RESPONSE_CODE_EXTENSION),
+                    (
+                        ext
+                        for ext in coding.get("extension", [])
+                        if ext.get("url") == FHIR_NUMERIC_RESPONSE_CODE_EXTENSION
+                    ),
                     {},
                 )
                 options.append(
@@ -350,9 +373,11 @@ def import_fhir_questionnaire(resource: dict[str, Any]) -> QuestionnaireParent:
         )
         dimension = extensions.get(FHIR_DIMENSION_EXTENSION, {}).get("valueString") or section
         unit = next(
-            (ext.get("valueString") for ext in entry.get("extension", [])
-             if isinstance(ext, dict)
-             and ext.get("url", "").endswith("/measurement-unit")),
+            (
+                ext.get("valueString")
+                for ext in entry.get("extension", [])
+                if isinstance(ext, dict) and ext.get("url", "").endswith("/measurement-unit")
+            ),
             None,
         )
         item_note = next(
@@ -376,9 +401,9 @@ def import_fhir_questionnaire(resource: dict[str, Any]) -> QuestionnaireParent:
                 is_required=bool(entry.get("required", False)),
                 measurement_unit=unit,
                 metadata=QuestionnaireMetadata(notes=item_note),
-                redcap_field_type="checkbox" if type_name == "open-choice" else (
-                    "radio" if response_mode == "categorical" else "text"
-                ),
+                redcap_field_type="checkbox"
+                if type_name == "open-choice"
+                else ("radio" if response_mode == "categorical" else "text"),
             )
         )
 
@@ -403,16 +428,28 @@ def import_fhir_questionnaire(resource: dict[str, Any]) -> QuestionnaireParent:
         ) from None
 
 
-def export_item_csv(
-    questionnaire: QuestionnaireParent, version: QuestionnaireVersion
-) -> str:
+def export_item_csv(questionnaire: QuestionnaireParent, version: QuestionnaireVersion) -> str:
     """Export item-level data in a UTF-8 CSV suitable for review and mapping."""
     output = io.StringIO(newline="")
     fields = [
-        "instrument_id", "instrument_name", "version_id", "language", "item_id",
-        "variable_name", "dimension", "prompt_text", "response_mode", "response_set_ref",
-        "response_options", "measurement_unit", "numeric_minimum", "numeric_maximum",
-        "is_required", "is_scored", "is_reverse_scored", "metadata_notes",
+        "instrument_id",
+        "instrument_name",
+        "version_id",
+        "language",
+        "item_id",
+        "variable_name",
+        "dimension",
+        "prompt_text",
+        "response_mode",
+        "response_set_ref",
+        "response_options",
+        "measurement_unit",
+        "numeric_minimum",
+        "numeric_maximum",
+        "is_required",
+        "is_scored",
+        "is_reverse_scored",
+        "metadata_notes",
     ]
     writer = csv.DictWriter(output, fieldnames=fields)
     writer.writeheader()
@@ -813,16 +850,16 @@ def import_redcap_data_dictionary(content: str, language: str) -> QuestionnaireP
             variable_name = _safe_variable_name(f"{variable_name}_{index}", index)
         used_variable_names.add(variable_name.casefold())
 
-        validation_type = (
-            row.get("Text Validation Type OR Show Slider Number") or ""
-        ).casefold()
+        validation_type = (row.get("Text Validation Type OR Show Slider Number") or "").casefold()
         is_numeric = field_type == "text" and (
             validation_type in {"number", "integer", "float"}
             or validation_type.startswith("number_")
         )
         mode: Literal["categorical", "numeric", "text"] = (
-            "categorical" if field_type in {"radio", "dropdown", "checkbox", "yesno", "truefalse"}
-            else "numeric" if is_numeric or field_type == "slider"
+            "categorical"
+            if field_type in {"radio", "dropdown", "checkbox", "yesno", "truefalse"}
+            else "numeric"
+            if is_numeric or field_type == "slider"
             else "text"
         )
         response_ref: str | None = None
@@ -835,16 +872,12 @@ def import_redcap_data_dictionary(content: str, language: str) -> QuestionnaireP
         elif mode == "categorical":
             response_ref = f"redcap_scale_{index:03d}"
             options: list[ResponseOption] = []
-            for raw_option in (
-                row.get("Choices, Calculations, OR Slider Labels") or ""
-            ).split("|"):
+            for raw_option in (row.get("Choices, Calculations, OR Slider Labels") or "").split("|"):
                 code, separator, label = raw_option.strip().partition(",")
                 if not separator:
                     continue
                 normalized_code: str | int = (
-                    int(code.strip())
-                    if code.strip().lstrip("-").isdigit()
-                    else code.strip()
+                    int(code.strip()) if code.strip().lstrip("-").isdigit() else code.strip()
                 )
                 options.append(
                     ResponseOption(
@@ -881,8 +914,10 @@ def import_redcap_data_dictionary(content: str, language: str) -> QuestionnaireP
                 numeric_minimum=minimum,
                 numeric_maximum=maximum,
                 redcap_field_type=(
-                    "slider" if field_type == "slider"
-                    else field_type if field_type in {"radio", "checkbox"}
+                    "slider"
+                    if field_type == "slider"
+                    else field_type
+                    if field_type in {"radio", "checkbox"}
                     else "text"
                 ),
                 matrix_group_name=(row.get("Matrix Group Name") or "").strip() or None,
@@ -953,8 +988,15 @@ def import_questionnaire_content(
     """Import decoded uploaded content when a local filesystem path is unavailable."""
     if Path(file_name).suffix.casefold() == ".csv":
         return [import_redcap_data_dictionary(content, redcap_language)]
+    if Path(file_name).suffix.casefold() == ".txt":
+        try:
+            return [import_limesurvey_tsv(content, default_language=redcap_language)]
+        except LimeSurveyImportError as error:
+            raise DataExchangeError(str(error)) from None
     if Path(file_name).suffix.casefold() != ".json":
-        raise DataExchangeError("Supported import formats are JSON and REDCap CSV")
+        raise DataExchangeError(
+            "Supported import formats are JSON, REDCap CSV, and LimeSurvey TSV (.txt)"
+        )
     try:
         payload = json.loads(content)
     except json.JSONDecodeError:
@@ -973,21 +1015,49 @@ def export_questionnaire_xlsx(
     items_sheet.title = XLSX_SHEETS[0]
     items_sheet.append(
         [
-            "Instrument ID", "Instrument", "Version ID", "Version", "Sprache", "Locale",
-            "Item ID", "Variable", "Dimension", "Itemtext", "Antwortmodus", "Antwortset",
-            "Antwort erforderlich", "Einheit", "Minimum", "Maximum", "Umgekehrt kodiert",
-            "Scored", "Metadatenhinweise",
+            "Instrument ID",
+            "Instrument",
+            "Version ID",
+            "Version",
+            "Sprache",
+            "Locale",
+            "Item ID",
+            "Variable",
+            "Dimension",
+            "Itemtext",
+            "Antwortmodus",
+            "Antwortset",
+            "Antwort erforderlich",
+            "Einheit",
+            "Minimum",
+            "Maximum",
+            "Umgekehrt kodiert",
+            "Scored",
+            "Metadatenhinweise",
         ]
     )
     for item in version.items:
         items_sheet.append(
             [
-                questionnaire.instrument_id, questionnaire.name_full, version.version_id,
-                version.display_name or "", version.language, version.locale or "",
-                item.item_id, item.variable_name, item.dimension, item.prompt_text,
-                item.response_mode, item.response_set_ref or "", item.is_required,
-                item.measurement_unit or "", item.numeric_minimum, item.numeric_maximum,
-                item.is_reverse_scored, item.is_scored, item.metadata.notes or "",
+                questionnaire.instrument_id,
+                questionnaire.name_full,
+                version.version_id,
+                version.display_name or "",
+                version.language,
+                version.locale or "",
+                item.item_id,
+                item.variable_name,
+                item.dimension,
+                item.prompt_text,
+                item.response_mode,
+                item.response_set_ref or "",
+                item.is_required,
+                item.measurement_unit or "",
+                item.numeric_minimum,
+                item.numeric_maximum,
+                item.is_reverse_scored,
+                item.is_scored,
+                item.metadata.notes or "",
             ]
         )
 
@@ -1002,8 +1072,11 @@ def export_questionnaire_xlsx(
     for algorithm in version.scoring_algorithms:
         scores_sheet.append(
             [
-                algorithm.output_variable, algorithm.method, ", ".join(algorithm.target_items),
-                algorithm.multiplier, algorithm.missing_data_rules or "",
+                algorithm.output_variable,
+                algorithm.method,
+                ", ".join(algorithm.target_items),
+                algorithm.multiplier,
+                algorithm.missing_data_rules or "",
             ]
         )
 
@@ -1014,9 +1087,13 @@ def export_questionnaire_xlsx(
     for source in version.source_documents:
         source_sheet.append(
             [
-                source.title, source.document_type, source.language,
-                str(source.source_url or source.local_path or ""), source.license_name,
-                source.redistribution_permitted, source.permission_basis,
+                source.title,
+                source.document_type,
+                source.language,
+                str(source.source_url or source.local_path or ""),
+                source.license_name,
+                source.redistribution_permitted,
+                source.permission_basis,
             ]
         )
     source_sheet.append([])
@@ -1058,7 +1135,13 @@ def export_questionnaire(
     questionnaire: QuestionnaireParent,
     version_id: str,
     export_format: Literal[
-        "psymetriq_json", "fhir_json", "item_csv", "redcap_csv", "xlsx", "r_syntax"
+        "psymetriq_json",
+        "fhir_json",
+        "item_csv",
+        "redcap_csv",
+        "xlsx",
+        "r_syntax",
+        "limesurvey_tsv",
     ],
 ) -> tuple[str, str | bytes]:
     """Export a concrete version and return its recommended extension and content."""
@@ -1082,6 +1165,11 @@ def export_questionnaire(
         return ".xlsx", export_questionnaire_xlsx(questionnaire, version)
     if export_format == "r_syntax":
         return ".R", export_r_syntax(questionnaire, version)
+    if export_format == "limesurvey_tsv":
+        try:
+            return ".txt", export_limesurvey_tsv(questionnaire, version)
+        except LimeSurveyExportError as error:
+            raise DataExchangeError(str(error)) from None
     raise DataExchangeError(f"Unsupported export format: {export_format}")
 
 

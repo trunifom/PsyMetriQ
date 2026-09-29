@@ -15,7 +15,9 @@ from pydantic import BaseModel, Field, ValidationError, field_validator, model_v
 
 LOGGER = logging.getLogger(__name__)
 
-ExportFormat = Literal["psymetriq_json", "fhir_json", "xlsx", "item_csv", "redcap_csv", "r_syntax"]
+ExportFormat = Literal[
+    "psymetriq_json", "fhir_json", "xlsx", "item_csv", "redcap_csv", "r_syntax", "limesurvey_tsv"
+]
 ProviderName = Literal["openai", "anthropic", "alpineai", "openai-compatible"]
 ThemeModeSetting = Literal["light", "dark"]
 FontSizeSetting = Literal["small", "normal", "large"]
